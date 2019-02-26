@@ -1,0 +1,142 @@
+configfile: "configfile.yaml"
+
+from settings import working_dir, data_path, metadata_path, output_path, figure_path, script_path
+
+workdir: working_dir
+
+FREQ_BAND = config["FREQ_BAND"]
+MIN_STATE_DURATION = config["MIN_STATE_DURATION"]
+FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
+SIGMA_THRESHOLD = config["SIGMA_THRESHOLD"]
+DETRENDING_ORDER = config["DETRENDING_ORDER"]
+PSD_NUM_SEG = config["PSD_NUM_SEG"]
+PSD_OVERLAP = config["PSD_OVERLAP"]
+
+rule load_enrich_save_neo:
+    input:
+        data = data_path,
+        metadata = metadata_path,
+        script = script_path + "load_and_transform_to_neo.py"
+    params:
+        metadata_dir = os.path.dirname(metadata_path)
+    output:
+        output_path + os.path.splitext(os.path.split(data_path)[1])[0] + ".nix"
+    shell:
+        """
+        export PYTHONPATH='$PYTHONPATH:{params.metadata_dir}'
+        python {input.script} --output {output} --data {input.data} \
+                              --metadata {input.metadata}
+        """
+
+rule log_MUA_estimation:
+    input:
+        data = {rules.load_enrich_save_neo.output},
+        script = script_path + "log_MUA_estimation.py"
+    params:
+        script_path = script_path,
+        freq_band = FREQ_BAND,
+        detrending_order = DETRENDING_ORDER,
+        psd_num_seg = PSD_NUM_SEG,
+        psd_overlap = PSD_OVERLAP
+    output:
+        output_path + "logMUA.nix"
+    shell:
+        """
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
+        python {input.script} --output {output} \
+                              --data {input.data} \
+                              --freq_band {params.freq_band} \
+                              --detrending_order {params.detrending_order} \
+                              --psd_num_seg {params.psd_num_seg} \
+                              --psd_overlap {params.psd_overlap}
+        """
+
+rule UpDown_detection:
+    input:
+        logMUA = {rules.log_MUA_estimation.output},
+        script = script_path + "UpDown_detection.py"
+    output:
+        output_path + "UD_state_vector.npy"
+    shell:
+        """
+        python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
+                              --min_state_duration {MIN_STATE_DURATION} \
+                              --fixed_threshold {FIXED_THRESHOLD}
+        """
+
+rule slope_average:
+    input:
+        logMUA = {rules.log_MUA_estimation.output},
+        UD_states = {rules.UpDown_detection.output},
+        script = script_path + "average_state_transition_slopes.py"
+    output:
+        output_path + "UD_slopes.npy"
+    shell:
+        """
+        python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
+                              --state_vector {input.UD_states}
+        """
+
+### Plotting rules ###
+
+rule plot_signal_traces:
+    input:
+        data = {rules.load_enrich_save_neo.output},
+        script = script_path + "plot_signal_traces.py"
+    params:
+        scaling = 12,
+        show_figure = 0,
+        script_path = script_path
+    output:
+        figure_path + "lfp_traces_t{t_start}-{t_stop}s.{format}"
+    shell:
+        """
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
+        echo {params.show_figure}
+        python {input.script} --output {output} --data {input.data} \
+                              --format {wildcards.format} --scaling {params.scaling} \
+                              --t_start {wildcards.t_start} --t_stop {wildcards.t_stop} \
+                              --show_figure {params.show_figure}
+        """
+
+rule plot_power_spectrum:
+    input:
+        data = {rules.load_enrich_save_neo.output},
+        script = script_path + "plot_power_spectrum.py"
+    params:
+        show_figure = 0,
+        psd_num_seg = PSD_NUM_SEG,
+        psd_overlap = PSD_OVERLAP
+    output:
+        figure_path + "power_spectrum.{format}"
+    shell:
+        """
+        python {input.script} --output {output} --data {input.data} \
+                              --format {format} --psd_num_seg {params.psd_num_seg} \
+                              --psd_overlap {params.psd_overlap}
+        """
+
+rule plot_MUA_states:
+    input:
+        logMUA = {rules.log_MUA_estimation.output},
+        data = {rules.load_enrich_save_neo.output},
+        UD_states = {rules.UpDown_detection.output}
+    output:
+        figure_path + "logMUA_states.{format}"
+    shell:
+        """
+        python {input.script} --output {output} --data {input.data} \
+                              --format {format}
+        """
+
+rule plot_avg_slopes:
+    input:
+        slope_data = rules.slope_average.output,
+        script = script_path + "plot_avg_slopes.py"
+    output:
+        figure_path + "average_slopes.{format}"
+    shell:
+        """
+        python {input.script} --output {output} --data {input.slope_data} \
+                              --format {format}
+        """

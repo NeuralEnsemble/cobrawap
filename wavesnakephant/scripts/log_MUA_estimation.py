@@ -2,7 +2,7 @@ import numpy as np
 import elephant as el
 import neo
 import argparse
-from load_and_transform_to_neo import load_segment, save
+from load_and_transform_to_neo import load_segment, save_segment
 
 
 def detrending(asig, order):
@@ -34,7 +34,6 @@ def build_logMUA_segment(segment, freq_band, detrending_order, psd_num_seg, psd_
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize, freq_band,
                                         MUA_sampling_rate, detrending_order,
                                         psd_num_seg, psd_overlap)
-        logMUA_asig.annotations = asig.annotations
         logMUA_segment.analogsignals.append(logMUA_asig)
 
     return logMUA_segment
@@ -55,8 +54,12 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
         low_idx = np.where(freq_band[0] <= f)[0][0]
         high_idx = np.where(freq_band[1] <= f)[0][0]
         MUA[i] = np.mean(p[low_idx:high_idx])
-    return neo.core.AnalogSignal(np.log(MUA), units='dimensionless', t_start=analogsignal.t_start,
-                                 sampling_rate=MUA_sampling_rate)
+        # if MUA[i] < 10**(-35):
+        #     MUA[i] = np.nan
+    logMUA_asig = neo.core.AnalogSignal(np.log(MUA), units='mV', t_start=analogsignal.t_start,
+                                        t_stop=analogsignal.t_stop, sampling_rate=MUA_sampling_rate)
+    logMUA_asig.annotations = analogsignal.annotations
+    return logMUA_asig
 
     # ToDo: Normalization with basline power?
 
@@ -79,4 +82,4 @@ if __name__ == '__main__':
                                           detrending_order=args.detrending_order[0],
                                           psd_num_seg=args.psd_num_seg[0],
                                           psd_overlap=args.psd_overlap[0])
-    save(logMUA_segment, args.output[0])
+    save_segment(logMUA_segment, args.output[0])

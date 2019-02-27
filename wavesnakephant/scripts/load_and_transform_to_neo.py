@@ -33,7 +33,7 @@ def enrich(segment, metadata):
     return segment
 
 
-def save(segment, location):
+def save_segment(segment, location):
     data_dir = os.path.dirname(location)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
@@ -56,4 +56,4 @@ if __name__ == '__main__':
 
     segment = enrich(segment, metadata=args.metadata[0])
 
-    save(segment, location=args.output[0])
+    save_segment(segment, location=args.output[0])

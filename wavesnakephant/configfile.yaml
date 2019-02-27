@@ -1,11 +1,10 @@
 
-
 # min and max of frequency band in Hz
 FREQ_BAND: [100, 1500]
 
 # Minimal duration of a state to be detected
 # in bins of the estimated MUA signal.
-# MUA binsize ~ MIN_FREQ_BAND / (sampling_rate)^2
+# MUA binsize ~ MIN_FREQ_BAND / sampling_rate^2
 MIN_STATE_DURATION: 2
 
 # Threshold for detecting up states;
@@ -13,9 +12,9 @@ MIN_STATE_DURATION: 2
 # (measures from center of fitted Gaussian)
 # or be set in units of sigma
 # (corresponding to respective Gaussian fit)
-# FIXED_THRESHOLD has priority
-FIXED_THRESHOLD: None
-SIGMA_THRESHOLD: 3
+# FIXED_THRESHOLD has priority, 0 = None
+FIXED_THRESHOLD: 0
+SIGMA_THRESHOLD: 2
 
 # Detrending: 0 - no detrending;
 #             1 - mean detrending;
@@ -24,6 +23,6 @@ SIGMA_THRESHOLD: 3
 #             4 - cubic detrending.
 DETRENDING_ORDER: 2
 
-# Settings to be passed to welch_psd function of elephant
+# Settings to be passed to the welch_psd function of elephant
 PSD_NUM_SEG: 10
 PSD_OVERLAP: 0.7

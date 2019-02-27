@@ -55,13 +55,20 @@ rule UpDown_detection:
     input:
         logMUA = {rules.log_MUA_estimation.output},
         script = script_path + "UpDown_detection.py"
+    params:
+        min_state_duration = MIN_STATE_DURATION,
+        fixed_threshold = FIXED_THRESHOLD,
+        sigma_threshold = SIGMA_THRESHOLD,
+        script_path = script_path
     output:
         output_path + "UD_state_vector.npy"
     shell:
         """
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
         python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
-                              --min_state_duration {MIN_STATE_DURATION} \
-                              --fixed_threshold {FIXED_THRESHOLD}
+                              --min_state_duration {params.min_state_duration} \
+                              --fixed_threshold {params.fixed_threshold} \
+                              --sigma_threshold {params.sigma_threshold}
         """
 
 rule slope_average:
@@ -69,10 +76,13 @@ rule slope_average:
         logMUA = {rules.log_MUA_estimation.output},
         UD_states = {rules.UpDown_detection.output},
         script = script_path + "average_state_transition_slopes.py"
+    params:
+        script_path = script_path
     output:
         output_path + "UD_slopes.npy"
     shell:
         """
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
         python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
                               --state_vector {input.UD_states}
         """
@@ -106,27 +116,42 @@ rule plot_power_spectrum:
     params:
         show_figure = 0,
         psd_num_seg = PSD_NUM_SEG,
-        psd_overlap = PSD_OVERLAP
+        psd_overlap = PSD_OVERLAP,
+        script_path = script_path
     output:
         figure_path + "power_spectrum.{format}"
     shell:
         """
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
         python {input.script} --output {output} --data {input.data} \
                               --format {format} --psd_num_seg {params.psd_num_seg} \
-                              --psd_overlap {params.psd_overlap}
+                              --psd_overlap {params.psd_overlap} \
+                              --show_figure {params.show_figure}
+
         """
 
-rule plot_MUA_states:
+rule plot_logMUA_states:
     input:
         logMUA = {rules.log_MUA_estimation.output},
         data = {rules.load_enrich_save_neo.output},
-        UD_states = {rules.UpDown_detection.output}
+        UD_states = {rules.UpDown_detection.output},
+        script = script_path + 'plot_logMUA_states.py'
+    params:
+        script_path = script_path,
+        show_figure = 1
     output:
-        figure_path + "logMUA_states.{format}"
+        figure_path + "logMUA_states_channel{channel}_{t_start}-{t_stop}s.{format}"
     shell:
         """
-        python {input.script} --output {output} --data {input.data} \
-                              --format {format}
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
+        python {input.script} --output {output} --logMUA {input.logMUA} \
+                              --data {input.data} \
+                              --UD_states {input.UD_states} \
+                              --channel {wildcards.channel} \
+                              --format {wildcards.format} \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+                              --show_figure {params.show_figure}
         """
 
 rule plot_avg_slopes:

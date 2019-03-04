@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+import os
 from load_and_transform_to_neo import load_segment
 
 
@@ -65,4 +66,7 @@ if __name__ == '__main__':
     if args.show_figure[0]:
         plt.show()
 
+    data_dir = os.path.dirname(args.output[0])
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
     plt.savefig(fname=args.output[0], format=args.format[0])

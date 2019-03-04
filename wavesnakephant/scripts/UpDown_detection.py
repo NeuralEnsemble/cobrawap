@@ -102,7 +102,7 @@ if __name__ == '__main__':
     CLI.add_argument("--min_state_duration",  nargs=1, type=int, default=2)
     CLI.add_argument("--fixed_threshold", nargs=1, type=int, default=0)
     CLI.add_argument("--sigma_threshold",  nargs=1, type=int, default=0)
-    # CLI.add_argument("--create_plots",  nargs=1, type=int, default=0)
+    CLI.add_argument("--show_plots",  nargs=1, type=int, default=0)
     args = CLI.parse_args()
 
     logMUA_segment = load_segment(args.logMUA_estimate[0])
@@ -111,5 +111,5 @@ if __name__ == '__main__':
                                              min_state_duration=args.min_state_duration[0],
                                              fixed_threshold=args.fixed_threshold[0],
                                              sigma_threshold=args.sigma_threshold[0],
-                                             plot=True)
+                                             plot=args.show_plots[0])
     np.save(args.output[0], state_vectors)

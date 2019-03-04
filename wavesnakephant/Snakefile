@@ -11,6 +11,7 @@ SIGMA_THRESHOLD = config["SIGMA_THRESHOLD"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
 PSD_NUM_SEG = config["PSD_NUM_SEG"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
+SLOPE_WINDOW = config["SLOPE_WINDOW"]
 # ToDo: adding configfile to inputs?
 
 rule load_enrich_save_neo:
@@ -60,7 +61,8 @@ rule UpDown_detection:
         min_state_duration = MIN_STATE_DURATION,
         fixed_threshold = FIXED_THRESHOLD,
         sigma_threshold = SIGMA_THRESHOLD,
-        script_path = script_path
+        script_path = script_path,
+        show_plots = 0
     output:
         output_path + "UD_state_vector.npy"
     shell:
@@ -69,24 +71,10 @@ rule UpDown_detection:
         python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
                               --min_state_duration {params.min_state_duration} \
                               --fixed_threshold {params.fixed_threshold} \
-                              --sigma_threshold {params.sigma_threshold}
+                              --sigma_threshold {params.sigma_threshold} \
+                              --show_plots {params.show_plots}
         """
 
-rule slope_average:
-    input:
-        logMUA = {rules.log_MUA_estimation.output},
-        UD_states = {rules.UpDown_detection.output},
-        script = script_path + "average_state_transition_slopes.py"
-    params:
-        script_path = script_path
-    output:
-        output_path + "UD_slopes.npy"
-    shell:
-        """
-        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
-        python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
-                              --state_vector {input.UD_states}
-        """
 
 ### Plotting rules ###
 
@@ -157,12 +145,20 @@ rule plot_logMUA_states:
 
 rule plot_avg_slopes:
     input:
-        slope_data = rules.slope_average.output,
-        script = script_path + "plot_avg_slopes.py"
+        logMUA = {rules.log_MUA_estimation.output},
+        UD_states = {rules.UpDown_detection.output},
+        script = script_path + "plot_avg_transitions.py"
+    params:
+        script_path = script_path,
+        slope_window = SLOPE_WINDOW,
+        show_figure = 1
     output:
-        figure_path + "average_slopes.{format}"
+        figure_path + "UD_slopes_channel{channel}.{format}"
     shell:
         """
-        python {input.script} --output {output} --data {input.slope_data} \
-                              --format {format}
+        export PYTHONPATH='$PYTHONPATH:{params.script_path}'
+        python {input.script} --output {output} --logMUA_estimate {input.logMUA} \
+                              --state_vector {input.UD_states} --show_figure {params.show_figure} \
+                              --slope_window {params.slope_window} --channel {wildcards.channel} \
+                              --format {wildcards.format}
         """

@@ -30,7 +30,7 @@ def build_logMUA_segment(segment, freq_band, detrending_order, psd_num_seg, psd_
 
     logMUA_segment = neo.core.Segment()
 
-    for asig in segment.analogsignals[:3]:
+    for asig in segment.analogsignals:
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize, freq_band,
                                         MUA_sampling_rate, detrending_order,
                                         psd_num_seg, psd_overlap)

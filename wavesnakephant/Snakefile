@@ -11,6 +11,7 @@ SIGMA_THRESHOLD = config["SIGMA_THRESHOLD"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
 PSD_NUM_SEG = config["PSD_NUM_SEG"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
+# ToDo: adding configfile to inputs?
 
 rule load_enrich_save_neo:
     input:

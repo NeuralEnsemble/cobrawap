@@ -26,11 +26,11 @@ def build_logMUA_segment(segment, freq_band, detrending_order, psd_num_seg, psd_
     fs = asig.sampling_rate.rescale('1/s').magnitude
     FFTWindowSize = int(round(fs / freq_band[0]))
     sample_num = int(np.floor(len(asig)/FFTWindowSize))
-    MUA_sampling_rate = sample_num / (asig.t_stop - asig.t_stop)
+    MUA_sampling_rate = sample_num / (asig.t_stop - asig.t_start)
 
     logMUA_segment = neo.core.Segment()
 
-    for asig in segment.analogsignals:
+    for asig in segment.analogsignals[:3]:
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize, freq_band,
                                         MUA_sampling_rate, detrending_order,
                                         psd_num_seg, psd_overlap)
@@ -49,13 +49,12 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
         (f, p) = el.spectral.welch_psd(np.squeeze(local_asig),
                                        num_seg=psd_num_seg, overlap=psd_overlap,
                                        window='hanning', nfft=None, fs=fs,
-                                       detrend='constant', return_onesided=True,
+                                       detrend=False, return_onesided=True,
                                        scaling='density', axis=-1)
         low_idx = np.where(freq_band[0] <= f)[0][0]
         high_idx = np.where(freq_band[1] <= f)[0][0]
         MUA[i] = np.mean(p[low_idx:high_idx])
-        # if MUA[i] < 10**(-35):
-        #     MUA[i] = np.nan
+    # ToDo: Fix bug that loading routine works with 'dimensionless' units
     logMUA_asig = neo.core.AnalogSignal(np.log(MUA), units='mV', t_start=analogsignal.t_start,
                                         t_stop=analogsignal.t_stop, sampling_rate=MUA_sampling_rate)
     logMUA_asig.annotations = analogsignal.annotations

@@ -6,8 +6,7 @@ import quantities as pq
 from load_and_transform_to_neo import load_segment
 
 
-def plot_signal_traces(logMUA, data, state_vector, t_start, t_stop, scaling=5):
-    print(t_start, t_stop)
+def plot_signal_traces(logMUA, data, state_vector, t_start, t_stop, scaling=10):
     data_idx = [int(t * data.sampling_rate.rescale('1/s').magnitude)
                 for t in [t_start.rescale('s').magnitude, t_stop.rescale('s').magnitude]]
     logMUA_sampling_rate = len(logMUA) / (data.t_stop - data.t_start)

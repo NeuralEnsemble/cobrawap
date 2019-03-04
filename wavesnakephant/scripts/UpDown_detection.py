@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from load_and_transform_to_neo import load_segment
 
 
-def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100,):
+def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100):
     # signal amplitude distribution
     logMUA = logMUA[np.isfinite(logMUA)]
     hist, edges = np.histogram(logMUA, bins=bins, density=True)
@@ -29,18 +29,18 @@ def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100
     (_, s0), _ = sc.optimize.curve_fit(gaussian, xvalues2, peakhist, p0=(0, 1))
 
     ## PLOTTING ## ToDO: outsource?
-    fig, ax = plt.subplots(ncols=2, figsize=(15, 7))
-    ax[0].bar(xvalues, hist, width=np.diff(xvalues)[0], color='r')
-    ax[0].plot(xvalues, [left_right_ratio * gaussian(x, 0, s0) for x in xvalues], c='k')
-    ax[0].set_xlabel('log(MUA)')
-    ax[0].set_ylabel('sample density')
-    ax[0].set_title('Amplitude distribution')
-
-    ax[1].bar(xvalues, [hist[i] - gaussian(x, 0, s0) for (i, x) in enumerate(xvalues)],
-              width=np.diff(xvalues)[0], color='r')
-    ax[1].set_xlabel('log(MUA)')
-    ax[1].set_title('Non-Gaussian tail')
     if plot:
+        fig, ax = plt.subplots(ncols=2, figsize=(15, 7))
+        ax[0].bar(xvalues, hist, width=np.diff(xvalues)[0], color='r')
+        ax[0].plot(xvalues, [left_right_ratio * gaussian(x, 0, s0) for x in xvalues], c='k')
+        ax[0].set_xlabel('log(MUA)')
+        ax[0].set_ylabel('sample density')
+        ax[0].set_title('Amplitude distribution')
+
+        ax[1].bar(xvalues, [hist[i] - gaussian(x, 0, s0) for (i, x) in enumerate(xvalues)],
+                  width=np.diff(xvalues)[0], color='r')
+        ax[1].set_xlabel('log(MUA)')
+        ax[1].set_title('Non-Gaussian tail')
         if fixed_threshold:
             ax[1].axvline(fixed_threshold, color='k', ls='--'),
             ax[1].text(1.1 * fixed_threshold, 0.9 * ax[1].get_ylim()[0],
@@ -49,6 +49,7 @@ def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100
             ax[1].axvline(sigma_threshold * s0, color='k', ls='--'),
             ax[1].text(1.1 * sigma_threshold * s0, 0.9 * ax[1].get_ylim()[0],
                        r'UD threshold ({}$\sigma$)'.format(sigma_threshold), color='k')
+        plt.show()
     return m0, s0
 
 
@@ -110,5 +111,5 @@ if __name__ == '__main__':
                                              min_state_duration=args.min_state_duration[0],
                                              fixed_threshold=args.fixed_threshold[0],
                                              sigma_threshold=args.sigma_threshold[0],
-                                             plot=False)
+                                             plot=True)
     np.save(args.output[0], state_vectors)

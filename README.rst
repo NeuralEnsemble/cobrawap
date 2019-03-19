@@ -11,12 +11,18 @@ Forschungszentrum Jülich: Michael Denker, Robin Gutzen, Alper Yegenoglu
 
 Overarching goal, strategy and roadmap
 --------------------------------------
-The overall outcome of this collaboration is to focus on the WaveScalES simulation work performed in SP3 and make it accessible
+The overall outcome of this collaboration is to focus on the WaveScalES simulation work and data analysis performed in SP3, and make it accessible
 as a workflow in a collaborative fashion using tools from SP5 (e.g., Elephant), 6 (e.g., NEST), and 7 (e.g., storage).
+
+The goal of WaveScalES_ is to unveil the underlying mechanisms of deep sleep, anaesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.
+Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances.
+The collaboration with the Juelich Elephant team aims at integrating the resources developed by WaveScalES into the HBP platforms, as part of the HBP offer.
 See Multi-scale simulations of SWA, SO and AW regimes, with static and plastic synapses (output of SGA1T3.2.5 and T3.2.6)
 accessible on https://collab.humanbrainproject.eu/#/collab/11175/nav/83589 for an overview of WP3.2 simulations used as test case.
 This workflow is hosted within the Collaboratory, most likely accompanied by one or more joint git repositories hosting the code.
 This workflow would include as a first step setting up a "scaffold" or prototype upon which to build:
+
+.. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
 1. Performing the simulation of a WaveScalES model using DPSNN and NEST on an HBP HPC system (e.g., JULIA) from within the notebook
 

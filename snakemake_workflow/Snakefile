@@ -21,6 +21,8 @@ rule load_enrich_save_neo:
         script = script_path + "load_and_transform_to_neo.py"
     params:
         metadata_dir = os.path.dirname(metadata_path)
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         output_path + os.path.splitext(os.path.split(data_path)[1])[0] + ".nix"
     shell:
@@ -40,6 +42,9 @@ rule log_MUA_estimation:
         detrending_order = DETRENDING_ORDER,
         psd_num_seg = PSD_NUM_SEG,
         psd_overlap = PSD_OVERLAP
+    conda:
+        "envs/wavescalephant_env.yml"
+
     output:
         output_path + "logMUA.nix"
     shell:
@@ -63,6 +68,8 @@ rule UpDown_detection:
         sigma_threshold = SIGMA_THRESHOLD,
         script_path = script_path,
         show_plots = 0
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         output_path + "UD_state_vector.npy"
     shell:
@@ -86,6 +93,8 @@ rule plot_signal_traces:
         scaling = 12,
         show_figure = 0,
         script_path = script_path
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         figure_path + "lfp_traces_t{t_start}-{t_stop}s.{format}"
     shell:
@@ -107,6 +116,8 @@ rule plot_power_spectrum:
         psd_num_seg = PSD_NUM_SEG,
         psd_overlap = PSD_OVERLAP,
         script_path = script_path
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         figure_path + "power_spectrum.{format}"
     shell:
@@ -128,6 +139,8 @@ rule plot_logMUA_states:
     params:
         script_path = script_path,
         show_figure = 1
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         figure_path + "logMUA_states_channel{channel}_{t_start}-{t_stop}s.{format}"
     shell:
@@ -152,6 +165,8 @@ rule plot_avg_slopes:
         script_path = script_path,
         slope_window = SLOPE_WINDOW,
         show_figure = 1
+    conda:
+        "envs/wavescalephant_env.yml"
     output:
         figure_path + "UD_slopes_channel{channel}.{format}"
     shell:

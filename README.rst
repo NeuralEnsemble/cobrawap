@@ -110,6 +110,9 @@ For example:
     snakemake results/figures/logMUA_states_channel2_280-282s.png
     snakemake results/figures/UD_slopes_channel5.jpg
 
+In case you haven't set up a Python environment which is able to run the scripts, simply add the flag
+`--use-conda` to automatically generate an appropriate conda environment on the fly.
+
 
 
 

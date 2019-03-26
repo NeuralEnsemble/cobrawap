@@ -1,3 +1,12 @@
+
+# workflow folder
+results/
+snakemake_workflow/.snakemake
+data/
+
+#
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

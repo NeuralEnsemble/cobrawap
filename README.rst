@@ -23,7 +23,7 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
-WaveScalEphant - what is currently available
+WaveScalEphant - what is currently available and possible developments
 --------------------------------------
 
 This workflow would include as a first step setting up a "scaffold" or prototype upon which to build:
@@ -36,13 +36,12 @@ This workflow would include as a first step setting up a "scaffold" or prototype
 
 4. Visualization of the output in a Jupyter notebook;
 
-5. Reproducible analysis of electrophysiological data.
+5. Reproducible analysis of electrophysiological data. 
 
 
 From this ground, several directions of work are anticipated:
 
-* Integration of the analysis into concrete comparisons/validations of the HBP validation framework (currently developed by SP6 and members at Juelich). 
-This could include two types of validations:
+* Integration of the analysis into concrete comparisons/validations of the HBP validation framework (currently developed by SP6 and members at Juelich). This could include two types of validations:
     * models for DPSNN against NEST (i.e., are both engines giving comparable output?);
     * different models developed by SP3 (how do different models/parameters/... differ in the activity they produce?). This step would involve work in getting the WaveScalES models into the HBP model catalog.
 

@@ -23,7 +23,7 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
-WaveScalEphant - what is currently available and possible developments
+Current status and possible developments
 --------------------------------------
 
 This workflow would include as a first step setting up a "scaffold" or prototype upon which to build:

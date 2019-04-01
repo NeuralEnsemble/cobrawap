@@ -12,7 +12,8 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 PSD_NUM_SEG = config["PSD_NUM_SEG"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 SLOPE_WINDOW = config["SLOPE_WINDOW"]
-# ToDo: adding configfile to inputs?
+# ToDo: isolate loading routine
+
 
 rule load_enrich_save_neo:
     input:
@@ -32,10 +33,12 @@ rule load_enrich_save_neo:
                               --metadata {input.metadata}
         """
 
+
 rule log_MUA_estimation:
     input:
         data = {rules.load_enrich_save_neo.output},
-        script = script_path + "log_MUA_estimation.py"
+        script = script_path + "log_MUA_estimation.py",
+        configfile = "configfile.yaml"
     params:
         script_path = script_path,
         freq_band = FREQ_BAND,
@@ -57,6 +60,7 @@ rule log_MUA_estimation:
                               --psd_num_seg {params.psd_num_seg} \
                               --psd_overlap {params.psd_overlap}
         """
+
 
 rule UpDown_detection:
     input:
@@ -107,6 +111,7 @@ rule plot_signal_traces:
                               --show_figure {params.show_figure}
         """
 
+
 rule plot_power_spectrum:
     input:
         data = {rules.load_enrich_save_neo.output},
@@ -129,6 +134,7 @@ rule plot_power_spectrum:
                               --show_figure {params.show_figure}
 
         """
+
 
 rule plot_logMUA_states:
     input:
@@ -155,6 +161,7 @@ rule plot_logMUA_states:
                               --t_stop {wildcards.t_stop} \
                               --show_figure {params.show_figure}
         """
+
 
 rule plot_avg_slopes:
     input:

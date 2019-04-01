@@ -24,7 +24,7 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
 Current status and possible developments
---------------------------------------
+----------------------------------------
 
 This workflow would include as a first step setting up a "scaffold" or prototype upon which to build:
 
@@ -116,7 +116,7 @@ For example:
     snakemake results/figures/UD_slopes_channel5.jpg
 
 In case you haven't set up a Python environment which is able to run the scripts, simply add the flag
-`--use-conda` to automatically generate an appropriate conda environment on the fly.
+:code:`--use-conda` to automatically generate an appropriate conda environment on the fly.
 
 
 

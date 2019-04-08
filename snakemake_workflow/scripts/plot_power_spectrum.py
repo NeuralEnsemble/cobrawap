@@ -12,17 +12,13 @@ def plot_power_spectrum(segment, psd_num_seg, psd_overlap):
     fs = segment.analogsignals[0].sampling_rate.rescale('1/s').magnitude
 
     for asig_count, asig in enumerate(segment.analogsignals):
-
-        (f, p) = el.spectral.welch_psd(np.squeeze(asig),
+        (f, p) = el.spectral.welch_psd(asig,
                                        num_seg=psd_num_seg, overlap=psd_overlap,
                                        window='hanning', nfft=None, fs=fs,
                                        detrend='constant', return_onesided=True,
                                        scaling='density', axis=-1)
-
-        handle, = ax.semilogy(f, p, alpha=0.7, color=asig.annotations['electrode_color'])
+        handle, = ax.semilogy(f, np.squeeze(p), alpha=0.7, color=asig.annotations['electrode_color'])
         handles[asig.annotations['cortical_location']] = handle
-    # ax.set_xlim((0, 1500))
-    # ax.set_ylim((10**(-2), 10**0))
     ax.set_ylabel('spectral density')
     ax.set_xlabel('frequency [Hz]')
     plt.legend([handle for handle in handles.values()],
@@ -45,7 +41,7 @@ if __name__ == '__main__':
 
     plot_power_spectrum(segment,
                         psd_num_seg=args.psd_num_seg[0],
-                        psd_overlap=args.overlap[0])
+                        psd_overlap=args.psd_overlap[0])
 
     if args.show_figure[0]:
         plt.show()

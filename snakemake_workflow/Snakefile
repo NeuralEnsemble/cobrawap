@@ -129,7 +129,7 @@ rule plot_power_spectrum:
         """
         export PYTHONPATH='$PYTHONPATH:{params.script_path}'
         python {input.script} --output {output} --data {input.data} \
-                              --format {format} --psd_num_seg {params.psd_num_seg} \
+                              --format {wildcards.format} --psd_num_seg {params.psd_num_seg} \
                               --psd_overlap {params.psd_overlap} \
                               --show_figure {params.show_figure}
 

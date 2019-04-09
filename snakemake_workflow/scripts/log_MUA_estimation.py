@@ -20,7 +20,7 @@ def detrending(asig, order):
     return X
 
 
-def build_logMUA_segment(segment, freq_band, detrending_order, psd_num_seg, psd_overlap):
+def build_logMUA_segment(segment, freq_band, detrending_order, psd_freq_res, psd_overlap):
     asig = segment.analogsignals[0]
 
     fs = asig.sampling_rate.rescale('1/s').magnitude
@@ -33,21 +33,21 @@ def build_logMUA_segment(segment, freq_band, detrending_order, psd_num_seg, psd_
     for asig in segment.analogsignals:
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize, freq_band,
                                         MUA_sampling_rate, detrending_order,
-                                        psd_num_seg, psd_overlap)
+                                        psd_freq_res, psd_overlap)
         logMUA_segment.analogsignals.append(logMUA_asig)
 
     return logMUA_segment
 
 
 def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
-                      MUA_sampling_rate, detrending_order, psd_num_seg, psd_overlap):
+                      MUA_sampling_rate, detrending_order, psd_freq_res, psd_overlap):
     MUA = np.zeros(sample_num)
     # calculating mean spectral power in each window
     for i in range(sample_num):
         local_asig = analogsignal[i*FFTWindowSize:(i+1)*FFTWindowSize]
         local_asig = detrending(local_asig, detrending_order)
         (f, p) = el.spectral.welch_psd(np.squeeze(local_asig),
-                                       num_seg=psd_num_seg, overlap=psd_overlap,
+                                       freq_res=psd_freq_res, overlap=psd_overlap,
                                        window='hanning', nfft=None, fs=fs,
                                        detrend=False, return_onesided=True,
                                        scaling='density', axis=-1)
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     CLI.add_argument("--data",      nargs=1, type=str)
     CLI.add_argument("--freq_band",  nargs=2, type=float)
     CLI.add_argument("--detrending_order", nargs=1, type=int, default=2)
-    CLI.add_argument("--psd_num_seg",  nargs=1, type=int)
+    CLI.add_argument("--psd_freq_res",  nargs=1, type=int)
     CLI.add_argument("--psd_overlap",  nargs=1, type=float)
 
     args = CLI.parse_args()
@@ -79,6 +79,6 @@ if __name__ == '__main__':
     logMUA_segment = build_logMUA_segment(segment,
                                           freq_band=args.freq_band,
                                           detrending_order=args.detrending_order[0],
-                                          psd_num_seg=args.psd_num_seg[0],
+                                          psd_freq_res=args.psd_freq_res[0],
                                           psd_overlap=args.psd_overlap[0])
     save_segment(logMUA_segment, args.output[0])

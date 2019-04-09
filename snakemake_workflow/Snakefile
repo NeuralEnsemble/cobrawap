@@ -9,7 +9,7 @@ MIN_STATE_DURATION = config["MIN_STATE_DURATION"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 SIGMA_THRESHOLD = config["SIGMA_THRESHOLD"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
-PSD_NUM_SEG = config["PSD_NUM_SEG"]
+PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 SLOPE_WINDOW = config["SLOPE_WINDOW"]
 # ToDo: isolate loading routine
@@ -43,7 +43,7 @@ rule log_MUA_estimation:
         script_path = script_path,
         freq_band = FREQ_BAND,
         detrending_order = DETRENDING_ORDER,
-        psd_num_seg = PSD_NUM_SEG,
+        psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP
     conda:
         "envs/wavescalephant_env.yml"
@@ -57,7 +57,7 @@ rule log_MUA_estimation:
                               --data {input.data} \
                               --freq_band {params.freq_band} \
                               --detrending_order {params.detrending_order} \
-                              --psd_num_seg {params.psd_num_seg} \
+                              --psd_freq_res {params.psd_freq_res} \
                               --psd_overlap {params.psd_overlap}
         """
 
@@ -118,7 +118,7 @@ rule plot_power_spectrum:
         script = script_path + "plot_power_spectrum.py"
     params:
         show_figure = 0,
-        psd_num_seg = PSD_NUM_SEG,
+        psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP,
         script_path = script_path
     conda:
@@ -129,7 +129,7 @@ rule plot_power_spectrum:
         """
         export PYTHONPATH='$PYTHONPATH:{params.script_path}'
         python {input.script} --output {output} --data {input.data} \
-                              --format {wildcards.format} --psd_num_seg {params.psd_num_seg} \
+                              --format {wildcards.format} --psd_freq_res {params.psd_freq_res} \
                               --psd_overlap {params.psd_overlap} \
                               --show_figure {params.show_figure}
 

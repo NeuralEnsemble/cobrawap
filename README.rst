@@ -101,23 +101,26 @@ The current options are:
 
 .. code:: bash
 
-    snakemake results/161101_rec01_Spontaneous_RH.nix
-    snakemake results/logMUA.nix
-    snakemake results/UD_state_vector.npy
+    snakemake /path/to/../results/161101_rec01_Spontaneous_RH.nix
+    snakemake /path/to/../results/logMUA.nix
+    snakemake /path/to/../results/UD_state_vector.npy
 
 When generating the figures, parameters can be passed in the filename such as {channel id}, {t_start}, {t_stop}, and {output format}.
 For example:
 
 .. code:: bash
 
-    snakemake results/figures/lfp_traces_t280-304s.png
-    snakemake results/figures/power_spectrum.pdf
-    snakemake results/figures/logMUA_states_channel2_280-282s.png
-    snakemake results/figures/UD_slopes_channel5.jpg
+    snakemake /path/to/../results/figures/lfp_traces_t280-304s.png
+    snakemake /path/to/../results/figures/power_spectrum.pdf
+    snakemake /path/to/../results/figures/logMUA_states_channel2_280-282s.png
+    snakemake /path/to/../results/figures/UD_slopes_channel5.jpg
 
 In case you haven't set up a Python environment which is able to run the scripts, simply add the flag
 :code:`--use-conda` to automatically generate an appropriate conda environment on the fly.
+This requires a distribution of conda to be install (e.g. miniconda_).
 
+
+.. _miniconda: https://docs.conda.io/projects/conda/en/latest/user-guide/install/
 
 
 

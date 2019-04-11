@@ -43,7 +43,6 @@ rule log_MUA_estimation:
         script_path = script_path,
         freq_band = FREQ_BAND,
         detrending_order = DETRENDING_ORDER,
-        psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP
     conda:
         "envs/wavescalephant_env.yml"
@@ -57,7 +56,6 @@ rule log_MUA_estimation:
                               --data {input.data} \
                               --freq_band {params.freq_band} \
                               --detrending_order {params.detrending_order} \
-                              --psd_freq_res {params.psd_freq_res} \
                               --psd_overlap {params.psd_overlap}
         """
 

@@ -24,7 +24,6 @@ SIGMA_THRESHOLD: 2
 DETRENDING_ORDER: 2
 
 # Settings to be passed to the welch_psd function of elephant
-PSD_FREQ_RES: 20  # in Hz
 PSD_OVERLAP: 0.5
 
 # Window around state transitions to plot, in bins

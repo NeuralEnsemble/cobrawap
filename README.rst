@@ -5,9 +5,13 @@ This repository hosts the collaboration between WP3.2 and WP5.7
 
 Involved members
 ----------------
-Istituto Nazionale di Fisica Nucleare, Rome: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula
+Istituto Nazionale di Fisica Nucleare, Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula
 
-Forschungszentrum Jülich: Michael Denker, Robin Gutzen, Alper Yegenoglu
+Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu
+
+Istituto Superiore di Sanità, Roma, Italy: Maurizio Mattia, Antonio Pazienti.
+
+Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
 
 Overarching goal, strategy and roadmap
 --------------------------------------

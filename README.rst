@@ -13,6 +13,12 @@ Istituto Superiore di Sanità, Roma, Italy: Maurizio Mattia, Antonio Pazienti.
 
 Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
 
+Background
+----------
+This work aims at offering to the community an analysis pipeline based on the algorythms described in arXiv:1902.08599_ (submitted, under review) and its evolution.
+
+.. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
+
 Overarching goal, strategy and roadmap
 --------------------------------------
 The overall outcome of this collaboration is to focus on the WaveScalES simulation work and data analysis performed in SP3, and make it accessible as a workflow in a collaborative fashion using tools from SP5 (e.g., Elephant), 6 (e.g., NEST), and 7 (e.g., storage).

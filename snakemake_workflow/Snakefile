@@ -4,6 +4,7 @@ from settings import working_dir, data_path, metadata_path, output_path, figure_
 
 workdir: working_dir
 
+### Ephys parameters
 FREQ_BAND = config["FREQ_BAND"]
 MIN_STATE_DURATION = config["MIN_STATE_DURATION"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
@@ -12,12 +13,77 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 SLOPE_WINDOW = config["SLOPE_WINDOW"]
+
+## Optical parameters
+CONTOUR_LIMIT = config["Contour_Limit"]
+IMAGE_FORMAT = 'png'
 # ToDo: isolate loading routine
+# ToDo: structure output folder structure
+# ToDo: integrate optical parameters into configfile
+# ToDo: separate optical and ephys config/rules/...?
+
+########################## Optical rules ##########################
+# localrules: check_parameters
+
+# if '--nolock' not in sys.argv:
+#     from check_parameters import check_parameters
+#     check_parameters(config)
+
+rule find_contour:
+    input:
+        image_file = os.path.join(data_path, '{image_path}','{image_name}.tif'),
+        script = 'scripts/find_image_contour.py'
+    params:
+        contour_limit = CONTOUR_LIMIT
+    output:
+        contour = os.path.join(output_path, '{image_path}', 'contour_{image_name}.npy'),
+        image = os.path.join(output_path, '{image_path}', 'contour_{image_name}' + '.{}'.format(IMAGE_FORMAT)),
+    shell:
+        """
+        python {input.script} --image_file {input.image_file} \
+                              --output_contour {output.contour} \
+                              --output_image {output.image} \
+                              --contour_limit {params.contour_limit} \
+        """
+
+
+# rule calculate background:
+#
+# rule initialize_image:
+#     input:
+#         img_file = "{image_name}.tif",
+#         script = ""
+#     params:
+#     Analisis_dir
+#     num_measures
+#     data_dir
+#     img_path = img_type + img_name + time_min + extension
+#     contour_limit
+#     dim_x
+#     dim_y
+#     nprocs
+#     macro_pixel_dim
+
+    # output:
+    #     os.path.join(<path>, "{image_name}_initialized.npy")
+    # shell:
+    #     """
+    #     python {input.script}
+    #     """
+
+    # What it does:
+    # Finds contour on first image, applies as mask to every image
+    # calculates background (sum), subtracts from every image
+    # spatial smoothing on block of images
+    # saving the images as txt
+
+########################## Ephys rules ##########################
+
 
 
 rule load_enrich_save_neo:
     input:
-        data = data_path,
+        data = os.path.join(data_path, '{data_file}.smr'),
         metadata = metadata_path,
         script = script_path + "load_and_transform_to_neo.py"
     params:
@@ -25,7 +91,7 @@ rule load_enrich_save_neo:
     conda:
         "envs/wavescalephant_env.yml"
     output:
-        output_path + os.path.splitext(os.path.split(data_path)[1])[0] + ".nix"
+        os.path.join(output_path, '{data_file}.nix')
     shell:
         """
         export PYTHONPATH='$PYTHONPATH:{params.metadata_dir}'
@@ -46,7 +112,6 @@ rule log_MUA_estimation:
         psd_overlap = PSD_OVERLAP
     conda:
         "envs/wavescalephant_env.yml"
-
     output:
         output_path + "logMUA.nix"
     shell:
@@ -85,7 +150,7 @@ rule UpDown_detection:
         """
 
 
-### Plotting rules ###
+########################## Plotting rules ##########################
 
 rule plot_signal_traces:
     input:

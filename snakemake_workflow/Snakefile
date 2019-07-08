@@ -1,6 +1,7 @@
 configfile: "configfile.yaml"
 
 from settings import working_dir, data_path, metadata_path, output_path, figure_path, script_path
+import numpy as np
 
 workdir: working_dir
 
@@ -17,7 +18,13 @@ SLOPE_WINDOW = config["SLOPE_WINDOW"]
 ## Optical parameters
 CONTOUR_LIMIT = config["CONTOUR_LIMIT"]
 MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
+TIME_MIN = config["TIME_MIN"]
+TIME_MAX = config["TIME_MAX"]
+IMG_TYPE = config["IMG_TYPE"]
+IMG_NAME = config["IMG_NAME"]
+NUM_MEASURES = config["NUM_MEASURES"]
 SAVE_IMAGE_FORMAT = 'png'
+CONTOUR_FRAME = 1
 # ToDo: isolate loading routine
 # ToDo: structure output folder structure
 # ToDo: integrate optical parameters into configfile
@@ -70,16 +77,16 @@ rule calculate_background:
 
 rule initialize_image:
     input:
-        image_file = os.path.join(data_path, '{image_path}','{image_name}.tif'),
+        image_file = os.path.join(data_path, '{image_path}','{image_name}_{frame}.tif'),
         background = rules.calculate_background.output.background,
-        mask = rules.find_contour.output.mask,
+        mask = os.path.join(output_path, '{image_path}','mask_{image_name}_'+'{}.npy'.format(CONTOUR_FRAME)),
         script = "scripts/initialize_image.py",
         configfile = "configfile.yaml"
     params:
         macro_pixel_dim = MACRO_PIXEL_DIM
     output:
-        array = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_initialized.npy'),
-        image = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_initialized'+'.{}'.format(SAVE_IMAGE_FORMAT))
+        array = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_{frame}_initialized.npy'),
+        image = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_{frame}_initialized'+'.{}'.format(SAVE_IMAGE_FORMAT))
     shell:
         """
         python {input.script} --image_file {input.image_file} \
@@ -89,6 +96,20 @@ rule initialize_image:
                               --output_array {output.array} \
                               --output_image {output.image} \
         """
+
+
+rule initialize_images:
+    input:
+        lambda w: expand(os.path.join(output_path, 'LENS/{img_type}',
+                                      't{num_measures}',
+                                      'images',
+                                      '{img_name}{num_measures}_{frame_id}_initialized.npy'),
+                         img_type = IMG_TYPE,
+                         img_name = IMG_NAME,
+                         num_measures = NUM_MEASURES,
+                         frame_id = np.arange(TIME_MIN, TIME_MAX, dtype=int)
+                         )
+
 
     # What it does:
     # Finds contour on first image, applies as mask to every image

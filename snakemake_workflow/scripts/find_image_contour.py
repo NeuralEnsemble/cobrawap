@@ -12,31 +12,50 @@ def calculate_contour(img, contour_limit):
     max_index = np.argmax([len(c) for c in contour_fake])
 
     contour = contour_fake[max_index]
-    appoggio_updown = False
-    appoggio_sxdx = False
 
-    if not np.all(contour):
-        appoggio_updown = True
-    if not np.all(contour[:,0]-len(img[0]+1)) \
-    or not np.all(contour[:,1]-len(img[1]+1)):
-        appoggio_sxdx = True
+    def border_intercepts(contour):
+        intercept_left = False
+        intercept_right = False
+        intercept_top = False
+        intercept_bot = False
 
-    print('snd = ', bool(appoggio_updown*appoggio_sxdx))
-    if (appoggio_updown and appoggio_sxdx):
-        if max_index:
-            snd_index = 0
-        else:
-            snd_index = 1
-        # ToDo:
-        # what is this supposed to do?
-        # why is snd_index potentially overwritten?
-        for i in range(len(contour_fake)):
-            if (len(contour_fake[i]) > len(contour_fake[snd_index])
-            and i!=max_index):
-                snd_index = i
+        if not np.all(contour[:,0]):
+            intercept_left = True
+        if not np.all(contour[:,1]):
+            intercept_top = True
+        if not np.all(contour[:,0]-len(img[0])+1):
+            intercept_right = True
+        if not np.all(contour[:,1]-len(img[1])+1):
+            intercept_bot = True
+        return {'left': intercept_left, 'right': intercept_right,
+                'top': intercept_top, 'bottom' : intercept_bot}
 
-        for i in range(len(contour_fake[snd_index])):
-            contour = np.append(contour, contour_fake[snd_index][i], axis = 0)
+    contour_intercepts = border_intercepts(contour)
+    if sum(contour_intercepts.values()) > 1:
+        includes_corner = True
+        del contour_fake[max_index]
+
+        # include secondary connecting contour
+        connected = False
+        for snd_contour in contour_fake:
+            if border_intercepts(snd_contour) == contour_intercepts:
+                contour = np.append(contour, snd_contour, axis=0)
+                connected = True
+        # or include corner
+        if not connected:
+            snd_contour = []
+            if contour_intercepts['left'] and contour_intercepts['top']:
+                snd_contour += [0,0]
+            if contour_intercepts['top'] and contour_intercepts['right']:
+                snd_contour += [len(img[0])-1,0]
+            if contour_intercepts['left'] and contour_intercepts['bottom']:
+                snd_contour += [0,len(img[0]-1)]
+            if contour_intercepts['bottom'] and contour_intercepts['right']:
+                snd_contour += [len(img[0])-1,len(img[1])-1]
+    else:
+        includes_corner = False
+
+    print('includes corner = ', includes_corner)
 
     print('There are contours found with contour limit = {}'.format(contour_limit))
 

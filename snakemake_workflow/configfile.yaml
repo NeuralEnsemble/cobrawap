@@ -35,39 +35,31 @@ SLOPE_WINDOW: 50
 
 ### OPTICAL PARAMETERS ###
 
-# X,Y dimension of your image (in pixels)
-DIM_X: 100
-DIM_Y: 100
 # dimension of new 'macro-pixel' after the spacial smoothing
 MACRO_PIXEL_DIM: 2
-### --> Evaluate to suppress the macro-pixel smoothing
-#SAMPLING_TIME: time rate of the acquisition process (in seconds)
+# time rate of the acquisition process (in seconds)
 SAMPLING_TIME: 0.04
-#TIME_MIN: first time frame number (string)
+# first time frame number
 TIME_MIN: 1
-#TIME_MAX: last time frame number (string)
+# last time frame number
 TIME_MAX: 250
-TIME_SAMPLES: TIME_MAX-TIME_MIN
 PIXEL_SIZE: 0.05 #mm
-#number of processor to use during the analysis
-nprocs: 2
+
 
 #----------------------------- Dataset information -----------------------------
 #images should be stored as
-#<IMG_PATH>/<IMG_TYPE>/t<SET_NUMBER>/<IMG_NAME><SET_NUMBER>_<TIME_FRAME>.<EXTENSION>
+# .../<IMG_TYPE>/t<SET_NUMBER>/<IMG_NAME><SET_NUMBER>_<TIME_FRAME>.tif
 
 #IMG_TYPE (string)
-IMG_TYPE: '170110_mouse2_deep/'
+IMG_TYPE: '170110_mouse2_deep'
 #IMG_NAME (string)
 IMG_NAME: 'provevideo'
-#EXTENSION
-EXTENSION: '.tif'
 #num_measures --> number of datasets to analyse
-num_measures: [1] #numbers associated to<SET_NUMBER>
+NUM_MEASURES: [1] #numbers associated to<SET_NUMBER>
 
 #----------------------------- Analysis information ----------------------------
 #Contour_Limit is the input parameter of the 'find_contours' function in the measure.find_contours module of the scikit-image Python package, https://scikit-image.org.
-CONTOUR_LIMIT: 0.197
+CONTOUR_LIMIT: 'None' # 0.197
 #ANALYSIS PATH (string): path of the directory where results have to be saved
 
 #*** FILTER ***

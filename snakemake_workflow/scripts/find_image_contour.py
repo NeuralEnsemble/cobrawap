@@ -1,6 +1,7 @@
 import numpy as np
 import skimage as sk
 import matplotlib.pyplot as plt
+import shapely.geometry as geo
 import argparse
 import os
 
@@ -80,10 +81,19 @@ def find_contour(image, contour_limit):
     else:
         contour = calculate_contour(image, contour_limit)
 
-    # img_float = np.asarray(img_float)
-    # img_float = np.reshape(img_float, (SetData.DIM_X, SetData.DIM_Y))
-    # img_example = Apply_a_mask(img_float, contours, SetData.DIM_X, SetData.DIM_Y)
     return contour
+
+
+def contour2mask(contour, dim_x, dim_y):
+    mask = np.zeros((dim_x, dim_y), dtype=bool)
+    polygon = geo.polygon.Polygon(contour)
+    for x in range(dim_x):
+        for y in range(dim_y):
+            point = geo.Point(x,y)
+            if polygon.contains(point):
+                mask[x,y] = 1
+    print(np.where(mask))
+    return mask
 
 
 if __name__ == '__main__':
@@ -95,6 +105,7 @@ if __name__ == '__main__':
     CLI.add_argument("--image_file", nargs='?', type=str)
     CLI.add_argument("--output_contour", nargs='?', type=str)
     CLI.add_argument("--output_image", nargs='?', type=str)
+    CLI.add_argument("--output_mask", nargs='?', type=str)
     CLI.add_argument("--contour_limit", nargs='?', type=none_or_float)
     args = CLI.parse_args()
 
@@ -120,11 +131,18 @@ if __name__ == '__main__':
                            contour_limit=args.contour_limit)
     print(indent, "Mask has been found!")
 
-    # Save contour and example image
+    mask = contour2mask(contour=contour,
+                        dim_x=img_float[0].shape[0],
+                        dim_y=img_float[0].shape[1])
+
+    # Save contour, mask and example image
     if not os.path.exists(os.path.dirname(args.output_contour)):
         os.makedirs(os.path.dirname(args.output_contour))
 
     print_contour(img_float[0], contour, show_plot=False, save_path=args.output_image)
+
     np.save(args.output_contour, contour)
+
+    np.save(args.output_mask, mask)
 
     print(indent, "Contour saved!")

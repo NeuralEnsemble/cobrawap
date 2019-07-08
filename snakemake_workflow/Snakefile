@@ -15,8 +15,9 @@ PSD_OVERLAP = config["PSD_OVERLAP"]
 SLOPE_WINDOW = config["SLOPE_WINDOW"]
 
 ## Optical parameters
-CONTOUR_LIMIT = config["Contour_Limit"]
-IMAGE_FORMAT = 'png'
+CONTOUR_LIMIT = config["CONTOUR_LIMIT"]
+MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
+SAVE_IMAGE_FORMAT = 'png'
 # ToDo: isolate loading routine
 # ToDo: structure output folder structure
 # ToDo: integrate optical parameters into configfile
@@ -37,39 +38,57 @@ rule find_contour:
         contour_limit = CONTOUR_LIMIT
     output:
         contour = os.path.join(output_path, '{image_path}', 'contour_{image_name}.npy'),
-        image = os.path.join(output_path, '{image_path}', 'contour_{image_name}' + '.{}'.format(IMAGE_FORMAT)),
+        mask = os.path.join(output_path, '{image_path}', 'mask_{image_name}.npy'),
+        image = os.path.join(output_path, '{image_path}', 'contour_{image_name}' + '.{}'.format(SAVE_IMAGE_FORMAT))
     shell:
         """
         python {input.script} --image_file {input.image_file} \
                               --output_contour {output.contour} \
+                              --output_mask {output.mask} \
                               --output_image {output.image} \
                               --contour_limit {params.contour_limit} \
         """
 
+def image_files(wildcards):
+    return expand(os.path.join(data_path, '{image_path}', '{file_name}.tif'),
+                  image_path=wildcards.image_path,
+                  file_name=glob_wildcards(os.path.join(data_path, '{image_path}', '{file_name}.tif')).file_name)
 
-# rule calculate background:
-#
-# rule initialize_image:
-#     input:
-#         img_file = "{image_name}.tif",
-#         script = ""
-#     params:
-#     Analisis_dir
-#     num_measures
-#     data_dir
-#     img_path = img_type + img_name + time_min + extension
-#     contour_limit
-#     dim_x
-#     dim_y
-#     nprocs
-#     macro_pixel_dim
+rule calculate_background:
+    input:
+        image_files = image_files,
+        script = 'scripts/calculate_background_image.py'
+    output:
+        background = os.path.join(output_path, '{image_path}', 'background.npy'),
+        image = os.path.join(output_path, '{image_path}', 'background.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --image_files {input.image_files} \
+                              --output_background {output.background} \
+                              --output_image {output.image} \
+        """
 
-    # output:
-    #     os.path.join(<path>, "{image_name}_initialized.npy")
-    # shell:
-    #     """
-    #     python {input.script}
-    #     """
+rule initialize_image:
+    input:
+        image_file = os.path.join(data_path, '{image_path}','{image_name}.tif'),
+        background = rules.calculate_background.output.background,
+        mask = rules.find_contour.output.mask,
+        script = "scripts/initialize_image.py",
+        configfile = "configfile.yaml"
+    params:
+        macro_pixel_dim = MACRO_PIXEL_DIM
+    output:
+        array = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_initialized.npy'),
+        image = os.path.join(output_path, '{image_path}', 'images/', '{image_name}_initialized'+'.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --image_file {input.image_file} \
+                              --background {input.background} \
+                              --mask {input.mask} \
+                              --macro_pixel_dim {params.macro_pixel_dim} \
+                              --output_array {output.array} \
+                              --output_image {output.image} \
+        """
 
     # What it does:
     # Finds contour on first image, applies as mask to every image

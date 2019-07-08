@@ -67,7 +67,7 @@ num_measures: [1] #numbers associated to<SET_NUMBER>
 
 #----------------------------- Analysis information ----------------------------
 #Contour_Limit is the input parameter of the 'find_contours' function in the measure.find_contours module of the scikit-image Python package, https://scikit-image.org.
-Contour_Limit: 0.197
+CONTOUR_LIMIT: 0.197
 #ANALYSIS PATH (string): path of the directory where results have to be saved
 
 #*** FILTER ***

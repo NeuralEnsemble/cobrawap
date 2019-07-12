@@ -9,9 +9,10 @@ dependencies:
   - scipy==1.2.0
   - matplotlib
   - pip:
-    - elephant==0.6.0
+    - elephant==0.6.2
     - h5py==2.9.0
-    - neo==0.5.1
+    - neo==0.7.1
+    - nixio>=1.5.0b1
     - nixio==1.4.9
     - quantities==0.12.2
     - scikit-image==0.15.0

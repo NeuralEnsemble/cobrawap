@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import shapely.geometry as geo
 import argparse
 import os
+import neo
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...
@@ -46,12 +47,14 @@ def calculate_contour(img, contour_limit):
             snd_contour = []
             if contour_intercepts['left'] and contour_intercepts['top']:
                 snd_contour += [0,0]
-            if contour_intercepts['top'] and contour_intercepts['right']:
+            elif contour_intercepts['top'] and contour_intercepts['right']:
                 snd_contour += [len(img[0])-1,0]
-            if contour_intercepts['left'] and contour_intercepts['bottom']:
-                snd_contour += [0,len(img[0]-1)]
-            if contour_intercepts['bottom'] and contour_intercepts['right']:
+            elif contour_intercepts['left'] and contour_intercepts['bottom']:
+                snd_contour += [0,len(img[1]-1)]
+            elif contour_intercepts['bottom'] and contour_intercepts['right']:
                 snd_contour += [len(img[0])-1,len(img[1])-1]
+            else:
+                raise InputError('The contour is to large, and can not be determined unambigously!')
     else:
         includes_corner = False
 
@@ -111,7 +114,6 @@ def contour2mask(contour, dim_x, dim_y):
             point = geo.Point(x,y)
             if polygon.contains(point):
                 mask[x,y] = 1
-    print(np.where(mask))
     return mask
 
 
@@ -126,6 +128,7 @@ if __name__ == '__main__':
     CLI.add_argument("--output_image", nargs='?', type=str)
     CLI.add_argument("--output_mask", nargs='?', type=str)
     CLI.add_argument("--contour_limit", nargs='?', type=none_or_float)
+    CLI.add_argument("--contour_frame", nargs='?', type=int)
     args = CLI.parse_args()
 
     indent = " "*9
@@ -143,22 +146,26 @@ if __name__ == '__main__':
     print(indent, "Finding contours...")
 
     # Load image
-    img_float = sk.img_as_float(sk.io.imread_collection(args.image_file, plugin='tifffile'))
+    with neo.NixIO(args.image_file) as io:
+        img_block = io.read_block()
+        img_frame = img_block.segments[0].analogsignals[0][args.contour_frame]
+        del img_block
 
     # Calculate image contour
-    contour = find_contour(image=img_float[0],
+    contour = find_contour(image=img_frame,
                            contour_limit=args.contour_limit)
     print(indent, "Mask has been found!")
 
     mask = contour2mask(contour=contour,
-                        dim_x=img_float[0].shape[0],
-                        dim_y=img_float[0].shape[1])
+                        dim_x=img_frame.shape[0],
+                        dim_y=img_frame.shape[1])
 
     # Save contour, mask and example image
     if not os.path.exists(os.path.dirname(args.output_contour)):
         os.makedirs(os.path.dirname(args.output_contour))
 
-    print_contour(img_float[0], contour, show_plot=False, save_path=args.output_image)
+    print_contour(img_frame, contour, show_plot=False,
+                  save_path=args.output_image)
 
     np.save(args.output_contour, contour)
 

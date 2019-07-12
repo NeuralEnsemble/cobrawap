@@ -37,12 +37,14 @@ SLOPE_WINDOW: 50
 
 # dimension of new 'macro-pixel' after the spacial smoothing
 MACRO_PIXEL_DIM: 2
-# time rate of the acquisition process (in seconds)
-SAMPLING_TIME: 0.04
+# normalize each pixel with respect to 'median', 'max', or 'None' of time series
+NORMALIZE_BY: 'max'
+# time rate of the acquisition process (in Hz)
+SAMPLING_RATE: 25
 # first time frame number
-TIME_MIN: 1
+TIME_START: 1
 # last time frame number
-TIME_MAX: 250
+TIME_STOP: 250
 PIXEL_SIZE: 0.05 #mm
 
 
@@ -50,16 +52,17 @@ PIXEL_SIZE: 0.05 #mm
 #images should be stored as
 # .../<IMG_TYPE>/t<SET_NUMBER>/<IMG_NAME><SET_NUMBER>_<TIME_FRAME>.tif
 
-#IMG_TYPE (string)
-IMG_TYPE: '170110_mouse2_deep'
-#IMG_NAME (string)
-IMG_NAME: 'provevideo'
-#num_measures --> number of datasets to analyse
-NUM_MEASURES: [1] #numbers associated to<SET_NUMBER>
+# Path to folder containing the images
+#to appended to data_path and created in output_path (see settings.py)
+IMG_PATH: ['LENS/170110_mouse2_deep/t1']
+#IMG_NAME (string) ToDo: Is this actually needed?
+# IMG_NAME: 'provevideo'
+# Regex to find frame number in image name
+FRAME_NUM_REGEX: '(?<=_)([0-9]+)'
 
-#----------------------------- Analysis information ----------------------------
 #Contour_Limit is the input parameter of the 'find_contours' function in the measure.find_contours module of the scikit-image Python package, https://scikit-image.org.
-CONTOUR_LIMIT: 'None' # 0.197
+CONTOUR_LIMIT: 0.197
+CONTOUR_FRAME: 0
 #ANALYSIS PATH (string): path of the directory where results have to be saved
 
 #*** FILTER ***

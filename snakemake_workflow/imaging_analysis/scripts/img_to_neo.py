@@ -36,8 +36,8 @@ if __name__ == '__main__':
     asig = neo.AnalogSignal(img_array,
                             units='dimensionless',
                             sampling_rate=args.sampling_rate*pq.Hz,
-                            t_start=args.t_start*pq.ms,
-                            t_stop=args.t_stop*pq.ms,
+                            t_start=args.t_start*pq.s,
+                            t_stop=args.t_stop*pq.s,
                             file_origin=os.path.dirname(args.image_files[0]),
                             pixel_size=args.pixel_size*pq.mm)
 

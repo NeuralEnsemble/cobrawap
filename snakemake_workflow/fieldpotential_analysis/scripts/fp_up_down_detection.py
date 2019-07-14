@@ -2,7 +2,6 @@ import argparse
 import numpy as np
 import scipy as sc
 import matplotlib.pyplot as plt
-from load_and_transform_to_neo import load_segment
 
 
 def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100):
@@ -97,19 +96,20 @@ def create_all_state_vectors(logMUA_segment, min_state_duration,
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs=1, type=str)
-    CLI.add_argument("--logMUA_estimate",      nargs=1, type=str)
-    CLI.add_argument("--min_state_duration",  nargs=1, type=int, default=2)
-    CLI.add_argument("--fixed_threshold", nargs=1, type=int, default=0)
-    CLI.add_argument("--sigma_threshold",  nargs=1, type=int, default=0)
-    CLI.add_argument("--show_plots",  nargs=1, type=int, default=0)
+    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--logMUA_estimate",      nargs='?', type=str)
+    CLI.add_argument("--min_state_duration",  nargs='?', type=int, default=2)
+    CLI.add_argument("--fixed_threshold", nargs='?', type=int, default=0)
+    CLI.add_argument("--sigma_threshold",  nargs='?', type=int, default=0)
+    CLI.add_argument("--show_plots",  nargs='?', type=int, default=0)
     args = CLI.parse_args()
 
-    logMUA_segment = load_segment(args.logMUA_estimate[0])
+    with neo.NixIO(args.logMUA_estimate) as io:
+        logMUA_segment = io.read_block().segments[0]
 
     state_vectors = create_all_state_vectors(logMUA_segment,
-                                             min_state_duration=args.min_state_duration[0],
-                                             fixed_threshold=args.fixed_threshold[0],
-                                             sigma_threshold=args.sigma_threshold[0],
-                                             plot=args.show_plots[0])
-    np.save(args.output[0], state_vectors)
+                                             min_state_duration=args.min_state_duration,
+                                             fixed_threshold=args.fixed_threshold,
+                                             sigma_threshold=args.sigma_threshold,
+                                             plot=args.show_plots)
+    np.save(args.output, state_vectors)

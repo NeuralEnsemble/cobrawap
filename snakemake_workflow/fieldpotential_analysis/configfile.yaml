@@ -1,0 +1,54 @@
+# Data path to be appended to data_path (see settings)
+PATH: 'IDIBAPS'
+
+# Name of the .smr data file
+FILENAME: '161101_rec07_Spontaneous_RH'
+
+SAVE_IMAGE_FORMAT: 'png'
+
+# min and max of frequency band in Hz
+FREQ_BAND: [200, 1500]
+
+# Minimal duration of a state to be detected
+# in bins of the estimated MUA signal.
+# MUA binsize ~ MIN_FREQ_BAND / sampling_rate^2
+MIN_STATE_DURATION: 3
+
+# Threshold for detecting up states;
+# the threshold can either have a fixed value across channels
+# (measures from center of fitted Gaussian)
+# or be set in units of sigma
+# (corresponding to respective Gaussian fit)
+# FIXED_THRESHOLD has priority, 0 = None
+FIXED_THRESHOLD: 0
+SIGMA_THRESHOLD: 2
+
+# Detrending: 0 - no detrending;
+#             1 - mean detrending;
+#             2 - mean and slope detrending (linear): this should be the default.
+#             3 - quadratic detrending.
+#             4 - cubic detrending.
+DETRENDING_ORDER: 2
+
+# Settings to be passed to the welch_psd function of elephant
+PSD_OVERLAP: 0.5
+PSD_FREQ_RES: 5 # Hz
+
+# Window around state transitions to plot, in bins
+SLOPE_WINDOW: 50
+
+ELECTRODE_ANNOTATION_NAME: 'channel_names'
+
+ELECTRODE_LOCATION:
+    Visual Cortex: [20,21,22,24,25,26,27,29,20,31,32,33,34]
+    Retrospenial Cortex: [15,19,23,28]
+    Parietal Association Cortex: [16,17,18]
+    Somatosensory Cortex: [6,7,9,10,12,13,14]
+    Motor Cortex: [3,4,5,8,11]
+
+ELECTRODE_COLOR:
+    Visual Cortex: '#0C6BB1'
+    Retrospenial Cortex: '#422F58'
+    Parietal Association Cortex: '#01B24E'
+    Somatosensory Cortex: '#F92600'
+    Motor Cortex: '#EF6700'

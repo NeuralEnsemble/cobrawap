@@ -1,0 +1,217 @@
+configfile: "configfile.yaml"
+
+import sys
+sys.path.append('../')
+from settings import working_dir, data_path, output_path, figure_path
+import numpy as np
+
+FRAME_NUM_REGEX = config["FRAME_NUM_REGEX"]
+CONTOUR_LIMIT = config["CONTOUR_LIMIT"]
+CONTOUR_FRAME = config["CONTOUR_FRAME"]
+MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
+NORMALIZE_BY = config["NORMALIZE_BY"]
+FRAME_START = config["FRAME_START"]
+FRAME_STOP = config["FRAME_STOP"]
+IMG_PATH = config["IMG_PATH"]
+SAMPLING_RATE = config["SAMPLING_RATE"]
+PIXEL_SIZE = config["PIXEL_SIZE"]
+SAVE_IMAGE_FORMAT = config["SAVE_IMAGE_FORMAT"]
+CONTOUR_FRAME = config["CONTOUR_FRAME"]
+BUTTER_LOWCUT = config["BUTTER_LOWCUT"]
+BUTTER_HIGHCUT = config["BUTTER_HIGHCUT"]
+BUTTER_ORDER = config["BUTTER_ORDER"]
+# ToDo: isolate loading routine
+# ToDo: structure output folder structure
+# ToDo: integrate optical parameters into configfile
+# ToDo: separate optical and ephys config/rules/...?
+
+
+# if '--nolock' not in sys.argv:
+#     from check_parameters import check_parameters
+#     check_parameters(config)
+
+def input_images(location):
+    def image_files(wildcards):
+        return expand(os.path.join(location, '{image_path}', '{file_name}.tif'),
+                      image_path=wildcards.image_path,
+                      file_name=glob_wildcards(os.path.join(location,
+                                '{image_path}', '{file_name}.tif')).file_name)
+    return image_files
+
+
+rule img_find_contour:
+    input:
+        image_nix = os.path.join(output_path, '{image_path}', 'images.nix'),
+        script = 'scripts/img_find_contour.py'
+    params:
+        contour_limit = CONTOUR_LIMIT,
+        contour_frame = CONTOUR_FRAME
+    output:
+        contour = os.path.join(output_path, '{image_path}', 'contour.npy'),
+        mask = os.path.join(output_path, '{image_path}', 'mask.npy'),
+        image = os.path.join(output_path, '{image_path}',
+                             'contour.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --output_contour {output.contour} \
+                              --output_mask {output.mask} \
+                              --output_image {output.image} \
+                              --contour_limit {params.contour_limit} \
+                              --contour_frame {params.contour_frame}
+        """
+
+
+rule img_calculate_background:
+    input:
+        image_nix = os.path.join(output_path,
+                                 '{image_path}', 'images.nix'),
+        script = 'scripts/img_calculate_background.py'
+    output:
+        background = os.path.join(output_path,
+                                  '{image_path}', 'background.npy'),
+        image = os.path.join(output_path, '{image_path}',
+                             'background.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --output_background {output.background} \
+                              --output_image {output.image} \
+        """
+
+rule img_preprocessing:
+    input:
+        image_nix = os.path.join(output_path,
+                                 '{image_path}', 'images.nix'),
+        background = os.path.join(output_path,
+                                  '{image_path}', 'background.npy'),
+        mask = os.path.join(output_path, '{image_path}', 'mask.npy'),
+        script = "scripts/img_preprocessing.py",
+        configfile = "configfile.yaml"
+    params:
+        macro_pixel_dim = MACRO_PIXEL_DIM,
+        normalize_by = NORMALIZE_BY
+    output:
+        os.path.join(output_path, '{image_path}', 'preprocessed_images.nix')
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --background {input.background} \
+                              --mask {input.mask} \
+                              --macro_pixel_dim {params.macro_pixel_dim} \
+                              --normalize_by {params.normalize_by} \
+                              --output {output} \
+        """
+
+
+rule img_plot_movie:
+    input:
+        image_nix = os.path.join(output_path, '{image_path}',
+                                 'preprocessed_images.nix'),
+        script = "scripts/img_plot_movie.py"
+    params:
+        fps = 5,
+        frame_name = 'frame',
+        frame_format = SAVE_IMAGE_FORMAT,
+        quality = 31,
+        scale_x = 1080,
+        scale_y = 1080
+    output:
+        frame_folder = directory(os.path.join(output_path,
+                                              '{image_path}', 'frames')),
+        movie = os.path.join(output_path,
+                             '{image_path}', 'preprocessed_images.mp4')
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --frame_folder {output.frame_folder} \
+                              --out_movie {output.movie} \
+                              --fps {params.fps} \
+                              --frame_format {params.frame_format} \
+                              --frame_name {params.frame_name} \
+                              --quality {params.quality} \
+                              --scale_x {params.scale_x} \
+                              --scale_y {params.scale_y} \
+        """
+
+
+rule img_to_neo:
+    input:
+        images = input_images(data_path), #/{image_path}/*.tif
+        script = 'scripts/img_to_neo.py'
+    params:
+        sampling_rate = SAMPLING_RATE, # Hz
+        t_start = 0, # s
+        t_stop = (FRAME_STOP-FRAME_START) / SAMPLING_RATE, # s
+        pixel_size = PIXEL_SIZE,
+        frame_num_regex = [[FRAME_NUM_REGEX]]
+    output:
+        norm_signal = os.path.join(output_path, '{image_path}', 'images.nix')
+    shell:
+        """
+        python {input.script} --image_files {input.images} \
+                              --output {output} \
+                              --sampling_rate {params.sampling_rate} \
+                              --t_start {params.t_start} \
+                              --t_stop {params.t_stop} \
+                              --pixel_size {params.pixel_size} \
+                              --frame_num_regex {params.frame_num_regex}
+        """
+
+rule img_plot_spectrum:
+    input:
+        image_nix = os.path.join(output_path, '{image_path}',
+                                 'preprocessed_images.nix'),
+        script = "scripts/img_plot_spectrum.py"
+    params:
+        sampling_rate = SAMPLING_RATE,
+        psd_freq_res = 0.1,
+        psd_overlap = 0.8
+    output:
+        spectrum = os.path.join(output_path, '{image_path}', 'spectrum.npy'),
+        spectrum_plot = os.path.join(output_path, '{image_path}',
+                       'spectrum_plot.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --out_spectrum {output.spectrum} \
+                              --out_plot {output.spectrum_plot} \
+                              --sampling_rate {params.sampling_rate} \
+                              --psd_freq_res {params.freq_res} \
+                              --psd_overlap {params.freq_overlap} \
+        """
+
+rule img_UP_detection:
+    # bandpass filter (interactive if None in config?)
+    # interpolate minima
+    # save + plot
+    input:
+        image_nix = os.path.join(output_path, '{image_path}',
+                                 'preprocessed_images.nix'),
+        script = "scripts/img_up_detection.py"
+    params:
+        lowcut = BUTTER_LOWCUT,
+        highcut = BUTTER_HIGHCUT,
+        order = BUTTER_ORDER,
+        # zoom =
+        # num_points =
+    output:
+        image = os.path.join(output_path, '{image_path}',
+                        'filtered_avg_signal.{}'.format(SAVE_IMAGE_FORMAT)),
+        up_transition = os.path.join(output_path, '{image_path}',
+                                     'UP_transitions.nix')
+    shell:
+        """
+        python {input.script} --image_file {input.image_nix} \
+                              --out_image {output.image} \
+                              --out_signal {output.up_transition} \
+                              --lowcut {params.lowcut} \
+                              --highcut {params.highcut} \
+                              --order {params.order}
+        """
+#
+# rule image_all:
+#     input:
+#         config
+#     output:
+#         params

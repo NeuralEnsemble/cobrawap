@@ -4,7 +4,6 @@ import scipy as sc
 import argparse
 import os
 import quantities as pq
-from load_and_transform_to_neo import load_segment
 
 
 def plot_signal_traces(segment, t_start, t_stop, scaling):
@@ -35,26 +34,27 @@ def plot_signal_traces(segment, t_start, t_stop, scaling):
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs=1, type=str)
-    CLI.add_argument("--data",      nargs=1, type=str)
-    CLI.add_argument("--format",    nargs=1, type=str, default='eps')
-    CLI.add_argument("--t_start",   nargs=1, type=float, default=0)
-    CLI.add_argument("--t_stop",    nargs=1, type=float, default=0)
-    CLI.add_argument("--scaling",   nargs=1, type=float, default=12)
-    CLI.add_argument("--show_figure",   nargs=1, type=int, default=0)
+    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--data",      nargs='?', type=str)
+    CLI.add_argument("--format",    nargs='?', type=str, default='eps')
+    CLI.add_argument("--t_start",   nargs='?', type=float, default=0)
+    CLI.add_argument("--t_stop",    nargs='?', type=float, default=0)
+    CLI.add_argument("--scaling",   nargs='?', type=float, default=12)
+    CLI.add_argument("--show_figure",   nargs='?', type=int, default=0)
 
     args = CLI.parse_args()
 
-    segment = load_segment(filename=args.data[0])
+    with neo.NixIO(args.data) as io:
+        segment = io.read_block().segments[0]
 
-    plot_signal_traces(segment, t_start=args.t_start[0]*pq.s,
-                       t_stop=args.t_stop[0]*pq.s,
-                       scaling=args.scaling[0])
+    plot_signal_traces(segment, t_start=args.t_start*pq.s,
+                       t_stop=args.t_stop*pq.s,
+                       scaling=args.scaling)
 
     if args.show_figure[0]:
         plt.show()
 
-    data_dir = os.path.dirname(args.output[0])
+    data_dir = os.path.dirname(args.output)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
-    plt.savefig(fname=args.output[0], format=args.format[0])
+    plt.savefig(fname=args.output, format=args.format)

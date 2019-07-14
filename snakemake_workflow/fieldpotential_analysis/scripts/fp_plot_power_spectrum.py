@@ -1,4 +1,3 @@
-from load_and_transform_to_neo import load_segment
 import argparse
 import os
 import matplotlib.pyplot as plt
@@ -35,7 +34,8 @@ if __name__ == '__main__':
 
     args = CLI.parse_args()
 
-    segment = load_segment(filename=args.data)
+    with neo.NixIO(args.data) as io:
+        segment = io.read_block().segments[0]
 
     plot_power_spectrum(segment,
                         psd_freq_res=args.psd_freq_res,

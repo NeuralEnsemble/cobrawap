@@ -4,7 +4,6 @@ import scipy as sc
 import argparse
 import os
 import quantities as pq
-from load_and_transform_to_neo import load_segment
 
 
 def plot_signal_traces(logMUA, data, state_vector, t_start, t_stop, scaling=10):
@@ -44,32 +43,34 @@ def plot_signal_traces(logMUA, data, state_vector, t_start, t_stop, scaling=10):
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs=1, type=str)
-    CLI.add_argument("--logMUA",    nargs=1, type=str)
-    CLI.add_argument("--data",      nargs=1, type=str)
-    CLI.add_argument("--UD_states", nargs=1, type=str)
-    CLI.add_argument("--format",    nargs=1, type=str, default='eps')
-    CLI.add_argument("--t_start",   nargs=1, type=float, default=0)
-    CLI.add_argument("--t_stop",    nargs=1, type=float, default=0)
-    CLI.add_argument("--channel",   nargs=1, type=int, default=0)
-    CLI.add_argument("--show_figure",   nargs=1, type=int, default=0)
+    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--logMUA",    nargs='?', type=str)
+    CLI.add_argument("--data",      nargs='?', type=str)
+    CLI.add_argument("--UD_states", nargs='?', type=str)
+    CLI.add_argument("--format",    nargs='?', type=str, default='eps')
+    CLI.add_argument("--t_start",   nargs='?', type=float, default=0)
+    CLI.add_argument("--t_stop",    nargs='?', type=float, default=0)
+    CLI.add_argument("--channel",   nargs='?', type=int, default=0)
+    CLI.add_argument("--show_figure",   nargs='?', type=int, default=0)
 
     args = CLI.parse_args()
 
-    data_segment = load_segment(filename=args.data[0])
-    logMUA_segment = load_segment(filename=args.logMUA[0])
-    state_vector = np.load(file=args.UD_states[0])
+    with neo.NixIO(args.data) as io:
+        data_segment = io.read_block().segments[0]
+    with neo.NixIO(args.logMUA) as io:
+        logMUA_segment = io.read_block().segments[0]
+    state_vector = np.load(file=args.UD_states)
 
-    plot_signal_traces(logMUA=logMUA_segment.analogsignals[args.channel[0]],
-                       data=data_segment.analogsignals[args.channel[0]],
-                       state_vector=state_vector[args.channel[0]],
-                       t_start=args.t_start[0]*pq.s,
-                       t_stop=args.t_stop[0]*pq.s)
+    plot_signal_traces(logMUA=logMUA_segment.analogsignals[args.channel],
+                       data=data_segment.analogsignals[args.channel],
+                       state_vector=state_vector[args.channel],
+                       t_start=args.t_start*pq.s,
+                       t_stop=args.t_stop*pq.s)
 
-    if args.show_figure[0]:
+    if args.show_figure:
         plt.show()
 
-    data_dir = os.path.dirname(args.output[0])
+    data_dir = os.path.dirname(args.output)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
-    plt.savefig(fname=args.output[0], format=args.format[0])
+    plt.savefig(fname=args.output, format=args.format)

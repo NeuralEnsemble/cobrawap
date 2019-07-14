@@ -52,6 +52,7 @@ def normalize(images, normalize_by):
         norm_images[:,x,y] /= norm_function(norm_images[:,x,y])
     for num in range(dim_t):
         images[num] = norm_images[num]
+    del norm_images
     return images
 
 

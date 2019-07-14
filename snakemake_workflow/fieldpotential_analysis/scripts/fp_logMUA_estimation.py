@@ -2,7 +2,6 @@ import numpy as np
 import elephant as el
 import neo
 import argparse
-from load_and_transform_to_neo import load_segment, save_segment
 
 
 def detrending(asig, order):
@@ -66,18 +65,23 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs=1, type=str)
-    CLI.add_argument("--data",      nargs=1, type=str)
+    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--data",      nargs='?', type=str)
     CLI.add_argument("--freq_band",  nargs=2, type=float)
-    CLI.add_argument("--detrending_order", nargs=1, type=int, default=2)
-    CLI.add_argument("--psd_overlap",  nargs=1, type=float)
+    CLI.add_argument("--detrending_order", nargs='?', type=int, default=2)
+    CLI.add_argument("--psd_overlap",  nargs='?', type=float)
 
     args = CLI.parse_args()
 
-    segment = load_segment(args.data[0])
+    with neo.NixIO(args.data) as io:
+        segment = io.read_block().segments[0]
 
     logMUA_segment = build_logMUA_segment(segment,
                                           freq_band=args.freq_band,
-                                          detrending_order=args.detrending_order[0],
-                                          psd_overlap=args.psd_overlap[0])
-    save_segment(logMUA_segment, args.output[0])
+                                          detrending_order=args.detrending_order,
+                                          psd_overlap=args.psd_overlap)
+
+    block = neo.core.Block()
+    block.segments.append(logMUA_segment)
+    with neo.NixIO(args.output) as io:
+        io.write_block(block)

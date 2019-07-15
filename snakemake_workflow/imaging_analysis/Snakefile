@@ -2,7 +2,7 @@ configfile: "configfile.yaml"
 
 import sys
 sys.path.append('../')
-from settings import working_dir, data_path, output_path, figure_path
+from settings import working_dir, data_path, output_path
 import numpy as np
 
 FRAME_NUM_REGEX = config["FRAME_NUM_REGEX"]
@@ -20,6 +20,8 @@ CONTOUR_FRAME = config["CONTOUR_FRAME"]
 BUTTER_LOWCUT = config["BUTTER_LOWCUT"]
 BUTTER_HIGHCUT = config["BUTTER_HIGHCUT"]
 BUTTER_ORDER = config["BUTTER_ORDER"]
+MINIMA_THRESHOLD = config["MINIMA_THRESHOLD"]
+MINIMA_WINDOWSIZE = config["MINIMA_WINDOWSIZE"]
 # ToDo: isolate loading routine
 # ToDo: structure output folder structure
 # ToDo: integrate optical parameters into configfile
@@ -142,7 +144,6 @@ rule img_to_neo:
     params:
         sampling_rate = SAMPLING_RATE, # Hz
         t_start = 0, # s
-        t_stop = (FRAME_STOP-FRAME_START) / SAMPLING_RATE, # s
         pixel_size = PIXEL_SIZE,
         frame_num_regex = [[FRAME_NUM_REGEX]]
     output:
@@ -153,7 +154,6 @@ rule img_to_neo:
                               --output {output} \
                               --sampling_rate {params.sampling_rate} \
                               --t_start {params.t_start} \
-                              --t_stop {params.t_stop} \
                               --pixel_size {params.pixel_size} \
                               --frame_num_regex {params.frame_num_regex}
         """
@@ -193,8 +193,8 @@ rule img_UP_detection:
         lowcut = BUTTER_LOWCUT,
         highcut = BUTTER_HIGHCUT,
         order = BUTTER_ORDER,
-        # zoom =
-        # num_points =
+        minima_threshold = MINIMA_THRESHOLD,
+        minima_windowsize = MINIMA_WINDOWSIZE
     output:
         image = os.path.join(output_path, '{image_path}',
                         'filtered_avg_signal.{}'.format(SAVE_IMAGE_FORMAT)),
@@ -207,7 +207,10 @@ rule img_UP_detection:
                               --out_signal {output.up_transition} \
                               --lowcut {params.lowcut} \
                               --highcut {params.highcut} \
-                              --order {params.order}
+                              --order {params.order} \
+                              --minima_threshold {params.minima_threshold} \
+                              --minima_windowsize {params.minima_windowsize}
+
         """
 #
 # rule image_all:

@@ -5,16 +5,11 @@ import quantities as pq
 import re
 
 
-def load(data):
-    with neo.io.spike2io.Spike2IO(data) as io:
-        segment = io.read_segment()
-    # for (i, asig) in enumerate(segment.analogsignals):
-    #     segment.analogsignals[i] = segment.analogsignals[i] * pq.mV
-    return segment
-
-
-def enrich(segment, electrode_location, electrode_color, annotation_name):
-    for (i, asig) in enumerate(segment.analogsignals):
+def enrich(segment, electrode_location, electrode_color,
+           annotation_name, file_origin):
+    for (i, asig) in enumerate(s
+    egment.analogsignals):
+        segment.analogsignals[i].file_origin = file_origin
         for element in electrode_location:
             if int(asig.annotations[annotation_name][0]) \
                     in electrode_location[element]:
@@ -23,17 +18,6 @@ def enrich(segment, electrode_location, electrode_color, annotation_name):
     else:
         pass
     return segment
-
-
-def save_segment(segment, location):
-    data_dir = os.path.dirname(location)
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir)
-    block = neo.core.Block()
-    block.segments.append(segment)
-    nix = neo.io.nixio.NixIO(location)
-    nix.write_block(block)
-    return None
 
 
 def str2dict(str_list):
@@ -64,11 +48,21 @@ if __name__ == '__main__':
     electrode_location = str2dict(args.electrode_location)
     electrode_color = str2dict(args.electrode_color)
 
-    segment = load(data=args.data)
+    io = neo.Spike2IO(args.data)
+    segment = io.read_segment()
 
     segment = enrich(segment,
                      electrode_location=electrode_location,
                      electrode_color=electrode_color,
-                     annotation_name=args.annotation_name)
+                     annotation_name=args.annotation_name,
+                     file_origin=args.data)
 
-    save_segment(segment, location=args.output)
+    data_dir = os.path.dirname(args.output)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+
+    block = neo.core.Block(name='Results of {}'\
+                                .format(os.path.basename(__file__)))
+    block.segments.append(segment)
+    with neo.NixIO(args.output) as io:
+        io.write_block(block)

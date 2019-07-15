@@ -30,7 +30,6 @@ def spatial_smoothing(images, macro_pixel_dim):
                             units=images.units,
                             sampling_rate=images.sampling_rate,
                             t_start=images.t_start,
-                            t_stop=images.t_stop,
                             file_origin=images.file_origin,
                             pixel_size=images.annotations['pixel_size']
                                        *macro_pixel_dim)

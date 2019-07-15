@@ -2,23 +2,23 @@ configfile: "configfile.yaml"
 
 import sys
 sys.path.append('../')
-from settings import working_dir, data_path, output_path, figure_path
+from settings import working_dir, data_path, output_path
 import numpy as np
 
-FREQ_BAND = config["FREQ_BAND"]
-MIN_STATE_DURATION = config["MIN_STATE_DURATION"]
-FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
-SIGMA_THRESHOLD = config["SIGMA_THRESHOLD"]
-DETRENDING_ORDER = config["DETRENDING_ORDER"]
-PSD_FREQ_RES = config["PSD_FREQ_RES"]
-PSD_OVERLAP = config["PSD_OVERLAP"]
-SLOPE_WINDOW = config["SLOPE_WINDOW"]
-ELECTRODE_LOCATION = config["ELECTRODE_LOCATION"]
-ELECTRODE_COLOR = config["ELECTRODE_COLOR"]
-ELECTRODE_ANNOTATION_NAME = config["ELECTRODE_ANNOTATION_NAME"]
-PATH = config["PATH"]
-FILENAME = config["FILENAME"]
-SAVE_IMAGE_FORMAT = config["SAVE_IMAGE_FORMAT"]
+FREQ_BAND                   = config["FREQ_BAND"]
+MIN_STATE_DURATION          = config["MIN_STATE_DURATION"]
+FIXED_THRESHOLD             = config["FIXED_THRESHOLD"]
+SIGMA_THRESHOLD             = config["SIGMA_THRESHOLD"]
+DETRENDING_ORDER            = config["DETRENDING_ORDER"]
+PSD_FREQ_RES                = config["PSD_FREQ_RES"]
+PSD_OVERLAP                 = config["PSD_OVERLAP"]
+SLOPE_WINDOW                = config["SLOPE_WINDOW"]
+ELECTRODE_LOCATION          = config["ELECTRODE_LOCATION"]
+ELECTRODE_COLOR             = config["ELECTRODE_COLOR"]
+ELECTRODE_ANNOTATION_NAME   = config["ELECTRODE_ANNOTATION_NAME"]
+PATH                        = config["PATH"]
+FILENAME                    = config["FILENAME"]
+SAVE_IMAGE_FORMAT           = config["SAVE_IMAGE_FORMAT"]
 
 # Example plotting parameters
 T_START = 0
@@ -104,10 +104,13 @@ rule fp_UpDown_detection:
     conda:
         "../envs/wavescalephant_env.yml"
     output:
-        os.path.join(output_path, '{fp_dir}', 'UD_state_vector.npy')
+        state_vector = os.path.join(output_path, '{fp_dir}',
+                                    'UD_state_vector.npy'),
+        nix_file = os.path.join(output_path, '{fp_dir}', 'UD_states.nix')
     shell:
         """
-        python {input.script} --output {output} \
+        python {input.script} --out_state_vector {output.state_vector} \
+                              --out_nix_file {output.nix_file} \
                               --logMUA_estimate {input.logMUA} \
                               --min_state_duration {params.min_state_duration} \
                               --fixed_threshold {params.fixed_threshold} \

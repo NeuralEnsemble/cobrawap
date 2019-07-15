@@ -15,7 +15,6 @@ if __name__ == '__main__':
     CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--sampling_rate", nargs='?', type=float)
     CLI.add_argument("--t_start", nargs='?', type=float)
-    CLI.add_argument("--t_stop", nargs='?', type=float)
     CLI.add_argument("--pixel_size", nargs='?', type=float)
     CLI.add_argument("--frame_num_regex", nargs='?', type=str)
 
@@ -37,13 +36,12 @@ if __name__ == '__main__':
                             units='dimensionless',
                             sampling_rate=args.sampling_rate*pq.Hz,
                             t_start=args.t_start*pq.s,
-                            t_stop=args.t_stop*pq.s,
                             file_origin=os.path.dirname(args.image_files[0]),
                             pixel_size=args.pixel_size*pq.mm)
 
     # Save as NIX file
-    image_block = neo.Block(name='Results of {}'.format(os.path.basename(__file__)),
-                            nix_name=str('image_type'))
+    image_block = neo.Block(name='Results of {}'\
+                                 .format(os.path.basename(__file__)))
     seg = neo.Segment(name='Segment 1',
                       description='Unchanged images from {}'.format(os.path.dirname(args.image_files[0])))
     image_block.segments.append(seg)

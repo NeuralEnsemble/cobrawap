@@ -19,6 +19,7 @@ SAMPLING_RATE: 25
 FRAME_START: 1
 # last frame number
 FRAME_STOP: 250
+# side length of one pixel in the image
 PIXEL_SIZE: 0.05 #mm
 
 SAVE_IMAGE_FORMAT: 'png'
@@ -33,25 +34,25 @@ CONTOUR_FRAME: 1
 #Butterworth order
 BUTTER_ORDER: 6
 ### --> Evaluate other types of filters (Bessel, FIR, ...)
-
 # Passband
 #lowcut: lowcut of the Butterworth filter. If not sure of this number type None
 BUTTER_LOWCUT: 0.5
 #highcut: highcut of the Butterworth filter. If not sure of this number type None
 BUTTER_HIGHCUT: 3.0
+
+# Detection of Up transitions
+# Threshold for minima to be considered transitions
+MINIMA_THRESHOLD: 0
+# Window size (in sample points) around minimum
+# to use for quadratic interpolation
+MINIMA_WINDOWSIZE: 8
+
 #zone: tag given to the portion of the frequency spectrum selected by the filter
 zone: 'Zone_1'
 ### len(lowcut), len(highcut), len(zone) == len(num_measures) (see Consistency Checks)
 ### The filter settings can be differentiate for each dataset
 ### If len(lowcut[i]) is >1 for dataset i, more than 1 band-pass filter is applied (whose settings have to be specified), and thus more than 1 Zone can be identified in the spectrum.
 
-#*** FIT ***
-#POLYFIT_ORDER: 2
-### polynomial fit, order 2 (parabola)
-
-#points: how many points should be used?
-ZOOM: 4 #ZOOM ???
-points: 5
 
 #*** Visualization Options ***
 

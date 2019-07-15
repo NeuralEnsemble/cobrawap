@@ -1,8 +1,7 @@
 
 # workflow folder
-results/
 snakemake_workflow/.snakemake
-data/
+snakemake_workflow/*/.snakemake
 
 #
 .idea/

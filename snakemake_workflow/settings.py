@@ -8,6 +8,3 @@ data_path = os.path.expanduser('~') + '/Sciebo/own/Data/WaveScalES/'
 
 # path for generated data
 output_path = os.path.join(os.path.expanduser('~'), 'ProjectsData/wavescalephant/')
-
-# path for generated figures
-figure_path = os.path.join(output_path, 'figures/')

@@ -1,6 +1,8 @@
 import argparse
 import numpy as np
 import scipy as sc
+import neo
+import os
 import matplotlib.pyplot as plt
 
 
@@ -62,11 +64,9 @@ def remove_short_states(state_vector, min_state_duration):
     return None
 
 
-def create_state_vector(logMUA, min_state_duration,
-                        fixed_threshold, sigma_threshold, plot):
+def create_state_vector(logMUA, fixed_threshold, sigma_threshold, plot):
     m0, s0 = logMUA_distribution(logMUA, fixed_threshold=fixed_threshold,
                                  sigma_threshold=sigma_threshold, plot=plot)
-
     if fixed_threshold:
         threshold = fixed_threshold + m0
     else:
@@ -74,29 +74,77 @@ def create_state_vector(logMUA, min_state_duration,
 
     state_vector = [True if value > threshold else False for value in logMUA]
 
-    remove_short_states(state_vector, min_state_duration)
-
     return state_vector
 
 
-def create_all_state_vectors(logMUA_segment, min_state_duration,
+def create_all_state_vectors(logMUA_signals, min_state_duration,
                              fixed_threshold=0, sigma_threshold=0,
                              plot=False):
     state_vectors = []
-    for asig in logMUA_segment.analogsignals:
+    UP_transitions = []
+    DOWN_transitions = []
+    for i, asig in enumerate(logMUA_signals):
         state_vector = create_state_vector(asig.magnitude,
-                                           min_state_duration=min_state_duration,
                                            fixed_threshold=fixed_threshold,
                                            sigma_threshold=sigma_threshold,
                                            plot=plot)
+        remove_short_states(state_vector, min_state_duration)
+        ups, downs = statevector_to_spiketrains(state_vector,
+                                                t_start=asig.t_start,
+                                                t_stop=asig.t_stop,
+                                                sampling_rate=asig.sampling_rate,
+                                                fixed_threshold=fixed_threshold,
+                                                sigma_threshold=sigma_threshold,
+                                                min_state_duration=min_state_duration,
+                                                **asig.annotations)
+        UP_transitions += [ups]
+        DOWN_transitions += [downs]
         state_vectors += [state_vector]
     # ToDo: write UD states in neo segment as epochs?
-    return np.array(state_vectors)
+    return np.array(state_vectors), UP_transitions, DOWN_transitions
 
+
+def statevector_to_spiketrains(state_vector, sampling_rate, t_start, t_stop,
+                               **annotations):
+    ups = np.array([])
+    downs = np.array([])
+    for i, state in enumerate(state_vector[:-1]):
+        # Transition
+        if not state*state_vector[i+1]:
+            # UP -> DOWN
+            if state:
+                downs = np.append(downs, i+0.5)
+            # DOWN -> UP
+            else:
+                ups = np.append(ups, i+0.5)
+    downs = downs/sampling_rate
+    ups = ups/sampling_rate
+    up_trains = neo.core.SpikeTrain(ups,
+                                    t_start=t_start,
+                                    t_stop=t_stop,
+                                    sampling_rate=sampling_rate,
+                                    **annotations)
+    down_trains = neo.core.SpikeTrain(downs,
+                                      t_start=t_start,
+                                      t_stop=t_stop,
+                                      sampling_rate=sampling_rate,
+                                      **annotations)
+    return up_trains, down_trains
+
+
+def remove_duplicate_properties(objects, del_keys=['nix_name', 'neo_name']):
+    if type(objects) != list:
+        objects = [objects]
+    for i in range(len(objects)):
+        for k in del_keys:
+            if k in objects[i].annotations:
+                del objects[i].annotations[k]
+    return None
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--out_state_vector",    nargs='?', type=str)
+    CLI.add_argument("--out_nix_file",    nargs='?', type=str)
     CLI.add_argument("--logMUA_estimate",      nargs='?', type=str)
     CLI.add_argument("--min_state_duration",  nargs='?', type=int, default=2)
     CLI.add_argument("--fixed_threshold", nargs='?', type=int, default=0)
@@ -105,11 +153,33 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     with neo.NixIO(args.logMUA_estimate) as io:
-        logMUA_segment = io.read_block().segments[0]
+        logMUA_block = io.read_block()
 
-    state_vectors = create_all_state_vectors(logMUA_segment,
-                                             min_state_duration=args.min_state_duration,
-                                             fixed_threshold=args.fixed_threshold,
-                                             sigma_threshold=args.sigma_threshold,
-                                             plot=args.show_plots)
-    np.save(args.output, state_vectors)
+    remove_duplicate_properties(logMUA_block.segments[0].analogsignals)
+    remove_duplicate_properties([logMUA_block, logMUA_block.segments[0]])
+
+    logMUA_signals = logMUA_block.segments[0].analogsignals
+
+    state_vectors, up_trains, down_trains = create_all_state_vectors(
+                                            logMUA_signals,
+                                            min_state_duration=args.min_state_duration,
+                                            fixed_threshold=args.fixed_threshold,
+                                            sigma_threshold=args.sigma_threshold,
+                                            plot=args.show_plots)
+
+    np.save(args.out_state_vector, state_vectors)
+
+    logMUA_block.name += 'and {}'.format(os.path.basename(__file__))
+    seg1 = neo.Segment(name='Segment DOWN -> UP',
+                       description='Transitions from UP to DOWN state')
+    seg2 = neo.Segment(name='Segment UP -> DOWN',
+                       description='Transitions from DOWN to UP state')
+
+    seg1.spiketrains = up_trains
+    seg2.spiketrains = down_trains
+
+    logMUA_block.segments.append(seg1)
+    logMUA_block.segments.append(seg2)
+
+    with neo.NixIO(args.out_nix_file) as io:
+        io.write(logMUA_block)

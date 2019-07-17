@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     fig, ax = plt.subplots()
     ax.plot(spectrum[0], spectrum[1])
-    ax.title('Average power spectrum')
+    ax.set_title('Average power spectrum')
     ax.set_xlabel('frequency [Hz]')
     ax.set_ylabel('Fourier signal')
     plt.savefig(args.out_plot)

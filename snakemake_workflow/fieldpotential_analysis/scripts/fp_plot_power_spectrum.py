@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import elephant as el
 import numpy as np
+import neo
 
 
 def plot_power_spectrum(segment, psd_freq_res, psd_overlap):

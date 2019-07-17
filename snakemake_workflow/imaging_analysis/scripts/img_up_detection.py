@@ -5,7 +5,6 @@ import argparse
 import elephant as el
 import itertools
 import scipy as sc
-from copy import copy, deepcopy
 import matplotlib.pyplot as plt
 
 
@@ -25,18 +24,27 @@ def filter_signals(images, lowcut, highcut, order):
 
 def detect_minima(signal, times, threshold, window_size):
     argmins = sc.signal.argrelmin(signal, order=2)[0]
-    argmins = np.array([argmin for argmin in argmins if argmin > threshold])
-    interpolated_mins = np.array([])
-    for argmin in argmins:
-        i_start = max(0, argmin - int(window_size/2))
-        i_stop = min(len(signal)-1, argmin + int(window_size/2)) + 1
-        params = np.polyfit(times[i_start:i_stop],
-                            signal[i_start:i_stop],
-                            deg=2)
-        interpolated_min = -params[1]/(2*params[0])
-        if min(times) < interpolated_min < max(times):
-            interpolated_mins = np.append(interpolated_mins, interpolated_min)
-    return interpolated_mins * times.units
+    # Remove threshold criteria?
+    #
+    # argmins = np.array([argmin for argmin in argmins if signal[argmin] < threshold])
+
+    # Remove interpolation because neglectable precision gain?
+    #
+    # interpolated_mins = np.array([])
+    # for argmin in argmins:
+    #     i_start = max(0, argmin - int(window_size/2))
+    #     i_stop = min(len(signal)-1, argmin + int(window_size/2)) + 1
+    #     params = np.polyfit(times[i_start:i_stop],
+    #                         signal[i_start:i_stop],
+    #                         deg=2)
+    #     interpolated_min = -params[1]/(2*params[0])
+    #     if min(times) < interpolated_min < max(times):
+    #         interpolated_mins = np.append(interpolated_mins, interpolated_min)
+    # return interpolated_mins * times.units
+    if len(argmins):
+        return times[argmins]
+    else:
+        return [] * times.units
 
 
 def UP_detection(signals, times, threshold, window_size,
@@ -52,7 +60,8 @@ def UP_detection(signals, times, threshold, window_size,
                                               sampling_rate=sampling_rate,
                                               minima_threshold=threshold,
                                               minima_interplolation_window=window_size,
-                                              position=(x,y),
+                                              coordinates=(x,y),
+                                              transition_type='up',
                                               **annotations)]
     return up_trains
 
@@ -71,7 +80,6 @@ if __name__ == '__main__':
 
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--image_file", nargs='?', type=str)
-    CLI.add_argument("--out_image", nargs='?', type=str)
     CLI.add_argument("--out_signal", nargs='?', type=str)
     CLI.add_argument("--lowcut", nargs='?', type=float)
     CLI.add_argument("--highcut", nargs='?', type=float)
@@ -88,9 +96,6 @@ if __name__ == '__main__':
                                 + img_block.segments[0].analogsignals)
 
     images = img_block.segments[0].analogsignals[0]
-
-    example_pixel = (int(images.shape[1]/2), int(images.shape[2]/2))
-    example_image = copy(images.as_array()[:,example_pixel[0],example_pixel[1]])
 
     # Filter the signal
     filt_signals = filter_signals(images, lowcut=args.lowcut,
@@ -111,16 +116,3 @@ if __name__ == '__main__':
     img_block.segments[0].spiketrains = up_trains
     with neo.NixIO(args.out_signal) as io:
         io.write(img_block)
-
-
-    print(np.where([st.annotations['position'] for st in up_trains] == example_pixel))
-    fig, ax = plt.subplots()
-    ax.plot(images.times, example_image, c='b', label='clean signal')
-    ax.plot(images.times, filt_signals[:,example_pixel[0],example_pixel[1]],
-            c='r', label='filtered [{} - {}] Hz'.format(args.lowcut, args.highcut))
-    ax.set_xlabel('time [s]')
-    ax.set_ylabel(r'Ca$^+$ signal')
-    ax.set_title('signal of pixel {}'.format(example_pixel))
-    plt.legend()
-    plt.savefig(args.out_image)
-    plt.show()

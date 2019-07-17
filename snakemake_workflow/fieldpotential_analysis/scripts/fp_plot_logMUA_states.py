@@ -4,6 +4,7 @@ import scipy as sc
 import argparse
 import os
 import quantities as pq
+import neo
 
 
 def plot_signal_traces(logMUA, data, state_vector, t_start, t_stop, scaling=10):

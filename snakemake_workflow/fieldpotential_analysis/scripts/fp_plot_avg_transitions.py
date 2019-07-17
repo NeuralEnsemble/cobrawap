@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
-from load_and_transform_to_neo import load_segment
 
 
 def plot_avg_transisitons(logMUA, state_vector, slope_window):
@@ -46,27 +45,29 @@ def plot_avg_transisitons(logMUA, state_vector, slope_window):
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs=1, type=str)
-    CLI.add_argument("--logMUA_estimate",      nargs=1, type=str)
-    CLI.add_argument("--state_vector",      nargs=1, type=str)
-    CLI.add_argument("--slope_window",      nargs=1, type=int, default=50)
-    CLI.add_argument("--show_figure",      nargs=1, type=int, default=0)
-    CLI.add_argument("--format",      nargs=1, type=str)
-    CLI.add_argument("--channel",      nargs=1, type=int, default=1)
+    CLI.add_argument("--output",            nargs='?', type=str)
+    CLI.add_argument("--logMUA_estimate",   nargs='?', type=str)
+    CLI.add_argument("--state_vector",      nargs='?', type=str)
+    CLI.add_argument("--slope_window",      nargs='?', type=int, default=50)
+    CLI.add_argument("--show_figure",       nargs='?', type=int, default=0)
+    CLI.add_argument("--format",            nargs='?', type=str)
+    CLI.add_argument("--channel",           nargs='?', type=int, default=1)
 
     args = CLI.parse_args()
 
-    logMUA_segment = load_segment(args.logMUA_estimate[0])
-    state_vectors = np.load(file=args.state_vector[0])
+    with neo.NixIO(args.logMUA_estimate) as io:
+        logMUA_segment = io.read_block().segments[0]
 
-    plot_avg_transisitons(logMUA=logMUA_segment.analogsignals[args.channel[0]-1],
-                          state_vector=state_vectors[args.channel[0]-1],
-                          slope_window=args.slope_window[0])
+    state_vectors = np.load(file=args.state_vector)
 
-    if args.show_figure[0]:
+    plot_avg_transisitons(logMUA=logMUA_segment.analogsignals[args.channel-1],
+                          state_vector=state_vectors[args.channel-1],
+                          slope_window=args.slope_window)
+
+    if args.show_figure:
         plt.show()
 
-    data_dir = os.path.dirname(args.output[0])
+    data_dir = os.path.dirname(args.output)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
-    plt.savefig(fname=args.output[0], format=args.format[0])
+    plt.savefig(fname=args.output, format=args.format)

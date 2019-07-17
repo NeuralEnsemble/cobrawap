@@ -24,14 +24,18 @@ def detrending(asig, order):
 def build_logMUA_segment(segment, freq_band, detrending_order, psd_overlap):
     asig = segment.analogsignals[0]
 
-    fs = asig.sampling_rate.rescale('1/s').magnitude
-    FFTWindowSize = int(round(fs / freq_band[0]))
+    fs = asig.sampling_rate.rescale('1/s')
+    FFTWindowSize = int(round(fs.magnitude / freq_band[0]))
     sample_num = int(np.floor(len(asig)/FFTWindowSize))
     MUA_sampling_rate = sample_num / (asig.t_stop - asig.t_start)
 
     logMUA_segment = neo.core.Segment(name='Segment logMUA')
 
     for asig in segment.analogsignals:
+        del_keys = ['nix_name', 'neo_name']
+        for k in del_keys:
+            if k in asig.annotations:
+                del asig.annotations[k]
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize,
                                         freq_band, MUA_sampling_rate, detrending_order, psd_overlap)
         logMUA_segment.analogsignals.append(logMUA_asig)
@@ -63,18 +67,15 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
     logMUA_asig = neo.core.AnalogSignal(np.log(MUA),
                                         units='dimensionless',
                                         t_start=analogsignal.t_start,
-                                        t_stop=analogsignal.t_stop, sampling_rate=MUA_sampling_rate,
+                                        t_stop=analogsignal.t_stop,
+                                        sampling_rate=MUA_sampling_rate,
                                         FFTWindowSize=FFTWindowSize,
                                         freq_band=freq_band,
                                         detrending_order=detrending_order,
                                         psd_freq_res=freq_band[0],
                                         psd_overlap=psd_overlap,
-                                        psd_fs=fs)
-    logMUA_asig.annotations = analogsignal.annotations
-    del_keys = ['nix_name', 'neo_name']
-    for k in del_keys:
-        if k in logMUA_asig.annotations:
-            del logMUA_asig.annotations[k]
+                                        psd_fs=fs,
+                                        **analogsignal.annotations)
     return logMUA_asig
 
     # ToDo: Normalization with basline power?

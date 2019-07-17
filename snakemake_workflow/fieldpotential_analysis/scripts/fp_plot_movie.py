@@ -8,7 +8,6 @@ import neo
 sys.path.append(os.getcwd())
 
 
-
 def movie_maker(frames_directory, movie_directory, frame_format, frame_name,
                 movie_name, vid_format,
                 frames_per_sec=20, quality=23, scale_x=1920, scale_y=1080):
@@ -56,7 +55,7 @@ if __name__ == '__main__':
     plt.rcParams['animation.ffmpeg_path'] = '/usr/bin/ffmpeg'
 
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--image_file",    nargs='?', type=str)
+    CLI.add_argument("--logMUA",        nargs='?', type=str)
     CLI.add_argument("--out_movie",     nargs='?', type=str)
     CLI.add_argument("--frame_folder",  nargs='?', type=str)
     CLI.add_argument("--frame_name",    nargs='?', type=str)
@@ -65,24 +64,32 @@ if __name__ == '__main__':
     CLI.add_argument("--scale_x",       nargs='?', type=int)
     CLI.add_argument("--scale_y",       nargs='?', type=int)
     CLI.add_argument("--quality",       nargs='?', type=int)
-    CLI.add_argument("--vid_format",  nargs='?', type=str, default='mp4')
+    CLI.add_argument("--vid_format",    nargs='?', type=str, default='mp4')
 
     args = CLI.parse_args()
 
     with neo.NixIO(args.image_file) as io:
-        images = io.read_block().segments[0].analogsignals[0]
+        logMUA = io.read_block().segments[0].analogsignals
+
+    shape = [len(logMUA[0].times,
+             logMUA[0].annotations[grid_size][0],
+             logMUA[0].annotations[grid_size][1]]
+    logMUA_array = np.zeros(shape)
+    for asig in logMUA:
+        x, y = asig.annotations['coordiantes']
+        logMUA_array[:,x,y] = asig.as_array()
 
     if not os.path.exists(args.frame_folder):
         os.makedirs(args.frame_folder)
 
-    for num, img in enumerate(images):
+    for num, img in enumerate(logMUA_array):
         fig, ax = plt.subplots()
         ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray)
         ax.axis('image')
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_title('{} {}'.format(images.times[num],
-                                    images.times.units.dimensionality.string))
+        ax.set_title('{} {}'.format(logMUA[0].times[num],
+                                    logMUA[0].times.units.dimensionality.string))
         plt.savefig(os.path.join(args.frame_folder,
                                  args.frame_name
                                  + '_{}.{}'.format(str(num).zfill(5),

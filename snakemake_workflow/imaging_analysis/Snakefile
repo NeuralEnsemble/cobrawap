@@ -22,12 +22,8 @@ BUTTER_HIGHCUT = config["BUTTER_HIGHCUT"]
 BUTTER_ORDER = config["BUTTER_ORDER"]
 MINIMA_THRESHOLD = config["MINIMA_THRESHOLD"]
 MINIMA_WINDOWSIZE = config["MINIMA_WINDOWSIZE"]
-# ToDo: isolate loading routine
-# ToDo: structure output folder structure
-# ToDo: integrate optical parameters into configfile
-# ToDo: separate optical and ephys config/rules/...?
 
-
+# ToDo: write a parameter check function
 # if '--nolock' not in sys.argv:
 #     from check_parameters import check_parameters
 #     check_parameters(config)
@@ -40,6 +36,20 @@ def input_images(location):
                                 '{image_path}', '{file_name}.tif')).file_name)
     return image_files
 
+
+
+rule img_all:
+    input:
+        expand(os.path.join(output_path, '{image_path}', 'up_transitions.nix'), image_path = IMG_PATH),
+        expand(os.path.join(output_path, '{image_path}', 'spectrum.npy'), image_path = IMG_PATH),
+        expand(os.path.join(output_path, '{image_path}', 'preprocessed_images.mp4'), image_path = IMG_PATH),
+        config = 'configfile.yaml'
+    output:
+        expand(os.path.join(output_path, '{image_path}', 'configfile.yaml'), image_path = IMG_PATH)
+    shell:
+        """
+        echo {output} | xargs -n 1 cp {input.config}
+        """
 
 rule img_find_contour:
     input:
@@ -105,7 +115,6 @@ rule img_preprocessing:
                               --output {output} \
         """
 
-
 rule img_plot_movie:
     input:
         image_nix = os.path.join(output_path, '{image_path}',
@@ -115,7 +124,7 @@ rule img_plot_movie:
         fps = 5,
         frame_name = 'frame',
         frame_format = SAVE_IMAGE_FORMAT,
-        quality = 31,
+        quality = 23,
         scale_x = 1080,
         scale_y = 1080
     output:
@@ -135,7 +144,6 @@ rule img_plot_movie:
                               --scale_x {params.scale_x} \
                               --scale_y {params.scale_y} \
         """
-
 
 rule img_to_neo:
     input:
@@ -177,14 +185,11 @@ rule img_plot_spectrum:
                               --out_spectrum {output.spectrum} \
                               --out_plot {output.spectrum_plot} \
                               --sampling_rate {params.sampling_rate} \
-                              --psd_freq_res {params.freq_res} \
-                              --psd_overlap {params.freq_overlap} \
+                              --psd_freq_res {params.psd_freq_res} \
+                              --psd_overlap {params.psd_overlap} \
         """
 
-rule img_UP_detection:
-    # bandpass filter (interactive if None in config?)
-    # interpolate minima
-    # save + plot
+rule img_up_detection:
     input:
         image_nix = os.path.join(output_path, '{image_path}',
                                  'preprocessed_images.nix'),
@@ -196,15 +201,11 @@ rule img_UP_detection:
         minima_threshold = MINIMA_THRESHOLD,
         minima_windowsize = MINIMA_WINDOWSIZE
     output:
-        image = os.path.join(output_path, '{image_path}',
-                        'filtered_avg_signal.{}'.format(SAVE_IMAGE_FORMAT)),
-        up_transition = os.path.join(output_path, '{image_path}',
-                                     'UP_transitions.nix')
+        os.path.join(output_path, '{image_path}', 'up_transitions.nix')
     shell:
         """
         python {input.script} --image_file {input.image_nix} \
-                              --out_image {output.image} \
-                              --out_signal {output.up_transition} \
+                              --out_signal {output} \
                               --lowcut {params.lowcut} \
                               --highcut {params.highcut} \
                               --order {params.order} \
@@ -212,9 +213,27 @@ rule img_UP_detection:
                               --minima_windowsize {params.minima_windowsize}
 
         """
-#
-# rule image_all:
-#     input:
-#         config
-#     output:
-#         params
+
+rule img_plot_signal:
+    input:
+        preprocessed_signal = os.path.join(output_path, '{image_path}',
+                                           'preprocessed_images.nix'),
+        clean_signal = os.path.join(output_path, '{image_path}',
+                                    'up_transitions.nix'),
+        script = "scripts/img_plot_signal.py"
+    params:
+        highcut = BUTTER_HIGHCUT,
+        lowcut = BUTTER_LOWCUT
+    output:
+        os.path.join(output_path, '{image_path}',
+                     'signal_pixel_{x}_{y}'+'.{}'.format(SAVE_IMAGE_FORMAT))
+    shell:
+        """
+        python {input.script} --preprocessed_signal {input.preprocessed_signal} \
+                              --clean_signal {input.clean_signal} \
+                              --output {output} \
+                              --x {wildcards.x} \
+                              --y {wildcards.y} \
+                              --highcut {params.highcut} \
+                              --lowcut {params.lowcut}
+        """

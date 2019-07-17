@@ -1,6 +1,23 @@
 configfile: "configfile.yaml"
 
-from settings import working_dir, data_path, metadata_path, output_path, figure_path, script_path
-import numpy as np
+from settings import working_dir, data_path, output_path
+from settings import img_subworkflow, fp_subworkflow
 
 workdir: working_dir
+
+subworkflow img_subworkflow:
+    workdir:
+        img_subworkflow
+    configfile:
+        os.path.join(img_subworkflow, 'configfile.yaml')
+
+subworkflow fp_subworkflow:
+    workdir:
+        fp_subworkflow
+    configfile:
+        os.path.join(fp_subworkflow, 'configfile.yaml')
+
+
+# ToDo: Visualize Imaging and ECoG up-transitions side by side
+# ToDo: Add to_stack() function to elephants Binned object
+# 

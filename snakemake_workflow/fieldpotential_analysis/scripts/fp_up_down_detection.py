@@ -91,7 +91,6 @@ def create_all_state_vectors(logMUA_signals, min_state_duration,
         remove_short_states(state_vector, min_state_duration)
         ups, downs = statevector_to_spiketrains(state_vector,
                                                 t_start=asig.t_start,
-                                                t_stop=asig.t_stop,
                                                 sampling_rate=asig.sampling_rate,
                                                 fixed_threshold=fixed_threshold,
                                                 sigma_threshold=sigma_threshold,
@@ -170,15 +169,15 @@ if __name__ == '__main__':
     np.save(args.out_state_vector, state_vectors)
 
     logMUA_block.name += 'and {}'.format(os.path.basename(__file__))
-    seg1 = neo.Segment(name='Segment DOWN -> UP',
-                       description='Transitions from UP to DOWN state')
+    logMUA_block.segments[0].name = 'Segment 1'
+    logMUA_block.segments[0].description = 'logMUA analogsignal and transitions' \
+                                        + ' from UP to DOWN state'
     seg2 = neo.Segment(name='Segment UP -> DOWN',
                        description='Transitions from DOWN to UP state')
 
-    seg1.spiketrains = up_trains
+    logMUA_block.segments[0].spiketrains = up_trains
     seg2.spiketrains = down_trains
 
-    logMUA_block.segments.append(seg1)
     logMUA_block.segments.append(seg2)
 
     with neo.NixIO(args.out_nix_file) as io:

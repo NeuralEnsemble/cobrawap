@@ -1,14 +1,10 @@
-#images should be stored as
-# .../<IMG_TYPE>/t<SET_NUMBER>/<IMG_NAME><SET_NUMBER>_<TIME_FRAME>.tif
 
 # Path to folder containing the images
-#to appended to data_path and created in output_path (see settings.py)
+# to appended to data_path and created in output_path (see settings.py)
 IMG_PATH: ['LENS/170110_mouse2_deep/t1']
-#IMG_NAME (string) ToDo: Is this actually needed?
-# IMG_NAME: 'provevideo'
+# Images must be in .tiff format!
 # Regex to find frame number in image name
 FRAME_NUM_REGEX: '(?<=_)([0-9]+)'
-
 # dimension of new 'macro-pixel' after the spacial smoothing
 MACRO_PIXEL_DIM: 2
 # normalize each pixel with respect to 'median', 'max', or 'None' of time series
@@ -21,21 +17,19 @@ FRAME_START: 1
 FRAME_STOP: 250
 # side length of one pixel in the image
 PIXEL_SIZE: 0.05 #mm
-
+# format for saving plots and images
 SAVE_IMAGE_FORMAT: 'png'
 
 #Contour_Limit is the input parameter of the 'find_contours' function in the measure.find_contours module of the scikit-image Python package, https://scikit-image.org.
+# If 'None', the limit can be set interactively by the user.
 CONTOUR_LIMIT: 0.197
+# Id of the frame used to determine the contour and mask
 CONTOUR_FRAME: 1
-#ANALYSIS PATH (string): path of the directory where results have to be saved
 
-#*** FILTER ***
 #FILTER_TYPE: 'Butterworth'
-#Butterworth order
+# Butterworth order
 BUTTER_ORDER: 6
-### --> Evaluate other types of filters (Bessel, FIR, ...)
-# Passband
-#lowcut: lowcut of the Butterworth filter. If not sure of this number type None
+# lowcut: lowcut of the Butterworth filter. If not sure of this number type None
 BUTTER_LOWCUT: 0.5
 #highcut: highcut of the Butterworth filter. If not sure of this number type None
 BUTTER_HIGHCUT: 3.0
@@ -46,32 +40,3 @@ MINIMA_THRESHOLD: 0
 # Window size (in sample points) around minimum
 # to use for quadratic interpolation
 MINIMA_WINDOWSIZE: 8
-
-#zone: tag given to the portion of the frequency spectrum selected by the filter
-zone: 'Zone_1'
-### len(lowcut), len(highcut), len(zone) == len(num_measures) (see Consistency Checks)
-### The filter settings can be differentiate for each dataset
-### If len(lowcut[i]) is >1 for dataset i, more than 1 band-pass filter is applied (whose settings have to be specified), and thus more than 1 Zone can be identified in the spectrum.
-
-
-#*** Visualization Options ***
-
-#The represented spectrum is computed over a time interval of length 'spectrum_time' (in samples)
-spectrum_time: 1000
-#fs: sampling frequency
-fs: 25.00 #[Hz]
-
-# Here we define the number of pixels closest in time to the wave born time, that are consdered as part of the wave birth itself
-k_cluster: 5
-t_min: 5
-t_max: 245
-
-### SamplePixel (far from bounderies and blood vessels) for illustrating results:
-#PIXEL_SAMPLE_x: x-coordinate of the SamplePixel (already reduced!)
-PIXEL_SAMPLE_x: 30
-#PIXEL_SAMPLE_y: y-cohordinate of the SamplePixel (already reduced!)
-PIXEL_SAMPLE_y: 30
-TIME_SAMPLE_min: 0
-TIME_SAMPLE_max: TIME_SAMPLES
-#graph color
-color: 'blue'

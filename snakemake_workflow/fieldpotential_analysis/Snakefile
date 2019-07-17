@@ -16,6 +16,8 @@ SLOPE_WINDOW                = config["SLOPE_WINDOW"]
 ELECTRODE_LOCATION          = config["ELECTRODE_LOCATION"]
 ELECTRODE_COLOR             = config["ELECTRODE_COLOR"]
 ELECTRODE_ANNOTATION_NAME   = config["ELECTRODE_ANNOTATION_NAME"]
+NAME2COORDS                 = config["NAME2COORDS"]
+GRID_SIZE                   = config["GRID_SIZE"]
 PATH                        = config["PATH"]
 FILENAME                    = config["FILENAME"]
 SAVE_IMAGE_FORMAT           = config["SAVE_IMAGE_FORMAT"]
@@ -28,23 +30,33 @@ CHANNEL = 15
 
 rule fp_all:
     input:
-        expand(os.path.join(output_path, '{fp_dir}', 'UD_state_vector.npy'),
-               fp_dir=os.path.join(PATH, FILENAME)),
-        expand(os.path.join(output_path, '{fp_dir}', 'power_spectrum.{format}'),
-               fp_dir=os.path.join(PATH, FILENAME), format=SAVE_IMAGE_FORMAT),
-        expand(os.path.join(output_path, '{fp_dir}',
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'UD_state_vector.npy'),
+               fp_dir=PATH, fp_folder=FILENAME),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'power_spectrum.{format}'),
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
                             'lfp_traces_t{t_start}-{t_stop}s.{format}'),
-               fp_dir=os.path.join(PATH, FILENAME), format=SAVE_IMAGE_FORMAT,
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
                t_start=T_START, t_stop=T_STOP),
-        expand(os.path.join(output_path, '{fp_dir}',
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
                 'logMUA_states_channel{channel}_{t_start}-{t_stop}s.{format}'),
-               fp_dir=os.path.join(PATH, FILENAME), format=SAVE_IMAGE_FORMAT,
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
                t_start=T_START, t_stop=T_STOP, channel=CHANNEL),
-        expand(os.path.join(output_path, '{fp_dir}',
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
                             'UD_slopes_channel{channel}.{format}'),
-               fp_dir=os.path.join(PATH, FILENAME), format=SAVE_IMAGE_FORMAT,
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
                channel=CHANNEL),
-        'configfile.yaml'
+        config = 'configfile.yaml'
+    output:
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'configfile.yaml'),
+               fp_dir=PATH, fp_folder=FILENAME)
+    shell:
+        """
+        echo {output} | xargs -n 1 cp {input.config}
+        """
 
 
 rule fp_to_neo:
@@ -54,7 +66,9 @@ rule fp_to_neo:
     params:
         electrode_location = ELECTRODE_LOCATION,
         electrode_color = ELECTRODE_COLOR,
-        annotation_name = ELECTRODE_ANNOTATION_NAME
+        annotation_name = ELECTRODE_ANNOTATION_NAME,
+        name2coords = NAME2COORDS,
+        grid_size = GRID_SIZE
     conda:
         "../envs/wavescalephant_env.yml"
     output:
@@ -66,7 +80,9 @@ rule fp_to_neo:
                               --data {input.data} \
                               --electrode_location {params.electrode_location} \
                               --electrode_color {params.electrode_color} \
-                              --annotation_name {params.annotation_name}
+                              --annotation_name {params.annotation_name} \
+                              --coordiantes {params.name2coords} \
+                              --grid_size {params.grid_size}
         """
 
 
@@ -128,6 +144,7 @@ rule fp_plot_signals:
     params:
         scaling = 12,
         show_figure = 0,
+        annotation_name = ELECTRODE_ANNOTATION_NAME
     conda:
         "envs/wavescalephant_env.yml"
     output:
@@ -142,7 +159,8 @@ rule fp_plot_signals:
                               --scaling {params.scaling} \
                               --t_start {wildcards.t_start} \
                               --t_stop {wildcards.t_stop} \
-                              --show_figure {params.show_figure}
+                              --show_figure {params.show_figure} \
+                              --annotation_name {params.annotation_name}
         """
 
 
@@ -218,4 +236,34 @@ rule fp_plot_avg_transitions:
                               --slope_window {params.slope_window} \
                               --channel {wildcards.channel} \
                               --format {wildcards.format}
+        """
+
+
+rule fp_plot_movie:
+    input:
+        logMUA = os.path.join(output_path, '{fp_dir}', "logMUA.nix"),
+        script = "scripts/fp_plot_movie.py"
+    params:
+        fps = 5,
+        frame_name = 'frame',
+        frame_format = SAVE_IMAGE_FORMAT,
+        quality = 23,
+        scale_x = 1080,
+        scale_y = 1080
+    output:
+        frame_folder = directory(os.path.join(output_path,
+                                              '{fp_dir}', 'frames')),
+        movie = os.path.join(output_path,
+                             '{fp_dir}', 'logMUA.mp4')
+    shell:
+        """
+        python {input.script} --logMUA {input.logMUA} \
+                              --frame_folder {output.frame_folder} \
+                              --out_movie {output.movie} \
+                              --fps {params.fps} \
+                              --frame_format {params.frame_format} \
+                              --frame_name {params.frame_name} \
+                              --quality {params.quality} \
+                              --scale_x {params.scale_x} \
+                              --scale_y {params.scale_y} \
         """

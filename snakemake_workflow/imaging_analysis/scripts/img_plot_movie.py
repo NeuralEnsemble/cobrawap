@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import imageio
 import subprocess
 import neo
+import numpy as np
 sys.path.append(os.getcwd())
 
 
@@ -75,13 +76,20 @@ if __name__ == '__main__':
     if not os.path.exists(args.frame_folder):
         os.makedirs(args.frame_folder)
 
+    vmin = np.nanmin(images.as_array())
+    vmax = np.nanmax(images.as_array())
+
     for num, img in enumerate(images):
         fig, ax = plt.subplots()
-        ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray)
+        img = ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray,
+                        vmin=vmin, vmax=vmax)
+        # fig.colorbar(img)
         ax.axis('image')
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_title('{} {}'.format(images.times[num],
+        ax.set_ylabel('pixel size: {} mm'\
+                      .format(images.annotations['pixel_size']))
+        ax.set_xlabel('{:.2f} {}'.format(images.times[num],
                                     images.times.units.dimensionality.string))
         plt.savefig(os.path.join(args.frame_folder,
                                  args.frame_name

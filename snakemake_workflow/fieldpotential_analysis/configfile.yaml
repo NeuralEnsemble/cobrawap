@@ -38,6 +38,7 @@ PSD_FREQ_RES: 5 # Hz
 SLOPE_WINDOW: 50
 
 # METADATA
+ELECTRODE_DISTANCE: 0 # mm ?
 # Key in the annotation dict, corresponding to the electrode location
 ELECTRODE_ANNOTATION_NAME: 'channel_names'
 
@@ -57,6 +58,7 @@ ELECTRODE_COLOR:
     Somatosensory Cortex: '#F92600'
     Motor Cortex: '#EF6700'
 
+# Dimensions of the grid where the electrodes/pixels are located
 GRID_SIZE: [9,5]
 
 # dictionary mapping the electorde names to their coordiantes

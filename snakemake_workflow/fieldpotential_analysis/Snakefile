@@ -18,13 +18,14 @@ ELECTRODE_COLOR             = config["ELECTRODE_COLOR"]
 ELECTRODE_ANNOTATION_NAME   = config["ELECTRODE_ANNOTATION_NAME"]
 NAME2COORDS                 = config["NAME2COORDS"]
 GRID_SIZE                   = config["GRID_SIZE"]
+ELECTRODE_DISTANCE          = config["ELECTRODE_DISTANCE"]
 PATH                        = config["PATH"]
 FILENAME                    = config["FILENAME"]
 SAVE_IMAGE_FORMAT           = config["SAVE_IMAGE_FORMAT"]
 
 # Example plotting parameters
 T_START = 0
-T_STOP = 5
+T_STOP = 10
 CHANNEL = 15
 
 
@@ -48,6 +49,9 @@ rule fp_all:
                             'UD_slopes_channel{channel}.{format}'),
                fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
                channel=CHANNEL),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'logMUA_{t_start}-{t_stop}.mp4'), fp_dir=PATH,
+                            fp_folder=FILENAME, t_start=T_START, t_stop=T_STOP),
         config = 'configfile.yaml'
     output:
         expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
@@ -239,31 +243,46 @@ rule fp_plot_avg_transitions:
         """
 
 
-rule fp_plot_movie:
+checkpoint fp_plot_movie_frames:
     input:
         logMUA = os.path.join(output_path, '{fp_dir}', "logMUA.nix"),
-        script = "scripts/fp_plot_movie.py"
+        script = "scripts/fp_plot_movie_frames.py"
     params:
-        fps = 5,
         frame_name = 'frame',
         frame_format = SAVE_IMAGE_FORMAT,
-        quality = 23,
-        scale_x = 1080,
-        scale_y = 1080
+        pixel_size = ELECTRODE_DISTANCE
     output:
         frame_folder = directory(os.path.join(output_path,
-                                              '{fp_dir}', 'frames')),
-        movie = os.path.join(output_path,
-                             '{fp_dir}', 'logMUA.mp4')
+                                    '{fp_dir}', 'frames_{t_start}-{t_stop}s'))
     shell:
         """
         python {input.script} --logMUA {input.logMUA} \
                               --frame_folder {output.frame_folder} \
-                              --out_movie {output.movie} \
-                              --fps {params.fps} \
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
-                              --quality {params.quality} \
-                              --scale_x {params.scale_x} \
-                              --scale_y {params.scale_y} \
+                              --pixel_size {params.pixel_size} \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop}
+        """
+
+rule fp_plot_movie:
+    input:
+        directory(os.path.join(output_path,
+                                    '{fp_dir}', 'frames_{t_start}-{t_stop}s'))
+    output:
+        os.path.join(output_path, '{fp_dir}', 'logMUA_{t_start}-{t_stop}s.mp4')
+    params:
+        frame_path = lambda wildcards, input: os.path.join(input[0],
+                                                'frame_%05d.{}'\
+                                                .format(SAVE_IMAGE_FORMAT)),
+        quality = 0,
+        scale_x = 1080,
+        scale_y = 1080,
+        fps = 15
+    shell:
+        """
+        ffmpeg -y -i {params.frame_path} -q {params.quality} \
+               -crf {params.quality} \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               -r {params.fps} {output}
         """

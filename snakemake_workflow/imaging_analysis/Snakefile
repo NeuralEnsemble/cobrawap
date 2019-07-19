@@ -37,7 +37,6 @@ def input_images(location):
     return image_files
 
 
-
 rule img_all:
     input:
         expand(os.path.join(output_path, '{image_path}', 'up_transitions.nix'), image_path = IMG_PATH),
@@ -50,6 +49,15 @@ rule img_all:
         """
         echo {output} | xargs -n 1 cp {input.config}
         """
+
+# rule all:
+#     input:
+#         expand(os.path.join(output_path, '{image_path}', 'configfile.yaml'), image_path = IMG_PATH)
+#     shell:
+#         """
+#         touch scripts/img_to_neo.py
+#         """
+
 
 rule img_find_contour:
     input:
@@ -119,14 +127,14 @@ rule img_plot_movie:
     input:
         image_nix = os.path.join(output_path, '{image_path}',
                                  'preprocessed_images.nix'),
-        script = "scripts/img_plot_movie.py"
+        script = "scripts/img_plot_movie.py",
     params:
-        fps = 5,
+        fps = 8,
         frame_name = 'frame',
         frame_format = SAVE_IMAGE_FORMAT,
-        quality = 23,
+        quality = 0,
         scale_x = 1080,
-        scale_y = 1080
+        scale_y = 1080,
     output:
         frame_folder = directory(os.path.join(output_path,
                                               '{image_path}', 'frames')),
@@ -178,7 +186,7 @@ rule img_plot_spectrum:
     output:
         spectrum = os.path.join(output_path, '{image_path}', 'spectrum.npy'),
         spectrum_plot = os.path.join(output_path, '{image_path}',
-                       'spectrum_plot.{}'.format(SAVE_IMAGE_FORMAT))
+                       'spectrum.{}'.format(SAVE_IMAGE_FORMAT))
     shell:
         """
         python {input.script} --image_file {input.image_nix} \

@@ -24,11 +24,11 @@ def filter_signals(images, lowcut, highcut, order):
 
 def detect_minima(signal, times, threshold, window_size):
     argmins = sc.signal.argrelmin(signal, order=2)[0]
-    # Remove threshold criteria?
+    # ToDo: Remove threshold criteria?
     #
     # argmins = np.array([argmin for argmin in argmins if signal[argmin] < threshold])
 
-    # Remove interpolation because neglectable precision gain?
+    # ToDo: Remove interpolation because neglectable precision gain?
     #
     # interpolated_mins = np.array([])
     # for argmin in argmins:
@@ -61,6 +61,7 @@ def UP_detection(signals, times, threshold, window_size,
                                               minima_threshold=threshold,
                                               minima_interplolation_window=window_size,
                                               coordinates=(x,y),
+                                              grid_size=(dim_x,dim_y),
                                               transition_type='up',
                                               **annotations)]
     return up_trains

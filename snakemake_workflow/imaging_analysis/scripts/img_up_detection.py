@@ -23,7 +23,9 @@ def filter_signals(images, lowcut, highcut, order):
 
 
 def detect_minima(signal, times, threshold, window_size):
-    argmins = sc.signal.argrelmin(signal, order=2)[0]
+    hilbert_signal = el.signal_processing.hilbert(signal)
+
+    # argmins = sc.signal.argrelmin(signal, order=2)[0]
     # ToDo: Remove threshold criteria?
     #
     # argmins = np.array([argmin for argmin in argmins if signal[argmin] < threshold])
@@ -99,10 +101,10 @@ if __name__ == '__main__':
     images = img_block.segments[0].analogsignals[0]
 
     # Filter the signal
-    filt_signals = filter_signals(images, lowcut=args.lowcut,
-                                  highcut=args.highcut, order=args.order)
+    # filt_signals = filter_signals(images, lowcut=args.lowcut,
+    #                               highcut=args.highcut, order=args.order)
 
-    up_trains = UP_detection(filt_signals,
+    up_trains = UP_detection(images.as_array(),
                              times=images.times,
                              t_start=images.t_start,
                              t_stop=images.t_stop,

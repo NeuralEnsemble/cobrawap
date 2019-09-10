@@ -226,8 +226,8 @@ rule img_plot_signal:
     input:
         preprocessed_signal = os.path.join(output_path, '{image_path}',
                                            'preprocessed_images.nix'),
-        clean_signal = os.path.join(output_path, '{image_path}',
-                                    'up_transitions.nix'),
+        # clean_signal = os.path.join(output_path, '{image_path}',
+        #                             'up_transitions.nix'),
         script = "scripts/img_plot_signal.py"
     params:
         highcut = BUTTER_HIGHCUT,
@@ -238,10 +238,10 @@ rule img_plot_signal:
     shell:
         """
         python {input.script} --preprocessed_signal {input.preprocessed_signal} \
-                              --clean_signal {input.clean_signal} \
                               --output {output} \
                               --x {wildcards.x} \
                               --y {wildcards.y} \
                               --highcut {params.highcut} \
                               --lowcut {params.lowcut}
         """
+                              # --clean_signal {input.clean_signal} \

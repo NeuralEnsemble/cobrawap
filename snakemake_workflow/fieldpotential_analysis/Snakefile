@@ -50,7 +50,7 @@ rule fp_all:
                fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
                channel=CHANNEL),
         expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
-                            'logMUA_{t_start}-{t_stop}.mp4'), fp_dir=PATH,
+                            'logMUA_{t_start}-{t_stop}s.mp4'), fp_dir=PATH,
                             fp_folder=FILENAME, t_start=T_START, t_stop=T_STOP),
         config = 'configfile.yaml'
     output:

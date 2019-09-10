@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
+import neo
 
 
 def plot_avg_transisitons(logMUA, state_vector, slope_window):

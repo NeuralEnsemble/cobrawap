@@ -1,3 +1,4 @@
+### configuration for the preprocessing of calcium imaging data
 
 # Path to folder containing the images
 # to appended to data_path and created in output_path (see settings.py)

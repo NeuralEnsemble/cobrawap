@@ -170,5 +170,4 @@ if __name__ == '__main__':
     np.save(args.output_contour, contour)
 
     np.save(args.output_mask, mask)
-
     print(indent, "Contour saved!")

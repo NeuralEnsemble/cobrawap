@@ -2,7 +2,7 @@
 
 # Path to folder containing the images
 # to appended to data_path and created in output_path (see settings.py)
-IMG_PATH: ['LENS/170110_mouse2_deep/t1']
+IMG_PATH: 'LENS/170110_mouse2_deep/t1'
 # Images must be in .tiff format!
 # Regex to find frame number in image name
 FRAME_NUM_REGEX: '(?<=_)([0-9]+)'

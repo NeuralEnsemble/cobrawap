@@ -103,9 +103,9 @@ rule img_preprocessing:
     input:
         image_nix = os.path.join(output_path,
                                  '{image_path}', 'images.nix'),
-        background = os.path.join(output_path,
-                                  '{image_path}', 'background.npy'),
-        mask = os.path.join(output_path, '{image_path}', 'mask.npy'),
+        background = ancient(os.path.join(output_path,
+                                  '{image_path}', 'background.npy')),
+        mask = ancient(os.path.join(output_path, '{image_path}', 'mask.npy')),
         script = "scripts/img_preprocessing.py",
         configfile = "configfile.yaml"
     params:
@@ -160,7 +160,7 @@ rule img_to_neo:
     params:
         sampling_rate = SAMPLING_RATE, # Hz
         t_start = 0, # s
-        pixel_size = PIXEL_SIZE,
+        pixel_size = PIXEL_SIZE, # mm
         frame_num_regex = [[FRAME_NUM_REGEX]]
     output:
         norm_signal = os.path.join(output_path, '{image_path}', 'images.nix')
@@ -226,8 +226,8 @@ rule img_plot_signal:
     input:
         preprocessed_signal = os.path.join(output_path, '{image_path}',
                                            'preprocessed_images.nix'),
-        # clean_signal = os.path.join(output_path, '{image_path}',
-        #                             'up_transitions.nix'),
+        clean_signal = os.path.join(output_path, '{image_path}',
+                                    'up_transitions.nix'),
         script = "scripts/img_plot_signal.py"
     params:
         highcut = BUTTER_HIGHCUT,
@@ -242,6 +242,6 @@ rule img_plot_signal:
                               --x {wildcards.x} \
                               --y {wildcards.y} \
                               --highcut {params.highcut} \
-                              --lowcut {params.lowcut}
+                              --lowcut {params.lowcut} \
+                              --clean_signal {input.clean_signal} \
         """
-                              # --clean_signal {input.clean_signal} \

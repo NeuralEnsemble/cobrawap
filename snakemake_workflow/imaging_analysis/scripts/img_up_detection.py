@@ -22,9 +22,40 @@ def filter_signals(images, lowcut, highcut, order):
     return images_array
 
 
-def detect_minima(signal, times, threshold, window_size):
-    hilbert_signal = el.signal_processing.hilbert(signal)
+def detect_minima(signal, times):
+    # ToDo: replace with elephant function when signal can be neo object
+    # hilbert_signal = el.signal_processing.hilbert(signal).as_array()
+    if np.isnan(np.sum(signal)):
+        return np.array([]) * times.units
 
+    hilbert_signal = sc.signal.hilbert(signal)
+
+    hilbert_phase = np.angle(hilbert_signal)
+    hilbert_real = np.real(hilbert_signal)
+    hilbert_imag = np.imag(hilbert_signal)
+
+    zero_crossings = np.where(np.diff(np.signbit(hilbert_phase)))[0]
+    peaks = np.array([])
+    minima = np.array([])
+    for z in zero_crossings:
+        if hilbert_phase[z] <= 0 and hilbert_real[z] > hilbert_imag[z]:
+            # positive zero crossing of phase
+            peaks = np.append(peaks, times.magnitude[z])
+        # elif hilbert_phase[z] > 0 and hilbert_real[z] < hilbert_imag[z]:
+        #     # positive pi crossing of phase
+        #     minima = np.append(minima, times.magnitude[z])
+
+    zero_crossings = np.where(np.diff(np.signbit(hilbert_phase+np.pi/2.)))[0]
+    for z in zero_crossings:
+        if hilbert_phase[z] <= 0 and hilbert_real[z] > hilbert_imag[z]:
+            # positive zero crossing of phase
+            minima = np.append(minima, times.magnitude[z])
+
+    UP_minima = []
+    for i, peak in enumerate(peaks):
+        dist = (peak - minima)[peak - minima > 0]
+        if len(dist):
+            UP_minima += [minima[np.argmin(dist)]]
     # argmins = sc.signal.argrelmin(signal, order=2)[0]
     # ToDo: Remove threshold criteria?
     #
@@ -43,25 +74,21 @@ def detect_minima(signal, times, threshold, window_size):
     #     if min(times) < interpolated_min < max(times):
     #         interpolated_mins = np.append(interpolated_mins, interpolated_min)
     # return interpolated_mins * times.units
-    if len(argmins):
-        return times[argmins]
-    else:
-        return [] * times.units
+    return np.array(UP_minima) * times.units
 
 
-def UP_detection(signals, times, threshold, window_size,
-                 t_start, t_stop, sampling_rate, **annotations):
+def UP_detection(signals, times, t_start, t_stop, sampling_rate, **annotations):
     dim_t, dim_x, dim_y = signals.shape
     up_trains = []
     for x in range(dim_x):
         for y in range(dim_y):
-            ups = detect_minima(signals[:,x,y], times, threshold, window_size)
+            ups = detect_minima(signals[:,x,y], times)
             up_trains += [neo.core.SpikeTrain(ups,
                                               t_start=t_start,
                                               t_stop=t_stop,
                                               sampling_rate=sampling_rate,
-                                              minima_threshold=threshold,
-                                              minima_interplolation_window=window_size,
+                                              # minima_threshold=threshold,
+                                              # minima_interplolation_window=window_size,
                                               coordinates=(x,y),
                                               grid_size=(dim_x,dim_y),
                                               transition_type='up',
@@ -100,7 +127,7 @@ if __name__ == '__main__':
 
     images = img_block.segments[0].analogsignals[0]
 
-    # Filter the signal
+    # # Filter the signal
     # filt_signals = filter_signals(images, lowcut=args.lowcut,
     #                               highcut=args.highcut, order=args.order)
 
@@ -108,12 +135,12 @@ if __name__ == '__main__':
                              times=images.times,
                              t_start=images.t_start,
                              t_stop=images.t_stop,
-                             threshold=args.minima_threshold,
-                             window_size=args.minima_windowsize,
+                             # threshold=args.minima_threshold,
+                             # window_size=args.minima_windowsize,
                              sampling_rate=images.sampling_rate,
-                             filter_lowcut=args.lowcut,
-                             filter_highcut=args.highcut,
-                             filter_order=args.order,
+                             # filter_lowcut=args.lowcut,
+                             # filter_highcut=args.highcut,
+                             # filter_order=args.order,
                              **images.annotations)
 
     img_block.segments[0].spiketrains = up_trains

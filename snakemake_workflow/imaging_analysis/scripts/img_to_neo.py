@@ -1,4 +1,3 @@
-import neo
 import numpy as np
 import skimage as sk
 import quantities as pq
@@ -6,6 +5,10 @@ import argparse
 import os
 import re
 # re.compile('(?<=_)([0-9]+)')
+import sys
+sys.path.insert(0, '/home/rgutzen/Projects/toolbox/python-neo/')
+import neo
+import neo.io.tiffio
 
 
 if __name__ == '__main__':
@@ -19,6 +22,11 @@ if __name__ == '__main__':
     CLI.add_argument("--frame_num_regex", nargs='?', type=str)
 
     args = CLI.parse_args()
+
+    # io = neo.io.tiffio.TiffIO(directory_path=args.image_dir)
+    # img_block = io.read_block(sampling_rate=args.sampling_rate*pq.Hz,
+    #                           spatial_scale=args.pixel_size*pq.mm,
+    #                           units='dimensionless')
 
     # Sort filenames with ascending frame numbers
     def sort_key(file_path):
@@ -46,5 +54,7 @@ if __name__ == '__main__':
                       description='Unchanged images from {}'.format(os.path.dirname(args.image_files[0])))
     image_block.segments.append(seg)
     image_block.segments[0].analogsignals.append(asig)
+
+    # img_block.segments[0].analogsignals.append(asig)
     with neo.NixIO(args.output) as io:
         io.write(image_block)

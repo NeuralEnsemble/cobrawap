@@ -68,10 +68,10 @@ if __name__ == '__main__':
                        t_start=args.t_start*pq.s,
                        t_stop=args.t_stop*pq.s)
 
-    if args.show_figure:
-        plt.show()
-
     data_dir = os.path.dirname(args.output)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     plt.savefig(fname=args.output, format=args.format)
+
+    if args.show_figure:
+        plt.show()

@@ -22,67 +22,44 @@ def filter_signals(images, lowcut, highcut, order):
     return images_array
 
 
-def detect_minima(signal, times):
+def detect_transitions(signal, times, transition_phase):
     # ToDo: replace with elephant function when signal can be neo object
     # hilbert_signal = el.signal_processing.hilbert(signal).as_array()
     if np.isnan(np.sum(signal)):
         return np.array([]) * times.units
 
     hilbert_signal = sc.signal.hilbert(signal)
-
     hilbert_phase = np.angle(hilbert_signal)
-    hilbert_real = np.real(hilbert_signal)
-    hilbert_imag = np.imag(hilbert_signal)
 
-    zero_crossings = np.where(np.diff(np.signbit(hilbert_phase)))[0]
-    peaks = np.array([])
-    minima = np.array([])
-    for z in zero_crossings:
-        if hilbert_phase[z] <= 0 and hilbert_real[z] > hilbert_imag[z]:
-            # positive zero crossing of phase
-            peaks = np.append(peaks, times.magnitude[z])
-        # elif hilbert_phase[z] > 0 and hilbert_real[z] < hilbert_imag[z]:
-        #     # positive pi crossing of phase
-        #     minima = np.append(minima, times.magnitude[z])
+    peaks = []
+    transitions = []
+    crossings = [peaks, transitions]
 
-    zero_crossings = np.where(np.diff(np.signbit(hilbert_phase+np.pi/2.)))[0]
-    for z in zero_crossings:
-        if hilbert_phase[z] <= 0 and hilbert_real[z] > hilbert_imag[z]:
-            # positive zero crossing of phase
-            minima = np.append(minima, times.magnitude[z])
+    for i, phase in enumerate([0, transition_phase]):
+        zero_crossings = np.where(np.diff(np.signbit(hilbert_phase-phase)))[0]
+        for z in zero_crossings:
+            if hilbert_phase[z] <= 0 \
+            and np.real(hilbert_signal)[z] > np.imag(hilbert_signal)[z]:
+                # positive crossing of phase
+                crossings[i] += [times.magnitude[z]]
 
-    UP_minima = []
+    up_transitions = np.array([])
     for i, peak in enumerate(peaks):
-        dist = (peak - minima)[peak - minima > 0]
+        dist = (peak - np.array(transitions))[peak - np.array(transitions) > 0]
         if len(dist):
-            UP_minima += [minima[np.argmin(dist)]]
-    # argmins = sc.signal.argrelmin(signal, order=2)[0]
-    # ToDo: Remove threshold criteria?
-    #
-    # argmins = np.array([argmin for argmin in argmins if signal[argmin] < threshold])
+            up_transitions = np.append(up_transitions,
+                                       transitions[np.argmin(dist)])
 
-    # ToDo: Remove interpolation because neglectable precision gain?
-    #
-    # interpolated_mins = np.array([])
-    # for argmin in argmins:
-    #     i_start = max(0, argmin - int(window_size/2))
-    #     i_stop = min(len(signal)-1, argmin + int(window_size/2)) + 1
-    #     params = np.polyfit(times[i_start:i_stop],
-    #                         signal[i_start:i_stop],
-    #                         deg=2)
-    #     interpolated_min = -params[1]/(2*params[0])
-    #     if min(times) < interpolated_min < max(times):
-    #         interpolated_mins = np.append(interpolated_mins, interpolated_min)
-    # return interpolated_mins * times.units
-    return np.array(UP_minima) * times.units
+    return up_transitions * times.units
 
 
-def UP_detection(signals, times, t_start, t_stop, sampling_rate, **annotations):
+def UP_detection(signals, times, t_start, t_stop, sampling_rate,
+                 transition_phase, **annotations):
     dim_t, dim_x, dim_y = signals.shape
     up_trains = []
     for x in range(dim_x):
         for y in range(dim_y):
-            ups = detect_minima(signals[:,x,y], times)
+            ups = detect_transitions(signals[:,x,y], times, transition_phase)
             up_trains += [neo.core.SpikeTrain(ups,
                                               t_start=t_start,
                                               t_stop=t_stop,
@@ -91,6 +68,7 @@ def UP_detection(signals, times, t_start, t_stop, sampling_rate, **annotations):
                                               # minima_interplolation_window=window_size,
                                               coordinates=(x,y),
                                               grid_size=(dim_x,dim_y),
+                                              transition_phase = transition_phase,
                                               transition_type='up',
                                               **annotations)]
     return up_trains
@@ -107,15 +85,15 @@ def remove_duplicate_properties(objects, del_keys=['nix_name', 'neo_name']):
 
 
 if __name__ == '__main__':
-
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--image_file", nargs='?', type=str)
     CLI.add_argument("--out_signal", nargs='?', type=str)
-    CLI.add_argument("--lowcut", nargs='?', type=float)
-    CLI.add_argument("--highcut", nargs='?', type=float)
-    CLI.add_argument("--order", nargs='?', type=int)
-    CLI.add_argument("--minima_threshold", nargs='?', type=float)
-    CLI.add_argument("--minima_windowsize", nargs='?', type=int)
+    CLI.add_argument("--transition_phase", nargs='?', type=float)
+    # CLI.add_argument("--lowcut", nargs='?', type=float)
+    # CLI.add_argument("--highcut", nargs='?', type=float)
+    # CLI.add_argument("--order", nargs='?', type=int)
+    # CLI.add_argument("--minima_threshold", nargs='?', type=float)
+    # CLI.add_argument("--minima_windowsize", nargs='?', type=int)
 
     args = CLI.parse_args()
 
@@ -138,6 +116,7 @@ if __name__ == '__main__':
                              # threshold=args.minima_threshold,
                              # window_size=args.minima_windowsize,
                              sampling_rate=images.sampling_rate,
+                             transition_phase = args.transition_phase,
                              # filter_lowcut=args.lowcut,
                              # filter_highcut=args.highcut,
                              # filter_order=args.order,

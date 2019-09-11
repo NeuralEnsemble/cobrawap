@@ -22,6 +22,7 @@ BUTTER_HIGHCUT = config["BUTTER_HIGHCUT"]
 BUTTER_ORDER = config["BUTTER_ORDER"]
 MINIMA_THRESHOLD = config["MINIMA_THRESHOLD"]
 MINIMA_WINDOWSIZE = config["MINIMA_WINDOWSIZE"]
+TRANSITION_PHASE = config["TRANSITION_PHASE"]
 
 # ToDo: write a parameter check function
 # if '--nolock' not in sys.argv:
@@ -203,24 +204,25 @@ rule img_up_detection:
                                  'preprocessed_images.nix'),
         script = "scripts/img_up_detection.py"
     params:
-        lowcut = BUTTER_LOWCUT,
-        highcut = BUTTER_HIGHCUT,
-        order = BUTTER_ORDER,
-        minima_threshold = MINIMA_THRESHOLD,
-        minima_windowsize = MINIMA_WINDOWSIZE
+        # lowcut = BUTTER_LOWCUT,
+        # highcut = BUTTER_HIGHCUT,
+        # order = BUTTER_ORDER,
+        # minima_threshold = MINIMA_THRESHOLD,
+        # minima_windowsize = MINIMA_WINDOWSIZE
+        transition_phase = TRANSITION_PHASE
     output:
         os.path.join(output_path, '{image_path}', 'up_transitions.nix')
     shell:
         """
         python {input.script} --image_file {input.image_nix} \
                               --out_signal {output} \
-                              --lowcut {params.lowcut} \
-                              --highcut {params.highcut} \
-                              --order {params.order} \
-                              --minima_threshold {params.minima_threshold} \
-                              --minima_windowsize {params.minima_windowsize}
-
+                              --transition_phase {params.transition_phase}
         """
+                              # --lowcut {params.lowcut} \
+                              # --highcut {params.highcut} \
+                              # --order {params.order} \
+                              # --minima_threshold {params.minima_threshold} \
+                              # --minima_windowsize {params.minima_windowsize}
 
 rule img_plot_signal:
     input:

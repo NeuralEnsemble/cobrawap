@@ -11,8 +11,10 @@ FREQ_BAND: [200, 1500]
 
 # Minimal duration of a state to be detected
 # in bins of the estimated MUA signal.
-# MUA binsize ~ MIN_FREQ_BAND / sampling_rate^2
-MIN_STATE_DURATION: 3
+# MUA binsize ~ 1 / MIN_FREQ_BAND
+MIN_STATE_DURATION: 7
+# When true, short down states are removed before short up states.
+REMOVE_DOWN_FIRST: True
 
 # Threshold for detecting up states;
 # the threshold can either have a fixed value across channels
@@ -21,7 +23,7 @@ MIN_STATE_DURATION: 3
 # (corresponding to respective Gaussian fit)
 # FIXED_THRESHOLD has priority, 0 = None
 FIXED_THRESHOLD: 0
-SIGMA_THRESHOLD: 2
+SIGMA_THRESHOLD: 3
 
 # Detrending: 0 - no detrending;
 #             1 - mean detrending;
@@ -31,8 +33,8 @@ SIGMA_THRESHOLD: 2
 DETRENDING_ORDER: 2
 
 # Settings to be passed to the welch_psd function of elephant
-PSD_OVERLAP: 0.5
-PSD_FREQ_RES: 5 # Hz
+PSD_OVERLAP: 0.7
+PSD_FREQ_RES: 15 # Hz
 
 # Window around state transitions to plot, in bins
 SLOPE_WINDOW: 50

@@ -41,3 +41,8 @@ MINIMA_THRESHOLD: 0
 # Window size (in sample points) around minimum
 # to use for quadratic interpolation
 MINIMA_WINDOWSIZE: 8
+
+# value of phase of the hilbert transform where to define the up transition
+# needs to be negative, since it preceeds a peak (pos. zero-crossing)
+# e.g -pi = -3.141593, or -pi/2 = -1.570796
+TRANSITION_PHASE: -1.570796

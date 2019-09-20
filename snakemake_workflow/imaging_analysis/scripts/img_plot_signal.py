@@ -11,8 +11,7 @@ import scipy
 if __name__ == '__main__':
 
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--preprocessed_signal", nargs='?', type=str)
-    CLI.add_argument("--clean_signal", nargs='?', type=str)
+    CLI.add_argument("--signal", nargs='?', type=str)
     CLI.add_argument("--y", nargs='?', type=int)
     CLI.add_argument("--x", nargs='?', type=int)
     CLI.add_argument("--output", nargs='?', type=str)
@@ -21,33 +20,30 @@ if __name__ == '__main__':
 
     args = CLI.parse_args()
 
-    with neo.NixIO(args.preprocessed_signal) as io:
-        preprocessed_signal = io.read_block().segments[0].analogsignals[0]
+    with neo.NixIO(args.signal) as io:
+        seg = io.read_block().segments[0]
+        up_transitions = seg.spiketrains
+        signal = seg.analogsignals[0]
 
-    with neo.NixIO(args.clean_signal) as io:
-        clean_signal_seg = io.read_block().segments[0]
-
-    up_transitions = clean_signal_seg.spiketrains
-
-    filt_signal = el.signal_processing.butter(preprocessed_signal.as_array()[:,args.x,args.y],
+    filt_signal = el.signal_processing.butter(signal.as_array()[:,args.x,args.y],
                                             highpass_freq=args.lowcut,
                                             lowpass_freq=args.highcut,
                                             order=2,
-                                            fs=preprocessed_signal.sampling_rate)
+                                            fs=signal.sampling_rate)
 
-    hilbert_signal = el.signal_processing.hilbert(preprocessed_signal)
+    hilbert_signal = el.signal_processing.hilbert(signal)
 
-    pixel_pos = preprocessed_signal.shape[2]*args.x + args.y
+    pixel_pos = signal.shape[2]*args.x + args.y
 
     sns.set(style='ticks', palette='Set2', context='paper')
     sns.set_color_codes()
     fig, ax = plt.subplots()
 
-    ax.plot(preprocessed_signal.times,
-            preprocessed_signal.as_array()[:,args.x,args.y],
-            c='b', label='preprocessed_signal')
+    ax.plot(signal.times,
+            signal.as_array()[:,args.x,args.y],
+            c='b', label='preprocessed signal')
 
-    ax.plot(preprocessed_signal.times,
+    ax.plot(signal.times,
             filt_signal,
             c='r',
             label='filtered signal [{}-{} Hz]'.format(args.lowcut, args.highcut))

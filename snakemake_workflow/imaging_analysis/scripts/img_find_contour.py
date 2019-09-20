@@ -105,6 +105,19 @@ def find_contour(image, contour_limit):
 
     return contour
 
+def close_contour(contour, num):
+    dx = contour[-1][0] - contour[0][0]
+    dy = contour[-1][1] - contour[0][1]
+    avg_d = np.mean(np.append(np.abs(np.diff(contour[:,0])),
+                              np.abs(np.diff(contour[:,1]))))
+    num = int(np.sqrt(dx**2 + dy**2) / avg_d)
+    def connect_coords(idx, num):
+        connect = [contour[-1][idx], contour[0][idx]]
+        return np.linspace(connect[0], connect[1], num)
+    contour_connect = np.array([connect_coords(i, num)
+                                for i in range(2)]).T
+    return np.concatenate((contour, contour_connect))
+    
 
 def contour2mask(contour, dim_x, dim_y):
     mask = np.zeros((dim_x, dim_y), dtype=bool)
@@ -155,6 +168,8 @@ if __name__ == '__main__':
     contour = find_contour(image=img_frame,
                            contour_limit=args.contour_limit)
     print(indent, "Mask has been found!")
+
+    contour = close_contour(contour, num=100)
 
     mask = contour2mask(contour=contour,
                         dim_x=img_frame.shape[0],

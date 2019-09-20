@@ -50,7 +50,7 @@ def detect_transitions(signal, times, transition_phase):
             up_transitions = np.append(up_transitions,
                                        transitions[np.argmin(dist)])
 
-    return up_transitions * times.units
+    return np.unique(up_transitions) * times.units
 
 
 def UP_detection(signals, times, t_start, t_stop, sampling_rate,

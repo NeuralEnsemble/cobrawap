@@ -124,34 +124,44 @@ rule img_preprocessing:
                               --output {output} \
         """
 
-rule img_plot_movie:
+rule img_plot_movie_frames:
     input:
         image_nix = os.path.join(output_path, '{image_path}',
-                                 'preprocessed_images.nix'),
-        script = "scripts/img_plot_movie.py",
+                                 '{file}.nix'),
+        script = "scripts/img_plot_movie_frames.py",
     params:
-        fps = 8,
         frame_name = 'frame',
         frame_format = SAVE_IMAGE_FORMAT,
-        quality = 0,
-        scale_x = 1080,
-        scale_y = 1080,
     output:
         frame_folder = directory(os.path.join(output_path,
-                                              '{image_path}', 'frames')),
-        movie = os.path.join(output_path,
-                             '{image_path}', 'preprocessed_images.mp4')
+                                              '{image_path}', '{file}_frames')),
     shell:
         """
         python {input.script} --image_file {input.image_nix} \
                               --frame_folder {output.frame_folder} \
-                              --out_movie {output.movie} \
-                              --fps {params.fps} \
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
-                              --quality {params.quality} \
-                              --scale_x {params.scale_x} \
-                              --scale_y {params.scale_y} \
+        """
+
+rule img_plot_movie:
+    input:
+        os.path.join(output_path, '{image_path}', '{file}_frames')
+    output:
+        os.path.join(output_path, '{image_path}', '{file}.mp4')
+    params:
+        frame_path = lambda wildcards, input: os.path.join(input[0],
+                                                'frame_%05d.{}'\
+                                                .format(SAVE_IMAGE_FORMAT)),
+        quality = 0,
+        scale_x = 1080,
+        scale_y = 1080,
+        fps = 15
+    shell:
+        """
+        ffmpeg -y -i {params.frame_path} -q {params.quality} \
+               -crf {params.quality} \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               -r {params.fps} {output}
         """
 
 rule img_to_neo:
@@ -224,11 +234,34 @@ rule img_up_detection:
                               # --minima_threshold {params.minima_threshold} \
                               # --minima_windowsize {params.minima_windowsize}
 
+
+rule img_wavefront_velocity:
+    input:
+        waves = os.path.join(output_path, '{image_path}', 'up_transitions.nix'),
+        contour = os.path.join(output_path, '{image_path}', 'contour.npy'),
+        script = "scripts/img_calc_velocity.py"
+    params:
+        min_pixelfrac = 0.005,  # % of active pixels involved in wave front
+        max_fiterror = 0.18,  # std of linear fit
+        max_rotation = 0.12, # rad
+        min_frames = 3 # number of sucessive frames showing a wave
+    output:
+        os.path.join(output_path, '{image_path}', 'wavefront_velocities.npy')
+    shell:
+        """
+        python {input.script} --waves {input.waves} \
+                              --output {output} \
+                              --contour {input.contour} \
+                              --min_pixelfrac {params.min_pixelfrac} \
+                              --max_fiterror {params.max_fiterror} \
+                              --max_rotation {params.max_rotation} \
+                              --min_frames {params.min_frames}
+        """
+
+
 rule img_plot_signal:
     input:
-        preprocessed_signal = os.path.join(output_path, '{image_path}',
-                                           'preprocessed_images.nix'),
-        clean_signal = os.path.join(output_path, '{image_path}',
+        signal = os.path.join(output_path, '{image_path}',
                                     'up_transitions.nix'),
         script = "scripts/img_plot_signal.py"
     params:
@@ -239,11 +272,10 @@ rule img_plot_signal:
                      'signal_pixel_{x}_{y}'+'.{}'.format(SAVE_IMAGE_FORMAT))
     shell:
         """
-        python {input.script} --preprocessed_signal {input.preprocessed_signal} \
+        python {input.script} --signal {input.signal} \
                               --output {output} \
                               --x {wildcards.x} \
                               --y {wildcards.y} \
                               --highcut {params.highcut} \
                               --lowcut {params.lowcut} \
-                              --clean_signal {input.clean_signal} \
         """

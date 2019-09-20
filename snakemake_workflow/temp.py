@@ -20,6 +20,6 @@ with neo.NixIO(os.path.join(fp_dir, 'UD_states.nix')) as io:
     fp_ups = io.read_block().segments[0].spiketrains
 
 fig, ax = plt.subplots(figsize=(10,10))
-rasterplot([up.time_slice(0*pq.s, 10*pq.s) for up in fp_ups], 
+rasterplot([up.time_slice(0*pq.s, 10*pq.s) for up in fp_ups],
            ax=ax, key_list=['channel_ids'], labelkey='channel_ids')
 plt.show()

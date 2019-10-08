@@ -158,11 +158,24 @@ rule img_plot_movie:
         fps = 15
     shell:
         """
-        ffmpeg -y -i {params.frame_path} -q {params.quality} \
+        ffmpeg -y -framerate {params.fps} \
+               -i {params.frame_path} -q {params.quality} \
                -crf {params.quality} \
                -vf scale={params.scale_x}:{params.scale_y} \
-               -r {params.fps} {output}
+               {output}
         """
+
+rule mp4_to_webm:
+    input:
+        '{file_path}.mp4'
+    output:
+        '{file_path}.webm'
+    shell:
+        """
+        ffmpeg -i {input} -vcodec libvpx -acodec libvorbis {output}
+        """
+
+
 
 rule img_to_neo:
     input:

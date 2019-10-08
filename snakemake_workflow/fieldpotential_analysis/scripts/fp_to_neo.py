@@ -5,6 +5,7 @@ import quantities as pq
 import re
 import numpy as np
 
+
 def enrich(segment, grid_size, electrode_location, electrode_color,
            annotation_name, electrode_coordinates, file_origin):
     for (i, asig) in enumerate(segment.analogsignals):
@@ -12,6 +13,8 @@ def enrich(segment, grid_size, electrode_location, electrode_color,
         channel = asig.annotations[annotation_name]
         if isinstance(channel, (list, np.ndarray)):
             channel = channel[0]
+        if str(channel) not in electrode_coordinates.keys():
+            raise Warning("The channel index {} can't be allocated".format(channel))
         for element in electrode_location:
             if int(channel) in electrode_location[element]:
                 segment.analogsignals[i].annotations['cortical_location'] = \
@@ -75,6 +78,7 @@ if __name__ == '__main__':
     data_dir = os.path.dirname(args.output)
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
+
 
     block = neo.core.Block(name='Results of {}'\
                                 .format(os.path.basename(__file__)))

@@ -282,11 +282,13 @@ rule fp_plot_movie:
         quality = 0,
         scale_x = 1080,
         scale_y = 1080,
-        fps = 15
+        fps = 10
     shell:
         """
-        ffmpeg -y -i {params.frame_path} -q {params.quality} \
+        ffmpeg -y -framerate {params.fps} \
+               -i {params.frame_path} \
+               -q {params.quality} \
                -crf {params.quality} \
                -vf scale={params.scale_x}:{params.scale_y} \
-               -r {params.fps} {output}
+               {output}
         """

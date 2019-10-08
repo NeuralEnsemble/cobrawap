@@ -35,30 +35,30 @@ if __name__ == '__main__':
 
     pixel_pos = signal.shape[2]*args.x + args.y
 
-    sns.set(style='ticks', palette='Set2', context='paper')
+    sns.set(style='ticks', palette='Set2', context='talk')
     sns.set_color_codes()
     fig, ax = plt.subplots()
 
     ax.plot(signal.times,
             signal.as_array()[:,args.x,args.y],
-            c='b', label='preprocessed signal')
+            label=r'Ca$^+$ Signal')
 
-    ax.plot(signal.times,
-            filt_signal,
-            c='r',
-            label='filtered signal [{}-{} Hz]'.format(args.lowcut, args.highcut))
+    # ax.plot(signal.times,
+    #         filt_signal,
+    #         c='r',
+    #         label='filtered signal [{}-{} Hz]'.format(args.lowcut, args.highcut))
 
     ax.plot(hilbert_signal.times,
-            np.angle(hilbert_signal.as_array()[:,args.x,args.y])/3.,
-            c='k',
-            label='Phase Hilbert')
+            np.angle(hilbert_signal.as_array()[:,args.x,args.y])/np.pi,
+            color = 'k',
+            label=r'Hilbert Phase [$\pi$]')
 
     ax.plot(up_transitions[pixel_pos],
-            np.zeros_like(up_transitions[pixel_pos]),
-            linestyle='None', marker='.', color='k', label='minima')
+            np.zeros_like(up_transitions[pixel_pos]), color='r',
+            linestyle='None', marker='D', markersize=5, label='Up Transitions')
 
     ax.set_xlabel('time [s]')
-    ax.set_ylabel(r'Ca$^+$ signal')
+    # ax.set_ylabel(r'Ca$^+$ signal')
     ax.set_title('signal of pixel ({},{})'.format(args.x,args.y))
     plt.legend()
     plt.tight_layout()

@@ -4,7 +4,6 @@ import neo
 import argparse
 import os
 
-
 def detrending(asig, order):
     # ToDo: Improve algorithm and include into elephant
     # ToDo: return neo.Analogsignal
@@ -32,12 +31,9 @@ def build_logMUA_segment(segment, freq_band, detrending_order, psd_overlap):
     logMUA_segment = neo.core.Segment(name='Segment logMUA')
 
     for asig in segment.analogsignals:
-        del_keys = ['nix_name', 'neo_name']
-        for k in del_keys:
-            if k in asig.annotations:
-                del asig.annotations[k]
         logMUA_asig = logMUA_estimation(asig, fs, sample_num, FFTWindowSize,
-                                        freq_band, MUA_sampling_rate, detrending_order, psd_overlap)
+                                        freq_band, MUA_sampling_rate,
+                                        detrending_order, psd_overlap)
         logMUA_segment.analogsignals.append(logMUA_asig)
 
     return logMUA_segment
@@ -63,7 +59,7 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
         low_idx = np.where(freq_band[0] <= f)[0][0]
         high_idx = np.where(freq_band[1] <= f)[0][0]
         MUA[i] = np.mean(p[low_idx:high_idx])
-    # ToDo: Fix bug that loading routine works with 'dimensionless' units
+
     logMUA_asig = neo.core.AnalogSignal(np.log(MUA),
                                         units='dimensionless',
                                         t_start=analogsignal.t_start,
@@ -80,6 +76,14 @@ def logMUA_estimation(analogsignal, fs, sample_num, FFTWindowSize, freq_band,
 
     # ToDo: Normalization with basline power?
 
+def remove_duplicate_properties(objects, del_keys=['nix_name', 'neo_name']):
+    if type(objects) != list:
+        objects = [objects]
+    for i in range(len(objects)):
+        for k in del_keys:
+            if k in objects[i].annotations:
+                del objects[i].annotations[k]
+    return None
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
@@ -93,6 +97,8 @@ if __name__ == '__main__':
 
     with neo.NixIO(args.data) as io:
         segment = io.read_block().segments[0]
+
+    remove_duplicate_properties([asig for asig in segment.analogsignals])
 
     logMUA_segment = build_logMUA_segment(segment,
                                           freq_band=args.freq_band,

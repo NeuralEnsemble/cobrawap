@@ -1,0 +1,131 @@
+{
+  "build": "hf484d3e_1002",
+  "build_number": 1002,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "libgcc-ng >=7.3.0",
+    "libstdcxx-ng >=7.3.0"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/expat-2.2.5-hf484d3e_1002",
+  "features": "",
+  "files": [
+    "bin/xmlwf",
+    "include/expat.h",
+    "include/expat_config.h",
+    "include/expat_external.h",
+    "lib/libexpat.a",
+    "lib/libexpat.so",
+    "lib/libexpat.so.1",
+    "lib/libexpat.so.1.6.7",
+    "lib/pkgconfig/expat.pc",
+    "share/doc/expat/AUTHORS",
+    "share/doc/expat/changelog",
+    "share/man/man1/xmlwf.1"
+  ],
+  "fn": "expat-2.2.5-hf484d3e_1002.tar.bz2",
+  "license": "MIT",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/expat-2.2.5-hf484d3e_1002",
+    "type": 1
+  },
+  "md5": "ca8c734252067fd82ceb266f8a46fff9",
+  "name": "expat",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/expat-2.2.5-hf484d3e_1002.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "bin/xmlwf",
+        "path_type": "hardlink",
+        "sha256": "62275f30e6f35982c0084afe51adcfe6fff17ff79a249bca69930d841752620e",
+        "sha256_in_prefix": "62275f30e6f35982c0084afe51adcfe6fff17ff79a249bca69930d841752620e",
+        "size_in_bytes": 41376
+      },
+      {
+        "_path": "include/expat.h",
+        "path_type": "hardlink",
+        "sha256": "279e957814e08b441e2f20a4d0fbbc146abb7eb1c5cbeccd0fafd53947c9fe1a",
+        "sha256_in_prefix": "279e957814e08b441e2f20a4d0fbbc146abb7eb1c5cbeccd0fafd53947c9fe1a",
+        "size_in_bytes": 43512
+      },
+      {
+        "_path": "include/expat_config.h",
+        "path_type": "hardlink",
+        "sha256": "e4072928d6695b19e1d5a67a29568adf430af7fff18ed03525b958af8cb46fc0",
+        "sha256_in_prefix": "e4072928d6695b19e1d5a67a29568adf430af7fff18ed03525b958af8cb46fc0",
+        "size_in_bytes": 3520
+      },
+      {
+        "_path": "include/expat_external.h",
+        "path_type": "hardlink",
+        "sha256": "ea1076d7b1f763a5da0f8291003a8bdd9887ff28ceae62a070ade57f3a93a0cf",
+        "sha256_in_prefix": "ea1076d7b1f763a5da0f8291003a8bdd9887ff28ceae62a070ade57f3a93a0cf",
+        "size_in_bytes": 5532
+      },
+      {
+        "_path": "lib/libexpat.a",
+        "path_type": "hardlink",
+        "sha256": "4d647046847da05801a4f5a53b142e28dafb1edbaffcc4c9bb9bc7ae825802bc",
+        "sha256_in_prefix": "4d647046847da05801a4f5a53b142e28dafb1edbaffcc4c9bb9bc7ae825802bc",
+        "size_in_bytes": 472810
+      },
+      {
+        "_path": "lib/libexpat.so",
+        "path_type": "softlink",
+        "sha256": "80e931ed5712344b3ddcedd4413fa09d47993c358b1ba8a4c916fa52c01996a9",
+        "size_in_bytes": 225424
+      },
+      {
+        "_path": "lib/libexpat.so.1",
+        "path_type": "softlink",
+        "sha256": "80e931ed5712344b3ddcedd4413fa09d47993c358b1ba8a4c916fa52c01996a9",
+        "size_in_bytes": 225424
+      },
+      {
+        "_path": "lib/libexpat.so.1.6.7",
+        "path_type": "hardlink",
+        "sha256": "80e931ed5712344b3ddcedd4413fa09d47993c358b1ba8a4c916fa52c01996a9",
+        "sha256_in_prefix": "80e931ed5712344b3ddcedd4413fa09d47993c358b1ba8a4c916fa52c01996a9",
+        "size_in_bytes": 225424
+      },
+      {
+        "_path": "lib/pkgconfig/expat.pc",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "1fba20b9021c0679ccd01b257f79a8928cf4600a5739d64f1a785d605b3bc115",
+        "sha256_in_prefix": "eb1903517f8a7d7f2c17fdd1945bf68c33ea89b62b3361ee2d127536d268dd95",
+        "size_in_bytes": 254
+      },
+      {
+        "_path": "share/doc/expat/AUTHORS",
+        "path_type": "hardlink",
+        "sha256": "59f14371c6b75912cfebb46e6247ee5146766e803a0365b124e5d3011e7d0877",
+        "sha256_in_prefix": "59f14371c6b75912cfebb46e6247ee5146766e803a0365b124e5d3011e7d0877",
+        "size_in_bytes": 142
+      },
+      {
+        "_path": "share/doc/expat/changelog",
+        "path_type": "hardlink",
+        "sha256": "7fb461313dbdff6f0a292244419b7232d726f8a2b633b9d061381107a2e3aaca",
+        "sha256_in_prefix": "7fb461313dbdff6f0a292244419b7232d726f8a2b633b9d061381107a2e3aaca",
+        "size_in_bytes": 28237
+      },
+      {
+        "_path": "share/man/man1/xmlwf.1",
+        "path_type": "hardlink",
+        "sha256": "238e415bccfe872dc0d8efe507831b7f1af8c167af6418bca4d61d15cf70c78d",
+        "sha256_in_prefix": "238e415bccfe872dc0d8efe507831b7f1af8c167af6418bca4d61d15cf70c78d",
+        "size_in_bytes": 8351
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 189183,
+  "subdir": "linux-64",
+  "timestamp": 1536850595520,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/expat-2.2.5-hf484d3e_1002.tar.bz2",
+  "version": "2.2.5"
+}

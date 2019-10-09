@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkRange: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="data.html" title="Basic accessible data types">
+<link rel="prev" href="data.html" title="Basic accessible data types">
+<link rel="next" href="AtkRelation.html" title="AtkRelation">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#atk-AtkRange.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="data.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="data.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkRelation.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="atk-AtkRange"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="atk-AtkRange.top_of_page"></a>AtkRange</span></h2>
+<p>AtkRange — A given range or subrange, to be used with <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a></p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="atk-AtkRange.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">AtkRange</span> *
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-copy" title="atk_range_copy ()">atk_range_copy</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-free" title="atk_range_free ()">atk_range_free</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gdouble</span>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-get-lower-limit" title="atk_range_get_lower_limit ()">atk_range_get_lower_limit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gdouble</span>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-get-upper-limit" title="atk_range_get_upper_limit ()">atk_range_get_upper_limit</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-get-description" title="atk_range_get_description ()">atk_range_get_description</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">AtkRange</span> *
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-new" title="atk_range_new ()">atk_range_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GType</span>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkRange.html#atk-range-get-type" title="atk_range_get_type ()">atk_range_get_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkRange.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="define_keyword">#define</td>
+<td class="function_name"><a class="link" href="atk-AtkRange.html#ATK-TYPE-RANGE:CAPS" title="ATK_TYPE_RANGE">ATK_TYPE_RANGE</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkRange.description"></a><h2>Description</h2>
+<p><span class="type">AtkRange</span> are used on <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a>, in order to represent the full
+range of a given component (for example an slider or a range
+control), or to define each individual subrange this full range is
+splitted if available. See <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> documentation for further
+details.</p>
+</div>
+<div class="refsect1">
+<a name="atk-AtkRange.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-range-copy"></a><h3>atk_range_copy ()</h3>
+<pre class="programlisting"><span class="returnvalue">AtkRange</span> *
+atk_range_copy (<em class="parameter"><code><span class="type">AtkRange</span> *src</code></em>);</pre>
+<p>Returns a new <span class="type">AtkRange</span> that is a exact copy of <em class="parameter"><code>src</code></em>
+</p>
+<div class="refsect3">
+<a name="atk-range-copy.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>src</p></td>
+<td class="parameter_description"><p><span class="type">AtkRange</span> to copy</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-range-copy.returns"></a><h4>Returns</h4>
+<p> a new <span class="type">AtkRange</span> copy of <em class="parameter"><code>src</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-free"></a><h3>atk_range_free ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_range_free (<em class="parameter"><code><span class="type">AtkRange</span> *range</code></em>);</pre>
+<p>Free <em class="parameter"><code>range</code></em>
+</p>
+<div class="refsect3">
+<a name="atk-range-free.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>range</p></td>
+<td class="parameter_description"><p><span class="type">AtkRange</span> to free</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-get-lower-limit"></a><h3>atk_range_get_lower_limit ()</h3>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>
+atk_range_get_lower_limit (<em class="parameter"><code><span class="type">AtkRange</span> *range</code></em>);</pre>
+<p>Returns the lower limit of <em class="parameter"><code>range</code></em>
+</p>
+<div class="refsect3">
+<a name="atk-range-get-lower-limit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>range</p></td>
+<td class="parameter_description"><p>an <span class="type">AtkRange</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-range-get-lower-limit.returns"></a><h4>Returns</h4>
+<p> the lower limit of <em class="parameter"><code>range</code></em>
+</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-get-upper-limit"></a><h3>atk_range_get_upper_limit ()</h3>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>
+atk_range_get_upper_limit (<em class="parameter"><code><span class="type">AtkRange</span> *range</code></em>);</pre>
+<p>Returns the upper limit of <em class="parameter"><code>range</code></em>
+</p>
+<div class="refsect3">
+<a name="atk-range-get-upper-limit.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>range</p></td>
+<td class="parameter_description"><p>an <span class="type">AtkRange</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-range-get-upper-limit.returns"></a><h4>Returns</h4>
+<p> the upper limit of <em class="parameter"><code>range</code></em>
+</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-get-description"></a><h3>atk_range_get_description ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_range_get_description (<em class="parameter"><code><span class="type">AtkRange</span> *range</code></em>);</pre>
+<p>Returns the human readable description of <em class="parameter"><code>range</code></em>
+</p>
+<div class="refsect3">
+<a name="atk-range-get-description.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>range</p></td>
+<td class="parameter_description"><p>an <span class="type">AtkRange</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-range-get-description.returns"></a><h4>Returns</h4>
+<p> the human-readable description of <em class="parameter"><code>range</code></em>
+</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-new"></a><h3>atk_range_new ()</h3>
+<pre class="programlisting"><span class="returnvalue">AtkRange</span> *
+atk_range_new (<em class="parameter"><code><span class="type">gdouble</span> lower_limit</code></em>,
+               <em class="parameter"><code><span class="type">gdouble</span> upper_limit</code></em>,
+               <em class="parameter"><code>const <span class="type">gchar</span> *description</code></em>);</pre>
+<p>Creates a new <span class="type">AtkRange</span>.</p>
+<div class="refsect3">
+<a name="atk-range-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>lower_limit</p></td>
+<td class="parameter_description"><p>inferior limit for this range</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>upper_limit</p></td>
+<td class="parameter_description"><p>superior limit for this range</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>description</p></td>
+<td class="parameter_description"><p>human readable description of this range.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-range-new.returns"></a><h4>Returns</h4>
+<p> a new <span class="type">AtkRange</span>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-range-get-type"></a><h3>atk_range_get_type ()</h3>
+<pre class="programlisting"><span class="returnvalue">GType</span>
+atk_range_get_type (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkRange.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="ATK-TYPE-RANGE:CAPS"></a><h3>ATK_TYPE_RANGE</h3>
+<pre class="programlisting">#define ATK_TYPE_RANGE         (atk_range_get_type ())
+</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

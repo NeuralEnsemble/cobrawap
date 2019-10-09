@@ -1,0 +1,43 @@
+CONFIG +=  compile_examples system-sqlite qpa largefile use_gold_linker enable_new_dtags sse2 sse3 ssse3 sse4_1 sse4_2 pcre
+QT_BUILD_PARTS += libs tools
+QT_SKIP_MODULES +=  qtenginio qtlocation qtsensors qtserialport qtserialbus qtquickcontrols2 qtwayland qtcanvas3d qt3d qtwebengine
+QT_NO_DEFINES =  ALSA CUPS EGL EGLFS EGL_X11 ICONV IMAGEFORMAT_JPEG LIBPROXY OPENVG PULSEAUDIO TSLIB ZLIB
+QT_QCONFIG_PATH = 
+host_build {
+    QT_CPU_FEATURES.x86_64 =  cx16 mmx sse sse2 sse3
+} else {
+    QT_CPU_FEATURES.x86_64 =  cx16 mmx sse sse2 sse3
+}
+QT_COORD_TYPE = double
+QT_CFLAGS_SQLITE   = -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include  
+QT_LFLAGS_SQLITE   = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lsqlite3  
+QT_LFLAGS_ODBC   = -lodbc
+QMAKE_AR = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-ar cqs
+QMAKE_RANLIB = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-ranlib
+QMAKE_STRIP = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-strip
+QMAKE_OBJDUMP = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-objdump
+QMAKE_LINK = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-c++
+QMAKE_CC = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-cc
+QMAKE_CXX = /home/conda/feedstock_root/build_artifacts/qt_1548879054661/_build_env/bin/x86_64-conda_cos6-linux-gnu-c++
+styles += mac fusion windows
+DEFINES += QT_NO_MTDEV
+QT_LIBS_DBUS = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -ldbus-1  
+QT_CFLAGS_DBUS = -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/dbus-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/dbus-1.0/include  
+QT_HOST_CFLAGS_DBUS = -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/dbus-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/dbus-1.0/include  
+QT_CFLAGS_GLIB = -pthread -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/glib-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/glib-2.0/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include  
+QT_LIBS_GLIB = -pthread -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lgthread-2.0 -lglib-2.0  
+QT_CFLAGS_QGTKSTYLE = -pthread -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/gtk-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/gtk-2.0/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/atk-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/cairo -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/gdk-pixbuf-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/pango-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/glib-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/glib-2.0/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/harfbuzz -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/freetype2 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/uuid -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/libxml2 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/pixman-1 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/libpng16  
+QT_LIBS_QGTKSTYLE = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lgobject-2.0 -lglib-2.0  
+QT_CFLAGS_QGTK2 = -pthread -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/gtk-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/gtk-2.0/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/atk-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/cairo -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/gdk-pixbuf-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/pango-1.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/glib-2.0 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib/glib-2.0/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/harfbuzz -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/freetype2 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/uuid -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/libxml2 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/pixman-1 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/libpng16  
+QT_LIBS_QGTK2 = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lgtk-x11-2.0 -lgdk-x11-2.0 -latk-1.0 -lgio-2.0 -lpangoft2-1.0 -lpangocairo-1.0 -lgdk_pixbuf-2.0 -lcairo -lpango-1.0 -lfontconfig -lgobject-2.0 -lglib-2.0 -lfreetype  
+QMAKE_CFLAGS_FONTCONFIG = -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/uuid -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/libxml2 -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include/freetype2  
+QMAKE_LIBS_FONTCONFIG = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lfontconfig -lfreetype  
+DEFINES += QT_NO_LIBUDEV
+DEFINES += QT_NO_TSLIB
+DEFINES += QT_NO_LIBINPUT
+QMAKE_X11_PREFIX = /home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4
+QMAKE_XKB_CONFIG_ROOT = /home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib
+QMAKE_CFLAGS_XCB = -I/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/include  
+QMAKE_LIBS_XCB = -L/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/29b0d5f4/lib -lxcb  
+sql-drivers = 
+sql-plugins =  sqlite

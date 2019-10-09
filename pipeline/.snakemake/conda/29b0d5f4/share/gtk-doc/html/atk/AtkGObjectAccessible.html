@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkGObjectAccessible: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="accessibles.html" title="Custom accessible objects">
+<link rel="prev" href="accessibles.html" title="Custom accessible objects">
+<link rel="next" href="AtkHyperlink.html" title="AtkHyperlink">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkGObjectAccessible.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkGObjectAccessible.object-hierarchy" class="shortcut">Object Hierarchy</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="accessibles.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="accessibles.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkHyperlink.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkGObjectAccessible"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkGObjectAccessible.top_of_page"></a>AtkGObjectAccessible</span></h2>
+<p>AtkGObjectAccessible — This object class is derived from AtkObject and
+ can be used as a basis implementing accessible objects.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkGObjectAccessible.html#atk-gobject-accessible-for-object" title="atk_gobject_accessible_for_object ()">atk_gobject_accessible_for_object</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GObject</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkGObjectAccessible.html#atk-gobject-accessible-get-object" title="atk_gobject_accessible_get_object ()">atk_gobject_accessible_get_object</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkGObjectAccessible.html#AtkGObjectAccessible-struct" title="struct AtkGObjectAccessible">AtkGObjectAccessible</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> <a class="link" href="AtkObject.html" title="AtkObject">AtkObject</a>
+        <span class="lineart">╰──</span> AtkGObjectAccessible
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.description"></a><h2>Description</h2>
+<p>This object class is derived from AtkObject. It can be used as a
+basis for implementing accessible objects for GObjects which are
+not derived from GtkWidget. One example of its use is in providing
+an accessible object for GnomeCanvasItem in the GAIL library.</p>
+</div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-gobject-accessible-for-object"></a><h3>atk_gobject_accessible_for_object ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_gobject_accessible_for_object (<em class="parameter"><code><span class="type">GObject</span> *obj</code></em>);</pre>
+<p>Gets the accessible object for the specified <em class="parameter"><code>obj</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-gobject-accessible-for-object.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-gobject-accessible-for-object.returns"></a><h4>Returns</h4>
+<p> a <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> which is the accessible object for
+the <em class="parameter"><code>obj</code></em>
+. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-gobject-accessible-get-object"></a><h3>atk_gobject_accessible_get_object ()</h3>
+<pre class="programlisting"><span class="returnvalue">GObject</span> *
+atk_gobject_accessible_get_object (<em class="parameter"><code><a class="link" href="AtkGObjectAccessible.html" title="AtkGObjectAccessible"><span class="type">AtkGObjectAccessible</span></a> *obj</code></em>);</pre>
+<p>Gets the GObject for which <em class="parameter"><code>obj</code></em>
+ is the accessible object.</p>
+<div class="refsect3">
+<a name="atk-gobject-accessible-get-object.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a <a class="link" href="AtkGObjectAccessible.html" title="AtkGObjectAccessible"><span class="type">AtkGObjectAccessible</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-gobject-accessible-get-object.returns"></a><h4>Returns</h4>
+<p> a <span class="type">GObject</span> which is the object for which <em class="parameter"><code>obj</code></em>
+is
+the accessible object. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkGObjectAccessible.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkGObjectAccessible-struct"></a><h3>struct AtkGObjectAccessible</h3>
+<pre class="programlisting">struct AtkGObjectAccessible;</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

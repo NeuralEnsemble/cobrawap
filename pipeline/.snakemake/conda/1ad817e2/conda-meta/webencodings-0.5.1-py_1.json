@@ -1,0 +1,142 @@
+{
+  "build": "py_1",
+  "build_number": 1,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/webencodings-0.5.1-py_1",
+  "features": "",
+  "files": [
+    "lib/python3.7/site-packages/webencodings-0.5.1-py2.7.egg-info/PKG-INFO",
+    "lib/python3.7/site-packages/webencodings-0.5.1-py2.7.egg-info/SOURCES.txt",
+    "lib/python3.7/site-packages/webencodings-0.5.1-py2.7.egg-info/dependency_links.txt",
+    "lib/python3.7/site-packages/webencodings-0.5.1-py2.7.egg-info/installed-files.txt",
+    "lib/python3.7/site-packages/webencodings-0.5.1-py2.7.egg-info/top_level.txt",
+    "lib/python3.7/site-packages/webencodings/__init__.py",
+    "lib/python3.7/site-packages/webencodings/labels.py",
+    "lib/python3.7/site-packages/webencodings/mklabels.py",
+    "lib/python3.7/site-packages/webencodings/tests.py",
+    "lib/python3.7/site-packages/webencodings/x_user_defined.py",
+    "lib/python3.7/site-packages/webencodings/__pycache__/__init__.cpython-37.pyc",
+    "lib/python3.7/site-packages/webencodings/__pycache__/labels.cpython-37.pyc",
+    "lib/python3.7/site-packages/webencodings/__pycache__/mklabels.cpython-37.pyc",
+    "lib/python3.7/site-packages/webencodings/__pycache__/tests.cpython-37.pyc",
+    "lib/python3.7/site-packages/webencodings/__pycache__/x_user_defined.cpython-37.pyc"
+  ],
+  "fn": "webencodings-0.5.1-py_1.tar.bz2",
+  "license": "BSD 3-Clause",
+  "license_family": "BSD",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/webencodings-0.5.1-py_1",
+    "type": 1
+  },
+  "md5": "3563be4c5611a44210d9ba0c16113136",
+  "name": "webencodings",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/webencodings-0.5.1-py_1.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/webencodings-0.5.1-py2.7.egg-info/PKG-INFO",
+        "path_type": "hardlink",
+        "sha256": "a4649fb78eb92cb15da1a27f3f4c2c8dacde8f5c21bf321c87d52fe4b32761b8",
+        "sha256_in_prefix": "a4649fb78eb92cb15da1a27f3f4c2c8dacde8f5c21bf321c87d52fe4b32761b8",
+        "size_in_bytes": 2337
+      },
+      {
+        "_path": "site-packages/webencodings-0.5.1-py2.7.egg-info/SOURCES.txt",
+        "path_type": "hardlink",
+        "sha256": "29312b6c192edb8404756d74d8d244ec4715db587ac5b4c460a450d46632b761",
+        "sha256_in_prefix": "29312b6c192edb8404756d74d8d244ec4715db587ac5b4c460a450d46632b761",
+        "size_in_bytes": 290
+      },
+      {
+        "_path": "site-packages/webencodings-0.5.1-py2.7.egg-info/dependency_links.txt",
+        "path_type": "hardlink",
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "sha256_in_prefix": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "size_in_bytes": 1
+      },
+      {
+        "_path": "site-packages/webencodings-0.5.1-py2.7.egg-info/installed-files.txt",
+        "path_type": "hardlink",
+        "sha256": "15f3b1557670d65f42c7ebb22f83e44325d412e402398bc921e54eff5de92db0",
+        "sha256_in_prefix": "15f3b1557670d65f42c7ebb22f83e44325d412e402398bc921e54eff5de92db0",
+        "size_in_bytes": 343
+      },
+      {
+        "_path": "site-packages/webencodings-0.5.1-py2.7.egg-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "6d9b3f6991d27ff3cd95f2070f8f81113266462f7d04974a2eb396eeb42781ea",
+        "sha256_in_prefix": "6d9b3f6991d27ff3cd95f2070f8f81113266462f7d04974a2eb396eeb42781ea",
+        "size_in_bytes": 13
+      },
+      {
+        "_path": "site-packages/webencodings/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "a8e04922e3f2ff8072607e96fdb360245faa610d83a14f9d2ac0eee724560978",
+        "sha256_in_prefix": "a8e04922e3f2ff8072607e96fdb360245faa610d83a14f9d2ac0eee724560978",
+        "size_in_bytes": 10579
+      },
+      {
+        "_path": "site-packages/webencodings/labels.py",
+        "path_type": "hardlink",
+        "sha256": "e003bf2b14dd76a1adacbf67b3b9003e36f409c37ac6c088c5b2b7ec763daf71",
+        "sha256_in_prefix": "e003bf2b14dd76a1adacbf67b3b9003e36f409c37ac6c088c5b2b7ec763daf71",
+        "size_in_bytes": 8979
+      },
+      {
+        "_path": "site-packages/webencodings/mklabels.py",
+        "path_type": "hardlink",
+        "sha256": "19821ecb09e968b9cfd064a273c2c55a0774515bcefe5d4d73a62817ef3b47fe",
+        "sha256_in_prefix": "19821ecb09e968b9cfd064a273c2c55a0774515bcefe5d4d73a62817ef3b47fe",
+        "size_in_bytes": 1305
+      },
+      {
+        "_path": "site-packages/webencodings/tests.py",
+        "path_type": "hardlink",
+        "sha256": "3ad18bca384d6357ef916d46bcb27f155f59a2a0bd027ca3afbab79314dbccdb",
+        "sha256_in_prefix": "3ad18bca384d6357ef916d46bcb27f155f59a2a0bd027ca3afbab79314dbccdb",
+        "size_in_bytes": 6563
+      },
+      {
+        "_path": "site-packages/webencodings/x_user_defined.py",
+        "path_type": "hardlink",
+        "sha256": "c8ea9649d9a9cad19f52087f67a258803361a1cf81007cb279e4f5e45af8dad3",
+        "sha256_in_prefix": "c8ea9649d9a9cad19f52087f67a258803361a1cf81007cb279e4f5e45af8dad3",
+        "size_in_bytes": 4307
+      },
+      {
+        "_path": "lib/python3.7/site-packages/webencodings/__pycache__/__init__.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/webencodings/__pycache__/labels.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/webencodings/__pycache__/mklabels.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/webencodings/__pycache__/tests.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/webencodings/__pycache__/x_user_defined.cpython-37.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "webencodings==0.5.1=py_1",
+  "size": 11901,
+  "subdir": "noarch",
+  "timestamp": 1535427077373,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/webencodings-0.5.1-py_1.tar.bz2",
+  "version": "0.5.1"
+}

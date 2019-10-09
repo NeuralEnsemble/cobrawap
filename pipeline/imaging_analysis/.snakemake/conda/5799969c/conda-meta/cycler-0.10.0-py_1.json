@@ -1,0 +1,98 @@
+{
+  "build": "py_1",
+  "build_number": 1,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python",
+    "six"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/cycler-0.10.0-py_1",
+  "features": "",
+  "files": [
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/PKG-INFO",
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/SOURCES.txt",
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/dependency_links.txt",
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/installed-files.txt",
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/requires.txt",
+    "lib/python3.7/site-packages/cycler-0.10.0-py2.7.egg-info/top_level.txt",
+    "lib/python3.7/site-packages/cycler.py",
+    "lib/python3.7/site-packages/__pycache__/cycler.cpython-37.pyc"
+  ],
+  "fn": "cycler-0.10.0-py_1.tar.bz2",
+  "license": "BSD 3-Clause",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/cycler-0.10.0-py_1",
+    "type": 1
+  },
+  "md5": "b2a29b5f20c4d94552ad8f48884ca89c",
+  "name": "cycler",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/cycler-0.10.0-py_1.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/PKG-INFO",
+        "path_type": "hardlink",
+        "sha256": "ce10e11635687c0d15e1439c333b47b7cb4b4e4b2e94e3ba47367ae1a8a2b1b2",
+        "sha256_in_prefix": "ce10e11635687c0d15e1439c333b47b7cb4b4e4b2e94e3ba47367ae1a8a2b1b2",
+        "size_in_bytes": 713
+      },
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/SOURCES.txt",
+        "path_type": "hardlink",
+        "sha256": "d2c15d06a9d506d6dd566a9b83fbe72b362997f494b6f90ee336a94a7ff0e4d8",
+        "sha256_in_prefix": "d2c15d06a9d506d6dd566a9b83fbe72b362997f494b6f90ee336a94a7ff0e4d8",
+        "size_in_bytes": 371
+      },
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/dependency_links.txt",
+        "path_type": "hardlink",
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "sha256_in_prefix": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "size_in_bytes": 1
+      },
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/installed-files.txt",
+        "path_type": "hardlink",
+        "sha256": "f1ecd796c5175f3f5e6fe85ad2d033442bb9d1180c89fcb6f96d37c1a0dad7a7",
+        "sha256_in_prefix": "f1ecd796c5175f3f5e6fe85ad2d033442bb9d1180c89fcb6f96d37c1a0dad7a7",
+        "size_in_bytes": 96
+      },
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/requires.txt",
+        "path_type": "hardlink",
+        "sha256": "fe2547fe2604b445e70fc9d819062960552f9145bdb043b51986e478a4806a2b",
+        "sha256_in_prefix": "fe2547fe2604b445e70fc9d819062960552f9145bdb043b51986e478a4806a2b",
+        "size_in_bytes": 4
+      },
+      {
+        "_path": "site-packages/cycler-0.10.0-py2.7.egg-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "0fc05554374001e94b6f614e133ee50e973af802f6d7294a3eb321b46eb2cf21",
+        "sha256_in_prefix": "0fc05554374001e94b6f614e133ee50e973af802f6d7294a3eb321b46eb2cf21",
+        "size_in_bytes": 7
+      },
+      {
+        "_path": "site-packages/cycler.py",
+        "path_type": "hardlink",
+        "sha256": "79ddc6dfdba7bd5101ac16550f09c4d0516ba1136c38b91b27f4f0213e428c25",
+        "sha256_in_prefix": "79ddc6dfdba7bd5101ac16550f09c4d0516ba1136c38b91b27f4f0213e428c25",
+        "size_in_bytes": 15959
+      },
+      {
+        "_path": "lib/python3.7/site-packages/__pycache__/cycler.cpython-37.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 8480,
+  "subdir": "noarch",
+  "timestamp": 1531075385611,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/cycler-0.10.0-py_1.tar.bz2",
+  "version": "0.10.0"
+}

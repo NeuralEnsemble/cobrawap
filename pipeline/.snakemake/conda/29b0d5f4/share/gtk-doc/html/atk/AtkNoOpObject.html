@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkNoOpObject: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="accessibles.html" title="Custom accessible objects">
+<link rel="prev" href="AtkHyperlink.html" title="AtkHyperlink">
+<link rel="next" href="atk-AtkPlug.html" title="AtkPlug">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkNoOpObject.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkNoOpObject.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_interfaces">  <span class="dim">|</span> 
+                  <a href="#AtkNoOpObject.implemented-interfaces" class="shortcut">Implemented Interfaces</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="accessibles.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="AtkHyperlink.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="atk-AtkPlug.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkNoOpObject"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkNoOpObject.top_of_page"></a>AtkNoOpObject</span></h2>
+<p>AtkNoOpObject — An AtkObject which purports to implement all ATK interfaces.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkNoOpObject.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody><tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkNoOpObject.html#atk-no-op-object-new" title="atk_no_op_object_new ()">atk_no_op_object_new</a> <span class="c_punctuation">()</span>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkNoOpObject.html#AtkNoOpObject-struct" title="struct AtkNoOpObject">AtkNoOpObject</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    GObject
+    <span class="lineart">╰──</span> <a class="link" href="AtkObject.html" title="AtkObject">AtkObject</a>
+        <span class="lineart">╰──</span> AtkNoOpObject
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.implemented-interfaces"></a><h2>Implemented Interfaces</h2>
+<p>
+AtkNoOpObject implements
+ <a class="link" href="AtkComponent.html" title="AtkComponent">AtkComponent</a>,  <a class="link" href="AtkAction.html" title="AtkAction">AtkAction</a>,  <a class="link" href="AtkEditableText.html" title="AtkEditableText">AtkEditableText</a>,  <a class="link" href="AtkImage.html" title="AtkImage">AtkImage</a>,  <a class="link" href="AtkSelection.html" title="AtkSelection">AtkSelection</a>,  <a class="link" href="AtkTable.html" title="AtkTable">AtkTable</a>,  <a class="link" href="AtkTableCell.html" title="AtkTableCell">AtkTableCell</a>,  <a class="link" href="AtkText.html" title="AtkText">AtkText</a>,  <a class="link" href="AtkHypertext.html" title="AtkHypertext">AtkHypertext</a>,  <a class="link" href="AtkValue.html" title="AtkValue">AtkValue</a>,  <a class="link" href="AtkDocument.html" title="AtkDocument">AtkDocument</a> and  <a class="link" href="AtkWindow.html" title="AtkWindow">AtkWindow</a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.description"></a><h2>Description</h2>
+<p>An AtkNoOpObject is an AtkObject which purports to implement all
+ATK interfaces. It is the type of AtkObject which is created if an
+accessible object is requested for an object type for which no
+factory type is specified.</p>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-no-op-object-new"></a><h3>atk_no_op_object_new ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_no_op_object_new (<em class="parameter"><code><span class="type">GObject</span> *obj</code></em>);</pre>
+<p>Provides a default (non-functioning stub) <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>.
+Application maintainers should not use this method.</p>
+<div class="refsect3">
+<a name="atk-no-op-object-new.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-no-op-object-new.returns"></a><h4>Returns</h4>
+<p> a default (non-functioning stub) <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkNoOpObject.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkNoOpObject-struct"></a><h3>struct AtkNoOpObject</h3>
+<pre class="programlisting">struct AtkNoOpObject;</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "build": "h516909a_1004",
+  "build_number": 1004,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "libgcc-ng >=7.3.0"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/xorg-libice-1.0.9-h516909a_1004",
+  "features": "",
+  "files": [
+    "include/X11/ICE/ICE.h",
+    "include/X11/ICE/ICEconn.h",
+    "include/X11/ICE/ICElib.h",
+    "include/X11/ICE/ICEmsg.h",
+    "include/X11/ICE/ICEproto.h",
+    "include/X11/ICE/ICEutil.h",
+    "lib/libICE.so",
+    "lib/libICE.so.6",
+    "lib/libICE.so.6.3.0",
+    "lib/pkgconfig/ice.pc"
+  ],
+  "fn": "xorg-libice-1.0.9-h516909a_1004.tar.bz2",
+  "license": "MIT",
+  "license_family": "MIT",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/xorg-libice-1.0.9-h516909a_1004",
+    "type": 1
+  },
+  "md5": "a67ec5afc91a5d6397a5d81f68c69aed",
+  "name": "xorg-libice",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/xorg-libice-1.0.9-h516909a_1004.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "include/X11/ICE/ICE.h",
+        "path_type": "hardlink",
+        "sha256": "02c40f49cc04745ad83619036d8f8356f5933975c54c7a38d090bc21343d39fb",
+        "sha256_in_prefix": "02c40f49cc04745ad83619036d8f8356f5933975c54c7a38d090bc21343d39fb",
+        "size_in_bytes": 2512
+      },
+      {
+        "_path": "include/X11/ICE/ICEconn.h",
+        "path_type": "hardlink",
+        "sha256": "1d6dd9e045cbe8abcfa0ee67dd563b05a89c287f6e7daa8206637b0d15c09727",
+        "sha256_in_prefix": "1d6dd9e045cbe8abcfa0ee67dd563b05a89c287f6e7daa8206637b0d15c09727",
+        "size_in_bytes": 7413
+      },
+      {
+        "_path": "include/X11/ICE/ICElib.h",
+        "path_type": "hardlink",
+        "sha256": "23a5b0fd150903821238902d2f92eaab117e45745b0fbeebdfdca803a74b59fe",
+        "sha256_in_prefix": "23a5b0fd150903821238902d2f92eaab117e45745b0fbeebdfdca803a74b59fe",
+        "size_in_bytes": 9925
+      },
+      {
+        "_path": "include/X11/ICE/ICEmsg.h",
+        "path_type": "hardlink",
+        "sha256": "23085d142086def908f7bdd71c84538b293cd60439e15806efa1ef59fce708a3",
+        "sha256_in_prefix": "23085d142086def908f7bdd71c84538b293cd60439e15806efa1ef59fce708a3",
+        "size_in_bytes": 8410
+      },
+      {
+        "_path": "include/X11/ICE/ICEproto.h",
+        "path_type": "hardlink",
+        "sha256": "4c1a9244628c628d6c8ff1b5f79cc679fde244cff0807d2bd099dd85ce4e732d",
+        "sha256_in_prefix": "4c1a9244628c628d6c8ff1b5f79cc679fde244cff0807d2bd099dd85ce4e732d",
+        "size_in_bytes": 4668
+      },
+      {
+        "_path": "include/X11/ICE/ICEutil.h",
+        "path_type": "hardlink",
+        "sha256": "3d85cac1f1787953813dc38f3be72ba099581d2cfefa9f335819777bd22b7d9d",
+        "sha256_in_prefix": "3d85cac1f1787953813dc38f3be72ba099581d2cfefa9f335819777bd22b7d9d",
+        "size_in_bytes": 3154
+      },
+      {
+        "_path": "lib/libICE.so",
+        "path_type": "softlink",
+        "sha256": "6547ec45d77041d72c204ad099380793d0fb999d764905186fdf4b0fdfdaaeb0",
+        "size_in_bytes": 120064
+      },
+      {
+        "_path": "lib/libICE.so.6",
+        "path_type": "softlink",
+        "sha256": "6547ec45d77041d72c204ad099380793d0fb999d764905186fdf4b0fdfdaaeb0",
+        "size_in_bytes": 120064
+      },
+      {
+        "_path": "lib/libICE.so.6.3.0",
+        "path_type": "hardlink",
+        "sha256": "6547ec45d77041d72c204ad099380793d0fb999d764905186fdf4b0fdfdaaeb0",
+        "sha256_in_prefix": "6547ec45d77041d72c204ad099380793d0fb999d764905186fdf4b0fdfdaaeb0",
+        "size_in_bytes": 120064
+      },
+      {
+        "_path": "lib/pkgconfig/ice.pc",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "b1ca9975ce23d0b52586809df5dca64dd3a26860fabc061e78053c08b355052f",
+        "sha256_in_prefix": "07c192c7612b5785c073661c7db5739efaee28d1d0f9136aacf8c20e4c84f5e2",
+        "size_in_bytes": 253
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 59156,
+  "subdir": "linux-64",
+  "timestamp": 1552823164145,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/xorg-libice-1.0.9-h516909a_1004.tar.bz2",
+  "version": "1.0.9"
+}

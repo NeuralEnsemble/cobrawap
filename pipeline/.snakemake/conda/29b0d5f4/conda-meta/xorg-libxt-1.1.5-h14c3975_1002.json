@@ -1,0 +1,514 @@
+{
+  "build": "h14c3975_1002",
+  "build_number": 1002,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "libgcc-ng >=7.3.0",
+    "xorg-kbproto",
+    "xorg-libice 1.0.*",
+    "xorg-libsm 1.2.*",
+    "xorg-libx11 1.6.*",
+    "xorg-xproto"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/xorg-libxt-1.1.5-h14c3975_1002",
+  "features": "",
+  "files": [
+    "include/X11/CallbackI.h",
+    "include/X11/Composite.h",
+    "include/X11/CompositeP.h",
+    "include/X11/ConstrainP.h",
+    "include/X11/Constraint.h",
+    "include/X11/ConvertI.h",
+    "include/X11/Core.h",
+    "include/X11/CoreP.h",
+    "include/X11/CreateI.h",
+    "include/X11/EventI.h",
+    "include/X11/HookObjI.h",
+    "include/X11/InitialI.h",
+    "include/X11/Intrinsic.h",
+    "include/X11/IntrinsicI.h",
+    "include/X11/IntrinsicP.h",
+    "include/X11/Object.h",
+    "include/X11/ObjectP.h",
+    "include/X11/PassivGraI.h",
+    "include/X11/RectObj.h",
+    "include/X11/RectObjP.h",
+    "include/X11/ResConfigP.h",
+    "include/X11/ResourceI.h",
+    "include/X11/SelectionI.h",
+    "include/X11/Shell.h",
+    "include/X11/ShellI.h",
+    "include/X11/ShellP.h",
+    "include/X11/StringDefs.h",
+    "include/X11/ThreadsI.h",
+    "include/X11/TranslateI.h",
+    "include/X11/VarargsI.h",
+    "include/X11/Vendor.h",
+    "include/X11/VendorP.h",
+    "include/X11/Xtos.h",
+    "lib/libXt.so",
+    "lib/libXt.so.6",
+    "lib/libXt.so.6.0.0",
+    "lib/pkgconfig/xt.pc",
+    "share/doc/libXt/CH01.xml",
+    "share/doc/libXt/CH02.xml",
+    "share/doc/libXt/CH03.xml",
+    "share/doc/libXt/CH04.xml",
+    "share/doc/libXt/CH05.xml",
+    "share/doc/libXt/CH06.xml",
+    "share/doc/libXt/CH07.xml",
+    "share/doc/libXt/CH08.xml",
+    "share/doc/libXt/CH09.xml",
+    "share/doc/libXt/CH10.xml",
+    "share/doc/libXt/CH11.xml",
+    "share/doc/libXt/CH12.xml",
+    "share/doc/libXt/CH13.xml",
+    "share/doc/libXt/acknowledgement.xml",
+    "share/doc/libXt/appA.xml",
+    "share/doc/libXt/appB.xml",
+    "share/doc/libXt/appC.xml",
+    "share/doc/libXt/appD.xml",
+    "share/doc/libXt/appE.xml",
+    "share/doc/libXt/appF.xml",
+    "share/doc/libXt/intrinsics.xml",
+    "share/doc/libXt/preface.xml"
+  ],
+  "fn": "xorg-libxt-1.1.5-h14c3975_1002.tar.bz2",
+  "license": "MIT",
+  "license_family": "MIT",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/xorg-libxt-1.1.5-h14c3975_1002",
+    "type": 1
+  },
+  "md5": "ea0767a5399204eea43bade971b5f538",
+  "name": "xorg-libxt",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/xorg-libxt-1.1.5-h14c3975_1002.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "include/X11/CallbackI.h",
+        "path_type": "hardlink",
+        "sha256": "6fbd38e3cda31617f1e91889d3a0e103feed3ac99ba04a03e4ed624f9ffd69bb",
+        "sha256_in_prefix": "6fbd38e3cda31617f1e91889d3a0e103feed3ac99ba04a03e4ed624f9ffd69bb",
+        "size_in_bytes": 4042
+      },
+      {
+        "_path": "include/X11/Composite.h",
+        "path_type": "hardlink",
+        "sha256": "023fb1b39de99ae8f3463eadb6b71ddc3e47c61d1844342aa18e7f260cf08d23",
+        "sha256_in_prefix": "023fb1b39de99ae8f3463eadb6b71ddc3e47c61d1844342aa18e7f260cf08d23",
+        "size_in_bytes": 3488
+      },
+      {
+        "_path": "include/X11/CompositeP.h",
+        "path_type": "hardlink",
+        "sha256": "5472eb998f9236e29e4beadd6905b7600238d823258d7eae594776ce1178f7ba",
+        "sha256_in_prefix": "5472eb998f9236e29e4beadd6905b7600238d823258d7eae594776ce1178f7ba",
+        "size_in_bytes": 4713
+      },
+      {
+        "_path": "include/X11/ConstrainP.h",
+        "path_type": "hardlink",
+        "sha256": "c3a6fb487993213b95960db4b7709f022038d4552bc054d3a612555cd68e19ca",
+        "sha256_in_prefix": "c3a6fb487993213b95960db4b7709f022038d4552bc054d3a612555cd68e19ca",
+        "size_in_bytes": 4004
+      },
+      {
+        "_path": "include/X11/Constraint.h",
+        "path_type": "hardlink",
+        "sha256": "4be5c964d8206d96e91a1d32dd3b84ea7e8361129c8dbb4ec55f00ec9b96dbdd",
+        "sha256_in_prefix": "4be5c964d8206d96e91a1d32dd3b84ea7e8361129c8dbb4ec55f00ec9b96dbdd",
+        "size_in_bytes": 2568
+      },
+      {
+        "_path": "include/X11/ConvertI.h",
+        "path_type": "hardlink",
+        "sha256": "157c401750d5082298807ee77fb5a2b1590f82eab8bc89be43413c7da442f607",
+        "sha256_in_prefix": "157c401750d5082298807ee77fb5a2b1590f82eab8bc89be43413c7da442f607",
+        "size_in_bytes": 3401
+      },
+      {
+        "_path": "include/X11/Core.h",
+        "path_type": "hardlink",
+        "sha256": "e8d1d2fdf9438b4720daea5e16ac0205dce82b60c9396c39305bacdd4aca90eb",
+        "sha256_in_prefix": "e8d1d2fdf9438b4720daea5e16ac0205dce82b60c9396c39305bacdd4aca90eb",
+        "size_in_bytes": 2611
+      },
+      {
+        "_path": "include/X11/CoreP.h",
+        "path_type": "hardlink",
+        "sha256": "31d8314fb43fb25a74eb75440abdbd5fb1b53345b9f479301656d355195bfc3b",
+        "sha256_in_prefix": "31d8314fb43fb25a74eb75440abdbd5fb1b53345b9f479301656d355195bfc3b",
+        "size_in_bytes": 8587
+      },
+      {
+        "_path": "include/X11/CreateI.h",
+        "path_type": "hardlink",
+        "sha256": "ef68028c058c3e04e5b9137448e53de09ec9fab60b6b33509fc2a6ca4df42c18",
+        "sha256_in_prefix": "ef68028c058c3e04e5b9137448e53de09ec9fab60b6b33509fc2a6ca4df42c18",
+        "size_in_bytes": 1345
+      },
+      {
+        "_path": "include/X11/EventI.h",
+        "path_type": "hardlink",
+        "sha256": "aa6b49e72eaefd810eff7fc4d9fe8ef54bcb9644ba14ebf9f400f65166bc7205",
+        "sha256_in_prefix": "aa6b49e72eaefd810eff7fc4d9fe8ef54bcb9644ba14ebf9f400f65166bc7205",
+        "size_in_bytes": 4203
+      },
+      {
+        "_path": "include/X11/HookObjI.h",
+        "path_type": "hardlink",
+        "sha256": "4e10bfcb45852f3cdf1f7e9cc9c4491cb768da2808d9a085955cfa56cc043235",
+        "sha256_in_prefix": "4e10bfcb45852f3cdf1f7e9cc9c4491cb768da2808d9a085955cfa56cc043235",
+        "size_in_bytes": 2187
+      },
+      {
+        "_path": "include/X11/InitialI.h",
+        "path_type": "hardlink",
+        "sha256": "d1684a6a346edbdfe58ab75631a9ec82fb430477f473ae8d1d8b7561abda5e0e",
+        "sha256_in_prefix": "d1684a6a346edbdfe58ab75631a9ec82fb430477f473ae8d1d8b7561abda5e0e",
+        "size_in_bytes": 12604
+      },
+      {
+        "_path": "include/X11/Intrinsic.h",
+        "path_type": "hardlink",
+        "sha256": "2ac6c6cec2e57f1063f89b20cf8854e629771d9ebb11db941aa5c4aaf1cc6c50",
+        "sha256_in_prefix": "2ac6c6cec2e57f1063f89b20cf8854e629771d9ebb11db941aa5c4aaf1cc6c50",
+        "size_in_bytes": 63336
+      },
+      {
+        "_path": "include/X11/IntrinsicI.h",
+        "path_type": "hardlink",
+        "sha256": "7b62084eb2bdaf02428d40b113708ffa3781a897832dbbf4775895edee30f3f1",
+        "sha256_in_prefix": "7b62084eb2bdaf02428d40b113708ffa3781a897832dbbf4775895edee30f3f1",
+        "size_in_bytes": 6536
+      },
+      {
+        "_path": "include/X11/IntrinsicP.h",
+        "path_type": "hardlink",
+        "sha256": "f5743099dbfdcecf9912fb3191f01c2ef30ad039ca3f528328ff7a8d17fe98c7",
+        "sha256_in_prefix": "f5743099dbfdcecf9912fb3191f01c2ef30ad039ca3f528328ff7a8d17fe98c7",
+        "size_in_bytes": 9662
+      },
+      {
+        "_path": "include/X11/Object.h",
+        "path_type": "hardlink",
+        "sha256": "49c681ddc19a7745fd6d1eb72cdf747ea72d37cfeb7eb180a3239c5ca3f80630",
+        "sha256_in_prefix": "49c681ddc19a7745fd6d1eb72cdf747ea72d37cfeb7eb180a3239c5ca3f80630",
+        "size_in_bytes": 2567
+      },
+      {
+        "_path": "include/X11/ObjectP.h",
+        "path_type": "hardlink",
+        "sha256": "407caea7343e2cda909def35835b4871f9f1b9fa008a1b5286288a9fec4d1379",
+        "sha256_in_prefix": "407caea7343e2cda909def35835b4871f9f1b9fa008a1b5286288a9fec4d1379",
+        "size_in_bytes": 6949
+      },
+      {
+        "_path": "include/X11/PassivGraI.h",
+        "path_type": "hardlink",
+        "sha256": "9d63ea0a5794316f4fd2fc63f0d0390397d7b2f0751d88bc600ef5c3c1d0023d",
+        "sha256_in_prefix": "9d63ea0a5794316f4fd2fc63f0d0390397d7b2f0751d88bc600ef5c3c1d0023d",
+        "size_in_bytes": 5497
+      },
+      {
+        "_path": "include/X11/RectObj.h",
+        "path_type": "hardlink",
+        "sha256": "0c751e37a242c3c933299f243b53b3dd1788ce30e57e2ea291369f90391c423a",
+        "sha256_in_prefix": "0c751e37a242c3c933299f243b53b3dd1788ce30e57e2ea291369f90391c423a",
+        "size_in_bytes": 2566
+      },
+      {
+        "_path": "include/X11/RectObjP.h",
+        "path_type": "hardlink",
+        "sha256": "70f436d845e4dada8b6218d19f713bd821b87b24dcded579be1df082077a473e",
+        "sha256_in_prefix": "70f436d845e4dada8b6218d19f713bd821b87b24dcded579be1df082077a473e",
+        "size_in_bytes": 6412
+      },
+      {
+        "_path": "include/X11/ResConfigP.h",
+        "path_type": "hardlink",
+        "sha256": "63484c60756023d1f1b03f2b25922b8798c000626a5cf82303f3ff4c800faf80",
+        "sha256_in_prefix": "63484c60756023d1f1b03f2b25922b8798c000626a5cf82303f3ff4c800faf80",
+        "size_in_bytes": 2962
+      },
+      {
+        "_path": "include/X11/ResourceI.h",
+        "path_type": "hardlink",
+        "sha256": "e56e1e6cf335bd077115abb8b5de9e77bfb67d62b0da6f0aa92f4229c5a6444b",
+        "sha256_in_prefix": "e56e1e6cf335bd077115abb8b5de9e77bfb67d62b0da6f0aa92f4229c5a6444b",
+        "size_in_bytes": 3715
+      },
+      {
+        "_path": "include/X11/SelectionI.h",
+        "path_type": "hardlink",
+        "sha256": "8efccc175f1d18979d6e0888ca4d091b807822c444619a73cba04cbea91c8de1",
+        "sha256_in_prefix": "8efccc175f1d18979d6e0888ca4d091b807822c444619a73cba04cbea91c8de1",
+        "size_in_bytes": 5198
+      },
+      {
+        "_path": "include/X11/Shell.h",
+        "path_type": "hardlink",
+        "sha256": "47d7a7ac258fe4ba1c3a169fcd1f9f8dd14c032dd3bc7adb99555b68a78370dc",
+        "sha256_in_prefix": "47d7a7ac258fe4ba1c3a169fcd1f9f8dd14c032dd3bc7adb99555b68a78370dc",
+        "size_in_bytes": 17367
+      },
+      {
+        "_path": "include/X11/ShellI.h",
+        "path_type": "hardlink",
+        "sha256": "595d7be1b394800c80f265e63641ae70a8420e67e9ef7b96e069e2447859a91d",
+        "sha256_in_prefix": "595d7be1b394800c80f265e63641ae70a8420e67e9ef7b96e069e2447859a91d",
+        "size_in_bytes": 212
+      },
+      {
+        "_path": "include/X11/ShellP.h",
+        "path_type": "hardlink",
+        "sha256": "22ee5bbaf20d3d8fd8446ffa614c25c8ca54f6a02d23026462f460e273525df1",
+        "sha256_in_prefix": "22ee5bbaf20d3d8fd8446ffa614c25c8ca54f6a02d23026462f460e273525df1",
+        "size_in_bytes": 12722
+      },
+      {
+        "_path": "include/X11/StringDefs.h",
+        "path_type": "hardlink",
+        "sha256": "490ba511e1e49b79634d3c1d30e7445a90f3d97022371e1b52cc55c853ee5169",
+        "sha256_in_prefix": "490ba511e1e49b79634d3c1d30e7445a90f3d97022371e1b52cc55c853ee5169",
+        "size_in_bytes": 30416
+      },
+      {
+        "_path": "include/X11/ThreadsI.h",
+        "path_type": "hardlink",
+        "sha256": "b90399e389374a14bcb76a83b7a62db7d0f279a0caee06c682cdf13a911d9412",
+        "sha256_in_prefix": "b90399e389374a14bcb76a83b7a62db7d0f279a0caee06c682cdf13a911d9412",
+        "size_in_bytes": 4277
+      },
+      {
+        "_path": "include/X11/TranslateI.h",
+        "path_type": "hardlink",
+        "sha256": "7145d85d9775568ba520617493dcf66e7b16d76c3faa9449317a6f2685c845ea",
+        "sha256_in_prefix": "7145d85d9775568ba520617493dcf66e7b16d76c3faa9449317a6f2685c845ea",
+        "size_in_bytes": 17158
+      },
+      {
+        "_path": "include/X11/VarargsI.h",
+        "path_type": "hardlink",
+        "sha256": "49ea46f0c30b74a5bcc6bfe49ff14f5af64c344aeb25bb8b2725236bbe898de2",
+        "sha256_in_prefix": "49ea46f0c30b74a5bcc6bfe49ff14f5af64c344aeb25bb8b2725236bbe898de2",
+        "size_in_bytes": 2393
+      },
+      {
+        "_path": "include/X11/Vendor.h",
+        "path_type": "hardlink",
+        "sha256": "a5ade8f011db3a3a1c9156f8c6fa46b10202033f723f7b1bcd1e5cdc79656f16",
+        "sha256_in_prefix": "a5ade8f011db3a3a1c9156f8c6fa46b10202033f723f7b1bcd1e5cdc79656f16",
+        "size_in_bytes": 2774
+      },
+      {
+        "_path": "include/X11/VendorP.h",
+        "path_type": "hardlink",
+        "sha256": "938cf487dba824fdccb06e99ec9fe583e3ca84ec0cbf0f11a9fc9943601f5b03",
+        "sha256_in_prefix": "938cf487dba824fdccb06e99ec9fe583e3ca84ec0cbf0f11a9fc9943601f5b03",
+        "size_in_bytes": 3554
+      },
+      {
+        "_path": "include/X11/Xtos.h",
+        "path_type": "hardlink",
+        "sha256": "67f175fb036a9db0992aedd9d7397ac2837ebaf57d45e6be69f50ad5c503a4a6",
+        "sha256_in_prefix": "67f175fb036a9db0992aedd9d7397ac2837ebaf57d45e6be69f50ad5c503a4a6",
+        "size_in_bytes": 2923
+      },
+      {
+        "_path": "lib/libXt.so",
+        "path_type": "softlink",
+        "sha256": "2c6cbf35aad8c81ebedab03ac2d5f1e6f4b37b7870592e133e955194be36b382",
+        "size_in_bytes": 484240
+      },
+      {
+        "_path": "lib/libXt.so.6",
+        "path_type": "softlink",
+        "sha256": "2c6cbf35aad8c81ebedab03ac2d5f1e6f4b37b7870592e133e955194be36b382",
+        "size_in_bytes": 484240
+      },
+      {
+        "_path": "lib/libXt.so.6.0.0",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/home/conda/feedstock_root/build_artifacts/xorg-libxt_1538235817525/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_",
+        "sha256": "2c6cbf35aad8c81ebedab03ac2d5f1e6f4b37b7870592e133e955194be36b382",
+        "sha256_in_prefix": "1f345bce614bef3a1686e0aeaf553de6251886df1541b3b75123d12f5055c8e5",
+        "size_in_bytes": 484240
+      },
+      {
+        "_path": "lib/pkgconfig/xt.pc",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "4aae2b104b2fa124e1a6aa1a5b5dc972d7c751ae02ddbb9a70811d386095e475",
+        "sha256_in_prefix": "17e91150df501608a2e50d33cff4df22e73ed61d1ce192133449715d273a73cb",
+        "size_in_bytes": 394
+      },
+      {
+        "_path": "share/doc/libXt/CH01.xml",
+        "path_type": "hardlink",
+        "sha256": "af759d1e62fc73a7c07975d4050e98a96c3f065705f04c69f8e2d0555f765a22",
+        "sha256_in_prefix": "af759d1e62fc73a7c07975d4050e98a96c3f065705f04c69f8e2d0555f765a22",
+        "size_in_bytes": 89186
+      },
+      {
+        "_path": "share/doc/libXt/CH02.xml",
+        "path_type": "hardlink",
+        "sha256": "296b4e6c7bbcb41affadfae981d80f5ead22962a5afda1f6bfaa9c9a13795ee6",
+        "sha256_in_prefix": "296b4e6c7bbcb41affadfae981d80f5ead22962a5afda1f6bfaa9c9a13795ee6",
+        "size_in_bytes": 143010
+      },
+      {
+        "_path": "share/doc/libXt/CH03.xml",
+        "path_type": "hardlink",
+        "sha256": "fc60323b79e04296bf17583c1f413bd16f6a49c1a581c0ac4c81bc7fbe098ca1",
+        "sha256_in_prefix": "fc60323b79e04296bf17583c1f413bd16f6a49c1a581c0ac4c81bc7fbe098ca1",
+        "size_in_bytes": 43858
+      },
+      {
+        "_path": "share/doc/libXt/CH04.xml",
+        "path_type": "hardlink",
+        "sha256": "e99f0825ed3beb9541d0e1cce5e601971c07aae7b5c0ee2aac947c9e0987a1ac",
+        "sha256_in_prefix": "e99f0825ed3beb9541d0e1cce5e601971c07aae7b5c0ee2aac947c9e0987a1ac",
+        "size_in_bytes": 78069
+      },
+      {
+        "_path": "share/doc/libXt/CH05.xml",
+        "path_type": "hardlink",
+        "sha256": "1dd67b0c4a0efce14f9885ed7712968e9f55490b9da6e45d6f6fc11db36e7cd2",
+        "sha256_in_prefix": "1dd67b0c4a0efce14f9885ed7712968e9f55490b9da6e45d6f6fc11db36e7cd2",
+        "size_in_bytes": 30989
+      },
+      {
+        "_path": "share/doc/libXt/CH06.xml",
+        "path_type": "hardlink",
+        "sha256": "96b31b50908badd06ca27ddea63d15d47aa92e47660e58c906824b35faec7767",
+        "sha256_in_prefix": "96b31b50908badd06ca27ddea63d15d47aa92e47660e58c906824b35faec7767",
+        "size_in_bytes": 43514
+      },
+      {
+        "_path": "share/doc/libXt/CH07.xml",
+        "path_type": "hardlink",
+        "sha256": "5baed12241f53568cec054337ca4364b6eb46cdbd70017652112ded54ec36c5a",
+        "sha256_in_prefix": "5baed12241f53568cec054337ca4364b6eb46cdbd70017652112ded54ec36c5a",
+        "size_in_bytes": 150747
+      },
+      {
+        "_path": "share/doc/libXt/CH08.xml",
+        "path_type": "hardlink",
+        "sha256": "79823e8f98bb2114d62eb5ccab223202ae75ec9d964b506b8083b48c375cad2e",
+        "sha256_in_prefix": "79823e8f98bb2114d62eb5ccab223202ae75ec9d964b506b8083b48c375cad2e",
+        "size_in_bytes": 17593
+      },
+      {
+        "_path": "share/doc/libXt/CH09.xml",
+        "path_type": "hardlink",
+        "sha256": "980452d0e62169c82d27221141af105790af1d06d0cadce8ce3634cea49a8b6b",
+        "sha256_in_prefix": "980452d0e62169c82d27221141af105790af1d06d0cadce8ce3634cea49a8b6b",
+        "size_in_bytes": 136490
+      },
+      {
+        "_path": "share/doc/libXt/CH10.xml",
+        "path_type": "hardlink",
+        "sha256": "1834b0acf4f87c93c4c81ebdcbd705afbc5bb7277351422feb75662ca80bbf35",
+        "sha256_in_prefix": "1834b0acf4f87c93c4c81ebdcbd705afbc5bb7277351422feb75662ca80bbf35",
+        "size_in_bytes": 67632
+      },
+      {
+        "_path": "share/doc/libXt/CH11.xml",
+        "path_type": "hardlink",
+        "sha256": "439b71c79a5dadbf1ef470ea32367431b205038ec2f8238bedc9ceaeb5c49ff5",
+        "sha256_in_prefix": "439b71c79a5dadbf1ef470ea32367431b205038ec2f8238bedc9ceaeb5c49ff5",
+        "size_in_bytes": 168130
+      },
+      {
+        "_path": "share/doc/libXt/CH12.xml",
+        "path_type": "hardlink",
+        "sha256": "c478229ad55dadf014c1ebc98d15c69eb9ff075048b354682f46995a9dfe8836",
+        "sha256_in_prefix": "c478229ad55dadf014c1ebc98d15c69eb9ff075048b354682f46995a9dfe8836",
+        "size_in_bytes": 33863
+      },
+      {
+        "_path": "share/doc/libXt/CH13.xml",
+        "path_type": "hardlink",
+        "sha256": "e619a51c443579985a665da71ca56eaca430ee771511c67c52d8033e6071913b",
+        "sha256_in_prefix": "e619a51c443579985a665da71ca56eaca430ee771511c67c52d8033e6071913b",
+        "size_in_bytes": 30677
+      },
+      {
+        "_path": "share/doc/libXt/acknowledgement.xml",
+        "path_type": "hardlink",
+        "sha256": "2e76264aae3f087341ee1727c7d08e72f092579154077433a9cf6b591e95baab",
+        "sha256_in_prefix": "2e76264aae3f087341ee1727c7d08e72f092579154077433a9cf6b591e95baab",
+        "size_in_bytes": 8743
+      },
+      {
+        "_path": "share/doc/libXt/appA.xml",
+        "path_type": "hardlink",
+        "sha256": "85ff48af92c74f1872e4269116afb032f125f03d7b2b5a90035de90abebec346",
+        "sha256_in_prefix": "85ff48af92c74f1872e4269116afb032f125f03d7b2b5a90035de90abebec346",
+        "size_in_bytes": 3644
+      },
+      {
+        "_path": "share/doc/libXt/appB.xml",
+        "path_type": "hardlink",
+        "sha256": "91cc41b71ef0f9899de6526e5d3d1150bdfbd0dde2a2e96bb88c70c8a51fbdfd",
+        "sha256_in_prefix": "91cc41b71ef0f9899de6526e5d3d1150bdfbd0dde2a2e96bb88c70c8a51fbdfd",
+        "size_in_bytes": 32505
+      },
+      {
+        "_path": "share/doc/libXt/appC.xml",
+        "path_type": "hardlink",
+        "sha256": "9503df27f963ab1e945ccfcf985397691179b228e54cabb87f1a0616b8718b8b",
+        "sha256_in_prefix": "9503df27f963ab1e945ccfcf985397691179b228e54cabb87f1a0616b8718b8b",
+        "size_in_bytes": 56361
+      },
+      {
+        "_path": "share/doc/libXt/appD.xml",
+        "path_type": "hardlink",
+        "sha256": "c49728c0aca81d32b5fb7aa7fd5da28a6d15b33c9f8aad43773217e057b700f6",
+        "sha256_in_prefix": "c49728c0aca81d32b5fb7aa7fd5da28a6d15b33c9f8aad43773217e057b700f6",
+        "size_in_bytes": 28405
+      },
+      {
+        "_path": "share/doc/libXt/appE.xml",
+        "path_type": "hardlink",
+        "sha256": "ed1f47e629d36cf5332069c49a4709b3bb46f72307e1d2229b99a54df4b0dbef",
+        "sha256_in_prefix": "ed1f47e629d36cf5332069c49a4709b3bb46f72307e1d2229b99a54df4b0dbef",
+        "size_in_bytes": 38698
+      },
+      {
+        "_path": "share/doc/libXt/appF.xml",
+        "path_type": "hardlink",
+        "sha256": "252d3f7fe34db7bdabb7f558264e118316949383841c2323b80874ef44dc2d1f",
+        "sha256_in_prefix": "252d3f7fe34db7bdabb7f558264e118316949383841c2323b80874ef44dc2d1f",
+        "size_in_bytes": 3893
+      },
+      {
+        "_path": "share/doc/libXt/intrinsics.xml",
+        "path_type": "hardlink",
+        "sha256": "1c43307cbf62ec5f6e0b0998ae4544f9460bedec30b78dbc92fcef512ce245a6",
+        "sha256_in_prefix": "1c43307cbf62ec5f6e0b0998ae4544f9460bedec30b78dbc92fcef512ce245a6",
+        "size_in_bytes": 5307
+      },
+      {
+        "_path": "share/doc/libXt/preface.xml",
+        "path_type": "hardlink",
+        "sha256": "bc744cb5ceaf03051aaff3b8560f033190087ca85d4bb76bec8c881f266f3aa3",
+        "sha256_in_prefix": "bc744cb5ceaf03051aaff3b8560f033190087ca85d4bb76bec8c881f266f3aa3",
+        "size_in_bytes": 2733
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 375360,
+  "subdir": "linux-64",
+  "timestamp": 1538235872527,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/xorg-libxt-1.1.5-h14c3975_1002.tar.bz2",
+  "version": "1.1.5"
+}

@@ -1,0 +1,31 @@
+{
+  "build": "mkl",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "mkl"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/blas-1.0-mkl",
+  "features": "",
+  "files": [],
+  "fn": "blas-1.0-mkl.tar.bz2",
+  "license": "BSD 3-clause",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/blas-1.0-mkl",
+    "type": 1
+  },
+  "md5": "349aef876b1d8c9dccae01de20d5b385",
+  "name": "blas",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/blas-1.0-mkl.tar.bz2",
+  "paths_data": {
+    "paths": [],
+    "paths_version": 1
+  },
+  "requested_spec": "blas==1.0=mkl",
+  "size": 1381,
+  "subdir": "linux-64",
+  "track_features": "blas_mkl",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/blas-1.0-mkl.tar.bz2",
+  "version": "1.0"
+}

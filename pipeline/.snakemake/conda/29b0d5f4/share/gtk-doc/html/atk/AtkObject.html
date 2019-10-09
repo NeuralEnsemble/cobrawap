@@ -1,0 +1,3105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkObject: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="base-object.html" title="Base accessibility object">
+<link rel="prev" href="base-object.html" title="Base accessibility object">
+<link rel="next" href="toolkit.html" title="Event and toolkit support">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkObject.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkObject.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_derived_interfaces">  <span class="dim">|</span> 
+                  <a href="#AtkObject.derived-interfaces" class="shortcut">Known Derived Interfaces</a></span><span id="nav_properties">  <span class="dim">|</span> 
+                  <a href="#AtkObject.properties" class="shortcut">Properties</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#AtkObject.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="base-object.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="base-object.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="toolkit.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkObject"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkObject.top_of_page"></a>AtkObject</span></h2>
+<p>AtkObject — The base object class for the Accessibility Toolkit API.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkObject.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-role-register" title="atk_role_register ()">atk_role_register</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="AtkObject.html#AtkFunction" title="AtkFunction ()">*AtkFunction</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="AtkObject.html#AtkPropertyChangeHandler" title="AtkPropertyChangeHandler ()">*AtkPropertyChangeHandler</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-implementor-ref-accessible" title="atk_implementor_ref_accessible ()">atk_implementor_ref_accessible</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-name" title="atk_object_get_name ()">atk_object_get_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-description" title="atk_object_get_description ()">atk_object_get_description</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-parent" title="atk_object_get_parent ()">atk_object_get_parent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-peek-parent" title="atk_object_peek_parent ()">atk_object_peek_parent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-n-accessible-children" title="atk_object_get_n_accessible_children ()">atk_object_get_n_accessible_children</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-ref-accessible-child" title="atk_object_ref_accessible_child ()">atk_object_ref_accessible_child</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkRelationSet.html" title="AtkRelationSet"><span class="returnvalue">AtkRelationSet</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-ref-relation-set" title="atk_object_ref_relation_set ()">atk_object_ref_relation_set</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="returnvalue">AtkLayer</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-layer" title="atk_object_get_layer ()">atk_object_get_layer</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-mdi-zorder" title="atk_object_get_mdi_zorder ()">atk_object_get_mdi_zorder</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-role" title="atk_object_get_role ()">atk_object_get_role</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkStateSet.html" title="AtkStateSet"><span class="returnvalue">AtkStateSet</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-ref-state-set" title="atk_object_ref_state_set ()">atk_object_ref_state_set</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-index-in-parent" title="atk_object_get_index_in_parent ()">atk_object_get_index_in_parent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-set-name" title="atk_object_set_name ()">atk_object_set_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-set-description" title="atk_object_set_description ()">atk_object_set_description</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-set-parent" title="atk_object_set_parent ()">atk_object_set_parent</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-set-role" title="atk_object_set_role ()">atk_object_set_role</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">guint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-connect-property-change-handler" title="atk_object_connect_property_change_handler ()">atk_object_connect_property_change_handler</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-remove-property-change-handler" title="atk_object_remove_property_change_handler ()">atk_object_remove_property_change_handler</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-notify-state-change" title="atk_object_notify_state_change ()">atk_object_notify_state_change</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-initialize" title="atk_object_initialize ()">atk_object_initialize</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-add-relationship" title="atk_object_add_relationship ()">atk_object_add_relationship</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-remove-relationship" title="atk_object_remove_relationship ()">atk_object_remove_relationship</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="returnvalue">AtkAttributeSet</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-attributes" title="atk_object_get_attributes ()">atk_object_get_attributes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-object-get-object-locale" title="atk_object_get_object_locale ()">atk_object_get_object_locale</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-role-get-name" title="atk_role_get_name ()">atk_role_get_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-role-get-localized-name" title="atk_role_get_localized_name ()">atk_role_get_localized_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="AtkObject.html#atk-role-for-name" title="atk_role_for_name ()">atk_role_for_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.properties"></a><h2>Properties</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="properties_type">
+<col width="300px" class="properties_name">
+<col width="200px" class="properties_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="property_type"><span class="type">gint</span></td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-component-layer" title="The “accessible-component-layer” property">accessible-component-layer</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gint</span></td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-component-mdi-zorder" title="The “accessible-component-mdi-zorder” property">accessible-component-mdi-zorder</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-description" title="The “accessible-description” property">accessible-description</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gint</span></td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-hypertext-nlinks" title="The “accessible-hypertext-nlinks” property">accessible-hypertext-nlinks</a></td>
+<td class="property_flags">Read</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-name" title="The “accessible-name” property">accessible-name</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-parent" title="The “accessible-parent” property">accessible-parent</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gint</span></td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-role" title="The “accessible-role” property">accessible-role</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-caption" title="The “accessible-table-caption” property">accessible-table-caption</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-caption-object" title="The “accessible-table-caption-object” property">accessible-table-caption-object</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-column-description" title="The “accessible-table-column-description” property">accessible-table-column-description</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-column-header" title="The “accessible-table-column-header” property">accessible-table-column-header</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<span class="type">gchar</span> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-row-description" title="The “accessible-table-row-description” property">accessible-table-row-description</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-row-header" title="The “accessible-table-row-header” property">accessible-table-row-header</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-table-summary" title="The “accessible-table-summary” property">accessible-table-summary</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+<tr>
+<td class="property_type"><span class="type">gdouble</span></td>
+<td class="property_name"><a class="link" href="AtkObject.html#AtkObject--accessible-value" title="The “accessible-value” property">accessible-value</a></td>
+<td class="property_flags">Read / Write</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-active-descendant-changed" title="The “active-descendant-changed” signal">active-descendant-changed</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-children-changed" title="The “children-changed” signal">children-changed</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-focus-event" title="The “focus-event” signal">focus-event</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-property-change" title="The “property-change” signal">property-change</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-state-change" title="The “state-change” signal">state-change</a></td>
+<td class="signal_flags">Has Details</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkObject.html#AtkObject-visible-data-changed" title="The “visible-data-changed” signal">visible-data-changed</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<a name="AtkImplementorIface"></a><div class="refsect1">
+<a name="AtkObject.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkObject-struct" title="struct AtkObject">AtkObject</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole">AtkRole</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer">AtkLayer</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkImplementor" title="AtkImplementor">AtkImplementor</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkAttribute" title="struct AtkAttribute">AtkAttribute</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet">AtkAttributeSet</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="AtkObject.html#AtkPropertyValues" title="AtkPropertyValues">AtkPropertyValues</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+    <span class="lineart">╰──</span> AtkImplementorIface
+    GObject
+    <span class="lineart">╰──</span> AtkObject
+        <span class="lineart">├──</span> <a class="link" href="AtkGObjectAccessible.html" title="AtkGObjectAccessible">AtkGObjectAccessible</a>
+        <span class="lineart">╰──</span> <a class="link" href="AtkNoOpObject.html" title="AtkNoOpObject">AtkNoOpObject</a>
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkObject.derived-interfaces"></a><h2>Known Derived Interfaces</h2>
+<p>
+AtkObject is required by
+ <a class="link" href="AtkTableCell.html" title="AtkTableCell">AtkTableCell</a> and  <a class="link" href="AtkWindow.html" title="AtkWindow">AtkWindow</a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkObject.description"></a><h2>Description</h2>
+<p>This class is the primary class for accessibility support via the
+Accessibility ToolKit (ATK).  Objects which are instances of
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> (or instances of AtkObject-derived types) are queried
+for properties which relate basic (and generic) properties of a UI
+component such as name and description.  Instances of <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>
+may also be queried as to whether they implement other ATK
+interfaces (e.g. <a class="link" href="AtkAction.html" title="AtkAction"><span class="type">AtkAction</span></a>, <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a>, etc.), as appropriate
+to the role which a given UI component plays in a user interface.</p>
+<p>All UI components in an application which provide useful
+information or services to the user must provide corresponding
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> instances on request (in GTK+, for instance, usually on
+a call to <code class="function"><GTKDOCLINK HREF="gtk-widget-get-accessible"><code class="function">gtk_widget_get_accessible()</code></code></GTKDOCLINK>), either via ATK support
+built into the toolkit for the widget class or ancestor class, or
+in the case of custom widgets, if the inherited <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>
+implementation is insufficient, via instances of a new <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>
+subclass.</p>
+<p>See also: <a class="link" href="AtkObjectFactory.html" title="AtkObjectFactory"><span class="type">AtkObjectFactory</span></a>, <a class="link" href="AtkRegistry.html" title="AtkRegistry"><span class="type">AtkRegistry</span></a>.  (GTK+ users see also
+<span class="type">GtkAccessible</span>).</p>
+</div>
+<div class="refsect1">
+<a name="AtkObject.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-role-register"></a><h3>atk_role_register ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+atk_role_register (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_role_register</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. If your application/toolkit doesn't find a
+suitable role for a specific object defined at <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a>, please
+submit a bug in order to add a new role to the specification.</p>
+</div>
+<p>Registers the role specified by <em class="parameter"><code>name</code></em>
+. <em class="parameter"><code>name</code></em>
+ must be a meaningful
+name. So it should not be empty, or consisting on whitespaces.</p>
+<div class="refsect3">
+<a name="atk-role-register.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a character string describing the new role.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-role-register.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> for the new role if added
+properly. ATK_ROLE_INVALID in case of error.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkFunction"></a><h3>AtkFunction ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<span class="c_punctuation">(</span>*AtkFunction<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+<p>An AtkFunction is a function definition used for padding which has
+been added to class and interface structures to allow for expansion
+in the future.</p>
+<div class="refsect3">
+<a name="AtkFunction.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>custom data defined by the user</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="AtkFunction.returns"></a><h4>Returns</h4>
+<p> not used</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkPropertyChangeHandler"></a><h3>AtkPropertyChangeHandler ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+<span class="c_punctuation">(</span>*AtkPropertyChangeHandler<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *obj</code></em>,
+                             <em class="parameter"><code><a class="link" href="AtkObject.html#AtkPropertyValues" title="AtkPropertyValues"><span class="type">AtkPropertyValues</span></a> *vals</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">AtkPropertyChangeHandler</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12.</p>
+</div>
+<p>An AtkPropertyChangeHandler is a function which is executed when an
+AtkObject's property changes value. It is specified in a call to
+<a class="link" href="AtkObject.html#atk-object-connect-property-change-handler" title="atk_object_connect_property_change_handler ()"><code class="function">atk_object_connect_property_change_handler()</code></a>.</p>
+<div class="refsect3">
+<a name="AtkPropertyChangeHandler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>atkobject which property changes</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>vals</p></td>
+<td class="parameter_description"><p>values changed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-implementor-ref-accessible"></a><h3>atk_implementor_ref_accessible ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_implementor_ref_accessible (<em class="parameter"><code><a class="link" href="AtkObject.html#AtkImplementor" title="AtkImplementor"><span class="type">AtkImplementor</span></a> *implementor</code></em>);</pre>
+<p>Gets a reference to an object's <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> implementation, if
+the object implements <span class="type">AtkObjectIface</span></p>
+<div class="refsect3">
+<a name="atk-implementor-ref-accessible.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>implementor</p></td>
+<td class="parameter_description"><p>The <span class="type">GObject</span> instance which should implement <a class="link" href="AtkObject.html#AtkImplementorIface"><span class="type">AtkImplementorIface</span></a>
+if a non-null return value is required.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-implementor-ref-accessible.returns"></a><h4>Returns</h4>
+<p> a reference to an object's <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>
+implementation. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-name"></a><h3>atk_object_get_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_object_get_name (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the accessible name of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-get-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-name.returns"></a><h4>Returns</h4>
+<p> a character string representing the accessible name of the object.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-description"></a><h3>atk_object_get_description ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_object_get_description (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the accessible description of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-get-description.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-description.returns"></a><h4>Returns</h4>
+<p> a character string representing the accessible description
+of the accessible.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-parent"></a><h3>atk_object_get_parent ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_object_get_parent (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the accessible parent of the accessible. By default this is
+the one assigned with <a class="link" href="AtkObject.html#atk-object-set-parent" title="atk_object_set_parent ()"><code class="function">atk_object_set_parent()</code></a>, but it is assumed
+that ATK implementors have ways to get the parent of the object
+without the need of assigning it manually with
+<a class="link" href="AtkObject.html#atk-object-set-parent" title="atk_object_set_parent ()"><code class="function">atk_object_set_parent()</code></a>, and will return it with this method.</p>
+<p>If you are only interested on the parent assigned with
+<a class="link" href="AtkObject.html#atk-object-set-parent" title="atk_object_set_parent ()"><code class="function">atk_object_set_parent()</code></a>, use <a class="link" href="AtkObject.html#atk-object-peek-parent" title="atk_object_peek_parent ()"><code class="function">atk_object_peek_parent()</code></a>.</p>
+<div class="refsect3">
+<a name="atk-object-get-parent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-parent.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> representing the accessible
+parent of the accessible. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-peek-parent"></a><h3>atk_object_peek_parent ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_object_peek_parent (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the accessible parent of the accessible, if it has been
+manually assigned with atk_object_set_parent. Otherwise, this
+function returns <code class="literal">NULL</code>.</p>
+<p>This method is intended as an utility for ATK implementors, and not
+to be exposed to accessible tools. See <a class="link" href="AtkObject.html#atk-object-get-parent" title="atk_object_get_parent ()"><code class="function">atk_object_get_parent()</code></a> for
+further reference.</p>
+<div class="refsect3">
+<a name="atk-object-peek-parent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-peek-parent.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> representing the accessible
+parent of the accessible if assigned. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-n-accessible-children"></a><h3>atk_object_get_n_accessible_children ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_object_get_n_accessible_children (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the number of accessible children of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-get-n-accessible-children.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-n-accessible-children.returns"></a><h4>Returns</h4>
+<p> an integer representing the number of accessible children
+of the accessible.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-ref-accessible-child"></a><h3>atk_object_ref_accessible_child ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_object_ref_accessible_child (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                                 <em class="parameter"><code><span class="type">gint</span> i</code></em>);</pre>
+<p>Gets a reference to the specified accessible child of the object.
+The accessible children are 0-based so the first accessible child is
+at index 0, the second at index 1 and so on.</p>
+<div class="refsect3">
+<a name="atk-object-ref-accessible-child.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>i</p></td>
+<td class="parameter_description"><p>a gint representing the position of the child, starting from 0</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-ref-accessible-child.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> representing the specified
+accessible child of the accessible. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-ref-relation-set"></a><h3>atk_object_ref_relation_set ()</h3>
+<pre class="programlisting"><a class="link" href="AtkRelationSet.html" title="AtkRelationSet"><span class="returnvalue">AtkRelationSet</span></a> *
+atk_object_ref_relation_set (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the <a class="link" href="AtkRelationSet.html" title="AtkRelationSet"><span class="type">AtkRelationSet</span></a> associated with the object.</p>
+<div class="refsect3">
+<a name="atk-object-ref-relation-set.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-ref-relation-set.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkRelationSet.html" title="AtkRelationSet"><span class="type">AtkRelationSet</span></a> representing the relation set
+of the object. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-layer"></a><h3>atk_object_get_layer ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="returnvalue">AtkLayer</span></a>
+atk_object_get_layer (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_object_get_layer</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use atk_component_get_layer instead.</p>
+</div>
+<p>Gets the layer of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-get-layer.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-layer.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="type">AtkLayer</span></a> which is the layer of the accessible</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-mdi-zorder"></a><h3>atk_object_get_mdi_zorder ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_object_get_mdi_zorder (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_object_get_mdi_zorder</code> is deprecated and should not be used in newly-written code.</p>
+<p>Use atk_component_get_mdi_zorder instead.</p>
+</div>
+<p>Gets the zorder of the accessible. The value G_MININT will be returned 
+if the layer of the accessible is not ATK_LAYER_MDI.</p>
+<div class="refsect3">
+<a name="atk-object-get-mdi-zorder.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-mdi-zorder.returns"></a><h4>Returns</h4>
+<p> a gint which is the zorder of the accessible, i.e. the depth at
+which the component is shown in relation to other components in the same
+container.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-role"></a><h3>atk_object_get_role ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+atk_object_get_role (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the role of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-get-role.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-role.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> which is the role of the accessible</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-ref-state-set"></a><h3>atk_object_ref_state_set ()</h3>
+<pre class="programlisting"><a class="link" href="AtkStateSet.html" title="AtkStateSet"><span class="returnvalue">AtkStateSet</span></a> *
+atk_object_ref_state_set (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets a reference to the state set of the accessible; the caller must
+unreference it when it is no longer needed.</p>
+<div class="refsect3">
+<a name="atk-object-ref-state-set.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-ref-state-set.returns"></a><h4>Returns</h4>
+<p> a reference to an <a class="link" href="AtkStateSet.html" title="AtkStateSet"><span class="type">AtkStateSet</span></a> which is the state
+set of the accessible. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-index-in-parent"></a><h3>atk_object_get_index_in_parent ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_object_get_index_in_parent (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets the 0-based index of this accessible in its parent; returns -1 if the
+accessible does not have an accessible parent.</p>
+<div class="refsect3">
+<a name="atk-object-get-index-in-parent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-index-in-parent.returns"></a><h4>Returns</h4>
+<p> an integer which is the index of the accessible in its parent</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-set-name"></a><h3>atk_object_set_name ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_set_name (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                     <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<p>Sets the accessible name of the accessible. You can't set the name
+to NULL. This is reserved for the initial value. In this aspect
+NULL is similar to ATK_ROLE_UNKNOWN. If you want to set the name to
+a empty value you can use "".</p>
+<div class="refsect3">
+<a name="atk-object-set-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a character string to be set as the accessible name</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-set-description"></a><h3>atk_object_set_description ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_set_description (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                            <em class="parameter"><code>const <span class="type">gchar</span> *description</code></em>);</pre>
+<p>Sets the accessible description of the accessible. You can't set
+the description to NULL. This is reserved for the initial value. In
+this aspect NULL is similar to ATK_ROLE_UNKNOWN. If you want to set
+the name to a empty value you can use "".</p>
+<div class="refsect3">
+<a name="atk-object-set-description.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>description</p></td>
+<td class="parameter_description"><p>a character string to be set as the accessible description</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-set-parent"></a><h3>atk_object_set_parent ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_set_parent (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                       <em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *parent</code></em>);</pre>
+<p>Sets the accessible parent of the accessible. <em class="parameter"><code>parent</code></em>
+ can be NULL.</p>
+<div class="refsect3">
+<a name="atk-object-set-parent.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>parent</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> to be set as the accessible parent</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-set-role"></a><h3>atk_object_set_role ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_set_role (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                     <em class="parameter"><code><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> role</code></em>);</pre>
+<p>Sets the role of the accessible.</p>
+<div class="refsect3">
+<a name="atk-object-set-role.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>role</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> to be set as the role</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-connect-property-change-handler"></a><h3>atk_object_connect_property_change_handler ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint</span>
+atk_object_connect_property_change_handler
+                               (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                                <em class="parameter"><code><a class="link" href="AtkObject.html#AtkPropertyChangeHandler" title="AtkPropertyChangeHandler ()"><span class="type">AtkPropertyChangeHandler</span></a> *handler</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_object_connect_property_change_handler</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Connect directly to property-change or
+notify signals.</p>
+</div>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="atk-object-connect-property-change-handler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>handler</p></td>
+<td class="parameter_description"><p>a function to be called when a property changes its value</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-connect-property-change-handler.returns"></a><h4>Returns</h4>
+<p> a <span class="type">guint</span> which is the handler id used in
+<a class="link" href="AtkObject.html#atk-object-remove-property-change-handler" title="atk_object_remove_property_change_handler ()"><code class="function">atk_object_remove_property_change_handler()</code></a></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-remove-property-change-handler"></a><h3>atk_object_remove_property_change_handler ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_remove_property_change_handler
+                               (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                                <em class="parameter"><code><span class="type">guint</span> handler_id</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_object_remove_property_change_handler</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12.</p>
+<p>Removes a property change handler.</p>
+</div>
+<div class="refsect3">
+<a name="atk-object-remove-property-change-handler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>handler_id</p></td>
+<td class="parameter_description"><p>a guint which identifies the handler to be removed.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-notify-state-change"></a><h3>atk_object_notify_state_change ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_notify_state_change (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                                <em class="parameter"><code><a class="link" href="atk-AtkState.html#AtkState" title="AtkState"><span class="type">AtkState</span></a> state</code></em>,
+                                <em class="parameter"><code><span class="type">gboolean</span> value</code></em>);</pre>
+<p>Emits a state-change signal for the specified state.</p>
+<p>Note that as a general rule when the state of an existing object changes,
+emitting a notification is expected.</p>
+<div class="refsect3">
+<a name="atk-object-notify-state-change.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>state</p></td>
+<td class="parameter_description"><p>an <a class="link" href="atk-AtkState.html#AtkState" title="AtkState"><span class="type">AtkState</span></a> whose state is changed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>a gboolean which indicates whether the state is being set on or off</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-initialize"></a><h3>atk_object_initialize ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_object_initialize (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>,
+                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<p>This function is called when implementing subclasses of <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>.
+It does initialization required for the new object. It is intended
+that this function should called only in the ..._new() functions used
+to create an instance of a subclass of <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p>
+<div class="refsect3">
+<a name="atk-object-initialize.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>a <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>data</p></td>
+<td class="parameter_description"><p>a <span class="type">gpointer</span> which identifies the object for which the AtkObject was created.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-add-relationship"></a><h3>atk_object_add_relationship ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_object_add_relationship (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *object</code></em>,
+                             <em class="parameter"><code><a class="link" href="AtkRelation.html#AtkRelationType" title="enum AtkRelationType"><span class="type">AtkRelationType</span></a> relationship</code></em>,
+                             <em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *target</code></em>);</pre>
+<p>Adds a relationship of the specified type with the specified target.</p>
+<div class="refsect3">
+<a name="atk-object-add-relationship.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> to which an AtkRelation is to be added. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>relationship</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkRelation.html#AtkRelationType" title="enum AtkRelationType"><span class="type">AtkRelationType</span></a> of the relation</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>target</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> which is to be the target of the relation.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-add-relationship.returns"></a><h4>Returns</h4>
+<p> TRUE if the relationship is added.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-remove-relationship"></a><h3>atk_object_remove_relationship ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_object_remove_relationship (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *object</code></em>,
+                                <em class="parameter"><code><a class="link" href="AtkRelation.html#AtkRelationType" title="enum AtkRelationType"><span class="type">AtkRelationType</span></a> relationship</code></em>,
+                                <em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *target</code></em>);</pre>
+<p>Removes a relationship of the specified type with the specified target.</p>
+<div class="refsect3">
+<a name="atk-object-remove-relationship.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> from which an AtkRelation is to be removed. </p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>relationship</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkRelation.html#AtkRelationType" title="enum AtkRelationType"><span class="type">AtkRelationType</span></a> of the relation</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>target</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> which is the target of the relation to be removed.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-remove-relationship.returns"></a><h4>Returns</h4>
+<p> TRUE if the relationship is removed.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-attributes"></a><h3>atk_object_get_attributes ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="returnvalue">AtkAttributeSet</span></a> *
+atk_object_get_attributes (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Get a list of properties applied to this object as a whole, as an <a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="type">AtkAttributeSet</span></a> consisting of 
+name-value pairs. As such these attributes may be considered weakly-typed properties or annotations, 
+as distinct from strongly-typed object data available via other get/set methods.
+Not all objects have explicit "name-value pair" <a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="type">AtkAttributeSet</span></a> properties.</p>
+<div class="refsect3">
+<a name="atk-object-get-attributes.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>An <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-attributes.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="type">AtkAttributeSet</span></a> consisting of all
+explicit properties/annotations applied to the object, or an empty
+set if the object has no name-value pair attributes assigned to
+it. This <span class="type">atkattributeset</span> should be freed by a call to
+<a class="link" href="AtkText.html#atk-attribute-set-free" title="atk_attribute_set_free ()"><code class="function">atk_attribute_set_free()</code></a>. </p>
+<p><span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-object-get-object-locale"></a><h3>atk_object_get_object_locale ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_object_get_object_locale (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *accessible</code></em>);</pre>
+<p>Gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
+of <em class="parameter"><code>accessible</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-object-get-object-locale.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>accessible</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-object-get-object-locale.returns"></a><h4>Returns</h4>
+<p> a UTF-8 string indicating the POSIX-style LC_MESSAGES
+locale of <em class="parameter"><code>accessible</code></em>
+.</p>
+</div>
+<p class="since">Since: 2.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-role-get-name"></a><h3>atk_role_get_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_role_get_name (<em class="parameter"><code><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> role</code></em>);</pre>
+<p>Gets the description string describing the <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> <em class="parameter"><code>role</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-role-get-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>role</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> whose name is required</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-role-get-name.returns"></a><h4>Returns</h4>
+<p> the string describing the AtkRole</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-role-get-localized-name"></a><h3>atk_role_get_localized_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_role_get_localized_name (<em class="parameter"><code><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> role</code></em>);</pre>
+<p>Gets the localized description string describing the <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> <em class="parameter"><code>role</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-role-get-localized-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>role</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> whose localized name is required</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-role-get-localized-name.returns"></a><h4>Returns</h4>
+<p> the localized string describing the AtkRole</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-role-for-name"></a><h3>atk_role_for_name ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="returnvalue">AtkRole</span></a>
+atk_role_for_name (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<p>Get the <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> type corresponding to a rolew name.</p>
+<div class="refsect3">
+<a name="atk-role-for-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a string which is the (non-localized) name of an ATK role.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-role-for-name.returns"></a><h4>Returns</h4>
+<p> the <a class="link" href="AtkObject.html#AtkRole" title="enum AtkRole"><span class="type">AtkRole</span></a> enumerated type corresponding to the specified name,
+or <a class="link" href="AtkObject.html#ATK-ROLE-INVALID:CAPS"><span class="type">ATK_ROLE_INVALID</span></a> if no matching role is found.</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkObject-struct"></a><h3>struct AtkObject</h3>
+<pre class="programlisting">struct AtkObject;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkRole"></a><h3>enum AtkRole</h3>
+<p>Describes the role of an object</p>
+<p>These are the built-in enumerated roles that UI components can have in
+ATK.  Other roles may be added at runtime, so an AtkRole &gt;=
+ATK_ROLE_LAST_DEFINED is not necessarily an error.</p>
+<div class="refsect3">
+<a name="AtkRole.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-INVALID:CAPS"></a>ATK_ROLE_INVALID</p></td>
+<td class="enum_member_description">
+<p>Invalid role</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ACCEL-LABEL:CAPS"></a>ATK_ROLE_ACCEL_LABEL</p></td>
+<td class="enum_member_description">
+<p>A label which represents an accelerator</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ALERT:CAPS"></a>ATK_ROLE_ALERT</p></td>
+<td class="enum_member_description">
+<p>An object which is an alert to the user. Assistive Technologies typically respond to ATK_ROLE_ALERT by reading the entire onscreen contents of containers advertising this role.  Should be used for warning dialogs, etc.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ANIMATION:CAPS"></a>ATK_ROLE_ANIMATION</p></td>
+<td class="enum_member_description">
+<p>An object which is an animated image</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ARROW:CAPS"></a>ATK_ROLE_ARROW</p></td>
+<td class="enum_member_description">
+<p>An arrow in one of the four cardinal directions</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CALENDAR:CAPS"></a>ATK_ROLE_CALENDAR</p></td>
+<td class="enum_member_description">
+<p>An object that displays a calendar and allows the user to select a date</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CANVAS:CAPS"></a>ATK_ROLE_CANVAS</p></td>
+<td class="enum_member_description">
+<p>An object that can be drawn into and is used to trap events</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CHECK-BOX:CAPS"></a>ATK_ROLE_CHECK_BOX</p></td>
+<td class="enum_member_description">
+<p>A choice that can be checked or unchecked and provides a separate indicator for the current state</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CHECK-MENU-ITEM:CAPS"></a>ATK_ROLE_CHECK_MENU_ITEM</p></td>
+<td class="enum_member_description">
+<p>A menu item with a check box</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-COLOR-CHOOSER:CAPS"></a>ATK_ROLE_COLOR_CHOOSER</p></td>
+<td class="enum_member_description">
+<p>A specialized dialog that lets the user choose a color</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-COLUMN-HEADER:CAPS"></a>ATK_ROLE_COLUMN_HEADER</p></td>
+<td class="enum_member_description">
+<p>The header for a column of data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-COMBO-BOX:CAPS"></a>ATK_ROLE_COMBO_BOX</p></td>
+<td class="enum_member_description">
+<p>A collapsible list of choices the user can select from</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DATE-EDITOR:CAPS"></a>ATK_ROLE_DATE_EDITOR</p></td>
+<td class="enum_member_description">
+<p>An object whose purpose is to allow a user to edit a date</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DESKTOP-ICON:CAPS"></a>ATK_ROLE_DESKTOP_ICON</p></td>
+<td class="enum_member_description">
+<p>An inconifed internal frame within a DESKTOP_PANE</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DESKTOP-FRAME:CAPS"></a>ATK_ROLE_DESKTOP_FRAME</p></td>
+<td class="enum_member_description">
+<p>A pane that supports internal frames and iconified versions of those internal frames</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DIAL:CAPS"></a>ATK_ROLE_DIAL</p></td>
+<td class="enum_member_description">
+<p>An object whose purpose is to allow a user to set a value</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DIALOG:CAPS"></a>ATK_ROLE_DIALOG</p></td>
+<td class="enum_member_description">
+<p>A top level window with title bar and a border</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DIRECTORY-PANE:CAPS"></a>ATK_ROLE_DIRECTORY_PANE</p></td>
+<td class="enum_member_description">
+<p>A pane that allows the user to navigate through and select the contents of a directory</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DRAWING-AREA:CAPS"></a>ATK_ROLE_DRAWING_AREA</p></td>
+<td class="enum_member_description">
+<p>An object used for drawing custom user interface elements</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FILE-CHOOSER:CAPS"></a>ATK_ROLE_FILE_CHOOSER</p></td>
+<td class="enum_member_description">
+<p>A specialized dialog that lets the user choose a file</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FILLER:CAPS"></a>ATK_ROLE_FILLER</p></td>
+<td class="enum_member_description">
+<p>A object that fills up space in a user interface</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FONT-CHOOSER:CAPS"></a>ATK_ROLE_FONT_CHOOSER</p></td>
+<td class="enum_member_description">
+<p>A specialized dialog that lets the user choose a font</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FRAME:CAPS"></a>ATK_ROLE_FRAME</p></td>
+<td class="enum_member_description">
+<p>A top level window with a title bar, border, menubar, etc.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-GLASS-PANE:CAPS"></a>ATK_ROLE_GLASS_PANE</p></td>
+<td class="enum_member_description">
+<p>A pane that is guaranteed to be painted on top of all panes beneath it</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-HTML-CONTAINER:CAPS"></a>ATK_ROLE_HTML_CONTAINER</p></td>
+<td class="enum_member_description">
+<p>A document container for HTML, whose children represent the document content</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ICON:CAPS"></a>ATK_ROLE_ICON</p></td>
+<td class="enum_member_description">
+<p>A small fixed size picture, typically used to decorate components</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-IMAGE:CAPS"></a>ATK_ROLE_IMAGE</p></td>
+<td class="enum_member_description">
+<p>An object whose primary purpose is to display an image</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-INTERNAL-FRAME:CAPS"></a>ATK_ROLE_INTERNAL_FRAME</p></td>
+<td class="enum_member_description">
+<p>A frame-like object that is clipped by a desktop pane</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LABEL:CAPS"></a>ATK_ROLE_LABEL</p></td>
+<td class="enum_member_description">
+<p>An object used to present an icon or short string in an interface</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LAYERED-PANE:CAPS"></a>ATK_ROLE_LAYERED_PANE</p></td>
+<td class="enum_member_description">
+<p>A specialized pane that allows its children to be drawn in layers, providing a form of stacking order</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LIST:CAPS"></a>ATK_ROLE_LIST</p></td>
+<td class="enum_member_description">
+<p>An object that presents a list of objects to the user and allows the user to select one or more of them </p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LIST-ITEM:CAPS"></a>ATK_ROLE_LIST_ITEM</p></td>
+<td class="enum_member_description">
+<p>An object that represents an element of a list </p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MENU:CAPS"></a>ATK_ROLE_MENU</p></td>
+<td class="enum_member_description">
+<p>An object usually found inside a menu bar that contains a list of actions the user can choose from</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MENU-BAR:CAPS"></a>ATK_ROLE_MENU_BAR</p></td>
+<td class="enum_member_description">
+<p>An object usually drawn at the top of the primary dialog box of an application that contains a list of menus the user can choose from </p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MENU-ITEM:CAPS"></a>ATK_ROLE_MENU_ITEM</p></td>
+<td class="enum_member_description">
+<p>An object usually contained in a menu that presents an action the user can choose</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-OPTION-PANE:CAPS"></a>ATK_ROLE_OPTION_PANE</p></td>
+<td class="enum_member_description">
+<p>A specialized pane whose primary use is inside a DIALOG</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PAGE-TAB:CAPS"></a>ATK_ROLE_PAGE_TAB</p></td>
+<td class="enum_member_description">
+<p>An object that is a child of a page tab list</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PAGE-TAB-LIST:CAPS"></a>ATK_ROLE_PAGE_TAB_LIST</p></td>
+<td class="enum_member_description">
+<p>An object that presents a series of panels (or page tabs), one at a time, through some mechanism provided by the object </p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PANEL:CAPS"></a>ATK_ROLE_PANEL</p></td>
+<td class="enum_member_description">
+<p>A generic container that is often used to group objects</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PASSWORD-TEXT:CAPS"></a>ATK_ROLE_PASSWORD_TEXT</p></td>
+<td class="enum_member_description">
+<p>A text object uses for passwords, or other places where the text content is not shown visibly to the user</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-POPUP-MENU:CAPS"></a>ATK_ROLE_POPUP_MENU</p></td>
+<td class="enum_member_description">
+<p>A temporary window that is usually used to offer the user a list of choices, and then hides when the user selects one of those choices</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PROGRESS-BAR:CAPS"></a>ATK_ROLE_PROGRESS_BAR</p></td>
+<td class="enum_member_description">
+<p>An object used to indicate how much of a task has been completed</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PUSH-BUTTON:CAPS"></a>ATK_ROLE_PUSH_BUTTON</p></td>
+<td class="enum_member_description">
+<p>An object the user can manipulate to tell the application to do something</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-RADIO-BUTTON:CAPS"></a>ATK_ROLE_RADIO_BUTTON</p></td>
+<td class="enum_member_description">
+<p>A specialized check box that will cause other radio buttons in the same group to become unchecked when this one is checked</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-RADIO-MENU-ITEM:CAPS"></a>ATK_ROLE_RADIO_MENU_ITEM</p></td>
+<td class="enum_member_description">
+<p>A check menu item which belongs to a group. At each instant exactly one of the radio menu items from a group is selected</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ROOT-PANE:CAPS"></a>ATK_ROLE_ROOT_PANE</p></td>
+<td class="enum_member_description">
+<p>A specialized pane that has a glass pane and a layered pane as its children</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ROW-HEADER:CAPS"></a>ATK_ROLE_ROW_HEADER</p></td>
+<td class="enum_member_description">
+<p>The header for a row of data</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SCROLL-BAR:CAPS"></a>ATK_ROLE_SCROLL_BAR</p></td>
+<td class="enum_member_description">
+<p>An object usually used to allow a user to incrementally view a large amount of data.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SCROLL-PANE:CAPS"></a>ATK_ROLE_SCROLL_PANE</p></td>
+<td class="enum_member_description">
+<p>An object that allows a user to incrementally view a large amount of information</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SEPARATOR:CAPS"></a>ATK_ROLE_SEPARATOR</p></td>
+<td class="enum_member_description">
+<p>An object usually contained in a menu to provide a visible and logical separation of the contents in a menu</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SLIDER:CAPS"></a>ATK_ROLE_SLIDER</p></td>
+<td class="enum_member_description">
+<p>An object that allows the user to select from a bounded range</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SPLIT-PANE:CAPS"></a>ATK_ROLE_SPLIT_PANE</p></td>
+<td class="enum_member_description">
+<p>A specialized panel that presents two other panels at the same time</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SPIN-BUTTON:CAPS"></a>ATK_ROLE_SPIN_BUTTON</p></td>
+<td class="enum_member_description">
+<p>An object used to get an integer or floating point number from the user</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-STATUSBAR:CAPS"></a>ATK_ROLE_STATUSBAR</p></td>
+<td class="enum_member_description">
+<p>An object which reports messages of minor importance to the user</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TABLE:CAPS"></a>ATK_ROLE_TABLE</p></td>
+<td class="enum_member_description">
+<p>An object used to represent information in terms of rows and columns</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TABLE-CELL:CAPS"></a>ATK_ROLE_TABLE_CELL</p></td>
+<td class="enum_member_description">
+<p>A cell in a table</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TABLE-COLUMN-HEADER:CAPS"></a>ATK_ROLE_TABLE_COLUMN_HEADER</p></td>
+<td class="enum_member_description">
+<p>The header for a column of a table</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TABLE-ROW-HEADER:CAPS"></a>ATK_ROLE_TABLE_ROW_HEADER</p></td>
+<td class="enum_member_description">
+<p>The header for a row of a table</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TEAR-OFF-MENU-ITEM:CAPS"></a>ATK_ROLE_TEAR_OFF_MENU_ITEM</p></td>
+<td class="enum_member_description">
+<p>A menu item used to tear off and reattach its menu</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TERMINAL:CAPS"></a>ATK_ROLE_TERMINAL</p></td>
+<td class="enum_member_description">
+<p>An object that represents an accessible terminal.  <em class="parameter"><code>Since</code></em>
+: ATK-0.6</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TEXT:CAPS"></a>ATK_ROLE_TEXT</p></td>
+<td class="enum_member_description">
+<p>An interactive widget that supports multiple lines of text and
+optionally accepts user input, but whose purpose is not to solicit user input.
+Thus ATK_ROLE_TEXT is appropriate for the text view in a plain text editor
+but inappropriate for an input field in a dialog box or web form. For widgets
+whose purpose is to solicit input from the user, see ATK_ROLE_ENTRY and
+ATK_ROLE_PASSWORD_TEXT. For generic objects which display a brief amount of
+textual information, see ATK_ROLE_STATIC.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TOGGLE-BUTTON:CAPS"></a>ATK_ROLE_TOGGLE_BUTTON</p></td>
+<td class="enum_member_description">
+<p>A specialized push button that can be checked or unchecked, but does not provide a separate indicator for the current state</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TOOL-BAR:CAPS"></a>ATK_ROLE_TOOL_BAR</p></td>
+<td class="enum_member_description">
+<p>A bar or palette usually composed of push buttons or toggle buttons</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TOOL-TIP:CAPS"></a>ATK_ROLE_TOOL_TIP</p></td>
+<td class="enum_member_description">
+<p>An object that provides information about another object</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TREE:CAPS"></a>ATK_ROLE_TREE</p></td>
+<td class="enum_member_description">
+<p>An object used to represent hierarchical information to the user</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TREE-TABLE:CAPS"></a>ATK_ROLE_TREE_TABLE</p></td>
+<td class="enum_member_description">
+<p>An object capable of expanding and collapsing rows as well as showing multiple columns of data.   <em class="parameter"><code>Since</code></em>
+: ATK-0.7</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-UNKNOWN:CAPS"></a>ATK_ROLE_UNKNOWN</p></td>
+<td class="enum_member_description">
+<p>The object contains some Accessible information, but its role is not known</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-VIEWPORT:CAPS"></a>ATK_ROLE_VIEWPORT</p></td>
+<td class="enum_member_description">
+<p>An object usually used in a scroll pane</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-WINDOW:CAPS"></a>ATK_ROLE_WINDOW</p></td>
+<td class="enum_member_description">
+<p>A top level window with no title or border.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-HEADER:CAPS"></a>ATK_ROLE_HEADER</p></td>
+<td class="enum_member_description">
+<p>An object that serves as a document header. <em class="parameter"><code>Since</code></em>
+: ATK-1.1.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FOOTER:CAPS"></a>ATK_ROLE_FOOTER</p></td>
+<td class="enum_member_description">
+<p>An object that serves as a document footer.  <em class="parameter"><code>Since</code></em>
+: ATK-1.1.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PARAGRAPH:CAPS"></a>ATK_ROLE_PARAGRAPH</p></td>
+<td class="enum_member_description">
+<p>An object which is contains a paragraph of text content.   <em class="parameter"><code>Since</code></em>
+: ATK-1.1.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-RULER:CAPS"></a>ATK_ROLE_RULER</p></td>
+<td class="enum_member_description">
+<p>An object which describes margins and tab stops, etc. for text objects which it controls (should have CONTROLLER_FOR relation to such).   <em class="parameter"><code>Since</code></em>
+: ATK-1.1.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-APPLICATION:CAPS"></a>ATK_ROLE_APPLICATION</p></td>
+<td class="enum_member_description">
+<p>The object is an application object, which may contain <em class="parameter"><code>ATK_ROLE_FRAME</code></em>
+ objects or other types of accessibles.  The root accessible of any application's ATK hierarchy should have ATK_ROLE_APPLICATION.   <em class="parameter"><code>Since</code></em>
+: ATK-1.1.4</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-AUTOCOMPLETE:CAPS"></a>ATK_ROLE_AUTOCOMPLETE</p></td>
+<td class="enum_member_description">
+<p>The object is a dialog or list containing items for insertion into an entry widget, for instance a list of words for completion of a text entry.   <em class="parameter"><code>Since</code></em>
+: ATK-1.3</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-EDITBAR:CAPS"></a>ATK_ROLE_EDITBAR</p></td>
+<td class="enum_member_description">
+<p>The object is an editable text object in a toolbar.  <em class="parameter"><code>Since</code></em>
+: ATK-1.5</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-EMBEDDED:CAPS"></a>ATK_ROLE_EMBEDDED</p></td>
+<td class="enum_member_description">
+<p>The object is an embedded container within a document or panel.  This role is a grouping "hint" indicating that the contained objects share a context.  <em class="parameter"><code>Since</code></em>
+: ATK-1.7.2</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ENTRY:CAPS"></a>ATK_ROLE_ENTRY</p></td>
+<td class="enum_member_description">
+<p>The object is a component whose textual content may be entered or modified by the user, provided <em class="parameter"><code>ATK_STATE_EDITABLE</code></em>
+ is present.   <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CHART:CAPS"></a>ATK_ROLE_CHART</p></td>
+<td class="enum_member_description">
+<p>The object is a graphical depiction of quantitative data. It may contain multiple subelements whose attributes and/or description may be queried to obtain both the quantitative data and information about how the data is being presented. The LABELLED_BY relation is particularly important in interpreting objects of this type, as is the accessible-description property.  <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-CAPTION:CAPS"></a>ATK_ROLE_CAPTION</p></td>
+<td class="enum_member_description">
+<p>The object contains descriptive information, usually textual, about another user interface element such as a table, chart, or image.  <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-FRAME:CAPS"></a>ATK_ROLE_DOCUMENT_FRAME</p></td>
+<td class="enum_member_description">
+<p>The object is a visual frame or container which contains a view of document content. Document frames may occur within another Document instance, in which case the second document may be said to be embedded in the containing instance. HTML frames are often ROLE_DOCUMENT_FRAME. Either this object, or a singleton descendant, should implement the Document interface.  <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-HEADING:CAPS"></a>ATK_ROLE_HEADING</p></td>
+<td class="enum_member_description">
+<p>The object serves as a heading for content which follows it in a document. The 'heading level' of the heading, if availabe, may be obtained by querying the object's attributes.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-PAGE:CAPS"></a>ATK_ROLE_PAGE</p></td>
+<td class="enum_member_description">
+<p>The object is a containing instance which encapsulates a page of information. <em class="parameter"><code>ATK_ROLE_PAGE</code></em>
+ is used in documents and content which support a paginated navigation model.  <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SECTION:CAPS"></a>ATK_ROLE_SECTION</p></td>
+<td class="enum_member_description">
+<p>The object is a containing instance of document content which constitutes a particular 'logical' section of the document. The type of content within a section, and the nature of the section division itself, may be obtained by querying the object's attributes. Sections may be nested. <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-REDUNDANT-OBJECT:CAPS"></a>ATK_ROLE_REDUNDANT_OBJECT</p></td>
+<td class="enum_member_description">
+<p>The object is redundant with another object in the hierarchy, and is exposed for purely technical reasons.  Objects of this role should normally be ignored by clients. <em class="parameter"><code>Since</code></em>
+: ATK-1.11</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FORM:CAPS"></a>ATK_ROLE_FORM</p></td>
+<td class="enum_member_description">
+<p>The object is a container for form controls, for instance as part of a 
+web form or user-input form within a document.  This role is primarily a tag/convenience for 
+clients when navigating complex documents, it is not expected that ordinary GUI containers will 
+always have ATK_ROLE_FORM. <em class="parameter"><code>Since</code></em>
+: ATK-1.12.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LINK:CAPS"></a>ATK_ROLE_LINK</p></td>
+<td class="enum_member_description">
+<p>The object is a hypertext anchor, i.e. a "link" in a
+hypertext document.  Such objects are distinct from 'inline'
+content which may also use the Hypertext/Hyperlink interfaces
+to indicate the range/location within a text object where
+an inline or embedded object lies.  <em class="parameter"><code>Since</code></em>
+: ATK-1.12.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-INPUT-METHOD-WINDOW:CAPS"></a>ATK_ROLE_INPUT_METHOD_WINDOW</p></td>
+<td class="enum_member_description">
+<p>The object is a window or similar viewport 
+which is used to allow composition or input of a 'complex character',
+in other words it is an "input method window." <em class="parameter"><code>Since</code></em>
+: ATK-1.12.1</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TABLE-ROW:CAPS"></a>ATK_ROLE_TABLE_ROW</p></td>
+<td class="enum_member_description">
+<p>A row in a table.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TREE-ITEM:CAPS"></a>ATK_ROLE_TREE_ITEM</p></td>
+<td class="enum_member_description">
+<p>An object that represents an element of a tree.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-SPREADSHEET:CAPS"></a>ATK_ROLE_DOCUMENT_SPREADSHEET</p></td>
+<td class="enum_member_description">
+<p>A document frame which contains a spreadsheet.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-PRESENTATION:CAPS"></a>ATK_ROLE_DOCUMENT_PRESENTATION</p></td>
+<td class="enum_member_description">
+<p>A document frame which contains a presentation or slide content.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-TEXT:CAPS"></a>ATK_ROLE_DOCUMENT_TEXT</p></td>
+<td class="enum_member_description">
+<p>A document frame which contains textual content, such as found in a word processing application.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-WEB:CAPS"></a>ATK_ROLE_DOCUMENT_WEB</p></td>
+<td class="enum_member_description">
+<p>A document frame which contains HTML or other markup suitable for display in a web browser.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DOCUMENT-EMAIL:CAPS"></a>ATK_ROLE_DOCUMENT_EMAIL</p></td>
+<td class="enum_member_description">
+<p>A document frame which contains email content to be displayed or composed either in plain text or HTML.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-COMMENT:CAPS"></a>ATK_ROLE_COMMENT</p></td>
+<td class="enum_member_description">
+<p>An object found within a document and designed to present a comment, note, or other annotation. In some cases, this object might not be visible until activated.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LIST-BOX:CAPS"></a>ATK_ROLE_LIST_BOX</p></td>
+<td class="enum_member_description">
+<p>A non-collapsible list of choices the user can select from. <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-GROUPING:CAPS"></a>ATK_ROLE_GROUPING</p></td>
+<td class="enum_member_description">
+<p>A group of related widgets. This group typically has a label. <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-IMAGE-MAP:CAPS"></a>ATK_ROLE_IMAGE_MAP</p></td>
+<td class="enum_member_description">
+<p>An image map object. Usually a graphic with multiple hotspots, where each hotspot can be activated resulting in the loading of another document or section of a document. <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-NOTIFICATION:CAPS"></a>ATK_ROLE_NOTIFICATION</p></td>
+<td class="enum_member_description">
+<p>A transitory object designed to present a message to the user, typically at the desktop level rather than inside a particular application.  <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-INFO-BAR:CAPS"></a>ATK_ROLE_INFO_BAR</p></td>
+<td class="enum_member_description">
+<p>An object designed to present a message to the user within an existing window. <em class="parameter"><code>Since</code></em>
+: ATK-2.1.0</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LEVEL-BAR:CAPS"></a>ATK_ROLE_LEVEL_BAR</p></td>
+<td class="enum_member_description">
+<p>A bar that serves as a level indicator to, for instance, show the strength of a password or the state of a battery.  <em class="parameter"><code>Since</code></em>
+: ATK-2.7.3</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TITLE-BAR:CAPS"></a>ATK_ROLE_TITLE_BAR</p></td>
+<td class="enum_member_description">
+<p>A bar that serves as the title of a window or a
+dialog. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-BLOCK-QUOTE:CAPS"></a>ATK_ROLE_BLOCK_QUOTE</p></td>
+<td class="enum_member_description">
+<p>An object which contains a text section
+that is quoted from another source. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-AUDIO:CAPS"></a>ATK_ROLE_AUDIO</p></td>
+<td class="enum_member_description">
+<p>An object which represents an audio element. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-VIDEO:CAPS"></a>ATK_ROLE_VIDEO</p></td>
+<td class="enum_member_description">
+<p>An object which represents a video element. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DEFINITION:CAPS"></a>ATK_ROLE_DEFINITION</p></td>
+<td class="enum_member_description">
+<p>A definition of a term or concept. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-ARTICLE:CAPS"></a>ATK_ROLE_ARTICLE</p></td>
+<td class="enum_member_description">
+<p>A section of a page that consists of a
+composition that forms an independent part of a document, page, or
+site. Examples: A blog entry, a news story, a forum post. <em class="parameter"><code>Since</code></em>
+:
+ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LANDMARK:CAPS"></a>ATK_ROLE_LANDMARK</p></td>
+<td class="enum_member_description">
+<p>A region of a web page intended as a
+navigational landmark. This is designed to allow Assistive
+Technologies to provide quick navigation among key regions within a
+document. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LOG:CAPS"></a>ATK_ROLE_LOG</p></td>
+<td class="enum_member_description">
+<p>A text widget or container holding log content, such
+as chat history and error logs. In this role there is a
+relationship between the arrival of new items in the log and the
+reading order. The log contains a meaningful sequence and new
+information is added only to the end of the log, not at arbitrary
+points. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MARQUEE:CAPS"></a>ATK_ROLE_MARQUEE</p></td>
+<td class="enum_member_description">
+<p>A container where non-essential information
+changes frequently. Common usages of marquee include stock tickers
+and ad banners. The primary difference between a marquee and a log
+is that logs usually have a meaningful order or sequence of
+important content changes. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MATH:CAPS"></a>ATK_ROLE_MATH</p></td>
+<td class="enum_member_description">
+<p>A text widget or container that holds a mathematical
+expression. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-RATING:CAPS"></a>ATK_ROLE_RATING</p></td>
+<td class="enum_member_description">
+<p>A widget whose purpose is to display a rating,
+such as the number of stars associated with a song in a media
+player. Objects of this role should also implement
+AtkValue. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-TIMER:CAPS"></a>ATK_ROLE_TIMER</p></td>
+<td class="enum_member_description">
+<p>An object containing a numerical counter which
+indicates an amount of elapsed time from a start point, or the time
+remaining until an end point. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DESCRIPTION-LIST:CAPS"></a>ATK_ROLE_DESCRIPTION_LIST</p></td>
+<td class="enum_member_description">
+<p>An object that represents a list of
+term-value groups. A term-value group represents a individual
+description and consist of one or more names
+(ATK_ROLE_DESCRIPTION_TERM) followed by one or more values
+(ATK_ROLE_DESCRIPTION_VALUE). For each list, there should not be
+more than one group with the same term name. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DESCRIPTION-TERM:CAPS"></a>ATK_ROLE_DESCRIPTION_TERM</p></td>
+<td class="enum_member_description">
+<p>An object that represents the term, or
+name, part of a term-description group in a description
+list. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-DESCRIPTION-VALUE:CAPS"></a>ATK_ROLE_DESCRIPTION_VALUE</p></td>
+<td class="enum_member_description">
+<p>An object that represents the
+description, definition or value of a term-description group in a
+description list. The values within a group are alternatives,
+meaning that you can have several ATK_ROLE_DESCRIPTION_VALUE for a
+given ATK_ROLE_DESCRIPTION_TERM. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-STATIC:CAPS"></a>ATK_ROLE_STATIC</p></td>
+<td class="enum_member_description">
+<p>A generic non-container object whose purpose is to display a
+brief amount of information to the user and whose role is known by the
+implementor but lacks semantic value for the user. Examples in which
+ATK_ROLE_STATIC is appropriate include the message displayed in a message box
+and an image used as an alternative means to display text. ATK_ROLE_STATIC
+should not be applied to widgets which are traditionally interactive, objects
+which display a significant amount of content, or any object which has an
+accessible relation pointing to another object. Implementors should expose the
+displayed information through the accessible name of the object. If doing so seems
+inappropriate, it may indicate that a different role should be used. For
+labels which describe another widget, see ATK_ROLE_LABEL. For text views, see
+ATK_ROLE_TEXT. For generic containers, see ATK_ROLE_PANEL. For objects whose
+role is not known by the implementor, see ATK_ROLE_UNKNOWN. <em class="parameter"><code>Since</code></em>
+: ATK-2.16.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MATH-FRACTION:CAPS"></a>ATK_ROLE_MATH_FRACTION</p></td>
+<td class="enum_member_description">
+<p>An object that represents a mathematical fraction.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-MATH-ROOT:CAPS"></a>ATK_ROLE_MATH_ROOT</p></td>
+<td class="enum_member_description">
+<p>An object that represents a mathematical expression
+displayed with a radical. <em class="parameter"><code>Since</code></em>
+: ATK-2.16.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SUBSCRIPT:CAPS"></a>ATK_ROLE_SUBSCRIPT</p></td>
+<td class="enum_member_description">
+<p>An object that contains text that is displayed as a
+subscript. <em class="parameter"><code>Since</code></em>
+: ATK-2.16.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-SUPERSCRIPT:CAPS"></a>ATK_ROLE_SUPERSCRIPT</p></td>
+<td class="enum_member_description">
+<p>An object that contains text that is displayed as a
+superscript. <em class="parameter"><code>Since</code></em>
+: ATK-2.16.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-FOOTNOTE:CAPS"></a>ATK_ROLE_FOOTNOTE</p></td>
+<td class="enum_member_description">
+<p>An object that contains the text of a footnote. <em class="parameter"><code>Since</code></em>
+: ATK-2.26.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-ROLE-LAST-DEFINED:CAPS"></a>ATK_ROLE_LAST_DEFINED</p></td>
+<td class="enum_member_description">
+<p>not a valid role, used for finding end of the enumeration</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkLayer"></a><h3>enum AtkLayer</h3>
+<p>Describes the layer of a component</p>
+<p>These enumerated "layer values" are used when determining which UI
+rendering layer a component is drawn into, which can help in making
+determinations of when components occlude one another.</p>
+<div class="refsect3">
+<a name="AtkLayer.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-INVALID:CAPS"></a>ATK_LAYER_INVALID</p></td>
+<td class="enum_member_description">
+<p>The object does not have a layer</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-BACKGROUND:CAPS"></a>ATK_LAYER_BACKGROUND</p></td>
+<td class="enum_member_description">
+<p>This layer is reserved for the desktop background</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-CANVAS:CAPS"></a>ATK_LAYER_CANVAS</p></td>
+<td class="enum_member_description">
+<p>This layer is used for Canvas components</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-WIDGET:CAPS"></a>ATK_LAYER_WIDGET</p></td>
+<td class="enum_member_description">
+<p>This layer is normally used for components</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-MDI:CAPS"></a>ATK_LAYER_MDI</p></td>
+<td class="enum_member_description">
+<p>This layer is used for layered components</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-POPUP:CAPS"></a>ATK_LAYER_POPUP</p></td>
+<td class="enum_member_description">
+<p>This layer is used for popup components, such as menus</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-OVERLAY:CAPS"></a>ATK_LAYER_OVERLAY</p></td>
+<td class="enum_member_description">
+<p>This layer is reserved for future use.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-LAYER-WINDOW:CAPS"></a>ATK_LAYER_WINDOW</p></td>
+<td class="enum_member_description">
+<p>This layer is used for toplevel windows.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkImplementor"></a><h3>AtkImplementor</h3>
+<pre class="programlisting">typedef struct _AtkImplementor AtkImplementor;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkAttribute"></a><h3>struct AtkAttribute</h3>
+<pre class="programlisting">struct AtkAttribute {
+  gchar* name;
+  gchar* value;
+};
+</pre>
+<p>AtkAttribute is a string name/value pair representing a generic
+attribute. This can be used to expose additional information from
+an accessible object as a whole (see <a class="link" href="AtkObject.html#atk-object-get-attributes" title="atk_object_get_attributes ()"><code class="function">atk_object_get_attributes()</code></a>)
+or an document (see <a class="link" href="AtkDocument.html#atk-document-get-attributes" title="atk_document_get_attributes ()"><code class="function">atk_document_get_attributes()</code></a>). In the case of
+text attributes (see <a class="link" href="AtkText.html#atk-text-get-default-attributes" title="atk_text_get_default_attributes ()"><code class="function">atk_text_get_default_attributes()</code></a>),
+<a class="link" href="AtkText.html#AtkTextAttribute" title="enum AtkTextAttribute"><span class="type">AtkTextAttribute</span></a> enum defines all the possible text attribute
+names. You can use <a class="link" href="AtkText.html#atk-text-attribute-get-name" title="atk_text_attribute_get_name ()"><code class="function">atk_text_attribute_get_name()</code></a> to get the string
+name from the enum value. See also <a class="link" href="AtkText.html#atk-text-attribute-for-name" title="atk_text_attribute_for_name ()"><code class="function">atk_text_attribute_for_name()</code></a>
+and <a class="link" href="AtkText.html#atk-text-attribute-get-value" title="atk_text_attribute_get_value ()"><code class="function">atk_text_attribute_get_value()</code></a> for more information.</p>
+<p>A string name/value pair representing a generic attribute.</p>
+<div class="refsect3">
+<a name="AtkAttribute.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="AtkAttribute.name"></a>name</code></em>;</p></td>
+<td class="struct_member_description"><p>The attribute name.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">gchar</span> *<em class="structfield"><code><a name="AtkAttribute.value"></a>value</code></em>;</p></td>
+<td class="struct_member_description"><p>the value of the attribute, represented as a string.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkAttributeSet"></a><h3>AtkAttributeSet</h3>
+<pre class="programlisting">typedef GSList AtkAttributeSet;
+</pre>
+<p>This is a singly-linked list (a <span class="type">GSList</span>) of <a class="link" href="AtkObject.html#AtkAttribute" title="struct AtkAttribute"><span class="type">AtkAttribute</span></a>. It is
+used by <a class="link" href="AtkText.html#atk-text-get-run-attributes" title="atk_text_get_run_attributes ()"><code class="function">atk_text_get_run_attributes()</code></a>,
+<a class="link" href="AtkText.html#atk-text-get-default-attributes" title="atk_text_get_default_attributes ()"><code class="function">atk_text_get_default_attributes()</code></a>,
+<a class="link" href="AtkEditableText.html#atk-editable-text-set-run-attributes" title="atk_editable_text_set_run_attributes ()"><code class="function">atk_editable_text_set_run_attributes()</code></a>,
+<a class="link" href="AtkDocument.html#atk-document-get-attributes" title="atk_document_get_attributes ()"><code class="function">atk_document_get_attributes()</code></a> and <a class="link" href="AtkObject.html#atk-object-get-attributes" title="atk_object_get_attributes ()"><code class="function">atk_object_get_attributes()</code></a></p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkPropertyValues"></a><h3>AtkPropertyValues</h3>
+<pre class="programlisting">typedef struct {
+  const gchar  *property_name;
+  GValue old_value;
+  GValue new_value;
+} AtkPropertyValues;
+</pre>
+<p>Note: <em class="parameter"><code>old_value</code></em>
+ field of <a class="link" href="AtkObject.html#AtkPropertyValues" title="AtkPropertyValues"><span class="type">AtkPropertyValues</span></a> will not contain a
+valid value. This is a field defined with the purpose of contain
+the previous value of the property, but is not used anymore.</p>
+<div class="refsect3">
+<a name="AtkPropertyValues.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p>const <span class="type">gchar</span> *<em class="structfield"><code><a name="AtkPropertyValues.property-name"></a>property_name</code></em>;</p></td>
+<td class="struct_member_description"><p>The name of the ATK property which has changed.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">GValue</span> <em class="structfield"><code><a name="AtkPropertyValues.old-value"></a>old_value</code></em>;</p></td>
+<td class="struct_member_description"><p>NULL. This field is not used anymore.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">GValue</span> <em class="structfield"><code><a name="AtkPropertyValues.new-value"></a>new_value</code></em>;</p></td>
+<td class="struct_member_description"><p>The new value of the named property.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.property-details"></a><h2>Property Details</h2>
+<div class="refsect2">
+<a name="AtkObject--accessible-component-layer"></a><h3>The <code class="literal">“accessible-component-layer”</code> property</h3>
+<pre class="programlisting">  “accessible-component-layer” <span class="type">gint</span></pre>
+<p>The accessible layer of this object.</p>
+<p>Flags: Read</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-component-mdi-zorder"></a><h3>The <code class="literal">“accessible-component-mdi-zorder”</code> property</h3>
+<pre class="programlisting">  “accessible-component-mdi-zorder” <span class="type">gint</span></pre>
+<p>The accessible MDI value of this object.</p>
+<p>Flags: Read</p>
+<p>Default value: -2147483648</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-description"></a><h3>The <code class="literal">“accessible-description”</code> property</h3>
+<pre class="programlisting">  “accessible-description”   <span class="type">gchar</span> *</pre>
+<p>Description of an object, formatted for assistive technology access.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-hypertext-nlinks"></a><h3>The <code class="literal">“accessible-hypertext-nlinks”</code> property</h3>
+<pre class="programlisting">  “accessible-hypertext-nlinks” <span class="type">gint</span></pre>
+<p>The number of links which the current AtkHypertext has.</p>
+<p>Flags: Read</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-name"></a><h3>The <code class="literal">“accessible-name”</code> property</h3>
+<pre class="programlisting">  “accessible-name”          <span class="type">gchar</span> *</pre>
+<p>Object instance’s name formatted for assistive technology access.</p>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-parent"></a><h3>The <code class="literal">“accessible-parent”</code> property</h3>
+<pre class="programlisting">  “accessible-parent”        <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</pre>
+<p>Parent of the current accessible as returned by atk_object_get_parent().</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-role"></a><h3>The <code class="literal">“accessible-role”</code> property</h3>
+<pre class="programlisting">  “accessible-role”          <span class="type">gint</span></pre>
+<p>The accessible role of this object.</p>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 66</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-caption"></a><h3>The <code class="literal">“accessible-table-caption”</code> property</h3>
+<pre class="programlisting">  “accessible-table-caption” <span class="type">gchar</span> *</pre>
+<p>Table caption.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-table-caption</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 1.3. Use table-caption-object instead.</p>
+</div>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-caption-object"></a><h3>The <code class="literal">“accessible-table-caption-object”</code> property</h3>
+<pre class="programlisting">  “accessible-table-caption-object” <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</pre>
+<p>Is used to notify that the table caption has changed.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-column-description"></a><h3>The <code class="literal">“accessible-table-column-description”</code> property</h3>
+<pre class="programlisting">  “accessible-table-column-description” <span class="type">gchar</span> *</pre>
+<p>Accessible table column description.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-table-column-description</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkTable.html#atk-table-get-column-description" title="atk_table_get_column_description ()"><code class="function">atk_table_get_column_description()</code></a>
+and <a class="link" href="AtkTable.html#atk-table-set-column-description" title="atk_table_set_column_description ()"><code class="function">atk_table_set_column_description()</code></a> instead.</p>
+</div>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-column-header"></a><h3>The <code class="literal">“accessible-table-column-header”</code> property</h3>
+<pre class="programlisting">  “accessible-table-column-header” <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</pre>
+<p>Accessible table column header.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-table-column-header</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkTable.html#atk-table-get-column-header" title="atk_table_get_column_header ()"><code class="function">atk_table_get_column_header()</code></a> and
+<a class="link" href="AtkTable.html#atk-table-set-column-header" title="atk_table_set_column_header ()"><code class="function">atk_table_set_column_header()</code></a> instead.</p>
+</div>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-row-description"></a><h3>The <code class="literal">“accessible-table-row-description”</code> property</h3>
+<pre class="programlisting">  “accessible-table-row-description” <span class="type">gchar</span> *</pre>
+<p>Accessible table row description.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-table-row-description</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkTable.html#atk-table-get-row-description" title="atk_table_get_row_description ()"><code class="function">atk_table_get_row_description()</code></a> and
+<a class="link" href="AtkTable.html#atk-table-set-row-description" title="atk_table_set_row_description ()"><code class="function">atk_table_set_row_description()</code></a> instead.</p>
+</div>
+<p>Flags: Read / Write</p>
+<p>Default value: NULL</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-row-header"></a><h3>The <code class="literal">“accessible-table-row-header”</code> property</h3>
+<pre class="programlisting">  “accessible-table-row-header” <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</pre>
+<p>Accessible table row header.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-table-row-header</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkTable.html#atk-table-get-row-header" title="atk_table_get_row_header ()"><code class="function">atk_table_get_row_header()</code></a> and
+<a class="link" href="AtkTable.html#atk-table-set-row-header" title="atk_table_set_row_header ()"><code class="function">atk_table_set_row_header()</code></a> instead.</p>
+</div>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-table-summary"></a><h3>The <code class="literal">“accessible-table-summary”</code> property</h3>
+<pre class="programlisting">  “accessible-table-summary” <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *</pre>
+<p>Is used to notify that the table summary has changed.</p>
+<p>Flags: Read / Write</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject--accessible-value"></a><h3>The <code class="literal">“accessible-value”</code> property</h3>
+<pre class="programlisting">  “accessible-value”         <span class="type">gdouble</span></pre>
+<p>Numeric value of this object, in case being and AtkValue.</p>
+<div class="warning">
+<p><code class="literal">AtkObject:accessible-value</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-get-value-and-text" title="atk_value_get_value_and_text ()"><code class="function">atk_value_get_value_and_text()</code></a> to get
+the value, and value-changed signal to be notified on their value
+changes.</p>
+</div>
+<p>Flags: Read / Write</p>
+<p>Allowed values: &gt;= 0</p>
+<p>Default value: 0</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkObject.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="AtkObject-active-descendant-changed"></a><h3>The <code class="literal">“active-descendant-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">gpointer</span>   arg1,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The "active-descendant-changed" signal is emitted by an object
+which has the state ATK_STATE_MANAGES_DESCENDANTS when the focus
+object in the object changes. For instance, a table will emit the
+signal when the cell in the table which has focus changes.</p>
+<div class="refsect3">
+<a name="AtkObject-active-descendant-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>the newly focused object.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject-children-changed"></a><h3>The <code class="literal">“children-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">guint</span>      arg1,
+               <span class="type">gpointer</span>   arg2,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The signal "children-changed" is emitted when a child is added or
+removed form an object. It supports two details: "add" and
+"remove"</p>
+<div class="refsect3">
+<a name="AtkObject-children-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>The index of the added or removed child. The value can be
+-1. This is used if the value is not known by the implementor
+when the child is added/removed or irrelevant.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg2</p></td>
+<td class="parameter_description"><p>A gpointer to the child AtkObject which was added or
+removed. If the child was removed, it is possible that it is not
+available for the implementor. In that case this pointer can be
+NULL.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject-focus-event"></a><h3>The <code class="literal">“focus-event”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">gboolean</span>   arg1,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The signal "focus-event" is emitted when an object gained or lost
+focus.</p>
+<div class="warning">
+<p><code class="literal">AtkObject::focus-event</code> has been deprecated since version 2.9.4 and should not be used in newly-written code.</p>
+<p>Use the <a class="link" href="AtkObject.html#AtkObject-state-change" title="The “state-change” signal"><span class="type">“state-change”</span></a> signal instead.</p>
+</div>
+<div class="refsect3">
+<a name="AtkObject-focus-event.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>a boolean value which indicates whether the object gained
+or lost focus.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject-property-change"></a><h3>The <code class="literal">“property-change”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">gpointer</span>   arg1,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The signal "property-change" is emitted when an object's property
+value changes. <em class="parameter"><code>arg1</code></em>
+ contains an <a class="link" href="AtkObject.html#AtkPropertyValues" title="AtkPropertyValues"><span class="type">AtkPropertyValues</span></a> with the name
+and the new value of the property whose value has changed. Note
+that, as with GObject notify, getting this signal does not
+guarantee that the value of the property has actually changed; it
+may also be emitted when the setter of the property is called to
+reinstate the previous value.</p>
+<p>Toolkit implementor note: ATK implementors should use
+<code class="function">g_object_notify()</code> to emit property-changed
+notifications. <span class="type">“property-changed”</span> is needed by the
+implementation of <a class="link" href="AtkUtil.html#atk-add-global-event-listener" title="atk_add_global_event_listener ()"><code class="function">atk_add_global_event_listener()</code></a> because GObject
+notify doesn't support emission hooks.</p>
+<div class="refsect3">
+<a name="AtkObject-property-change.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkObject.html#AtkPropertyValues" title="AtkPropertyValues"><span class="type">AtkPropertyValues</span></a> containing the new value of the
+property which changed.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject-state-change"></a><h3>The <code class="literal">“state-change”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">gchar</span>     *arg1,
+               <span class="type">gboolean</span>   arg2,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The "state-change" signal is emitted when an object's state
+changes.  The detail value identifies the state type which has
+changed.</p>
+<div class="refsect3">
+<a name="AtkObject-state-change.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>The name of the state which has changed</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg2</p></td>
+<td class="parameter_description"><p>A boolean which indicates whether the state has been set or unset.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Has Details</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkObject-visible-data-changed"></a><h3>The <code class="literal">“visible-data-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *atkobject,
+               <span class="type">gpointer</span>   user_data)</pre>
+<p>The "visible-data-changed" signal is emitted when the visual
+appearance of the object changed.</p>
+<div class="refsect3">
+<a name="AtkObject-visible-data-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkobject</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

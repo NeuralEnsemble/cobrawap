@@ -1,0 +1,294 @@
+configfile: "configfile.yaml"
+
+import sys
+sys.path.append('../')
+from settings import working_dir, data_path, output_path
+import numpy as np
+
+FREQ_BAND                   = config["FREQ_BAND"]
+MIN_STATE_DURATION          = config["MIN_STATE_DURATION"]
+FIXED_THRESHOLD             = config["FIXED_THRESHOLD"]
+SIGMA_THRESHOLD             = config["SIGMA_THRESHOLD"]
+REMOVE_DOWN_FIRST           = config["REMOVE_DOWN_FIRST"]
+DETRENDING_ORDER            = config["DETRENDING_ORDER"]
+PSD_FREQ_RES                = config["PSD_FREQ_RES"]
+PSD_OVERLAP                 = config["PSD_OVERLAP"]
+SLOPE_WINDOW                = config["SLOPE_WINDOW"]
+ELECTRODE_LOCATION          = config["ELECTRODE_LOCATION"]
+ELECTRODE_COLOR             = config["ELECTRODE_COLOR"]
+ELECTRODE_ANNOTATION_NAME   = config["ELECTRODE_ANNOTATION_NAME"]
+NAME2COORDS                 = config["NAME2COORDS"]
+GRID_SIZE                   = config["GRID_SIZE"]
+ELECTRODE_DISTANCE          = config["ELECTRODE_DISTANCE"]
+PATH                        = config["PATH"]
+FILENAME                    = config["FILENAME"]
+SAVE_IMAGE_FORMAT           = config["SAVE_IMAGE_FORMAT"]
+
+# Example plotting parameters
+T_START = 0
+T_STOP = 10
+CHANNEL = 15
+
+
+rule fp_all:
+    input:
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'UD_state_vector.npy'),
+               fp_dir=PATH, fp_folder=FILENAME),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'power_spectrum.{format}'),
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'lfp_traces_t{t_start}-{t_stop}s.{format}'),
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
+               t_start=T_START, t_stop=T_STOP),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                'logMUA_states_channel{channel}_{t_start}-{t_stop}s.{format}'),
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
+               t_start=T_START, t_stop=T_STOP, channel=CHANNEL),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'UD_slopes_channel{channel}.{format}'),
+               fp_dir=PATH, fp_folder=FILENAME, format=SAVE_IMAGE_FORMAT,
+               channel=CHANNEL),
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'logMUA_{t_start}-{t_stop}s.mp4'), fp_dir=PATH,
+                            fp_folder=FILENAME, t_start=T_START, t_stop=T_STOP),
+        config = 'configfile.yaml'
+    output:
+        expand(os.path.join(output_path, '{fp_dir}', '{fp_folder}',
+                            'configfile.yaml'),
+               fp_dir=PATH, fp_folder=FILENAME)
+    shell:
+        """
+        echo {output} | xargs -n 1 cp {input.config}
+        """
+
+
+rule fp_to_neo:
+    input:
+        data = os.path.join(data_path, '{fp_dir}', '{data_file}.smr'),
+        script = "scripts/fp_to_neo.py"
+    params:
+        electrode_location = ELECTRODE_LOCATION,
+        electrode_color = ELECTRODE_COLOR,
+        annotation_name = ELECTRODE_ANNOTATION_NAME,
+        name2coords = NAME2COORDS,
+        grid_size = GRID_SIZE
+    conda:
+        "../envs/wavescalephant_env.yml"
+    output:
+        os.path.join(output_path, '{fp_dir}', '{data_file}',
+                     'field_potential.nix')
+    shell:
+        """
+        python {input.script} --output {output} \
+                              --data {input.data} \
+                              --electrode_location {params.electrode_location} \
+                              --electrode_color {params.electrode_color} \
+                              --annotation_name {params.annotation_name} \
+                              --coordiantes {params.name2coords} \
+                              --grid_size {params.grid_size}
+        """
+
+
+rule fp_logMUA_estimation:
+    input:
+        data = os.path.join(output_path, '{fp_dir}', 'field_potential.nix'),
+        script = "scripts/fp_logMUA_estimation.py",
+    params:
+        freq_band = FREQ_BAND,
+        detrending_order = DETRENDING_ORDER,
+        psd_overlap = PSD_OVERLAP
+    conda:
+        "../envs/wavescalephant_env.yml"
+    output:
+        os.path.join(output_path, '{fp_dir}', "logMUA.nix")
+    shell:
+        """
+        python {input.script} --output {output} \
+                              --data {input.data} \
+                              --freq_band {params.freq_band} \
+                              --detrending_order {params.detrending_order} \
+                              --psd_overlap {params.psd_overlap}
+        """
+
+
+rule fp_UpDown_detection:
+    input:
+        logMUA = os.path.join(output_path, '{fp_dir}', 'logMUA.nix'),
+        script = "scripts/fp_up_down_detection.py"
+    params:
+        min_state_duration = MIN_STATE_DURATION,
+        remove_down_first = REMOVE_DOWN_FIRST,
+        fixed_threshold = FIXED_THRESHOLD,
+        sigma_threshold = SIGMA_THRESHOLD,
+        show_plots = 0
+    conda:
+        "../envs/wavescalephant_env.yml"
+    output:
+        state_vector = os.path.join(output_path, '{fp_dir}',
+                                    'UD_state_vector.npy'),
+        nix_file = os.path.join(output_path, '{fp_dir}', 'UD_states.nix')
+    shell:
+        """
+        python {input.script} --out_state_vector {output.state_vector} \
+                              --out_nix_file {output.nix_file} \
+                              --logMUA_estimate {input.logMUA} \
+                              --min_state_duration {params.min_state_duration} \
+                              --remove_down_first {params.remove_down_first} \
+                              --fixed_threshold {params.fixed_threshold} \
+                              --sigma_threshold {params.sigma_threshold} \
+                              --show_plots {params.show_plots}
+        """
+
+
+########################## Plotting rules ##########################
+
+rule fp_plot_signals:
+    input:
+        data = os.path.join(output_path, '{fp_dir}', 'field_potential.nix'),
+        script = "scripts/fp_plot_signals.py"
+    params:
+        scaling = 12,
+        show_figure = 0,
+        annotation_name = ELECTRODE_ANNOTATION_NAME
+    conda:
+        "envs/wavescalephant_env.yml"
+    output:
+        os.path.join(output_path, '{fp_dir}',
+                     'lfp_traces_t{t_start}-{t_stop}s.{format}')
+    shell:
+        """
+        echo {params.show_figure}
+        python {input.script} --output {output} \
+                              --data {input.data} \
+                              --format {wildcards.format} \
+                              --scaling {params.scaling} \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+                              --show_figure {params.show_figure} \
+                              --annotation_name {params.annotation_name}
+        """
+
+
+rule fp_plot_power_spectrum:
+    input:
+        data = os.path.join(output_path, '{fp_dir}', 'field_potential.nix'),
+        script = "scripts/fp_plot_power_spectrum.py"
+    params:
+        show_figure = 0,
+        psd_freq_res = PSD_FREQ_RES,
+        psd_overlap = PSD_OVERLAP,
+    conda:
+        "envs/wavescalephant_env.yml"
+    output:
+        os.path.join(output_path, '{fp_dir}', 'power_spectrum.{format}')
+    shell:
+        """
+        python {input.script} --output {output} \
+                              --data {input.data} \
+                              --format {wildcards.format} \
+                              --psd_freq_res {params.psd_freq_res} \
+                              --psd_overlap {params.psd_overlap} \
+                              --show_figure {params.show_figure}
+
+        """
+
+
+rule fp_plot_logMUA_states:
+    input:
+        logMUA = os.path.join(output_path, '{fp_dir}', 'logMUA.nix'),
+        data = os.path.join(output_path, '{fp_dir}', 'field_potential.nix'),
+        UD_states = os.path.join(output_path, '{fp_dir}', 'UD_state_vector.npy'),
+        script = 'scripts/fp_plot_logMUA_states.py'
+    params:
+        show_figure = 0
+    conda:
+        "envs/wavescalephant_env.yml"
+    output:
+         os.path.join(output_path, '{fp_dir}',
+                'logMUA_states_channel{channel}_{t_start}-{t_stop}s.{format}')
+    shell:
+        """
+        python {input.script} --output {output} \
+                              --logMUA {input.logMUA} \
+                              --data {input.data} \
+                              --UD_states {input.UD_states} \
+                              --channel {wildcards.channel} \
+                              --format {wildcards.format} \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+                              --show_figure {params.show_figure}
+        """
+
+
+rule fp_plot_avg_transitions:
+    input:
+        logMUA = os.path.join(output_path, '{fp_dir}', "logMUA.nix"),
+        UD_states = os.path.join(output_path, '{fp_dir}', 'UD_state_vector.npy'),
+        script = "scripts/fp_plot_avg_transitions.py"
+    params:
+        slope_window = SLOPE_WINDOW,
+        show_figure = 1
+    conda:
+        "envs/wavescalephant_env.yml"
+    output:
+        os.path.join(output_path, '{fp_dir}',
+                     'UD_slopes_channel{channel}.{format}')
+    shell:
+        """
+        python {input.script} --output {output}
+                              --logMUA_estimate {input.logMUA} \
+                              --state_vector {input.UD_states} \
+                              --show_figure {params.show_figure} \
+                              --slope_window {params.slope_window} \
+                              --channel {wildcards.channel} \
+                              --format {wildcards.format}
+        """
+
+
+checkpoint fp_plot_movie_frames:
+    input:
+        logMUA = os.path.join(output_path, '{fp_dir}', "logMUA.nix"),
+        script = "scripts/fp_plot_movie_frames.py"
+    params:
+        frame_name = 'frame',
+        frame_format = SAVE_IMAGE_FORMAT,
+        pixel_size = ELECTRODE_DISTANCE
+    output:
+        frame_folder = directory(os.path.join(output_path,
+                                    '{fp_dir}', 'frames_{t_start}-{t_stop}s'))
+    shell:
+        """
+        python {input.script} --logMUA {input.logMUA} \
+                              --frame_folder {output.frame_folder} \
+                              --frame_format {params.frame_format} \
+                              --frame_name {params.frame_name} \
+                              --pixel_size {params.pixel_size} \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop}
+        """
+
+rule fp_plot_movie:
+    input:
+        directory(os.path.join(output_path,
+                                    '{fp_dir}', 'frames_{t_start}-{t_stop}s'))
+    output:
+        os.path.join(output_path, '{fp_dir}', 'logMUA_{t_start}-{t_stop}s.mp4')
+    params:
+        frame_path = lambda wildcards, input: os.path.join(input[0],
+                                                'frame_%05d.{}'\
+                                                .format(SAVE_IMAGE_FORMAT)),
+        quality = 0,
+        scale_x = 1080,
+        scale_y = 1080,
+        fps = 10
+    shell:
+        """
+        ffmpeg -y -framerate {params.fps} \
+               -i {params.frame_path} \
+               -q {params.quality} \
+               -crf {params.quality} \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               {output}
+        """

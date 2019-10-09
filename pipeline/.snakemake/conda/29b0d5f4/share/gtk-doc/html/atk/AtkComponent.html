@@ -1,0 +1,1132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkComponent: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="interfaces.html" title="ATK Interfaces">
+<link rel="prev" href="AtkAction.html" title="AtkAction">
+<link rel="next" href="AtkDocument.html" title="AtkDocument">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkComponent.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkComponent.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_implementations">  <span class="dim">|</span> 
+                  <a href="#AtkComponent.implementations" class="shortcut">Known Implementations</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#AtkComponent.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="interfaces.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="AtkAction.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkDocument.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkComponent"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkComponent.top_of_page"></a>AtkComponent</span></h2>
+<p>AtkComponent — The ATK interface provided by UI components
+which occupy a physical area on the screen.
+which the user can activate/interact with.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkComponent.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<span class="c_punctuation">(</span><a class="link" href="AtkComponent.html#AtkFocusHandler" title="AtkFocusHandler ()">*AtkFocusHandler</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">guint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-add-focus-handler" title="atk_component_add_focus_handler ()">atk_component_add_focus_handler</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-contains" title="atk_component_contains ()">atk_component_contains</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-extents" title="atk_component_get_extents ()">atk_component_get_extents</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="returnvalue">AtkLayer</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-layer" title="atk_component_get_layer ()">atk_component_get_layer</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-mdi-zorder" title="atk_component_get_mdi_zorder ()">atk_component_get_mdi_zorder</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-position" title="atk_component_get_position ()">atk_component_get_position</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-size" title="atk_component_get_size ()">atk_component_get_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-grab-focus" title="atk_component_grab_focus ()">atk_component_grab_focus</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-ref-accessible-at-point" title="atk_component_ref_accessible_at_point ()">atk_component_ref_accessible_at_point</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-remove-focus-handler" title="atk_component_remove_focus_handler ()">atk_component_remove_focus_handler</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-set-extents" title="atk_component_set_extents ()">atk_component_set_extents</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-set-position" title="atk_component_set_position ()">atk_component_set_position</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-set-size" title="atk_component_set_size ()">atk_component_set_size</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gdouble</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkComponent.html#atk-component-get-alpha" title="atk_component_get_alpha ()">atk_component_get_alpha</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody><tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkComponent.html#AtkComponent-bounds-changed" title="The “bounds-changed” signal">bounds-changed</a></td>
+<td class="signal_flags">Run Last</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="AtkComponent.html#AtkComponent-struct" title="AtkComponent">AtkComponent</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkComponent.html#AtkComponentIface" title="struct AtkComponentIface">AtkComponentIface</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkComponent.html#AtkRectangle" title="struct AtkRectangle">AtkRectangle</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+    <span class="lineart">╰──</span> AtkComponent
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.implementations"></a><h2>Known Implementations</h2>
+<p>
+AtkComponent is implemented by
+ <a class="link" href="AtkNoOpObject.html" title="AtkNoOpObject">AtkNoOpObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.description"></a><h2>Description</h2>
+<p><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> should be implemented by most if not all UI elements
+with an actual on-screen presence, i.e. components which can be
+said to have a screen-coordinate bounding box.  Virtually all
+widgets will need to have <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> implementations provided
+for their corresponding <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> class.  In short, only UI
+elements which are *not* GUI elements will omit this ATK interface.</p>
+<p>A possible exception might be textual information with a
+transparent background, in which case text glyph bounding box
+information is provided by <a class="link" href="AtkText.html" title="AtkText"><span class="type">AtkText</span></a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="AtkFocusHandler"></a><h3>AtkFocusHandler ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+<span class="c_punctuation">(</span>*AtkFocusHandler<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> *object</code></em>,
+                    <em class="parameter"><code><span class="type">gboolean</span> focus_in</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">AtkFocusHandler</code> has been deprecated since version 2.9.4 and should not be used in newly-written code.</p>
+<p>Deprecated with <a class="link" href="AtkComponent.html#atk-component-add-focus-handler" title="atk_component_add_focus_handler ()"><code class="function">atk_component_add_focus_handler()</code></a>
+and <a class="link" href="AtkComponent.html#atk-component-remove-focus-handler" title="atk_component_remove_focus_handler ()"><code class="function">atk_component_remove_focus_handler()</code></a>. See those
+methods for more information.</p>
+</div>
+<p>The type of callback function used for
+<a class="link" href="AtkComponent.html#atk-component-add-focus-handler" title="atk_component_add_focus_handler ()"><code class="function">atk_component_add_focus_handler()</code></a> and
+<a class="link" href="AtkComponent.html#atk-component-remove-focus-handler" title="atk_component_remove_focus_handler ()"><code class="function">atk_component_remove_focus_handler()</code></a></p>
+<div class="refsect3">
+<a name="AtkFocusHandler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>object</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a> that receives/lose the focus</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>focus_in</p></td>
+<td class="parameter_description"><p>TRUE if the object receives the focus</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-add-focus-handler"></a><h3>atk_component_add_focus_handler ()</h3>
+<pre class="programlisting"><span class="returnvalue">guint</span>
+atk_component_add_focus_handler (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                                 <em class="parameter"><code><a class="link" href="AtkComponent.html#AtkFocusHandler" title="AtkFocusHandler ()"><span class="type">AtkFocusHandler</span></a> handler</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_component_add_focus_handler</code> has been deprecated since version 2.9.4 and should not be used in newly-written code.</p>
+<p>If you need to track when an object gains or
+lose the focus, use the <a class="link" href="AtkObject.html#AtkObject-state-change" title="The “state-change” signal"><span class="type">“state-change”</span></a> "focused" notification instead.</p>
+</div>
+<p>Add the specified handler to the set of functions to be called 
+when this object receives focus events (in or out). If the handler is
+already added it is not added again</p>
+<p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
+<div class="refsect3">
+<a name="atk-component-add-focus-handler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> to attach the <em class="parameter"><code>handler</code></em>
+to</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>handler</p></td>
+<td class="parameter_description"><p>The <a class="link" href="AtkComponent.html#AtkFocusHandler" title="AtkFocusHandler ()"><span class="type">AtkFocusHandler</span></a> to be attached to <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-add-focus-handler.returns"></a><h4>Returns</h4>
+<p> a handler id which can be used in <a class="link" href="AtkComponent.html#atk-component-remove-focus-handler" title="atk_component_remove_focus_handler ()"><code class="function">atk_component_remove_focus_handler()</code></a>
+or zero if the handler was already added.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-contains"></a><h3>atk_component_contains ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_component_contains (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                        <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<p>Checks whether the specified point is within the extent of the <em class="parameter"><code>component</code></em>
+.</p>
+<p>Toolkit implementor note: ATK provides a default implementation for
+this virtual method. In general there are little reason to
+re-implement it.</p>
+<div class="refsect3">
+<a name="atk-component-contains.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>x coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-contains.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> or <code class="literal">FALSE</code> indicating whether the specified point is within
+the extent of the <em class="parameter"><code>component</code></em>
+or not</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-extents"></a><h3>atk_component_get_extents ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_component_get_extents (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> *y</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> *height</code></em>,
+                           <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<p>Gets the rectangle which gives the extent of the <em class="parameter"><code>component</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-component-get-extents.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put x coordinate. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put y coordinate. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put width. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put height. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-layer"></a><h3>atk_component_get_layer ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="returnvalue">AtkLayer</span></a>
+atk_component_get_layer (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>);</pre>
+<p>Gets the layer of the component.</p>
+<div class="refsect3">
+<a name="atk-component-get-layer.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-get-layer.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="AtkObject.html#AtkLayer" title="enum AtkLayer"><span class="type">AtkLayer</span></a> which is the layer of the component</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-mdi-zorder"></a><h3>atk_component_get_mdi_zorder ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_component_get_mdi_zorder (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>);</pre>
+<p>Gets the zorder of the component. The value G_MININT will be returned 
+if the layer of the component is not ATK_LAYER_MDI or ATK_LAYER_WINDOW.</p>
+<div class="refsect3">
+<a name="atk-component-get-mdi-zorder.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-get-mdi-zorder.returns"></a><h4>Returns</h4>
+<p> a gint which is the zorder of the component, i.e. the depth at
+which the component is shown in relation to other components in the same
+container.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-position"></a><h3>atk_component_get_position ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_component_get_position (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> *y</code></em>,
+                            <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_component_get_position</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkComponent.html#atk-component-get-extents" title="atk_component_get_extents ()"><code class="function">atk_component_get_extents()</code></a> instead.</p>
+</div>
+<p>Gets the position of <em class="parameter"><code>component</code></em>
+ in the form of 
+a point specifying <em class="parameter"><code>component</code></em>
+'s top-left corner.</p>
+<div class="refsect3">
+<a name="atk-component-get-position.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put x coordinate position. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put y coordinate position. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-size"></a><h3>atk_component_get_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_component_get_size (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_component_get_size</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkComponent.html#atk-component-get-extents" title="atk_component_get_extents ()"><code class="function">atk_component_get_extents()</code></a> instead.</p>
+</div>
+<p>Gets the size of the <em class="parameter"><code>component</code></em>
+ in terms of width and height.</p>
+<div class="refsect3">
+<a name="atk-component-get-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put width of <em class="parameter"><code>component</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p> address of <span class="type">gint</span> to put height of <em class="parameter"><code>component</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL may be passed instead of a pointer to a location."><span class="acronym">optional</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-grab-focus"></a><h3>atk_component_grab_focus ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_component_grab_focus (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>);</pre>
+<p>Grabs focus for this <em class="parameter"><code>component</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-component-grab-focus.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-grab-focus.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if successful, <code class="literal">FALSE</code> otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-ref-accessible-at-point"></a><h3>atk_component_ref_accessible_at_point ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html" title="AtkObject"><span class="returnvalue">AtkObject</span></a> *
+atk_component_ref_accessible_at_point (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                                       <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                                       <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                                       <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<p>Gets a reference to the accessible child, if one exists, at the
+coordinate point specified by <em class="parameter"><code>x</code></em>
+ and <em class="parameter"><code>y</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-component-ref-accessible-at-point.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>x coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-ref-accessible-at-point.returns"></a><h4>Returns</h4>
+<p> a reference to the accessible
+child, if one exists. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-remove-focus-handler"></a><h3>atk_component_remove_focus_handler ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_component_remove_focus_handler (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                                    <em class="parameter"><code><span class="type">guint</span> handler_id</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_component_remove_focus_handler</code> has been deprecated since version 2.9.4 and should not be used in newly-written code.</p>
+<p>If you need to track when an object gains or
+lose the focus, use the <a class="link" href="AtkObject.html#AtkObject-state-change" title="The “state-change” signal"><span class="type">“state-change”</span></a> "focused" notification instead.</p>
+</div>
+<p>Remove the handler specified by <em class="parameter"><code>handler_id</code></em>
+ from the list of
+functions to be executed when this object receives focus events 
+(in or out).</p>
+<div class="refsect3">
+<a name="atk-component-remove-focus-handler.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> to remove the focus handler from</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>handler_id</p></td>
+<td class="parameter_description"><p>the handler id of the focus handler to be removed
+from <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-set-extents"></a><h3>atk_component_set_extents ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_component_set_extents (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> width</code></em>,
+                           <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                           <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<p>Sets the extents of <em class="parameter"><code>component</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-component-set-extents.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>x coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>width to set for <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>height to set for <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-set-extents.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> or <code class="literal">FALSE</code> whether the extents were set or not</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-set-position"></a><h3>atk_component_set_position ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_component_set_position (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> x</code></em>,
+                            <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                            <em class="parameter"><code><a class="link" href="AtkUtil.html#AtkCoordType" title="enum AtkCoordType"><span class="type">AtkCoordType</span></a> coord_type</code></em>);</pre>
+<p>Sets the postition of <em class="parameter"><code>component</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-component-set-position.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>x</p></td>
+<td class="parameter_description"><p>x coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>y</p></td>
+<td class="parameter_description"><p>y coordinate</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>coord_type</p></td>
+<td class="parameter_description"><p>specifies whether the coordinates are relative to the screen
+or to the components top level window</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-set-position.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> or <code class="literal">FALSE</code> whether or not the position was set or not</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-set-size"></a><h3>atk_component_set_size ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_component_set_size (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> width</code></em>,
+                        <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+<p>Set the size of the <em class="parameter"><code>component</code></em>
+ in terms of width and height.</p>
+<div class="refsect3">
+<a name="atk-component-set-size.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>width</p></td>
+<td class="parameter_description"><p>width to set for <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>height</p></td>
+<td class="parameter_description"><p>height to set for <em class="parameter"><code>component</code></em>
+</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-set-size.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> or <code class="literal">FALSE</code> whether the size was set or not</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-component-get-alpha"></a><h3>atk_component_get_alpha ()</h3>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>
+atk_component_get_alpha (<em class="parameter"><code><a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *component</code></em>);</pre>
+<p>Returns the alpha value (i.e. the opacity) for this
+<em class="parameter"><code>component</code></em>
+, on a scale from 0 (fully transparent) to 1.0
+(fully opaque).</p>
+<div class="refsect3">
+<a name="atk-component-get-alpha.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>component</p></td>
+<td class="parameter_description"><p>an <a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-component-get-alpha.returns"></a><h4>Returns</h4>
+<p> An alpha value from 0 to 1.0, inclusive.</p>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkComponent-struct"></a><h3>AtkComponent</h3>
+<pre class="programlisting">typedef struct _AtkComponent AtkComponent;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkComponentIface"></a><h3>struct AtkComponentIface</h3>
+<pre class="programlisting">struct AtkComponentIface {
+  GTypeInterface parent;
+
+  guint          (* add_focus_handler)  (AtkComponent          *component,
+                                         AtkFocusHandler        handler);
+
+  gboolean       (* contains)           (AtkComponent          *component,
+                                         gint                   x,
+                                         gint                   y,
+                                         AtkCoordType           coord_type);
+
+  AtkObject*    (* ref_accessible_at_point)  (AtkComponent     *component,
+                                         gint                   x,
+                                         gint                   y,
+                                         AtkCoordType           coord_type);
+  void          (* get_extents)         (AtkComponent          *component,
+                                         gint                  *x,
+                                         gint                  *y,
+                                         gint                  *width,
+                                         gint                  *height,
+                                         AtkCoordType          coord_type);
+  void                     (* get_position)     (AtkComponent   *component,
+                                                 gint           *x,
+                                                 gint           *y,
+                                                 AtkCoordType   coord_type);
+  void                     (* get_size)                 (AtkComponent   *component,
+                                                         gint           *width,
+                                                         gint           *height);
+  gboolean                 (* grab_focus)               (AtkComponent   *component);
+  void                     (* remove_focus_handler)      (AtkComponent  *component,
+                                                          guint         handler_id);
+  gboolean                 (* set_extents)      (AtkComponent   *component,
+                                                 gint           x,
+                                                 gint           y,
+                                                 gint           width,
+                                                 gint           height,
+                                                 AtkCoordType   coord_type);
+  gboolean                 (* set_position)     (AtkComponent   *component,
+                                                 gint           x,
+                                                 gint           y,
+                                                 AtkCoordType   coord_type);
+  gboolean                 (* set_size)         (AtkComponent   *component,
+                                                 gint           width,
+                                                 gint           height);
+  	
+  AtkLayer                 (* get_layer)        (AtkComponent   *component);
+  gint                     (* get_mdi_zorder)   (AtkComponent   *component);
+
+  /*
+   * signal handlers
+   */
+  void                     (* bounds_changed)   (AtkComponent   *component,
+                                                 AtkRectangle   *bounds);
+  gdouble                  (* get_alpha)        (AtkComponent   *component);
+};
+</pre>
+<div class="refsect3">
+<a name="AtkComponentIface.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">GTypeInterface</span> <em class="structfield"><code><a name="AtkComponentIface.parent"></a>parent</code></em>;</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.add-focus-handler"></a>add_focus_handler</code></em> ()</p></td>
+<td class="struct_member_description"><p>This virtual function is deprecated since 2.9.4
+and it should not be overriden. See
+<a class="link" href="AtkComponent.html#atk-component-add-focus-handler" title="atk_component_add_focus_handler ()"><code class="function">atk_component_add_focus_handler()</code></a> for more information.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.contains"></a>contains</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.ref-accessible-at-point"></a>ref_accessible_at_point</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-extents"></a>get_extents</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-position"></a>get_position</code></em> ()</p></td>
+<td class="struct_member_description"><p>This virtual function is deprecated since 2.12 and
+it should not be overriden. Use <em class="parameter"><code>get_extents</code></em>
+instead.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-size"></a>get_size</code></em> ()</p></td>
+<td class="struct_member_description"><p>This virtual function is deprecated since 2.12 and it
+should not be overriden. Use <em class="parameter"><code>get_extents</code></em>
+instead.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.grab-focus"></a>grab_focus</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.remove-focus-handler"></a>remove_focus_handler</code></em> ()</p></td>
+<td class="struct_member_description"><p>This virtual function is deprecated since
+2.9.4 and it should not be overriden. See
+<a class="link" href="AtkComponent.html#atk-component-remove-focus-handler" title="atk_component_remove_focus_handler ()"><code class="function">atk_component_remove_focus_handler()</code></a> for more information.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.set-extents"></a>set_extents</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.set-position"></a>set_position</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.set-size"></a>set_size</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-layer"></a>get_layer</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-mdi-zorder"></a>get_mdi_zorder</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.bounds-changed"></a>bounds_changed</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkComponentIface.get-alpha"></a>get_alpha</code></em> ()</p></td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkRectangle"></a><h3>struct AtkRectangle</h3>
+<pre class="programlisting">struct AtkRectangle {
+  gint x;
+  gint y;
+  gint width;
+  gint height;
+};
+</pre>
+<p>A data structure for holding a rectangle. Those coordinates are
+relative to the component top-level parent.</p>
+<div class="refsect3">
+<a name="AtkRectangle.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">gint</span> <em class="structfield"><code><a name="AtkRectangle.x"></a>x</code></em>;</p></td>
+<td class="struct_member_description"><p>X coordinate of the left side of the rectangle.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">gint</span> <em class="structfield"><code><a name="AtkRectangle.y"></a>y</code></em>;</p></td>
+<td class="struct_member_description"><p>Y coordinate of the top side of the rectangle.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">gint</span> <em class="structfield"><code><a name="AtkRectangle.width"></a>width</code></em>;</p></td>
+<td class="struct_member_description"><p>width of the rectangle.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><span class="type">gint</span> <em class="structfield"><code><a name="AtkRectangle.height"></a>height</code></em>;</p></td>
+<td class="struct_member_description"><p>height of the rectangle.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkComponent.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="AtkComponent-bounds-changed"></a><h3>The <code class="literal">“bounds-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkComponent.html" title="AtkComponent"><span class="type">AtkComponent</span></a> *atkcomponent,
+               <a class="link" href="AtkComponent.html#AtkRectangle" title="struct AtkRectangle"><span class="type">AtkRectangle</span></a> *arg1,
+               <span class="type">gpointer</span>      user_data)</pre>
+<p>The 'bounds-changed" signal is emitted when the bposition or
+size of the component changes.</p>
+<div class="refsect3">
+<a name="AtkComponent-bounds-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkcomponent</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>arg1</p></td>
+<td class="parameter_description"><p>The AtkRectangle giving the new position and size.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

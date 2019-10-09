@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkState: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="data.html" title="Basic accessible data types">
+<link rel="prev" href="AtkRelationSet.html" title="AtkRelationSet">
+<link rel="next" href="AtkStateSet.html" title="AtkStateSet">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#atk-AtkState.description" class="shortcut">Description</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="data.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="AtkRelationSet.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkStateSet.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="atk-AtkState"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="atk-AtkState.top_of_page"></a>AtkState</span></h2>
+<p>AtkState — An AtkState describes a single state of an object.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="atk-AtkState.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="returnvalue">AtkStateType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkState.html#atk-state-type-register" title="atk_state_type_register ()">atk_state_type_register</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkState.html#atk-state-type-get-name" title="atk_state_type_get_name ()">atk_state_type_get_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="returnvalue">AtkStateType</span></a>
+</td>
+<td class="function_name">
+<a class="link" href="atk-AtkState.html#atk-state-type-for-name" title="atk_state_type_for_name ()">atk_state_type_for_name</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkState.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword">enum</td>
+<td class="function_name"><a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType">AtkStateType</a></td>
+</tr>
+<tr>
+<td class="typedef_keyword">typedef</td>
+<td class="function_name"><a class="link" href="atk-AtkState.html#AtkState" title="AtkState">AtkState</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkState.description"></a><h2>Description</h2>
+<p>An AtkState describes a single state of an object. The full set of states
+that apply to an object at a given time are contained in its <a class="link" href="AtkStateSet.html" title="AtkStateSet"><span class="type">AtkStateSet</span></a>.
+See also <a class="link" href="AtkObject.html#atk-object-ref-state-set" title="atk_object_ref_state_set ()"><span class="type">atk_object_ref_state_set</span></a> and <a class="link" href="AtkObject.html#atk-object-notify-state-change" title="atk_object_notify_state_change ()"><span class="type">atk_object_notify_state_change</span></a>.</p>
+</div>
+<div class="refsect1">
+<a name="atk-AtkState.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-state-type-register"></a><h3>atk_state_type_register ()</h3>
+<pre class="programlisting"><a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="returnvalue">AtkStateType</span></a>
+atk_state_type_register (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<p>Register a new object state.</p>
+<div class="refsect3">
+<a name="atk-state-type-register.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a character string describing the new state.</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-state-type-register.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="atk-AtkState.html#AtkState" title="AtkState"><span class="type">AtkState</span></a> value for the new state.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-state-type-get-name"></a><h3>atk_state_type_get_name ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_state_type_get_name (<em class="parameter"><code><a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="type">AtkStateType</span></a> type</code></em>);</pre>
+<p>Gets the description string describing the <a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="type">AtkStateType</span></a> <em class="parameter"><code>type</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-state-type-get-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>type</p></td>
+<td class="parameter_description"><p>The <a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="type">AtkStateType</span></a> whose name is required</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-state-type-get-name.returns"></a><h4>Returns</h4>
+<p> the string describing the AtkStateType</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-state-type-for-name"></a><h3>atk_state_type_for_name ()</h3>
+<pre class="programlisting"><a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="returnvalue">AtkStateType</span></a>
+atk_state_type_for_name (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+<p>Gets the <a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="type">AtkStateType</span></a> corresponding to the description string <em class="parameter"><code>name</code></em>
+.</p>
+<div class="refsect3">
+<a name="atk-state-type-for-name.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>name</p></td>
+<td class="parameter_description"><p>a character string state name</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-state-type-for-name.returns"></a><h4>Returns</h4>
+<p> an <a class="link" href="atk-AtkState.html#AtkStateType" title="enum AtkStateType"><span class="type">AtkStateType</span></a> corresponding to <em class="parameter"><code>name</code></em>
+</p>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="atk-AtkState.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkStateType"></a><h3>enum AtkStateType</h3>
+<p>The possible types of states of an object</p>
+<div class="refsect3">
+<a name="AtkStateType.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="enum_members_name">
+<col class="enum_members_description">
+<col width="200px" class="enum_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-INVALID:CAPS"></a>ATK_STATE_INVALID</p></td>
+<td class="enum_member_description">
+<p>Indicates an invalid state - probably an error condition.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-ACTIVE:CAPS"></a>ATK_STATE_ACTIVE</p></td>
+<td class="enum_member_description">
+<p>Indicates a window is currently the active window, or an object is the active subelement within a container or table. ATK_STATE_ACTIVE should not be used for objects which have ATK_STATE_FOCUSABLE or ATK_STATE_SELECTABLE: Those objects should use ATK_STATE_FOCUSED and ATK_STATE_SELECTED respectively. ATK_STATE_ACTIVE is a means to indicate that an object which is not focusable and not selectable is the currently-active item within its parent container.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-ARMED:CAPS"></a>ATK_STATE_ARMED</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object is 'armed', i.e. will be activated by if a pointer button-release event occurs within its bounds.  Buttons often enter this state when a pointer click occurs within their bounds, as a precursor to activation. ATK_STATE_ARMED has been deprecated since ATK-2.16 and should not be used in newly-written code.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-BUSY:CAPS"></a>ATK_STATE_BUSY</p></td>
+<td class="enum_member_description">
+<p>Indicates the current object is busy, i.e. onscreen representation is in the process of changing, or the object is temporarily unavailable for interaction due to activity already in progress.  This state may be used by implementors of Document to indicate that content loading is underway.  It also may indicate other 'pending' conditions; clients may wish to interrogate this object when the ATK_STATE_BUSY flag is removed.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-CHECKED:CAPS"></a>ATK_STATE_CHECKED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is currently checked, for instance a checkbox is 'non-empty'.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-DEFUNCT:CAPS"></a>ATK_STATE_DEFUNCT</p></td>
+<td class="enum_member_description">
+<p>Indicates that this object no longer has a valid backing widget (for instance, if its peer object has been destroyed)</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-EDITABLE:CAPS"></a>ATK_STATE_EDITABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates that this object can contain text, and that the
+user can change the textual contents of this object by editing those contents
+directly. For an object which is expected to be editable due to its type, but
+which cannot be edited due to the application or platform preventing the user
+from doing so, that object's <a class="link" href="AtkStateSet.html" title="AtkStateSet"><span class="type">AtkStateSet</span></a> should lack ATK_STATE_EDITABLE and
+should contain ATK_STATE_READ_ONLY.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-ENABLED:CAPS"></a>ATK_STATE_ENABLED</p></td>
+<td class="enum_member_description">
+<p>Indicates that this object is enabled, i.e. that it currently reflects some application state. Objects that are "greyed out" may lack this state, and may lack the STATE_SENSITIVE if direct user interaction cannot cause them to acquire STATE_ENABLED. See also: ATK_STATE_SENSITIVE</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-EXPANDABLE:CAPS"></a>ATK_STATE_EXPANDABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object allows progressive disclosure of its children</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-EXPANDED:CAPS"></a>ATK_STATE_EXPANDED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object its expanded - see ATK_STATE_EXPANDABLE above</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-FOCUSABLE:CAPS"></a>ATK_STATE_FOCUSABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object can accept keyboard focus, which means all events resulting from typing on the keyboard will normally be passed to it when it has focus</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-FOCUSED:CAPS"></a>ATK_STATE_FOCUSED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object currently has the keyboard focus</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-HORIZONTAL:CAPS"></a>ATK_STATE_HORIZONTAL</p></td>
+<td class="enum_member_description">
+<p>Indicates the orientation of this object is horizontal; used, for instance, by objects of ATK_ROLE_SCROLL_BAR.  For objects where vertical/horizontal orientation is especially meaningful.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-ICONIFIED:CAPS"></a>ATK_STATE_ICONIFIED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is minimized and is represented only by an icon</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-MODAL:CAPS"></a>ATK_STATE_MODAL</p></td>
+<td class="enum_member_description">
+<p>Indicates something must be done with this object before the user can interact with an object in a different window</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-MULTI-LINE:CAPS"></a>ATK_STATE_MULTI_LINE</p></td>
+<td class="enum_member_description">
+<p>Indicates this (text) object can contain multiple lines of text</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-MULTISELECTABLE:CAPS"></a>ATK_STATE_MULTISELECTABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object allows more than one of its children to be selected at the same time, or in the case of text objects, that the object supports non-contiguous text selections.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-OPAQUE:CAPS"></a>ATK_STATE_OPAQUE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object paints every pixel within its rectangular region.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-PRESSED:CAPS"></a>ATK_STATE_PRESSED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is currently pressed.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-RESIZABLE:CAPS"></a>ATK_STATE_RESIZABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates the size of this object is not fixed</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SELECTABLE:CAPS"></a>ATK_STATE_SELECTABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is the child of an object that allows its children to be selected and that this child is one of those children that can be selected</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SELECTED:CAPS"></a>ATK_STATE_SELECTED</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is the child of an object that allows its children to be selected and that this child is one of those children that has been selected</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SENSITIVE:CAPS"></a>ATK_STATE_SENSITIVE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is sensitive, e.g. to user interaction. 
+STATE_SENSITIVE usually accompanies STATE_ENABLED for user-actionable controls,
+but may be found in the absence of STATE_ENABLED if the current visible state of the 
+control is "disconnected" from the application state.  In such cases, direct user interaction
+can often result in the object gaining STATE_SENSITIVE, for instance if a user makes 
+an explicit selection using an object whose current state is ambiguous or undefined.
+<em class="parameter"><code>see</code></em>
+ STATE_ENABLED, STATE_INDETERMINATE.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SHOWING:CAPS"></a>ATK_STATE_SHOWING</p></td>
+<td class="enum_member_description">
+<p>Indicates this object, the object's parent, the object's parent's parent, and so on, 
+are all 'shown' to the end-user, i.e. subject to "exposure" if blocking or obscuring objects do not interpose
+between this object and the top of the window stack.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SINGLE-LINE:CAPS"></a>ATK_STATE_SINGLE_LINE</p></td>
+<td class="enum_member_description">
+<p>Indicates this (text) object can contain only a single line of text</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-STALE:CAPS"></a>ATK_STATE_STALE</p></td>
+<td class="enum_member_description">
+<p>Indicates that the information returned for this object may no longer be
+synchronized with the application state.  This is implied if the object has STATE_TRANSIENT,
+and can also occur towards the end of the object peer's lifecycle. It can also be used to indicate that 
+the index associated with this object has changed since the user accessed the object (in lieu of
+"index-in-parent-changed" events).</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-TRANSIENT:CAPS"></a>ATK_STATE_TRANSIENT</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is transient, i.e. a snapshot which may not emit events when its
+state changes.  Data from objects with ATK_STATE_TRANSIENT should not be cached, since there may be no
+notification given when the cached data becomes obsolete.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-VERTICAL:CAPS"></a>ATK_STATE_VERTICAL</p></td>
+<td class="enum_member_description">
+<p>Indicates the orientation of this object is vertical</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-VISIBLE:CAPS"></a>ATK_STATE_VISIBLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object is visible, e.g. has been explicitly marked for exposure to the user.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-MANAGES-DESCENDANTS:CAPS"></a>ATK_STATE_MANAGES_DESCENDANTS</p></td>
+<td class="enum_member_description">
+<p>Indicates that "active-descendant-changed" event
+is sent when children become 'active' (i.e. are selected or navigated to onscreen).
+Used to prevent need to enumerate all children in very large containers, like tables.
+The presence of STATE_MANAGES_DESCENDANTS is an indication to the client.
+that the children should not, and need not, be enumerated by the client.
+Objects implementing this state are expected to provide relevant state
+notifications to listening clients, for instance notifications of visibility
+changes and activation of their contained child objects, without the client 
+having previously requested references to those children.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-INDETERMINATE:CAPS"></a>ATK_STATE_INDETERMINATE</p></td>
+<td class="enum_member_description">
+<p>Indicates that the value, or some other quantifiable
+property, of this AtkObject cannot be fully determined. In the case of a large
+data set in which the total number of items in that set is unknown (e.g. 1 of
+999+), implementors should expose the currently-known set size (999) along
+with this state. In the case of a check box, this state should be used to
+indicate that the check box is a tri-state check box which is currently
+neither checked nor unchecked.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-TRUNCATED:CAPS"></a>ATK_STATE_TRUNCATED</p></td>
+<td class="enum_member_description">
+<p>Indicates that an object is truncated, e.g. a text value in a speradsheet cell.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-REQUIRED:CAPS"></a>ATK_STATE_REQUIRED</p></td>
+<td class="enum_member_description">
+<p>Indicates that explicit user interaction with an object is required by the user interface, e.g. a required field in a "web-form" interface.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-INVALID-ENTRY:CAPS"></a>ATK_STATE_INVALID_ENTRY</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object has encountered an error condition due to failure of input validation. For instance, a form control may acquire this state in response to invalid or malformed user input.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SUPPORTS-AUTOCOMPLETION:CAPS"></a>ATK_STATE_SUPPORTS_AUTOCOMPLETION</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object in question implements some form of ¨typeahead¨ or 
+pre-selection behavior whereby entering the first character of one or more sub-elements
+causes those elements to scroll into view or become selected.  Subsequent character input
+may narrow the selection further as long as one or more sub-elements match the string.
+This state is normally only useful and encountered on objects that implement Selection.
+In some cases the typeahead behavior may result in full or partial ¨completion¨ of 
+the data in the input field, in which case these input events may trigger text-changed
+events from the AtkText interface.  This state supplants <em class="parameter"><code>ATK_ROLE_AUTOCOMPLETE</code></em>
+.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-SELECTABLE-TEXT:CAPS"></a>ATK_STATE_SELECTABLE_TEXT</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object in question supports text selection. It should only be exposed on objects which implement the Text interface, in order to distinguish this state from <em class="parameter"><code>ATK_STATE_SELECTABLE</code></em>
+, which infers that the object in question is a selectable child of an object which implements Selection. While similar, text selection and subelement selection are distinct operations.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-DEFAULT:CAPS"></a>ATK_STATE_DEFAULT</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object is the "default" active component, i.e. the object which is activated by an end-user press of the "Enter" or "Return" key.  Typically a "close" or "submit" button.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-ANIMATED:CAPS"></a>ATK_STATE_ANIMATED</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object changes its appearance dynamically as an inherent part of its presentation.  This state may come and go if an object is only temporarily animated on the way to a 'final' onscreen presentation.
+<em class="parameter"><code>note</code></em>
+ some applications, notably content viewers, may not be able to detect
+all kinds of animated content.  Therefore the absence of this state should not
+be taken as definitive evidence that the object's visual representation is
+static; this state is advisory.</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-VISITED:CAPS"></a>ATK_STATE_VISITED</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object (typically a hyperlink) has already been 'activated', and/or its backing data has already been downloaded, rendered, or otherwise "visited".</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-CHECKABLE:CAPS"></a>ATK_STATE_CHECKABLE</p></td>
+<td class="enum_member_description">
+<p>Indicates this object has the potential to be
+ checked, such as a checkbox or toggle-able table cell. <em class="parameter"><code>Since</code></em>
+:
+ ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-HAS-POPUP:CAPS"></a>ATK_STATE_HAS_POPUP</p></td>
+<td class="enum_member_description">
+<p>Indicates that the object has a popup context
+menu or sub-level menu which may or may not be showing. This means
+that activation renders conditional content.  Note that ordinary
+tooltips are not considered popups in this context. <em class="parameter"><code>Since</code></em>
+: ATK-2.12</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-HAS-TOOLTIP:CAPS"></a>ATK_STATE_HAS_TOOLTIP</p></td>
+<td class="enum_member_description">
+<p>Indicates this object has a tooltip. <em class="parameter"><code>Since</code></em>
+: ATK-2.16</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-READ-ONLY:CAPS"></a>ATK_STATE_READ_ONLY</p></td>
+<td class="enum_member_description">
+<p>Indicates that a widget which is ENABLED and SENSITIVE
+has a value which can be read, but not modified, by the user. Note that this
+state should only be applied to widget types whose value is normally directly
+user modifiable, such as check boxes, radio buttons, spin buttons, text input
+fields, and combo boxes, as a means to convey that the expected interaction
+with that widget is not possible. When the expected interaction with a
+widget does not include modification by the user, as is the case with
+labels and containers, ATK_STATE_READ_ONLY should not be applied. See also
+ATK_STATE_EDITABLE. <em class="parameter"><code>Since</code></em>
+: ATK-2-16</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+<tr>
+<td class="enum_member_name"><p><a name="ATK-STATE-LAST-DEFINED:CAPS"></a>ATK_STATE_LAST_DEFINED</p></td>
+<td class="enum_member_description">
+<p>Not a valid state, used for finding end of enumeration</p>
+</td>
+<td class="enum_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkState"></a><h3>AtkState</h3>
+<pre class="programlisting">typedef guint64      AtkState;
+</pre>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

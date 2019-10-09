@@ -1,0 +1,1225 @@
+{
+  "build": "h49783d7_1002",
+  "build_number": 1002,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "glib >=2.58.2,<2.59.0a0",
+    "gobject-introspection",
+    "jpeg >=9c,<10a",
+    "libffi >=3.2.1,<3.3.0a0",
+    "libgcc-ng >=7.3.0",
+    "libpng >=1.6.35,<1.7.0a0",
+    "libtiff >=4.0.9,<5.0a0"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/gdk-pixbuf-2.36.12-h49783d7_1002",
+  "features": "",
+  "files": [
+    "bin/.gdk-pixbuf-post-link.sh",
+    "bin/gdk-pixbuf-csource",
+    "bin/gdk-pixbuf-pixdata",
+    "bin/gdk-pixbuf-query-loaders",
+    "bin/gdk-pixbuf-thumbnailer",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-animation.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-core.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-io.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-marshal.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-transform.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf.h",
+    "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixdata.h",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders.cache",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-ani.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-bmp.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-icns.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-ico.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-jpeg.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-pnm.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-qtif.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-tga.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-tiff.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xbm.so",
+    "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so",
+    "lib/girepository-1.0/GdkPixbuf-2.0.typelib",
+    "lib/libgdk_pixbuf-2.0.so",
+    "lib/libgdk_pixbuf-2.0.so.0",
+    "lib/libgdk_pixbuf-2.0.so.0.3612.0",
+    "lib/pkgconfig/gdk-pixbuf-2.0.pc",
+    "share/gir-1.0/GdkPixbuf-2.0.gir",
+    "share/locale/af/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ang/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ar/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/as/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ast/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/az/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/be/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/be@latin/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/bg/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/bn/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/bn_IN/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/br/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/bs/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ca/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ca@valencia/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/crh/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/cs/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/csb/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/cy/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/da/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/de/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/dz/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/el/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/en@shaw/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/en_CA/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/en_GB/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/eo/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/es/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/et/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/eu/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/fa/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/fi/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/fr/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/fur/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ga/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/gl/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/gu/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/he/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/hi/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/hr/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/hu/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/hy/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ia/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/id/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/io/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/is/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/it/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ja/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ka/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/kk/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/km/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/kn/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ko/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ku/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/li/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/lt/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/lv/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/mai/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/mi/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/mk/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ml/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/mn/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/mr/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ms/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/my/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/nb/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/nds/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ne/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/nl/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/nn/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/nso/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/oc/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/or/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/pa/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/pl/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ps/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/pt/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/pt_BR/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ro/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ru/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/si/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sk/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sl/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sq/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sr/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sr@ije/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sr@latin/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/sv/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ta/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/te/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/tg/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/th/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/tk/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/tr/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/tt/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/ug/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/uk/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/uz/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/uz@cyrillic/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/vi/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/wa/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/xh/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/yi/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/zh_CN/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/zh_HK/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/locale/zh_TW/LC_MESSAGES/gdk-pixbuf.mo",
+    "share/man/man1/gdk-pixbuf-csource.1",
+    "share/man/man1/gdk-pixbuf-query-loaders.1",
+    "share/thumbnailers/gdk-pixbuf-thumbnailer.thumbnailer"
+  ],
+  "fn": "gdk-pixbuf-2.36.12-h49783d7_1002.tar.bz2",
+  "license": "GPL-2.0",
+  "license_family": "GPL",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/gdk-pixbuf-2.36.12-h49783d7_1002",
+    "type": 1
+  },
+  "md5": "f9b565007ee9868e1ac2cffdcfeefa67",
+  "name": "gdk-pixbuf",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/gdk-pixbuf-2.36.12-h49783d7_1002.tar.bz2",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "bin/.gdk-pixbuf-post-link.sh",
+        "path_type": "hardlink",
+        "sha256": "b7a59d3618d75ddc2ab338027b72e4ff87df6b5e306cc88657abdc9e6cda4e8c",
+        "sha256_in_prefix": "b7a59d3618d75ddc2ab338027b72e4ff87df6b5e306cc88657abdc9e6cda4e8c",
+        "size_in_bytes": 826
+      },
+      {
+        "_path": "bin/gdk-pixbuf-csource",
+        "path_type": "hardlink",
+        "sha256": "cb2f7a7be39fb41612d035c3429409737c4c010ecaa8376f3618b3ba48988c57",
+        "sha256_in_prefix": "cb2f7a7be39fb41612d035c3429409737c4c010ecaa8376f3618b3ba48988c57",
+        "size_in_bytes": 20680
+      },
+      {
+        "_path": "bin/gdk-pixbuf-pixdata",
+        "path_type": "hardlink",
+        "sha256": "a5e0813f51aa92a5f1a74e906519b2f13ec39594684c4da8bec7378869963533",
+        "sha256_in_prefix": "a5e0813f51aa92a5f1a74e906519b2f13ec39594684c4da8bec7378869963533",
+        "size_in_bytes": 20416
+      },
+      {
+        "_path": "bin/gdk-pixbuf-query-loaders",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/home/conda/feedstock_root/build_artifacts/gdk-pixbuf_1547243234358/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_",
+        "sha256": "0ef004966270fcbb16d08e51fe946d21bd19936349c2a3909a12e224fd05bc6e",
+        "sha256_in_prefix": "66e51dcebeb3dbb3c6f9029476720dabd47711f7b7ab24c1c7205dfe1bdbc48c",
+        "size_in_bytes": 25288
+      },
+      {
+        "_path": "bin/gdk-pixbuf-thumbnailer",
+        "path_type": "hardlink",
+        "sha256": "4a3f7d0537063ca7fe836d23b8eecc22fb45131bf4c34da16b5be25c97f3fe18",
+        "sha256_in_prefix": "4a3f7d0537063ca7fe836d23b8eecc22fb45131bf4c34da16b5be25c97f3fe18",
+        "size_in_bytes": 26904
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-animation.h",
+        "path_type": "hardlink",
+        "sha256": "3393cab2cebfcec4a15b36653cc2f1db92cb036f61dcbc73d8b92602593870bc",
+        "sha256_in_prefix": "3393cab2cebfcec4a15b36653cc2f1db92cb036f61dcbc73d8b92602593870bc",
+        "size_in_bytes": 9645
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-autocleanups.h",
+        "path_type": "hardlink",
+        "sha256": "149c5d60ea9468c559ee22958f14dae03f6b98944a866414fe31672bc3f6c50e",
+        "sha256_in_prefix": "149c5d60ea9468c559ee22958f14dae03f6b98944a866414fe31672bc3f6c50e",
+        "size_in_bytes": 1521
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-core.h",
+        "path_type": "hardlink",
+        "sha256": "daf111b34ca74a6c4626b1bcef30ab1445fbd80d757e0bec2277af598b2c6be1",
+        "sha256_in_prefix": "daf111b34ca74a6c4626b1bcef30ab1445fbd80d757e0bec2277af598b2c6be1",
+        "size_in_bytes": 21908
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-enum-types.h",
+        "path_type": "hardlink",
+        "sha256": "7fcd3497d67ba6484ef675e883872b5fc4ac80b90e56a74e17999a0d3bf890f5",
+        "sha256_in_prefix": "7fcd3497d67ba6484ef675e883872b5fc4ac80b90e56a74e17999a0d3bf890f5",
+        "size_in_bytes": 1468
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-features.h",
+        "path_type": "hardlink",
+        "sha256": "34049b3a9a37b7155902ad61130afbd8bcdf46093756ce0aebe4ae663ccb3964",
+        "sha256_in_prefix": "34049b3a9a37b7155902ad61130afbd8bcdf46093756ce0aebe4ae663ccb3964",
+        "size_in_bytes": 3556
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-io.h",
+        "path_type": "hardlink",
+        "sha256": "d9f8100aab54bed2592661e6b97a8cd0d4f6383d8671eed4e328df88fc2da5ba",
+        "sha256_in_prefix": "d9f8100aab54bed2592661e6b97a8cd0d4f6383d8671eed4e328df88fc2da5ba",
+        "size_in_bytes": 13244
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-loader.h",
+        "path_type": "hardlink",
+        "sha256": "86fd458c708d0c2f953790f85fa089169e02ba125c59bc65b1b5971d32662e43",
+        "sha256_in_prefix": "86fd458c708d0c2f953790f85fa089169e02ba125c59bc65b1b5971d32662e43",
+        "size_in_bytes": 4704
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-macros.h",
+        "path_type": "hardlink",
+        "sha256": "ae1a12e47b9a4bd4425e230f7ab9d9818bcd1cb9e23753173d47613e7cba85b5",
+        "sha256_in_prefix": "ae1a12e47b9a4bd4425e230f7ab9d9818bcd1cb9e23753173d47613e7cba85b5",
+        "size_in_bytes": 21781
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-marshal.h",
+        "path_type": "hardlink",
+        "sha256": "eaad7ea000152d5f19f1a3da6dea90347c3c1f42f4574b7b5eac9b85058e2dc6",
+        "sha256_in_prefix": "eaad7ea000152d5f19f1a3da6dea90347c3c1f42f4574b7b5eac9b85058e2dc6",
+        "size_in_bytes": 1782
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-simple-anim.h",
+        "path_type": "hardlink",
+        "sha256": "404658ea450eb8b9864a7bf69ae1f185c5697782b759e35a6d2faec59c99746f",
+        "sha256_in_prefix": "404658ea450eb8b9864a7bf69ae1f185c5697782b759e35a6d2faec59c99746f",
+        "size_in_bytes": 3186
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-transform.h",
+        "path_type": "hardlink",
+        "sha256": "4d2237d106b5ca7ccdd5affe2005f765d805a35a3c8568ba847198c4e95f51df",
+        "sha256_in_prefix": "4d2237d106b5ca7ccdd5affe2005f765d805a35a3c8568ba847198c4e95f51df",
+        "size_in_bytes": 6114
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf.h",
+        "path_type": "hardlink",
+        "sha256": "e543bd450e6377a72adf378830d2849d450cc483ec5923db72d9b18ceaf3ffa8",
+        "sha256_in_prefix": "e543bd450e6377a72adf378830d2849d450cc483ec5923db72d9b18ceaf3ffa8",
+        "size_in_bytes": 1572
+      },
+      {
+        "_path": "include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixdata.h",
+        "path_type": "hardlink",
+        "sha256": "6e66cb2f684d83a8cd1e5fe38077aae140dd0edbdd7b72c79738129d9d97359b",
+        "sha256_in_prefix": "6e66cb2f684d83a8cd1e5fe38077aae140dd0edbdd7b72c79738129d9d97359b",
+        "size_in_bytes": 6765
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders.cache",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "8e2dddc61c4f6ba6ce92b27c96d3489091ea2716bc9a0710ddaad2ebda1b8d83",
+        "sha256_in_prefix": "612802fd3443e8a245018001c35069766964720d65544835dc033039dd843556",
+        "size_in_bytes": 3150
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-ani.so",
+        "path_type": "hardlink",
+        "sha256": "5db2b1a574a99171d661ed379b2b4c762693fad95de5ad7492615463f6c42c95",
+        "sha256_in_prefix": "5db2b1a574a99171d661ed379b2b4c762693fad95de5ad7492615463f6c42c95",
+        "size_in_bytes": 27976
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-bmp.so",
+        "path_type": "hardlink",
+        "sha256": "08e477e04018b5f40de157f52c809394e3a4201d88007883b41917b627c2473f",
+        "sha256_in_prefix": "08e477e04018b5f40de157f52c809394e3a4201d88007883b41917b627c2473f",
+        "size_in_bytes": 21872
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-gif.so",
+        "path_type": "hardlink",
+        "sha256": "4cec635e68bbb3cded499ff30c0b8a8eaf4da227f5b512ebd79ff4574202c67a",
+        "sha256_in_prefix": "4cec635e68bbb3cded499ff30c0b8a8eaf4da227f5b512ebd79ff4574202c67a",
+        "size_in_bytes": 41432
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-icns.so",
+        "path_type": "hardlink",
+        "sha256": "114b99687e2ef77f69ada9d8f8ae2e68409d96cc3f77165d26d89a2cb25cc634",
+        "sha256_in_prefix": "114b99687e2ef77f69ada9d8f8ae2e68409d96cc3f77165d26d89a2cb25cc634",
+        "size_in_bytes": 21976
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-ico.so",
+        "path_type": "hardlink",
+        "sha256": "ebaaff4ba701d241c620d7f7197d0e857daf66702fb6e8931635a040da44ae65",
+        "sha256_in_prefix": "ebaaff4ba701d241c620d7f7197d0e857daf66702fb6e8931635a040da44ae65",
+        "size_in_bytes": 26520
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-jpeg.so",
+        "path_type": "hardlink",
+        "sha256": "7509754773bac4dc2a41a9ec18e6f4580d535141ead5b3212bfe62d021f92ad5",
+        "sha256_in_prefix": "7509754773bac4dc2a41a9ec18e6f4580d535141ead5b3212bfe62d021f92ad5",
+        "size_in_bytes": 32712
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-png.so",
+        "path_type": "hardlink",
+        "sha256": "9605a1e5503b0031003d325f0a0db0675f5c47b55b01ec087fae117b8f86cd4a",
+        "sha256_in_prefix": "9605a1e5503b0031003d325f0a0db0675f5c47b55b01ec087fae117b8f86cd4a",
+        "size_in_bytes": 37304
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-pnm.so",
+        "path_type": "hardlink",
+        "sha256": "57ce9f4c5a792cef757eb02e188185b6cafa1d08f4d757b653b7e2d45f17e467",
+        "sha256_in_prefix": "57ce9f4c5a792cef757eb02e188185b6cafa1d08f4d757b653b7e2d45f17e467",
+        "size_in_bytes": 21800
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-qtif.so",
+        "path_type": "hardlink",
+        "sha256": "087d0bd2b78969e3831ada66019534667218e1b95a0252dad1f9d240f44bc1eb",
+        "sha256_in_prefix": "087d0bd2b78969e3831ada66019534667218e1b95a0252dad1f9d240f44bc1eb",
+        "size_in_bytes": 17696
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-tga.so",
+        "path_type": "hardlink",
+        "sha256": "884d648bb0312b07f5c0d217ff02ab12cad4eb1d2bc5feac5dc8f394853c0ff7",
+        "sha256_in_prefix": "884d648bb0312b07f5c0d217ff02ab12cad4eb1d2bc5feac5dc8f394853c0ff7",
+        "size_in_bytes": 27288
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-tiff.so",
+        "path_type": "hardlink",
+        "sha256": "c98def4a199da58e891d937668e13ed1d2b94ca6f2ed73b5e87e80642305372a",
+        "sha256_in_prefix": "c98def4a199da58e891d937668e13ed1d2b94ca6f2ed73b5e87e80642305372a",
+        "size_in_bytes": 27632
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xbm.so",
+        "path_type": "hardlink",
+        "sha256": "1efd202a2acdfc793838fc794568c368996a4e05e3ab40e8442b9ceaf059ac7f",
+        "sha256_in_prefix": "1efd202a2acdfc793838fc794568c368996a4e05e3ab40e8442b9ceaf059ac7f",
+        "size_in_bytes": 22160
+      },
+      {
+        "_path": "lib/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-xpm.so",
+        "path_type": "hardlink",
+        "sha256": "4acb966379236eda7ead9bfc9632a2e7bf198e665ffcea0a2b8d561eb17da86d",
+        "sha256_in_prefix": "4acb966379236eda7ead9bfc9632a2e7bf198e665ffcea0a2b8d561eb17da86d",
+        "size_in_bytes": 39416
+      },
+      {
+        "_path": "lib/girepository-1.0/GdkPixbuf-2.0.typelib",
+        "path_type": "hardlink",
+        "sha256": "966118142e327710dcd988dd5f9845b8ff09fd57a632bcfaf3a239267bf679ab",
+        "sha256_in_prefix": "966118142e327710dcd988dd5f9845b8ff09fd57a632bcfaf3a239267bf679ab",
+        "size_in_bytes": 18120
+      },
+      {
+        "_path": "lib/libgdk_pixbuf-2.0.so",
+        "path_type": "softlink",
+        "sha256": "cadd3399b7b916947425f6a4a6fb4ff7eb608bf434a6d50105af9c2f79771f3b",
+        "size_in_bytes": 187352
+      },
+      {
+        "_path": "lib/libgdk_pixbuf-2.0.so.0",
+        "path_type": "softlink",
+        "sha256": "cadd3399b7b916947425f6a4a6fb4ff7eb608bf434a6d50105af9c2f79771f3b",
+        "size_in_bytes": 187352
+      },
+      {
+        "_path": "lib/libgdk_pixbuf-2.0.so.0.3612.0",
+        "file_mode": "binary",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/home/conda/feedstock_root/build_artifacts/gdk-pixbuf_1547243234358/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_",
+        "sha256": "cadd3399b7b916947425f6a4a6fb4ff7eb608bf434a6d50105af9c2f79771f3b",
+        "sha256_in_prefix": "39289e0a62c88407bd592843f1de9a175d1d0a41c2b5107157502b087e9b058c",
+        "size_in_bytes": 187352
+      },
+      {
+        "_path": "lib/pkgconfig/gdk-pixbuf-2.0.pc",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "7f61410e1e9d4fef1866c00177a83fe1165e37f771fc5ca3b9f97ceb91a7072a",
+        "sha256_in_prefix": "0460a2860bc6719be06f1543489c425a3fe077dd23551d0e59130213afba68cd",
+        "size_in_bytes": 602
+      },
+      {
+        "_path": "share/gir-1.0/GdkPixbuf-2.0.gir",
+        "path_type": "hardlink",
+        "sha256": "3e7253fcc663212e39093fcac0d7c79d8b9dc29b663cb3997045ab46975e31af",
+        "sha256_in_prefix": "3e7253fcc663212e39093fcac0d7c79d8b9dc29b663cb3997045ab46975e31af",
+        "size_in_bytes": 196842
+      },
+      {
+        "_path": "share/locale/af/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "ef1c920464cb066292f55abc34ba84b700967339e5919e80f92f918eb3e540d7",
+        "sha256_in_prefix": "ef1c920464cb066292f55abc34ba84b700967339e5919e80f92f918eb3e540d7",
+        "size_in_bytes": 18860
+      },
+      {
+        "_path": "share/locale/ang/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1fa1d9238703d6b3eda1352a772821e2fd4002ce60abfd6e060a9d4ad6d30858",
+        "sha256_in_prefix": "1fa1d9238703d6b3eda1352a772821e2fd4002ce60abfd6e060a9d4ad6d30858",
+        "size_in_bytes": 4144
+      },
+      {
+        "_path": "share/locale/ar/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "9795c98ac1e7952b65b3628c58793502ff014bdc328bf6e2f0df81162f892ae7",
+        "sha256_in_prefix": "9795c98ac1e7952b65b3628c58793502ff014bdc328bf6e2f0df81162f892ae7",
+        "size_in_bytes": 23355
+      },
+      {
+        "_path": "share/locale/as/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "ce198665564e56a697ea099e5fa0d2ee047806ee7ff8dbfb7f11bb9d665d5d01",
+        "sha256_in_prefix": "ce198665564e56a697ea099e5fa0d2ee047806ee7ff8dbfb7f11bb9d665d5d01",
+        "size_in_bytes": 30807
+      },
+      {
+        "_path": "share/locale/ast/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "80c56fb59b08dbf8eef9bccb2fccfec91220c2be09dc9c0318c1a83b5a05200f",
+        "sha256_in_prefix": "80c56fb59b08dbf8eef9bccb2fccfec91220c2be09dc9c0318c1a83b5a05200f",
+        "size_in_bytes": 21546
+      },
+      {
+        "_path": "share/locale/az/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "aa2a37e160032c82e0995a9e01ce73a2487b7730de9f62c862e77ada54a40269",
+        "sha256_in_prefix": "aa2a37e160032c82e0995a9e01ce73a2487b7730de9f62c862e77ada54a40269",
+        "size_in_bytes": 15227
+      },
+      {
+        "_path": "share/locale/be/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "5a34b1906ea1c8455c3d2a7a50d5eab5bd948cbec7a40af6b88491cd41039de5",
+        "sha256_in_prefix": "5a34b1906ea1c8455c3d2a7a50d5eab5bd948cbec7a40af6b88491cd41039de5",
+        "size_in_bytes": 29656
+      },
+      {
+        "_path": "share/locale/be@latin/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "5a9392d081aa8266f60c2c97e49d110567a98c8919a95e9aef3b0630b569d96b",
+        "sha256_in_prefix": "5a9392d081aa8266f60c2c97e49d110567a98c8919a95e9aef3b0630b569d96b",
+        "size_in_bytes": 20627
+      },
+      {
+        "_path": "share/locale/bg/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "19acef104d969f366f5ebcefadea7997c60a9d1583d8852d0223b69f77752c5a",
+        "sha256_in_prefix": "19acef104d969f366f5ebcefadea7997c60a9d1583d8852d0223b69f77752c5a",
+        "size_in_bytes": 32679
+      },
+      {
+        "_path": "share/locale/bn/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "42eb72bfe96629eb3340feaf6bd9ebe00b1d1b44f88c13667c0af37709d2f552",
+        "sha256_in_prefix": "42eb72bfe96629eb3340feaf6bd9ebe00b1d1b44f88c13667c0af37709d2f552",
+        "size_in_bytes": 30532
+      },
+      {
+        "_path": "share/locale/bn_IN/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1ed1f32d6343f8f3abd0ef9aeb26c50cfe264d3f02b09b6f00d1cc4fdfd1ecb2",
+        "sha256_in_prefix": "1ed1f32d6343f8f3abd0ef9aeb26c50cfe264d3f02b09b6f00d1cc4fdfd1ecb2",
+        "size_in_bytes": 32378
+      },
+      {
+        "_path": "share/locale/br/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "8bf9ddf3ce2ae8ce6544e217384237fd317f817abad130b8dc32726a2a5835ac",
+        "sha256_in_prefix": "8bf9ddf3ce2ae8ce6544e217384237fd317f817abad130b8dc32726a2a5835ac",
+        "size_in_bytes": 4969
+      },
+      {
+        "_path": "share/locale/bs/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "33363d882e35e4e3ea5514473da69ab1866e5b5311a421d9497cdb552529a0b2",
+        "sha256_in_prefix": "33363d882e35e4e3ea5514473da69ab1866e5b5311a421d9497cdb552529a0b2",
+        "size_in_bytes": 24597
+      },
+      {
+        "_path": "share/locale/ca/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "a031616622193b67753bd283396babd2f6ab3a55317d01bcca17b8d34ff4d1fd",
+        "sha256_in_prefix": "a031616622193b67753bd283396babd2f6ab3a55317d01bcca17b8d34ff4d1fd",
+        "size_in_bytes": 23964
+      },
+      {
+        "_path": "share/locale/ca@valencia/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "0b17fa419a57ebf99e8fb62c7316f5a459aff5205aa1e21a27297abe54bd905d",
+        "sha256_in_prefix": "0b17fa419a57ebf99e8fb62c7316f5a459aff5205aa1e21a27297abe54bd905d",
+        "size_in_bytes": 24016
+      },
+      {
+        "_path": "share/locale/crh/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d53b9ef32ed61b88daa9e5acaac161b80a32c2799d8d7d8e5fec646945434d39",
+        "sha256_in_prefix": "d53b9ef32ed61b88daa9e5acaac161b80a32c2799d8d7d8e5fec646945434d39",
+        "size_in_bytes": 21787
+      },
+      {
+        "_path": "share/locale/cs/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "524805e3924f54791a41383b9c7153c6b8074a5c613954fb684bda80d4791d8a",
+        "sha256_in_prefix": "524805e3924f54791a41383b9c7153c6b8074a5c613954fb684bda80d4791d8a",
+        "size_in_bytes": 23532
+      },
+      {
+        "_path": "share/locale/csb/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1c26244e6e3a3a5dc3a9a7aa888f572e2571a2f03d0c3f77b53e838b2932a222",
+        "sha256_in_prefix": "1c26244e6e3a3a5dc3a9a7aa888f572e2571a2f03d0c3f77b53e838b2932a222",
+        "size_in_bytes": 7963
+      },
+      {
+        "_path": "share/locale/cy/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "917f5f2fed8ee93f70c9d0b40be096f70221d9a19346ac7d80a5c3b227400693",
+        "sha256_in_prefix": "917f5f2fed8ee93f70c9d0b40be096f70221d9a19346ac7d80a5c3b227400693",
+        "size_in_bytes": 18699
+      },
+      {
+        "_path": "share/locale/da/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "4cf25e329f2ea297b11c7f2bf553d76799291b2ea3c28f08d3ff6b68f01f2408",
+        "sha256_in_prefix": "4cf25e329f2ea297b11c7f2bf553d76799291b2ea3c28f08d3ff6b68f01f2408",
+        "size_in_bytes": 22776
+      },
+      {
+        "_path": "share/locale/de/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "f067cb4930434cb779084e6e755b2555af885e64257c7f1420609e50e0120999",
+        "sha256_in_prefix": "f067cb4930434cb779084e6e755b2555af885e64257c7f1420609e50e0120999",
+        "size_in_bytes": 23748
+      },
+      {
+        "_path": "share/locale/dz/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "957ebaaa8f74e57111e6cbd06dd5c3834ba0325137ac3e94c021ff53587af9e1",
+        "sha256_in_prefix": "957ebaaa8f74e57111e6cbd06dd5c3834ba0325137ac3e94c021ff53587af9e1",
+        "size_in_bytes": 37798
+      },
+      {
+        "_path": "share/locale/el/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1a0828ae43a4bcddd66807a2a213d7e97693705381a7b250a617ca4bf15a000d",
+        "sha256_in_prefix": "1a0828ae43a4bcddd66807a2a213d7e97693705381a7b250a617ca4bf15a000d",
+        "size_in_bytes": 32220
+      },
+      {
+        "_path": "share/locale/en@shaw/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "853c2107e9db7c832db2008f2f99780a2e0fca55b2c8c35993b13c69fc5d38e3",
+        "sha256_in_prefix": "853c2107e9db7c832db2008f2f99780a2e0fca55b2c8c35993b13c69fc5d38e3",
+        "size_in_bytes": 28670
+      },
+      {
+        "_path": "share/locale/en_CA/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "9881a6f8a5658a809d1c0cb56df66f22a5055208b33533d8cd7b064bdfda27cd",
+        "sha256_in_prefix": "9881a6f8a5658a809d1c0cb56df66f22a5055208b33533d8cd7b064bdfda27cd",
+        "size_in_bytes": 17825
+      },
+      {
+        "_path": "share/locale/en_GB/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "623dd5069ad029bfead6d32315dd09925a7862565c251ac6749a49c1b7888d1a",
+        "sha256_in_prefix": "623dd5069ad029bfead6d32315dd09925a7862565c251ac6749a49c1b7888d1a",
+        "size_in_bytes": 21747
+      },
+      {
+        "_path": "share/locale/eo/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "9017b6578642d81f79b577ac495d02253f576ff50154cf2064844e2228c7c6da",
+        "sha256_in_prefix": "9017b6578642d81f79b577ac495d02253f576ff50154cf2064844e2228c7c6da",
+        "size_in_bytes": 18606
+      },
+      {
+        "_path": "share/locale/es/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "fba0ac72f5c0270f17a81a71f0843204478b6202e8be2072d5fd1dd4284f35ca",
+        "sha256_in_prefix": "fba0ac72f5c0270f17a81a71f0843204478b6202e8be2072d5fd1dd4284f35ca",
+        "size_in_bytes": 24115
+      },
+      {
+        "_path": "share/locale/et/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "8344cec958b2df38b6c98c4a8acbe1609c12bfccee04ca6a277b5fffc157fcc5",
+        "sha256_in_prefix": "8344cec958b2df38b6c98c4a8acbe1609c12bfccee04ca6a277b5fffc157fcc5",
+        "size_in_bytes": 21651
+      },
+      {
+        "_path": "share/locale/eu/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "26211ac2bada3eb8e1ad13a2f71ebf6dfbdc8cab010e77209208c5810d6f9a71",
+        "sha256_in_prefix": "26211ac2bada3eb8e1ad13a2f71ebf6dfbdc8cab010e77209208c5810d6f9a71",
+        "size_in_bytes": 22892
+      },
+      {
+        "_path": "share/locale/fa/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "4a5d10889e39aa74e9c498c8e9189e88ea2789914a654f1fb24f820463d51bc3",
+        "sha256_in_prefix": "4a5d10889e39aa74e9c498c8e9189e88ea2789914a654f1fb24f820463d51bc3",
+        "size_in_bytes": 20201
+      },
+      {
+        "_path": "share/locale/fi/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "ec43d82ef80951c5c547bf46d46649536e23172f4ef47de9a4e4a4f9778791b7",
+        "sha256_in_prefix": "ec43d82ef80951c5c547bf46d46649536e23172f4ef47de9a4e4a4f9778791b7",
+        "size_in_bytes": 14682
+      },
+      {
+        "_path": "share/locale/fr/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "b2a01d741857eb47fc231c01edafb50d59aaf8b79196aba2501def03e54d23dd",
+        "sha256_in_prefix": "b2a01d741857eb47fc231c01edafb50d59aaf8b79196aba2501def03e54d23dd",
+        "size_in_bytes": 25106
+      },
+      {
+        "_path": "share/locale/fur/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "027eda6bfa073302a9174a4c88b2f376ea92a29d529e1d9f3c73f4cb87497d38",
+        "sha256_in_prefix": "027eda6bfa073302a9174a4c88b2f376ea92a29d529e1d9f3c73f4cb87497d38",
+        "size_in_bytes": 23693
+      },
+      {
+        "_path": "share/locale/ga/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "fbedf2d2d4c392c5f1d01f5db6dcbd937575a4a8b4c6257b7efdf3d386073329",
+        "sha256_in_prefix": "fbedf2d2d4c392c5f1d01f5db6dcbd937575a4a8b4c6257b7efdf3d386073329",
+        "size_in_bytes": 18695
+      },
+      {
+        "_path": "share/locale/gl/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d61b8e0a4c56e356767f637f2b52ed9dcdb0a37ec447aa0802b3cbced4c03355",
+        "sha256_in_prefix": "d61b8e0a4c56e356767f637f2b52ed9dcdb0a37ec447aa0802b3cbced4c03355",
+        "size_in_bytes": 24132
+      },
+      {
+        "_path": "share/locale/gu/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "98a02b3be043b379c12389f152ba9d1a9dad763693212bc3483df3b5bee9aa8f",
+        "sha256_in_prefix": "98a02b3be043b379c12389f152ba9d1a9dad763693212bc3483df3b5bee9aa8f",
+        "size_in_bytes": 29074
+      },
+      {
+        "_path": "share/locale/he/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "94d1a1cbce215399c24d5a95142ce8e4850a6d4392505743826ef8194e9d62fa",
+        "sha256_in_prefix": "94d1a1cbce215399c24d5a95142ce8e4850a6d4392505743826ef8194e9d62fa",
+        "size_in_bytes": 24574
+      },
+      {
+        "_path": "share/locale/hi/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "bd1b48603f67b53feb93731b55555bf416c3a17d297ce92129afb6fb6d8f1bf0",
+        "sha256_in_prefix": "bd1b48603f67b53feb93731b55555bf416c3a17d297ce92129afb6fb6d8f1bf0",
+        "size_in_bytes": 32462
+      },
+      {
+        "_path": "share/locale/hr/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d6348cbf1769096d3498feddffedf09255270ab38a09a939969dab1e112fe128",
+        "sha256_in_prefix": "d6348cbf1769096d3498feddffedf09255270ab38a09a939969dab1e112fe128",
+        "size_in_bytes": 23345
+      },
+      {
+        "_path": "share/locale/hu/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "9a390fc9401db0b446dfb1d197add11780216988e18599e61b7be6e1299dd410",
+        "sha256_in_prefix": "9a390fc9401db0b446dfb1d197add11780216988e18599e61b7be6e1299dd410",
+        "size_in_bytes": 23570
+      },
+      {
+        "_path": "share/locale/hy/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "edaa52e1ee9224b4f3565d123ea208b6fcfba8f45131bfcc64b627d87e099abb",
+        "sha256_in_prefix": "edaa52e1ee9224b4f3565d123ea208b6fcfba8f45131bfcc64b627d87e099abb",
+        "size_in_bytes": 27290
+      },
+      {
+        "_path": "share/locale/ia/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "5b3a6d302773ef4f1066154b1ee3330b7fba55b112c0f5e9a48c110d98e6fc45",
+        "sha256_in_prefix": "5b3a6d302773ef4f1066154b1ee3330b7fba55b112c0f5e9a48c110d98e6fc45",
+        "size_in_bytes": 1077
+      },
+      {
+        "_path": "share/locale/id/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "ac797dea74ec0747dc2f25c29bd7b5df6ace9a1bab22599b8449aa7393bb6532",
+        "sha256_in_prefix": "ac797dea74ec0747dc2f25c29bd7b5df6ace9a1bab22599b8449aa7393bb6532",
+        "size_in_bytes": 22511
+      },
+      {
+        "_path": "share/locale/io/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "8e1badbadce9940d67db1cbb7f0911eb96bc0cfb39a996ac1eaca727b1ee797e",
+        "sha256_in_prefix": "8e1badbadce9940d67db1cbb7f0911eb96bc0cfb39a996ac1eaca727b1ee797e",
+        "size_in_bytes": 5231
+      },
+      {
+        "_path": "share/locale/is/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "cbfeb130dc45fe506c22baa39cd33bad8ea4b0794c50bc272db1c86952161601",
+        "sha256_in_prefix": "cbfeb130dc45fe506c22baa39cd33bad8ea4b0794c50bc272db1c86952161601",
+        "size_in_bytes": 22504
+      },
+      {
+        "_path": "share/locale/it/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "a4c1038f4bda900663d0990745ad654e5470dce137b0667299b51b4ccd64c3e7",
+        "sha256_in_prefix": "a4c1038f4bda900663d0990745ad654e5470dce137b0667299b51b4ccd64c3e7",
+        "size_in_bytes": 23950
+      },
+      {
+        "_path": "share/locale/ja/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "bcfe22c346d74c6e667fc9378f6776b20c19f679db11781ce490d22fd698df03",
+        "sha256_in_prefix": "bcfe22c346d74c6e667fc9378f6776b20c19f679db11781ce490d22fd698df03",
+        "size_in_bytes": 25329
+      },
+      {
+        "_path": "share/locale/ka/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "6030b87fc634b238afd4b5d34467e25c75b623125a3be6efc649380a3e3381d9",
+        "sha256_in_prefix": "6030b87fc634b238afd4b5d34467e25c75b623125a3be6efc649380a3e3381d9",
+        "size_in_bytes": 32995
+      },
+      {
+        "_path": "share/locale/kk/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "79f01adae5ba997ecbf56d490647fa49bef76d1d2df959b768c6e42112d6467b",
+        "sha256_in_prefix": "79f01adae5ba997ecbf56d490647fa49bef76d1d2df959b768c6e42112d6467b",
+        "size_in_bytes": 6086
+      },
+      {
+        "_path": "share/locale/km/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "aa7bc5fffbd6805519265358a49816de8d7aa47a539da35f490f18cf9c5f920f",
+        "sha256_in_prefix": "aa7bc5fffbd6805519265358a49816de8d7aa47a539da35f490f18cf9c5f920f",
+        "size_in_bytes": 37937
+      },
+      {
+        "_path": "share/locale/kn/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "9f3d5bedcf0b3899f26db9efacb74afc17f32765ab75bc0790e7babc94fdd6e5",
+        "sha256_in_prefix": "9f3d5bedcf0b3899f26db9efacb74afc17f32765ab75bc0790e7babc94fdd6e5",
+        "size_in_bytes": 32570
+      },
+      {
+        "_path": "share/locale/ko/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "e80fe497490b610e642af7ef0bf286079c3b2095e99b9150a6f51f4c2eace039",
+        "sha256_in_prefix": "e80fe497490b610e642af7ef0bf286079c3b2095e99b9150a6f51f4c2eace039",
+        "size_in_bytes": 24887
+      },
+      {
+        "_path": "share/locale/ku/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "5d4016919a6a2c429338cd1fc2c2583b2ddc70d6a6a4761a799b8e0578a4f10d",
+        "sha256_in_prefix": "5d4016919a6a2c429338cd1fc2c2583b2ddc70d6a6a4761a799b8e0578a4f10d",
+        "size_in_bytes": 19092
+      },
+      {
+        "_path": "share/locale/li/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "3f25474d088e1ebe94b5bff086573b9731f49c73098aaa1f18c9aefa11bd936d",
+        "sha256_in_prefix": "3f25474d088e1ebe94b5bff086573b9731f49c73098aaa1f18c9aefa11bd936d",
+        "size_in_bytes": 12947
+      },
+      {
+        "_path": "share/locale/lt/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "71741b6e2e3e4513ef25f089b0bb77f4859aead30010d527e46dff6668704260",
+        "sha256_in_prefix": "71741b6e2e3e4513ef25f089b0bb77f4859aead30010d527e46dff6668704260",
+        "size_in_bytes": 23458
+      },
+      {
+        "_path": "share/locale/lv/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "91e91e0ad56ffd746b65a982080116d53825ae06d6769ddfc6e61ed1f733c5ab",
+        "sha256_in_prefix": "91e91e0ad56ffd746b65a982080116d53825ae06d6769ddfc6e61ed1f733c5ab",
+        "size_in_bytes": 22849
+      },
+      {
+        "_path": "share/locale/mai/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "2491357aa9ccd55956e9b3af8538e35c647c4a323a08e26b0101b93ab7cba2b5",
+        "sha256_in_prefix": "2491357aa9ccd55956e9b3af8538e35c647c4a323a08e26b0101b93ab7cba2b5",
+        "size_in_bytes": 28408
+      },
+      {
+        "_path": "share/locale/mi/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1ea2d8929ad112493239bc67e357ea054603eae60c2f41f5227e746cbe737dd1",
+        "sha256_in_prefix": "1ea2d8929ad112493239bc67e357ea054603eae60c2f41f5227e746cbe737dd1",
+        "size_in_bytes": 11963
+      },
+      {
+        "_path": "share/locale/mk/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1aacd8a39d376cab319826fcb56370870da11d0e81ac29ee439700283f9aea44",
+        "sha256_in_prefix": "1aacd8a39d376cab319826fcb56370870da11d0e81ac29ee439700283f9aea44",
+        "size_in_bytes": 24151
+      },
+      {
+        "_path": "share/locale/ml/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "229e7ce04e4890a3f9935a68cd754765d446b18939c7bcf5edc80c2404a250e4",
+        "sha256_in_prefix": "229e7ce04e4890a3f9935a68cd754765d446b18939c7bcf5edc80c2404a250e4",
+        "size_in_bytes": 38269
+      },
+      {
+        "_path": "share/locale/mn/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "742b60db515821eca24e93561040c041fdebea29d3424f0a17746ff9f0cb3a7e",
+        "sha256_in_prefix": "742b60db515821eca24e93561040c041fdebea29d3424f0a17746ff9f0cb3a7e",
+        "size_in_bytes": 19131
+      },
+      {
+        "_path": "share/locale/mr/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "de150c2a1b9ce87d73790cb0c272fb5df409a45b696cefcce9f5bd90154dad89",
+        "sha256_in_prefix": "de150c2a1b9ce87d73790cb0c272fb5df409a45b696cefcce9f5bd90154dad89",
+        "size_in_bytes": 33287
+      },
+      {
+        "_path": "share/locale/ms/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "55bb2681c44c6b95ca2fa8767f973ce23837b4a80f22cde6865004181188b122",
+        "sha256_in_prefix": "55bb2681c44c6b95ca2fa8767f973ce23837b4a80f22cde6865004181188b122",
+        "size_in_bytes": 13599
+      },
+      {
+        "_path": "share/locale/my/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "e88b1f730546cb76cf6433843760a6359e0a9bb393318c542cf7dddc80a44876",
+        "sha256_in_prefix": "e88b1f730546cb76cf6433843760a6359e0a9bb393318c542cf7dddc80a44876",
+        "size_in_bytes": 34902
+      },
+      {
+        "_path": "share/locale/nb/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "a2a5c5bd56c1e65d95c35dde568dbc7fcc39d6da34754c3a9edd99c4ec1c6c4f",
+        "sha256_in_prefix": "a2a5c5bd56c1e65d95c35dde568dbc7fcc39d6da34754c3a9edd99c4ec1c6c4f",
+        "size_in_bytes": 21954
+      },
+      {
+        "_path": "share/locale/nds/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "4fb9b780a45174e071eddcc15e725b18c25cce379d7b2ff1214849ad1e6c9b94",
+        "sha256_in_prefix": "4fb9b780a45174e071eddcc15e725b18c25cce379d7b2ff1214849ad1e6c9b94",
+        "size_in_bytes": 4847
+      },
+      {
+        "_path": "share/locale/ne/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "2cfa3a8f266425ec4cd0f04b7ae1ed445f0f08092046d5bb09870d9e53d50235",
+        "sha256_in_prefix": "2cfa3a8f266425ec4cd0f04b7ae1ed445f0f08092046d5bb09870d9e53d50235",
+        "size_in_bytes": 24514
+      },
+      {
+        "_path": "share/locale/nl/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d5c4308f849ab6da7590909c7eef825ec356c6474e375b93609abf8b07426197",
+        "sha256_in_prefix": "d5c4308f849ab6da7590909c7eef825ec356c6474e375b93609abf8b07426197",
+        "size_in_bytes": 23263
+      },
+      {
+        "_path": "share/locale/nn/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "0f40ffa4d9d83718882f159f261aaaf0599f30f32e53d49727ad102d4d4ee555",
+        "sha256_in_prefix": "0f40ffa4d9d83718882f159f261aaaf0599f30f32e53d49727ad102d4d4ee555",
+        "size_in_bytes": 19245
+      },
+      {
+        "_path": "share/locale/nso/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "eb8b0fba68491e9a56c5105b20c4147b5acc88752a93e37acd4b937046fc6b54",
+        "sha256_in_prefix": "eb8b0fba68491e9a56c5105b20c4147b5acc88752a93e37acd4b937046fc6b54",
+        "size_in_bytes": 16679
+      },
+      {
+        "_path": "share/locale/oc/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "00d7624407b801bd09e8b2d0aa429f7a6f2cbd7681de4ae92542d0707d5b1022",
+        "sha256_in_prefix": "00d7624407b801bd09e8b2d0aa429f7a6f2cbd7681de4ae92542d0707d5b1022",
+        "size_in_bytes": 24840
+      },
+      {
+        "_path": "share/locale/or/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "660bdf2d953bfa39e33332e2812294c64500bbf33fe5c3861d73b14f971f1294",
+        "sha256_in_prefix": "660bdf2d953bfa39e33332e2812294c64500bbf33fe5c3861d73b14f971f1294",
+        "size_in_bytes": 32561
+      },
+      {
+        "_path": "share/locale/pa/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "e382207c0897516ee91950a0ffffcbea4c0216091912961e9ca2752c7f3d2d6d",
+        "sha256_in_prefix": "e382207c0897516ee91950a0ffffcbea4c0216091912961e9ca2752c7f3d2d6d",
+        "size_in_bytes": 32189
+      },
+      {
+        "_path": "share/locale/pl/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1a64bb735670918bb8c01080814cd860d8ae67d590ba145f69f304dcaef4d58c",
+        "sha256_in_prefix": "1a64bb735670918bb8c01080814cd860d8ae67d590ba145f69f304dcaef4d58c",
+        "size_in_bytes": 24203
+      },
+      {
+        "_path": "share/locale/ps/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "dfe8b70ec5da59ce6116aada6d059b2a113e5a1e663d9787213f0071b98d60c0",
+        "sha256_in_prefix": "dfe8b70ec5da59ce6116aada6d059b2a113e5a1e663d9787213f0071b98d60c0",
+        "size_in_bytes": 2870
+      },
+      {
+        "_path": "share/locale/pt/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "836d8e8e2d2ab747140d15c0e8487508d4261236795cedc244a0d662941298d1",
+        "sha256_in_prefix": "836d8e8e2d2ab747140d15c0e8487508d4261236795cedc244a0d662941298d1",
+        "size_in_bytes": 22612
+      },
+      {
+        "_path": "share/locale/pt_BR/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "1a82398c296dc6666ae57f773ed32d773e19bf39b6da40d5c6cdaa52e8473124",
+        "sha256_in_prefix": "1a82398c296dc6666ae57f773ed32d773e19bf39b6da40d5c6cdaa52e8473124",
+        "size_in_bytes": 23733
+      },
+      {
+        "_path": "share/locale/ro/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d7c8386870dc81f8768fae1c3b42514829c85e9091c5d8b3fccff7e4310cbde3",
+        "sha256_in_prefix": "d7c8386870dc81f8768fae1c3b42514829c85e9091c5d8b3fccff7e4310cbde3",
+        "size_in_bytes": 22191
+      },
+      {
+        "_path": "share/locale/ru/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "c56a41791fce67f317bb2c4c555bf85a5c0ed85a5f5711266e3fc12b91991896",
+        "sha256_in_prefix": "c56a41791fce67f317bb2c4c555bf85a5c0ed85a5f5711266e3fc12b91991896",
+        "size_in_bytes": 32438
+      },
+      {
+        "_path": "share/locale/si/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "c7968c0eb2fd3ef059ab8813f1d6f37bc33e0ba4c98501e4fc6087cc81e2ee58",
+        "sha256_in_prefix": "c7968c0eb2fd3ef059ab8813f1d6f37bc33e0ba4c98501e4fc6087cc81e2ee58",
+        "size_in_bytes": 25015
+      },
+      {
+        "_path": "share/locale/sk/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "be1ae5ce8d5118c34d7e730f461b759455980f0aa3ada625e9ea2a0e864dd65e",
+        "sha256_in_prefix": "be1ae5ce8d5118c34d7e730f461b759455980f0aa3ada625e9ea2a0e864dd65e",
+        "size_in_bytes": 23723
+      },
+      {
+        "_path": "share/locale/sl/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "457489b8bd456a2409bad1093388b0687bff19dd9b7964d1f3c9af11155f0153",
+        "sha256_in_prefix": "457489b8bd456a2409bad1093388b0687bff19dd9b7964d1f3c9af11155f0153",
+        "size_in_bytes": 23491
+      },
+      {
+        "_path": "share/locale/sq/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "cd58e70b19694c535693c06a79e0c9a087f99806cf28068c08fa109ba57b280e",
+        "sha256_in_prefix": "cd58e70b19694c535693c06a79e0c9a087f99806cf28068c08fa109ba57b280e",
+        "size_in_bytes": 20501
+      },
+      {
+        "_path": "share/locale/sr/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "4aab8933427c00585003e1453db10bc6dcc4771c05cc2da72d09c4ab35eb9630",
+        "sha256_in_prefix": "4aab8933427c00585003e1453db10bc6dcc4771c05cc2da72d09c4ab35eb9630",
+        "size_in_bytes": 30384
+      },
+      {
+        "_path": "share/locale/sr@ije/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "ca04f77e9b5aea6d6e489cb204d227fbd1598071c060cd0315bf3338c3e55b08",
+        "sha256_in_prefix": "ca04f77e9b5aea6d6e489cb204d227fbd1598071c060cd0315bf3338c3e55b08",
+        "size_in_bytes": 18557
+      },
+      {
+        "_path": "share/locale/sr@latin/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "6931567c3d4ec3a378792dc9a3afd3dcd7ce8ac693fa41c3bed6c8eac8bd6012",
+        "sha256_in_prefix": "6931567c3d4ec3a378792dc9a3afd3dcd7ce8ac693fa41c3bed6c8eac8bd6012",
+        "size_in_bytes": 23346
+      },
+      {
+        "_path": "share/locale/sv/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "8266cde0fec43dc62ed8819e77961e50a96cbf2c25264d3f1517aca702c6afed",
+        "sha256_in_prefix": "8266cde0fec43dc62ed8819e77961e50a96cbf2c25264d3f1517aca702c6afed",
+        "size_in_bytes": 22834
+      },
+      {
+        "_path": "share/locale/ta/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "af83c221586bae6683101966781d23ece0aae2e8f44c501fa92a9a2f4eee1681",
+        "sha256_in_prefix": "af83c221586bae6683101966781d23ece0aae2e8f44c501fa92a9a2f4eee1681",
+        "size_in_bytes": 33836
+      },
+      {
+        "_path": "share/locale/te/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "d5356b18f38d294618f69cd8dd71f584dee8ea2d6e924eb31bdd814504eded9a",
+        "sha256_in_prefix": "d5356b18f38d294618f69cd8dd71f584dee8ea2d6e924eb31bdd814504eded9a",
+        "size_in_bytes": 36502
+      },
+      {
+        "_path": "share/locale/tg/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "a2f468ca7bf4621a68c543498614822bf912ec522b7d06cf0430713911e25fb2",
+        "sha256_in_prefix": "a2f468ca7bf4621a68c543498614822bf912ec522b7d06cf0430713911e25fb2",
+        "size_in_bytes": 773
+      },
+      {
+        "_path": "share/locale/th/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "30a32fe248f78903661febd1b3a18a70fe35125f7c227de7670c711b0bbad2f8",
+        "sha256_in_prefix": "30a32fe248f78903661febd1b3a18a70fe35125f7c227de7670c711b0bbad2f8",
+        "size_in_bytes": 32962
+      },
+      {
+        "_path": "share/locale/tk/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "91421ea02ce886154a95e53084bdc962a55fe2594d55da099e1ac9dcdf7f4bd6",
+        "sha256_in_prefix": "91421ea02ce886154a95e53084bdc962a55fe2594d55da099e1ac9dcdf7f4bd6",
+        "size_in_bytes": 2011
+      },
+      {
+        "_path": "share/locale/tr/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "2e56ca5e67f0693d186922aca3b199705d1f128eff3068ca20da1692fff6ac49",
+        "sha256_in_prefix": "2e56ca5e67f0693d186922aca3b199705d1f128eff3068ca20da1692fff6ac49",
+        "size_in_bytes": 22819
+      },
+      {
+        "_path": "share/locale/tt/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "df492b1e7b97800dad1ee2d6d18d2b0147c74aa1e5627039847d1488396f5dce",
+        "sha256_in_prefix": "df492b1e7b97800dad1ee2d6d18d2b0147c74aa1e5627039847d1488396f5dce",
+        "size_in_bytes": 6534
+      },
+      {
+        "_path": "share/locale/ug/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "b48b2e59594cbd28675996637ef9a372f2f94bd4e7ab6b0578dd3034740c0181",
+        "sha256_in_prefix": "b48b2e59594cbd28675996637ef9a372f2f94bd4e7ab6b0578dd3034740c0181",
+        "size_in_bytes": 27500
+      },
+      {
+        "_path": "share/locale/uk/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "951686d132dd2bd691bcf666c5c21e1d4885284597c58b3328eb8eabfa05ef31",
+        "sha256_in_prefix": "951686d132dd2bd691bcf666c5c21e1d4885284597c58b3328eb8eabfa05ef31",
+        "size_in_bytes": 31087
+      },
+      {
+        "_path": "share/locale/uz/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "0dead5f340b79d85d90fcd8b6506042cd820f178b7ade88522297d7af1dcb1e4",
+        "sha256_in_prefix": "0dead5f340b79d85d90fcd8b6506042cd820f178b7ade88522297d7af1dcb1e4",
+        "size_in_bytes": 3034
+      },
+      {
+        "_path": "share/locale/uz@cyrillic/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "cb381510f86d39ab97a1ba3ea4f0f1da568130d832fa4f03ce8898f27006aea1",
+        "sha256_in_prefix": "cb381510f86d39ab97a1ba3ea4f0f1da568130d832fa4f03ce8898f27006aea1",
+        "size_in_bytes": 3700
+      },
+      {
+        "_path": "share/locale/vi/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "7825d54311a3b6474f6a5f497f166e5daba8f133d325984716876651d340d896",
+        "sha256_in_prefix": "7825d54311a3b6474f6a5f497f166e5daba8f133d325984716876651d340d896",
+        "size_in_bytes": 23619
+      },
+      {
+        "_path": "share/locale/wa/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "2147013cb4188d155fa144b4777292202f2b22d5b1ff32b532f32a6e255f5182",
+        "sha256_in_prefix": "2147013cb4188d155fa144b4777292202f2b22d5b1ff32b532f32a6e255f5182",
+        "size_in_bytes": 16282
+      },
+      {
+        "_path": "share/locale/xh/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "fa1a2985376c4c6f4ca4945c5718c2511221568772c7e1cad442aaad3c390d9f",
+        "sha256_in_prefix": "fa1a2985376c4c6f4ca4945c5718c2511221568772c7e1cad442aaad3c390d9f",
+        "size_in_bytes": 17489
+      },
+      {
+        "_path": "share/locale/yi/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "c7fe4a14b6797d09d26792b86d3d463b5597128a073fa5035a22f2abcf11f822",
+        "sha256_in_prefix": "c7fe4a14b6797d09d26792b86d3d463b5597128a073fa5035a22f2abcf11f822",
+        "size_in_bytes": 16328
+      },
+      {
+        "_path": "share/locale/zh_CN/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "f6ff998d36bc30f28d25458b604c8f74aef0998d676c321cd28a2ec4e85dd482",
+        "sha256_in_prefix": "f6ff998d36bc30f28d25458b604c8f74aef0998d676c321cd28a2ec4e85dd482",
+        "size_in_bytes": 20333
+      },
+      {
+        "_path": "share/locale/zh_HK/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "c326e375bde65b69aee7333aec829718ad5337e83032a86e47c91ca00ba4c372",
+        "sha256_in_prefix": "c326e375bde65b69aee7333aec829718ad5337e83032a86e47c91ca00ba4c372",
+        "size_in_bytes": 20375
+      },
+      {
+        "_path": "share/locale/zh_TW/LC_MESSAGES/gdk-pixbuf.mo",
+        "path_type": "hardlink",
+        "sha256": "180ed10cb16524bb13cfd46e0a45eb1cf188da8559fa453dba9bf4588586b853",
+        "sha256_in_prefix": "180ed10cb16524bb13cfd46e0a45eb1cf188da8559fa453dba9bf4588586b853",
+        "size_in_bytes": 21175
+      },
+      {
+        "_path": "share/man/man1/gdk-pixbuf-csource.1",
+        "path_type": "hardlink",
+        "sha256": "b11690ed844610077302724601d85fb6226f18a909ce775fc26f32853dbb7504",
+        "sha256_in_prefix": "b11690ed844610077302724601d85fb6226f18a909ce775fc26f32853dbb7504",
+        "size_in_bytes": 84
+      },
+      {
+        "_path": "share/man/man1/gdk-pixbuf-query-loaders.1",
+        "path_type": "hardlink",
+        "sha256": "b11690ed844610077302724601d85fb6226f18a909ce775fc26f32853dbb7504",
+        "sha256_in_prefix": "b11690ed844610077302724601d85fb6226f18a909ce775fc26f32853dbb7504",
+        "size_in_bytes": 84
+      },
+      {
+        "_path": "share/thumbnailers/gdk-pixbuf-thumbnailer.thumbnailer",
+        "file_mode": "text",
+        "path_type": "hardlink",
+        "prefix_placeholder": "/opt/anaconda1anaconda2anaconda3",
+        "sha256": "c28659a3ed908b4e328d767857f272d0430bf31883f1bd9f2a047227f6685561",
+        "sha256_in_prefix": "9e11ed4cbb6a68abdacbd5b7983166c716afca10ac1a414ab5c74362f185944e",
+        "size_in_bytes": 581
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 605974,
+  "subdir": "linux-64",
+  "timestamp": 1547243319780,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/gdk-pixbuf-2.36.12-h49783d7_1002.tar.bz2",
+  "version": "2.36.12"
+}

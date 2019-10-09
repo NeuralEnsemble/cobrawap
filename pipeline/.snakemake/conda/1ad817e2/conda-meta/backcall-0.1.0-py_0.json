@@ -1,0 +1,131 @@
+{
+  "build": "py_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/backcall-0.1.0-py_0",
+  "features": "",
+  "files": [
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/DESCRIPTION.rst",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/INSTALLER",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/METADATA",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/RECORD",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/WHEEL",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/metadata.json",
+    "lib/python3.7/site-packages/backcall-0.1.0.dist-info/top_level.txt",
+    "lib/python3.7/site-packages/backcall/__init__.py",
+    "lib/python3.7/site-packages/backcall/_signatures.py",
+    "lib/python3.7/site-packages/backcall/backcall.py",
+    "lib/python3.7/site-packages/backcall/__pycache__/__init__.cpython-37.pyc",
+    "lib/python3.7/site-packages/backcall/__pycache__/_signatures.cpython-37.pyc",
+    "lib/python3.7/site-packages/backcall/__pycache__/backcall.cpython-37.pyc"
+  ],
+  "fn": "backcall-0.1.0-py_0.tar.bz2",
+  "license": "BSD-3-Clause",
+  "license_family": "BSD",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/backcall-0.1.0-py_0",
+    "type": 1
+  },
+  "md5": "a6d55d275ba454de578438ae587d7d86",
+  "name": "backcall",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/backcall-0.1.0-py_0.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/DESCRIPTION.rst",
+        "path_type": "hardlink",
+        "sha256": "a8ddfb8f2e3bb6625276886126ac07895ecb63ea8a283fef9491f60070c1c511",
+        "sha256_in_prefix": "a8ddfb8f2e3bb6625276886126ac07895ecb63ea8a283fef9491f60070c1c511",
+        "size_in_bytes": 1481
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508",
+        "sha256_in_prefix": "ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508",
+        "size_in_bytes": 4
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "6e2c44a737d9fb294fba61fbb6c7ab0c67ca95497d16221e24ea6cd09798794c",
+        "sha256_in_prefix": "6e2c44a737d9fb294fba61fbb6c7ab0c67ca95497d16221e24ea6cd09798794c",
+        "size_in_bytes": 2114
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "ee8ede78da2db0d1a53aacc7e99a96a4a01224991922c7557fc119765c58adef",
+        "sha256_in_prefix": "ee8ede78da2db0d1a53aacc7e99a96a4a01224991922c7557fc119765c58adef",
+        "size_in_bytes": 971
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "d263bbf9a28ce8af421de511739343619c8b587e65991fabe13b4f8a71f1cfb6",
+        "sha256_in_prefix": "d263bbf9a28ce8af421de511739343619c8b587e65991fabe13b4f8a71f1cfb6",
+        "size_in_bytes": 93
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/metadata.json",
+        "path_type": "hardlink",
+        "sha256": "392445cd0f1ccb9fc294b61de98efce073f09be34ac11fa04aadfdb8ba14c447",
+        "sha256_in_prefix": "392445cd0f1ccb9fc294b61de98efce073f09be34ac11fa04aadfdb8ba14c447",
+        "size_in_bytes": 764
+      },
+      {
+        "_path": "site-packages/backcall-0.1.0.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "d647befcb4ea8484fc7abaf67f6ada9ce3baaae1dbc94f8be73a7781caa6e980",
+        "sha256_in_prefix": "d647befcb4ea8484fc7abaf67f6ada9ce3baaae1dbc94f8be73a7781caa6e980",
+        "size_in_bytes": 9
+      },
+      {
+        "_path": "site-packages/backcall/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "a400e82cd08d8b77c2948b3f41d6e0cc25d5e5e42565e848830a5b1559e31c41",
+        "sha256_in_prefix": "a400e82cd08d8b77c2948b3f41d6e0cc25d5e5e42565e848830a5b1559e31c41",
+        "size_in_bytes": 148
+      },
+      {
+        "_path": "site-packages/backcall/_signatures.py",
+        "path_type": "hardlink",
+        "sha256": "cb7a71fdf4c5559332f3e9b04cebd2c6538e68b51d1c9985dfb93b46ff4d5eed",
+        "sha256_in_prefix": "cb7a71fdf4c5559332f3e9b04cebd2c6538e68b51d1c9985dfb93b46ff4d5eed",
+        "size_in_bytes": 29847
+      },
+      {
+        "_path": "site-packages/backcall/backcall.py",
+        "path_type": "hardlink",
+        "sha256": "0d0ccd5efe3b668a1af184d7e41135f51b8bc788f2ac4b105112531e1aa1738f",
+        "sha256_in_prefix": "0d0ccd5efe3b668a1af184d7e41135f51b8bc788f2ac4b105112531e1aa1738f",
+        "size_in_bytes": 3752
+      },
+      {
+        "_path": "lib/python3.7/site-packages/backcall/__pycache__/__init__.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/backcall/__pycache__/_signatures.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/backcall/__pycache__/backcall.cpython-37.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "backcall==0.1.0=py_0",
+  "size": 12973,
+  "subdir": "noarch",
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/backcall-0.1.0-py_0.tar.bz2",
+  "version": "0.1.0"
+}

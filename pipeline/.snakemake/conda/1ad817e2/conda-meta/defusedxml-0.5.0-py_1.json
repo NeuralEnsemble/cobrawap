@@ -1,0 +1,220 @@
+{
+  "build": "py_1",
+  "build_number": 1,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/defusedxml-0.5.0-py_1",
+  "features": "",
+  "files": [
+    "lib/python3.7/site-packages/defusedxml-0.5.0-py2.7.egg-info/PKG-INFO",
+    "lib/python3.7/site-packages/defusedxml-0.5.0-py2.7.egg-info/SOURCES.txt",
+    "lib/python3.7/site-packages/defusedxml-0.5.0-py2.7.egg-info/dependency_links.txt",
+    "lib/python3.7/site-packages/defusedxml-0.5.0-py2.7.egg-info/installed-files.txt",
+    "lib/python3.7/site-packages/defusedxml-0.5.0-py2.7.egg-info/top_level.txt",
+    "lib/python3.7/site-packages/defusedxml/ElementTree.py",
+    "lib/python3.7/site-packages/defusedxml/__init__.py",
+    "lib/python3.7/site-packages/defusedxml/cElementTree.py",
+    "lib/python3.7/site-packages/defusedxml/common.py",
+    "lib/python3.7/site-packages/defusedxml/expatbuilder.py",
+    "lib/python3.7/site-packages/defusedxml/expatreader.py",
+    "lib/python3.7/site-packages/defusedxml/lxml.py",
+    "lib/python3.7/site-packages/defusedxml/minidom.py",
+    "lib/python3.7/site-packages/defusedxml/pulldom.py",
+    "lib/python3.7/site-packages/defusedxml/sax.py",
+    "lib/python3.7/site-packages/defusedxml/xmlrpc.py",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/ElementTree.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/__init__.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/cElementTree.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/common.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/expatbuilder.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/expatreader.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/lxml.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/minidom.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/pulldom.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/sax.cpython-37.pyc",
+    "lib/python3.7/site-packages/defusedxml/__pycache__/xmlrpc.cpython-37.pyc"
+  ],
+  "fn": "defusedxml-0.5.0-py_1.tar.bz2",
+  "license": "PSF 2.0",
+  "license_family": "PSF",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/defusedxml-0.5.0-py_1",
+    "type": 1
+  },
+  "md5": "0df5643b808bbfa1906b9b546cdec7de",
+  "name": "defusedxml",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/defusedxml-0.5.0-py_1.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/defusedxml-0.5.0-py2.7.egg-info/PKG-INFO",
+        "path_type": "hardlink",
+        "sha256": "d23ce5a6e4837f288171c151442266c08b492406289dea1c4c770a00e4ba80e4",
+        "sha256_in_prefix": "d23ce5a6e4837f288171c151442266c08b492406289dea1c4c770a00e4ba80e4",
+        "size_in_bytes": 36390
+      },
+      {
+        "_path": "site-packages/defusedxml-0.5.0-py2.7.egg-info/SOURCES.txt",
+        "path_type": "hardlink",
+        "sha256": "b092db0ffbd8078cad8d3a5b81acd4ec793425ca8789f7d417b69aa2755dc5c2",
+        "sha256_in_prefix": "b092db0ffbd8078cad8d3a5b81acd4ec793425ca8789f7d417b69aa2755dc5c2",
+        "size_in_bytes": 914
+      },
+      {
+        "_path": "site-packages/defusedxml-0.5.0-py2.7.egg-info/dependency_links.txt",
+        "path_type": "hardlink",
+        "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "sha256_in_prefix": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+        "size_in_bytes": 1
+      },
+      {
+        "_path": "site-packages/defusedxml-0.5.0-py2.7.egg-info/installed-files.txt",
+        "path_type": "hardlink",
+        "sha256": "ae27ee0b2b67483ab7465494e447d9484a76ca3757297bdcc8113d8ff34cd1e7",
+        "sha256_in_prefix": "ae27ee0b2b67483ab7465494e447d9484a76ca3757297bdcc8113d8ff34cd1e7",
+        "size_in_bytes": 637
+      },
+      {
+        "_path": "site-packages/defusedxml-0.5.0-py2.7.egg-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "4061daf74179d2954a856485944448d23b522ada83886c9f7995fb750359000c",
+        "sha256_in_prefix": "4061daf74179d2954a856485944448d23b522ada83886c9f7995fb750359000c",
+        "size_in_bytes": 11
+      },
+      {
+        "_path": "site-packages/defusedxml/ElementTree.py",
+        "path_type": "hardlink",
+        "sha256": "d94e5923ff87c9ac5ae84c4d4a8b3b3e65d658f2860f2c0ce137dd5df629e0e7",
+        "sha256_in_prefix": "d94e5923ff87c9ac5ae84c4d4a8b3b3e65d658f2860f2c0ce137dd5df629e0e7",
+        "size_in_bytes": 3766
+      },
+      {
+        "_path": "site-packages/defusedxml/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "0b5ebb24a1c77b341971c2d2690581bd62dd2d22f383218660fea093ee82ea92",
+        "sha256_in_prefix": "0b5ebb24a1c77b341971c2d2690581bd62dd2d22f383218660fea093ee82ea92",
+        "size_in_bytes": 1317
+      },
+      {
+        "_path": "site-packages/defusedxml/cElementTree.py",
+        "path_type": "hardlink",
+        "sha256": "517ff344e8c71db2bfa74ce0aab558acc289692f92dc9755e526fd7e5b2386b3",
+        "sha256_in_prefix": "517ff344e8c71db2bfa74ce0aab558acc289692f92dc9755e526fd7e5b2386b3",
+        "size_in_bytes": 1039
+      },
+      {
+        "_path": "site-packages/defusedxml/common.py",
+        "path_type": "hardlink",
+        "sha256": "b4355e51a3cf5f0cf5b862ba2b2c095db155207393c1246de057fcc429b32a88",
+        "sha256_in_prefix": "b4355e51a3cf5f0cf5b862ba2b2c095db155207393c1246de057fcc429b32a88",
+        "size_in_bytes": 4016
+      },
+      {
+        "_path": "site-packages/defusedxml/expatbuilder.py",
+        "path_type": "hardlink",
+        "sha256": "52e4ef6ef890d95e01ae3ccad01ec854eff77c5973c8cd6f38247c176459f9e6",
+        "sha256_in_prefix": "52e4ef6ef890d95e01ae3ccad01ec854eff77c5973c8cd6f38247c176459f9e6",
+        "size_in_bytes": 3990
+      },
+      {
+        "_path": "site-packages/defusedxml/expatreader.py",
+        "path_type": "hardlink",
+        "sha256": "33629d08a42e83a8bad2a0abe37ddea50a346efa8a1e23bb9790ad37ba4eef83",
+        "sha256_in_prefix": "33629d08a42e83a8bad2a0abe37ddea50a346efa8a1e23bb9790ad37ba4eef83",
+        "size_in_bytes": 2307
+      },
+      {
+        "_path": "site-packages/defusedxml/lxml.py",
+        "path_type": "hardlink",
+        "sha256": "3fccb168034ae56eefb6aadb41353a0a4178036f8b93c1dbb86f618db5fada64",
+        "sha256_in_prefix": "3fccb168034ae56eefb6aadb41353a0a4178036f8b93c1dbb86f618db5fada64",
+        "size_in_bytes": 4976
+      },
+      {
+        "_path": "site-packages/defusedxml/minidom.py",
+        "path_type": "hardlink",
+        "sha256": "5b6ba9762b5ccecf3b5bb30b4de5b9938ad398f1204d58a92f13afaa91c2a4a8",
+        "sha256_in_prefix": "5b6ba9762b5ccecf3b5bb30b4de5b9938ad398f1204d58a92f13afaa91c2a4a8",
+        "size_in_bytes": 1865
+      },
+      {
+        "_path": "site-packages/defusedxml/pulldom.py",
+        "path_type": "hardlink",
+        "sha256": "2f67bbc1729ea3d404268da74554fa0f2359ce1197e9be3d847dd9dcf7ee41bc",
+        "sha256_in_prefix": "2f67bbc1729ea3d404268da74554fa0f2359ce1197e9be3d847dd9dcf7ee41bc",
+        "size_in_bytes": 1162
+      },
+      {
+        "_path": "site-packages/defusedxml/sax.py",
+        "path_type": "hardlink",
+        "sha256": "c44ba6b1d812e5365ba58cf8a85b92d94dba311f722fa5bb9cab17e84cab9821",
+        "sha256_in_prefix": "c44ba6b1d812e5365ba58cf8a85b92d94dba311f722fa5bb9cab17e84cab9821",
+        "size_in_bytes": 1464
+      },
+      {
+        "_path": "site-packages/defusedxml/xmlrpc.py",
+        "path_type": "hardlink",
+        "sha256": "ebc848227dde75539d6283bb51169bf0deff1dacc5bb53adfff3facc28363042",
+        "sha256_in_prefix": "ebc848227dde75539d6283bb51169bf0deff1dacc5bb53adfff3facc28363042",
+        "size_in_bytes": 5417
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/ElementTree.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/__init__.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/cElementTree.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/common.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/expatbuilder.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/expatreader.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/lxml.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/minidom.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/pulldom.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/sax.cpython-37.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.7/site-packages/defusedxml/__pycache__/xmlrpc.cpython-37.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 20771,
+  "subdir": "noarch",
+  "timestamp": 1539010792530,
+  "track_features": "",
+  "url": "https://conda.anaconda.org/conda-forge/noarch/defusedxml-0.5.0-py_1.tar.bz2",
+  "version": "0.5.0"
+}

@@ -1,0 +1,39 @@
+{
+  "build": "py37h7e9f1db_0",
+  "build_number": 0,
+  "channel": "https://repo.anaconda.com/pkgs/main/linux-64",
+  "constrains": [],
+  "depends": [
+    "blas 1.0 mkl",
+    "libgcc-ng >=7.3.0",
+    "libgfortran-ng >=7,<8.0a0",
+    "mkl >=2019.1,<2020.0a0",
+    "mkl_fft >=1.0.6,<2.0a0",
+    "mkl_random >=1.0.2,<2.0a0",
+    "numpy-base 1.15.4 py37hde5b4d6_0",
+    "python >=3.7,<3.8.0a0"
+  ],
+  "extracted_package_dir": "/home/rgutzen/anaconda3/pkgs/numpy-1.15.4-py37h7e9f1db_0",
+  "features": "",
+  "files": [],
+  "fn": "numpy-1.15.4-py37h7e9f1db_0.tar.bz2",
+  "license": "BSD 3-Clause",
+  "link": {
+    "source": "/home/rgutzen/anaconda3/pkgs/numpy-1.15.4-py37h7e9f1db_0",
+    "type": 1
+  },
+  "md5": "0397664ae3fe05443538e7857ad9c72f",
+  "name": "numpy",
+  "package_tarball_full_path": "/home/rgutzen/anaconda3/pkgs/numpy-1.15.4-py37h7e9f1db_0.tar.bz2",
+  "paths_data": {
+    "paths": [],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "size": 47870,
+  "subdir": "linux-64",
+  "timestamp": 1544718483928,
+  "track_features": "",
+  "url": "https://repo.anaconda.com/pkgs/main/linux-64/numpy-1.15.4-py37h7e9f1db_0.tar.bz2",
+  "version": "1.15.4"
+}

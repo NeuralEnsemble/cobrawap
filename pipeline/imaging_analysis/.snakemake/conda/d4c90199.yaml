@@ -1,0 +1,21 @@
+name: wavescalephant_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python >= 3.6
+  - pip >= 19.0.3
+  - numpy >= 1.16.0
+  - scipy >= 1.2.0
+  - matplotlib
+  - pip:
+    - elephant==0.6.2
+    - h5py==2.9.0
+    - gitpython==2.1.11
+    - git+git://github.com/teogale/python-neo.git
+    - nixio>=1.5.0b1
+    - nixio==1.4.9
+    - quantities==0.12.2
+    - scikit-image==0.15.0
+    - joblib==0.13.2
+    - shapely==1.6.4.post2

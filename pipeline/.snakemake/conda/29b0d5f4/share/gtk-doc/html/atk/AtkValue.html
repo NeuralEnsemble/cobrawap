@@ -1,0 +1,733 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkValue: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="interfaces.html" title="ATK Interfaces">
+<link rel="prev" href="AtkText.html" title="AtkText">
+<link rel="next" href="AtkWindow.html" title="AtkWindow">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkValue.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkValue.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_implementations">  <span class="dim">|</span> 
+                  <a href="#AtkValue.implementations" class="shortcut">Known Implementations</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#AtkValue.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="interfaces.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="AtkText.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkWindow.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkValue"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkValue.top_of_page"></a>AtkValue</span></h2>
+<p>AtkValue — The ATK interface implemented by valuators and
+ components which display or select a value from a bounded range of
+ values.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkValue.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-current-value" title="atk_value_get_current_value ()">atk_value_get_current_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-maximum-value" title="atk_value_get_maximum_value ()">atk_value_get_maximum_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-minimum-value" title="atk_value_get_minimum_value ()">atk_value_get_minimum_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-set-current-value" title="atk_value_set_current_value ()">atk_value_set_current_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-minimum-increment" title="atk_value_get_minimum_increment ()">atk_value_get_minimum_increment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-value-and-text" title="atk_value_get_value_and_text ()">atk_value_get_value_and_text</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">AtkRange</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-range" title="atk_value_get_range ()">atk_value_get_range</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gdouble</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-increment" title="atk_value_get_increment ()">atk_value_get_increment</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">GSList</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-get-sub-ranges" title="atk_value_get_sub_ranges ()">atk_value_get_sub_ranges</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">void</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkValue.html#atk-value-set-value" title="atk_value_set_value ()">atk_value_set_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkValue.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody><tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkValue.html#AtkValue-value-changed" title="The “value-changed” signal">value-changed</a></td>
+<td class="signal_flags">Run Last</td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkValue.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody><tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="AtkValue.html#AtkValue-struct" title="AtkValue">AtkValue</a></td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkValue.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+    <span class="lineart">╰──</span> AtkValue
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkValue.implementations"></a><h2>Known Implementations</h2>
+<p>
+AtkValue is implemented by
+ <a class="link" href="AtkNoOpObject.html" title="AtkNoOpObject">AtkNoOpObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkValue.description"></a><h2>Description</h2>
+<p><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> should be implemented for components which either display
+a value from a bounded range, or which allow the user to specify a
+value from a bounded range, or both. For instance, most sliders and
+range controls, as well as dials, should have <a class="link" href="AtkObject.html" title="AtkObject"><span class="type">AtkObject</span></a>
+representations which implement <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> on the component's
+behalf. <span class="type">AtKValues</span> may be read-only, in which case attempts to
+alter the value return would fail.</p>
+<p>&lt;refsect1 id="current-value-text"&gt;
+&lt;title&gt;On the subject of current value text&lt;/title&gt;
+&lt;para&gt;
+In addition to providing the current value, implementors can
+optionally provide an end-user-consumable textual description
+associated with this value. This description should be included
+when the numeric value fails to convey the full, on-screen
+representation seen by users.
+&lt;/para&gt;</p>
+<p>&lt;example&gt;
+&lt;title&gt;Password strength&lt;/title&gt;
+A password strength meter whose value changes as the user types
+their new password. Red is used for values less than 4.0, yellow
+for values between 4.0 and 7.0, and green for values greater than
+7.0. In this instance, value text should be provided by the
+implementor. Appropriate value text would be "weak", "acceptable,"
+and "strong" respectively.
+&lt;/example&gt;</p>
+<p>A level bar whose value changes to reflect the battery charge. The
+color remains the same regardless of the charge and there is no
+on-screen text reflecting the fullness of the battery. In this
+case, because the position within the bar is the only indication
+the user has of the current charge, value text should not be
+provided by the implementor.</p>
+<p>&lt;refsect2 id="implementor-notes"&gt;
+&lt;title&gt;Implementor Notes&lt;/title&gt;
+&lt;para&gt;
+Implementors should bear in mind that assistive technologies will
+likely prefer the value text provided over the numeric value when
+presenting a widget's value. As a result, strings not intended for
+end users should not be exposed in the value text, and strings
+which are exposed should be localized. In the case of widgets which
+display value text on screen, for instance through a separate label
+in close proximity to the value-displaying widget, it is still
+expected that implementors will expose the value text using the
+above API.
+&lt;/para&gt;</p>
+<p>&lt;para&gt;
+<a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> should NOT be implemented for widgets whose displayed
+value is not reflective of a meaningful amount. For instance, a
+progress pulse indicator whose value alternates between 0.0 and 1.0
+to indicate that some process is still taking place should not
+implement <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> because the current value does not reflect
+progress towards completion.
+&lt;/para&gt;
+&lt;/refsect2&gt;
+&lt;/refsect1&gt;</p>
+<p>&lt;refsect1 id="ranges"&gt;
+&lt;title&gt;On the subject of ranges&lt;/title&gt;
+&lt;para&gt;
+In addition to providing the minimum and maximum values,
+implementors can optionally provide details about subranges
+associated with the widget. These details should be provided by the
+implementor when both of the following are communicated visually to
+the end user:
+&lt;/para&gt;
+&lt;itemizedlist&gt;
+  &lt;listitem&gt;The existence of distinct ranges such as "weak",
+  "acceptable", and "strong" indicated by color, bar tick marks,
+  and/or on-screen text.&lt;/listitem&gt;
+  &lt;listitem&gt;Where the current value stands within a given subrange,
+  for instance illustrating progression from very "weak" towards
+  nearly "acceptable" through changes in shade and/or position on
+  the bar within the "weak" subrange.&lt;/listitem&gt;
+&lt;/itemizedlist&gt;
+&lt;para&gt;
+If both of the above do not apply to the widget, it should be
+sufficient to expose the numeric value, along with the value text
+if appropriate, to make the widget accessible.
+&lt;/para&gt;</p>
+<p>&lt;refsect2 id="ranges-implementor-notes"&gt;
+&lt;title&gt;Implementor Notes&lt;/title&gt;
+&lt;para&gt;
+If providing subrange details is deemed necessary, all possible
+values of the widget are expected to fall within one of the
+subranges defined by the implementor.
+&lt;/para&gt;
+&lt;/refsect2&gt;
+&lt;/refsect1&gt;</p>
+<p>&lt;refsect1 id="localization"&gt;
+&lt;title&gt;On the subject of localization of end-user-consumable text
+values&lt;/title&gt;
+&lt;para&gt;
+Because value text and subrange descriptors are human-consumable,
+implementors are expected to provide localized strings which can be
+directly presented to end users via their assistive technology. In
+order to simplify this for implementors, implementors can use
+<code class="function">atk_value_type_get_localized_name()</code> with the following
+already-localized constants for commonly-needed values can be used:
+&lt;/para&gt;</p>
+<p>&lt;itemizedlist&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_WEAK&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_WEAK&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_ACCEPTABLE&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_STRONG&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_STRONG&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_LOW&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_LOW&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_MEDIUM&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_HIGH&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_HIGH&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_BAD&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_BAD&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_GOOD&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_VERY_GOOD&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_BEST&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_SUBSUBOPTIMAL&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_SUBOPTIMAL&lt;/listitem&gt;
+  &lt;listitem&gt;ATK_VALUE_OPTIMAL&lt;/listitem&gt;
+&lt;/itemizedlist&gt;
+&lt;para&gt;
+Proposals for additional constants, along with their use cases,
+should be submitted to the GNOME Accessibility Team.
+&lt;/para&gt;
+&lt;/refsect1&gt;</p>
+<p>&lt;refsect1 id="changes"&gt;
+&lt;title&gt;On the subject of changes&lt;/title&gt;
+&lt;para&gt;
+Note that if there is a textual description associated with the new
+numeric value, that description should be included regardless of
+whether or not it has also changed.
+&lt;/para&gt;
+&lt;/refsect1&gt;</p>
+</div>
+<div class="refsect1">
+<a name="AtkValue.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-value-get-current-value"></a><h3>atk_value_get_current_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_get_current_value (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                             <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_value_get_current_value</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-get-value-and-text" title="atk_value_get_value_and_text ()"><code class="function">atk_value_get_value_and_text()</code></a>
+instead.</p>
+</div>
+<p>Gets the value of this object.</p>
+<div class="refsect3">
+<a name="atk-value-get-current-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> a <span class="type">GValue</span> representing the current accessible value. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-maximum-value"></a><h3>atk_value_get_maximum_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_get_maximum_value (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                             <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_value_get_maximum_value</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-get-range" title="atk_value_get_range ()"><code class="function">atk_value_get_range()</code></a> instead.</p>
+</div>
+<p>Gets the maximum value of this object.</p>
+<div class="refsect3">
+<a name="atk-value-get-maximum-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> a <span class="type">GValue</span> representing the maximum accessible value. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-minimum-value"></a><h3>atk_value_get_minimum_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_get_minimum_value (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                             <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_value_get_minimum_value</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-get-range" title="atk_value_get_range ()"><code class="function">atk_value_get_range()</code></a> instead.</p>
+</div>
+<p>Gets the minimum value of this object.</p>
+<div class="refsect3">
+<a name="atk-value-get-minimum-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> a <span class="type">GValue</span> representing the minimum accessible value. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-set-current-value"></a><h3>atk_value_set_current_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_value_set_current_value (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                             <em class="parameter"><code>const <span class="type">GValue</span> *value</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_value_set_current_value</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-set-value" title="atk_value_set_value ()"><code class="function">atk_value_set_value()</code></a> instead.</p>
+</div>
+<p>Sets the value of this object.</p>
+<div class="refsect3">
+<a name="atk-value-set-current-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>a <span class="type">GValue</span> which is the desired new accessible value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-value-set-current-value.returns"></a><h4>Returns</h4>
+<p> <code class="literal">TRUE</code> if new value is successfully set, <code class="literal">FALSE</code> otherwise.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-minimum-increment"></a><h3>atk_value_get_minimum_increment ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_get_minimum_increment (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                                 <em class="parameter"><code><span class="type">GValue</span> *value</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_value_get_minimum_increment</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Use <a class="link" href="AtkValue.html#atk-value-get-increment" title="atk_value_get_increment ()"><code class="function">atk_value_get_increment()</code></a> instead.</p>
+</div>
+<p>Gets the minimum increment by which the value of this object may be changed.  If zero,
+the minimum increment is undefined, which may mean that it is limited only by the 
+floating point precision of the platform.</p>
+<div class="refsect3">
+<a name="atk-value-get-minimum-increment.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> a <span class="type">GValue</span> representing the minimum increment by which the accessible value may be changed. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-value-and-text"></a><h3>atk_value_get_value_and_text ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_get_value_and_text (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                              <em class="parameter"><code><span class="type">gdouble</span> *value</code></em>,
+                              <em class="parameter"><code><span class="type">gchar</span> **text</code></em>);</pre>
+<p>Gets the current value and the human readable text alternative of
+<em class="parameter"><code>obj</code></em>
+. <em class="parameter"><code>text</code></em>
+ is a newly created string, that must be freed by the
+caller. Can be NULL if no descriptor is available.</p>
+<div class="refsect3">
+<a name="atk-value-get-value-and-text.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p> address of <span class="type">gdouble</span> to put the current value of <em class="parameter"><code>obj</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p> address of <span class="type">gchar</span> to put the human
+readable text alternative for <em class="parameter"><code>value</code></em>
+. </p></td>
+<td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-range"></a><h3>atk_value_get_range ()</h3>
+<pre class="programlisting"><span class="returnvalue">AtkRange</span> *
+atk_value_get_range (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>);</pre>
+<p>Gets the range of this object.</p>
+<div class="refsect3">
+<a name="atk-value-get-range.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-value-get-range.returns"></a><h4>Returns</h4>
+<p> a newly allocated <span class="type">AtkRange</span>
+that represents the minimum, maximum and descriptor (if available)
+of <em class="parameter"><code>obj</code></em>
+. NULL if that range is not defined. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-increment"></a><h3>atk_value_get_increment ()</h3>
+<pre class="programlisting"><span class="returnvalue">gdouble</span>
+atk_value_get_increment (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>);</pre>
+<p>Gets the minimum increment by which the value of this object may be
+changed.  If zero, the minimum increment is undefined, which may
+mean that it is limited only by the floating point precision of the
+platform.</p>
+<div class="refsect3">
+<a name="atk-value-get-increment.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-value-get-increment.returns"></a><h4>Returns</h4>
+<p> the minimum increment by which the value of this
+object may be changed. zero if undefined.</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-get-sub-ranges"></a><h3>atk_value_get_sub_ranges ()</h3>
+<pre class="programlisting"><span class="returnvalue">GSList</span> *
+atk_value_get_sub_ranges (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>);</pre>
+<p>Gets the list of subranges defined for this object. See <a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a>
+introduction for examples of subranges and when to expose them.</p>
+<div class="refsect3">
+<a name="atk-value-get-sub-ranges.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-value-get-sub-ranges.returns"></a><h4>Returns</h4>
+<p> an <span class="type">GSList</span> of
+<span class="type">AtkRange</span> which each of the subranges defined for this object. Free
+the returns list with <code class="function">g_slist_free()</code>. </p>
+<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> AtkRange][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-value-set-value"></a><h3>atk_value_set_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+atk_value_set_value (<em class="parameter"><code><a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *obj</code></em>,
+                     <em class="parameter"><code>const <span class="type">gdouble</span> new_value</code></em>);</pre>
+<p>Sets the value of this object.</p>
+<p>This method is intended to provide a way to change the value of the
+object. In any case, it is possible that the value can't be
+modified (ie: a read-only component). If the value changes due this
+call, it is possible that the text could change, and will trigger
+an <a class="link" href="AtkValue.html#AtkValue-value-changed" title="The “value-changed” signal"><span class="type">“value-changed”</span></a> signal emission.</p>
+<p>Note for implementors: the deprecated <a class="link" href="AtkValue.html#atk-value-set-current-value" title="atk_value_set_current_value ()"><code class="function">atk_value_set_current_value()</code></a>
+method returned TRUE or FALSE depending if the value was assigned
+or not. In the practice several implementors were not able to
+decide it, and returned TRUE in any case. For that reason it is not
+required anymore to return if the value was properly assigned or
+not.</p>
+<div class="refsect3">
+<a name="atk-value-set-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>obj</p></td>
+<td class="parameter_description"><p>a GObject instance that implements AtkValueIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>new_value</p></td>
+<td class="parameter_description"><p>a double which is the desired new accessible value.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkValue.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkValue-struct"></a><h3>AtkValue</h3>
+<pre class="programlisting">typedef struct _AtkValue AtkValue;</pre>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkValue.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="AtkValue-value-changed"></a><h3>The <code class="literal">“value-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkValue.html" title="AtkValue"><span class="type">AtkValue</span></a> *atkvalue,
+               <span class="type">gdouble</span>   value,
+               <span class="type">gchar</span>    *text,
+               <span class="type">gpointer</span>  user_data)</pre>
+<p>The 'value-changed' signal is emitted when the current value
+that represent the object changes. <em class="parameter"><code>value</code></em>
+ is the numerical
+representation of this new value.  <em class="parameter"><code>text</code></em>
+ is the human
+readable text alternative of <em class="parameter"><code>value</code></em>
+, and can be NULL if it is
+not available. Note that if there is a textual description
+associated with the new numeric value, that description
+should be included regardless of whether or not it has also
+changed.</p>
+<p>Example: a password meter whose value changes as the user
+types their new password. Appropiate value text would be
+"weak", "acceptable" and "strong".</p>
+<div class="refsect3">
+<a name="AtkValue-value-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkvalue</p></td>
+<td class="parameter_description"><p>the object on which the signal was emitted.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>value</p></td>
+<td class="parameter_description"><p>the new value in a numerical form.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>text</p></td>
+<td class="parameter_description"><p>human readable text alternative (also called
+description) of this object. NULL if not available.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+<p class="since">Since: 2.12</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>AtkDocument: ATK - Accessibility Toolkit</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.79.1">
+<link rel="home" href="index.html" title="ATK - Accessibility Toolkit">
+<link rel="up" href="interfaces.html" title="ATK Interfaces">
+<link rel="prev" href="AtkComponent.html" title="AtkComponent">
+<link rel="next" href="AtkEditableText.html" title="AtkEditableText">
+<meta name="generator" content="GTK-Doc V1.25 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="5"><tr valign="middle">
+<td width="100%" align="left" class="shortcuts">
+<a href="#" class="shortcut">Top</a><span id="nav_description">  <span class="dim">|</span> 
+                  <a href="#AtkDocument.description" class="shortcut">Description</a></span><span id="nav_hierarchy">  <span class="dim">|</span> 
+                  <a href="#AtkDocument.object-hierarchy" class="shortcut">Object Hierarchy</a></span><span id="nav_implementations">  <span class="dim">|</span> 
+                  <a href="#AtkDocument.implementations" class="shortcut">Known Implementations</a></span><span id="nav_signals">  <span class="dim">|</span> 
+                  <a href="#AtkDocument.signals" class="shortcut">Signals</a></span>
+</td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
+<td><a accesskey="u" href="interfaces.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
+<td><a accesskey="p" href="AtkComponent.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="AtkEditableText.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+</tr></table>
+<div class="refentry">
+<a name="AtkDocument"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="AtkDocument.top_of_page"></a>AtkDocument</span></h2>
+<p>AtkDocument — The ATK interface which represents the toplevel
+ container for document content.</p>
+</td>
+<td class="gallery_image" valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsect1">
+<a name="AtkDocument.functions"></a><h2>Functions</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="functions_return">
+<col class="functions_name">
+</colgroup>
+<tbody>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-document-type" title="atk_document_get_document_type ()">atk_document_get_document_type</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gpointer</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-document" title="atk_document_get_document ()">atk_document_get_document</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-attribute-value" title="atk_document_get_attribute_value ()">atk_document_get_attribute_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gboolean</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-set-attribute-value" title="atk_document_set_attribute_value ()">atk_document_set_attribute_value</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="returnvalue">AtkAttributeSet</span></a> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-attributes" title="atk_document_get_attributes ()">atk_document_get_attributes</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">const <span class="returnvalue">gchar</span> *
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-locale" title="atk_document_get_locale ()">atk_document_get_locale</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-current-page-number" title="atk_document_get_current_page_number ()">atk_document_get_current_page_number</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+<tr>
+<td class="function_type">
+<span class="returnvalue">gint</span>
+</td>
+<td class="function_name">
+<a class="link" href="AtkDocument.html#atk-document-get-page-count" title="atk_document_get_page_count ()">atk_document_get_page_count</a> <span class="c_punctuation">()</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.signals"></a><h2>Signals</h2>
+<div class="informaltable"><table class="informaltable" border="0">
+<colgroup>
+<col width="150px" class="signals_return">
+<col width="300px" class="signals_name">
+<col width="200px" class="signals_flags">
+</colgroup>
+<tbody>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkDocument.html#AtkDocument-load-complete" title="The “load-complete” signal">load-complete</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkDocument.html#AtkDocument-load-stopped" title="The “load-stopped” signal">load-stopped</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkDocument.html#AtkDocument-page-changed" title="The “page-changed” signal">page-changed</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+<tr>
+<td class="signal_type"><span class="returnvalue">void</span></td>
+<td class="signal_name"><a class="link" href="AtkDocument.html#AtkDocument-reload" title="The “reload” signal">reload</a></td>
+<td class="signal_flags">Run Last</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.other"></a><h2>Types and Values</h2>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="name">
+<col class="description">
+</colgroup>
+<tbody>
+<tr>
+<td class="datatype_keyword"> </td>
+<td class="function_name"><a class="link" href="AtkDocument.html#AtkDocument-struct" title="AtkDocument">AtkDocument</a></td>
+</tr>
+<tr>
+<td class="datatype_keyword">struct</td>
+<td class="function_name"><a class="link" href="AtkDocument.html#AtkDocumentIface" title="struct AtkDocumentIface">AtkDocumentIface</a></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.object-hierarchy"></a><h2>Object Hierarchy</h2>
+<pre class="screen">    <a href="/usr/share/gtk-doc/html/gobject/GTypeModule.html">GInterface</a>
+    <span class="lineart">╰──</span> AtkDocument
+</pre>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.implementations"></a><h2>Known Implementations</h2>
+<p>
+AtkDocument is implemented by
+ <a class="link" href="AtkNoOpObject.html" title="AtkNoOpObject">AtkNoOpObject</a>.</p>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.description"></a><h2>Description</h2>
+<p>The AtkDocument interface should be supported by any object whose
+content is a representation or view of a document.  The AtkDocument
+interface should appear on the toplevel container for the document
+content; however AtkDocument instances may be nested (i.e. an
+AtkDocument may be a descendant of another AtkDocument) in those
+cases where one document contains "embedded content" which can
+reasonably be considered a document in its own right.</p>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.functions_details"></a><h2>Functions</h2>
+<div class="refsect2">
+<a name="atk-document-get-document-type"></a><h3>atk_document_get_document_type ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_document_get_document_type (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_document_get_document_type</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. Please use <a class="link" href="AtkDocument.html#atk-document-get-attributes" title="atk_document_get_attributes ()"><code class="function">atk_document_get_attributes()</code></a> to
+ask for the document type if it applies.</p>
+</div>
+<p>Gets a string indicating the document type.</p>
+<div class="refsect3">
+<a name="atk-document-get-document-type.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-document-type.returns"></a><h4>Returns</h4>
+<p> a string indicating the document type</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-document"></a><h3>atk_document_get_document ()</h3>
+<pre class="programlisting"><span class="returnvalue">gpointer</span>
+atk_document_get_document (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_document_get_document</code> is deprecated and should not be used in newly-written code.</p>
+<p>Since 2.12. <em class="parameter"><code>document</code></em>
+ is already a representation of
+the document. Use it directly, or one of its children, as an
+instance of the DOM.</p>
+</div>
+<p>Gets a <code class="literal">gpointer</code> that points to an instance of the DOM.  It is
+up to the caller to check atk_document_get_type to determine
+how to cast this pointer.</p>
+<div class="refsect3">
+<a name="atk-document-get-document.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-document.returns"></a><h4>Returns</h4>
+<p> a <code class="literal">gpointer</code> that points to an instance of the DOM. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-attribute-value"></a><h3>atk_document_get_attribute_value ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_document_get_attribute_value (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *attribute_name</code></em>);</pre>
+<div class="refsect3">
+<a name="atk-document-get-attribute-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>attribute_name</p></td>
+<td class="parameter_description"><p>a character string representing the name of the attribute
+whose value is being queried.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-attribute-value.returns"></a><h4>Returns</h4>
+<p> a string value associated with the named
+attribute for this document, or NULL if a value for
+<span class="type">attribute_name</span> has not been specified for this document. </p>
+<p><span class="annotation">[<acronym title="NULL may be passed as the value in, out, in-out; or as a return value."><span class="acronym">nullable</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-set-attribute-value"></a><h3>atk_document_set_attribute_value ()</h3>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>
+atk_document_set_attribute_value (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *attribute_name</code></em>,
+                                  <em class="parameter"><code>const <span class="type">gchar</span> *attribute_value</code></em>);</pre>
+<div class="refsect3">
+<a name="atk-document-set-attribute-value.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>attribute_name</p></td>
+<td class="parameter_description"><p>a character string representing the name of the attribute
+whose value is being set.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>attribute_value</p></td>
+<td class="parameter_description"><p>a string value to be associated with <span class="type">attribute_name</span>.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-set-attribute-value.returns"></a><h4>Returns</h4>
+<p> TRUE if <span class="type">value</span> is successfully associated with <span class="type">attribute_name</span>
+for this document, FALSE otherwise (e.g. if the document does not
+allow the attribute to be modified).</p>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-attributes"></a><h3>atk_document_get_attributes ()</h3>
+<pre class="programlisting"><a class="link" href="AtkObject.html#AtkAttributeSet" title="AtkAttributeSet"><span class="returnvalue">AtkAttributeSet</span></a> *
+atk_document_get_attributes (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<p>Gets an AtkAttributeSet which describes document-wide
+         attributes as name-value pairs.</p>
+<div class="refsect3">
+<a name="atk-document-get-attributes.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-attributes.returns"></a><h4>Returns</h4>
+<p> An AtkAttributeSet containing the explicitly
+set name-value-pair attributes associated with this document
+as a whole. </p>
+<p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
+</div>
+<p class="since">Since: 1.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-locale"></a><h3>atk_document_get_locale ()</h3>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+atk_document_get_locale (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<div class="warning">
+<p><code class="literal">atk_document_get_locale</code> has been deprecated since version 2.7.90 and should not be used in newly-written code.</p>
+<p>Please use <a class="link" href="AtkObject.html#atk-object-get-object-locale" title="atk_object_get_object_locale ()"><code class="function">atk_object_get_object_locale()</code></a> instead.</p>
+</div>
+<p>Gets a UTF-8 string indicating the POSIX-style LC_MESSAGES locale
+         of the content of this document instance.  Individual
+         text substrings or images within this document may have
+         a different locale, see atk_text_get_attributes and
+         atk_image_get_image_locale.</p>
+<div class="refsect3">
+<a name="atk-document-get-locale.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>a <span class="type">GObject</span> instance that implements AtkDocumentIface</p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-locale.returns"></a><h4>Returns</h4>
+<p> a UTF-8 string indicating the POSIX-style LC_MESSAGES
+locale of the document content as a whole, or NULL if
+the document content does not specify a locale.</p>
+</div>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-current-page-number"></a><h3>atk_document_get_current_page_number ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_document_get_current_page_number (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<div class="refsect3">
+<a name="atk-document-get-current-page-number.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-current-page-number.returns"></a><h4>Returns</h4>
+<p> current page number inside <em class="parameter"><code>document</code></em>
+. -1 if not
+implemented, not know by the implementor or irrelevant.</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="atk-document-get-page-count"></a><h3>atk_document_get_page_count ()</h3>
+<pre class="programlisting"><span class="returnvalue">gint</span>
+atk_document_get_page_count (<em class="parameter"><code><a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *document</code></em>);</pre>
+<div class="refsect3">
+<a name="atk-document-get-page-count.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody><tr>
+<td class="parameter_name"><p>document</p></td>
+<td class="parameter_description"><p>the <a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a></p></td>
+<td class="parameter_annotations"> </td>
+</tr></tbody>
+</table></div>
+</div>
+<div class="refsect3">
+<a name="atk-document-get-page-count.returns"></a><h4>Returns</h4>
+<p> total page count of <em class="parameter"><code>document</code></em>
+. -1 if not implemented, not
+know by the implementor or irrelevant.</p>
+</div>
+<p class="since">Since: 2.12</p>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.other_details"></a><h2>Types and Values</h2>
+<div class="refsect2">
+<a name="AtkDocument-struct"></a><h3>AtkDocument</h3>
+<pre class="programlisting">typedef struct _AtkDocument AtkDocument;</pre>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkDocumentIface"></a><h3>struct AtkDocumentIface</h3>
+<pre class="programlisting">struct AtkDocumentIface {
+  GTypeInterface parent;
+  const gchar*          ( *get_document_type) (AtkDocument              *document);
+  gpointer              ( *get_document)      (AtkDocument              *document);
+
+  const gchar*          ( *get_document_locale) (AtkDocument              *document);
+  AtkAttributeSet *     ( *get_document_attributes) (AtkDocument        *document);
+  const gchar*          ( *get_document_attribute_value) (AtkDocument   *document,
+                                                          const gchar   *attribute_name);
+  gboolean              ( *set_document_attribute) (AtkDocument         *document,
+                                                    const gchar         *attribute_name,
+                                                    const gchar         *attribute_value);
+  gint                  ( *get_current_page_number) (AtkDocument *document);
+  gint                  ( *get_page_count) (AtkDocument *document);
+};
+</pre>
+<div class="refsect3">
+<a name="AtkDocumentIface.members"></a><h4>Members</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="300px" class="struct_members_name">
+<col class="struct_members_description">
+<col width="200px" class="struct_members_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="struct_member_name"><p><span class="type">GTypeInterface</span> <em class="structfield"><code><a name="AtkDocumentIface.parent"></a>parent</code></em>;</p></td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-document-type"></a>get_document_type</code></em> ()</p></td>
+<td class="struct_member_description"><p>gets a string indicating the document
+type. This virtual function is deprecated since 2.12 and it
+should not be overriden.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-document"></a>get_document</code></em> ()</p></td>
+<td class="struct_member_description"><p>a <span class="type">GObject</span> instance that implements
+AtkDocumentIface. This virtual method is deprecated since 2.12
+and it should not be overriden.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-document-locale"></a>get_document_locale</code></em> ()</p></td>
+<td class="struct_member_description"><p>gets locale. This virtual function is
+deprecated since 2.7.90 and it should not be overriden.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-document-attributes"></a>get_document_attributes</code></em> ()</p></td>
+<td class="struct_member_description"><p>gets an AtkAttributeSet which describes
+document-wide attributes as name-value pairs.</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-document-attribute-value"></a>get_document_attribute_value</code></em> ()</p></td>
+<td class="struct_member_description"><p>returns a string value assocciated
+with the named attribute for this document, or NULL</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.set-document-attribute"></a>set_document_attribute</code></em> ()</p></td>
+<td class="struct_member_description"><p>sets the value of an attribute. Returns
+TRUE on success, FALSE otherwise</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-current-page-number"></a>get_current_page_number</code></em> ()</p></td>
+<td class="struct_member_description"><p>gets the current page number. Since 2.12</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+<tr>
+<td class="struct_member_name"><p><em class="structfield"><code><a name="AtkDocumentIface.get-page-count"></a>get_page_count</code></em> ()</p></td>
+<td class="struct_member_description"><p>gets the page count of the document. Since 2.12</p></td>
+<td class="struct_member_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="refsect1">
+<a name="AtkDocument.signal-details"></a><h2>Signal Details</h2>
+<div class="refsect2">
+<a name="AtkDocument-load-complete"></a><h3>The <code class="literal">“load-complete”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *atkdocument,
+               <span class="type">gpointer</span>     user_data)</pre>
+<p>The 'load-complete' signal is emitted when a pending load of
+a static document has completed.  This signal is to be
+expected by ATK clients if and when AtkDocument implementors
+expose ATK_STATE_BUSY.  If the state of an AtkObject which
+implements AtkDocument does not include ATK_STATE_BUSY, it
+should be safe for clients to assume that the AtkDocument's
+static contents are fully loaded into the container.
+(Dynamic document contents should be exposed via other
+signals.)</p>
+<div class="refsect3">
+<a name="AtkDocument-load-complete.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkdocument</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkDocument-load-stopped"></a><h3>The <code class="literal">“load-stopped”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *atkdocument,
+               <span class="type">gpointer</span>     user_data)</pre>
+<p>The 'load-stopped' signal is emitted when a pending load of
+document contents is cancelled, paused, or otherwise
+interrupted by the user or application logic.  It should not
+however be emitted while waiting for a resource (for instance
+while blocking on a file or network read) unless a
+user-significant timeout has occurred.</p>
+<div class="refsect3">
+<a name="AtkDocument-load-stopped.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkdocument</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkDocument-page-changed"></a><h3>The <code class="literal">“page-changed”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *atkdocument,
+               <span class="type">gint</span>         page_number,
+               <span class="type">gpointer</span>     user_data)</pre>
+<p>The 'page-changed' signal is emitted when the current page of
+a document changes, e.g. pressing page up/down in a document
+viewer.</p>
+<div class="refsect3">
+<a name="AtkDocument-page-changed.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkdocument</p></td>
+<td class="parameter_description"><p>the object on which the signal was emitted</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>page_number</p></td>
+<td class="parameter_description"><p>the new page number. If this value is unknown
+or not applicable, -1 should be provided.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+<p class="since">Since: 2.12</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="AtkDocument-reload"></a><h3>The <code class="literal">“reload”</code> signal</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>
+user_function (<a class="link" href="AtkDocument.html" title="AtkDocument"><span class="type">AtkDocument</span></a> *atkdocument,
+               <span class="type">gpointer</span>     user_data)</pre>
+<p>The 'reload' signal is emitted when the contents of a
+document is refreshed from its source.  Once 'reload' has
+been emitted, a matching 'load-complete' or 'load-stopped'
+signal should follow, which clients may await before
+interrogating ATK for the latest document content.</p>
+<div class="refsect3">
+<a name="AtkDocument-reload.parameters"></a><h4>Parameters</h4>
+<div class="informaltable"><table class="informaltable" width="100%" border="0">
+<colgroup>
+<col width="150px" class="parameters_name">
+<col class="parameters_description">
+<col width="200px" class="parameters_annotations">
+</colgroup>
+<tbody>
+<tr>
+<td class="parameter_name"><p>atkdocument</p></td>
+<td class="parameter_description"><p>the object which received the signal.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+<tr>
+<td class="parameter_name"><p>user_data</p></td>
+<td class="parameter_description"><p>user data set when the signal handler was connected.</p></td>
+<td class="parameter_annotations"> </td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<p>Flags: Run Last</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>Generated by GTK-Doc V1.25</div>
+</body>
+</html>

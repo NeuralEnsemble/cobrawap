@@ -1,0 +1,11 @@
+{
+ "argv": [
+  "/home/rgutzen/Projects/wavescalephant/snakemake_workflow/.snakemake/conda/1ad817e2/bin/python",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "Python 3",
+ "language": "python"
+}

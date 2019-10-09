@@ -1,2 +1,0 @@
-#!/bin/sh
-exec /home/rgutzen/Projects/wavescalephant/snakemake_workflow/imaging_analysis/.snakemake/conda/01ae20a9/bin/python -m PyQt5.pyrcc_main ${1+"$@"}

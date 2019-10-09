@@ -1,2 +1,0 @@
-#!/bin/sh
-exec /home/rgutzen/Projects/wavescalephant/snakemake_workflow/imaging_analysis/.snakemake/conda/12335a93/bin/python -m PyQt5.uic.pyuic ${1+"$@"}

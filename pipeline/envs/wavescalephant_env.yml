@@ -3,18 +3,16 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python >= 3.6
+  - python >= 3.7
   - pip >= 19.0.3
-  - numpy >= 1.16.0
-  - scipy >= 1.2.0
-  - matplotlib
   - pip:
-    - elephant==0.6.2
-    - h5py==2.9.0
-    - gitpython==2.1.11
-    - nixio>=1.5.0b1
-    - quantities==0.12.2
-    - scikit-image==0.15.0
-    - joblib==0.13.2
-    - shapely==1.6.4.post2
-    - git+git://github.com/teogale/python-neo.git@imagesequence
+    - snakemake >= 5.7.0
+    - elephant >= 0.6.2
+    - neo >= 0.7.2
+    - matplotlib
+    - seaborn
+    - h5py == 2.9.0
+    - nixio >= 1.5.0b1
+    - scikit-image == 0.15.0
+    - joblib == 0.13.2
+    - shapely == 1.6.4.post2

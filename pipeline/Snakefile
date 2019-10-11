@@ -1,5 +1,7 @@
 configfile: "configfile.yaml"
 
+# https://groups.google.com/forum/#!msg/snakemake/AuSI24J4sOw/CqKCa-XsDgAJ
+
 from settings import working_dir, data_path, output_path
 from settings import img_subworkflow, fp_subworkflow
 import os

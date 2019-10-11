@@ -1,0 +1,8 @@
+# Calcium Imaging dataset "LENS_170110_mouse2"
+
+
+DATA_PATH: 'LENS/170110_mouse2_deep/t1'
+
+PIXEL_SIZE: 0.05  # mm
+
+SAMPLING_RATE: 25  # Hz

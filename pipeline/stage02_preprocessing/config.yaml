@@ -1,0 +1,53 @@
+# Config file for Stage 2 - Preprocessing
+
+# The block order determines which processing steps (blocks) will be applied
+# and in which order. Execution order is from first to last entry.
+# The available blocks are:
+# 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
+# 'spatial_smooting', 'img_roi_selection'
+BLOCK_ORDER: ['background_substraction', 'normalization', 'frequency_filter']
+
+# ToDo: Param dict for each block? Or are there many shared parameters?
+
+# General parameters
+####################
+PLOT_FORMAT: '.png'
+
+# BLOCK - background_substraction
+#################################
+# No parameters needed
+
+# BLOCK - normalization
+#######################
+# Normalize the data (devide channels-wise) by either:
+# 'mean', 'median', 'max'
+NORMALIZE_BY: 'max'
+
+# BLOCK - frequency_filter
+##########################
+# parameters to be passed to the butterworth frequency filter
+# function by elephant
+HIGHPASS_FREQ: 200  # in Hz
+LOWPASS_FREQ: 1500  # in Hz
+FILTER_ORDER: 2
+# filter function used in scipy backend.
+# options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
+FILTER_FUNCTION: 'filtfilt'
+# Plotting parameters for the power spectrum
+PSD_FREQ_RES: 5  # in Hz
+PSD_OVERLAP: 0.5
+
+# BLOCK - detrending
+####################
+# Detrending: 0 - no detrending;
+#             1 - mean detrending;
+#             2 - mean and slope detrending (linear): this should be the default.
+#             3 - quadratic detrending.
+#             4 - cubic detrending.
+DETRENDING_ORDER: 2
+
+# BLOCK - spatial_smooting
+##########################
+
+# BLOCK - img_roi_selection
+###########################

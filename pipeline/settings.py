@@ -7,4 +7,4 @@ working_dir = os.path.dirname(os.path.realpath(__file__))
 data_path = os.path.expanduser('~') + '/Sciebo/own/Data/WaveScalES/'
 
 # path for generated data
-output_path = os.path.join(os.path.expanduser('~'), 'ProjectsData/wavescalephant/')
+output_path = os.path.join(os.path.expanduser('~'), 'ProjectsData/wave_analysis_pipeline/')

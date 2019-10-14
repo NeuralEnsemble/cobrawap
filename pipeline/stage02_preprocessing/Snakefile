@@ -10,8 +10,9 @@ from settings import working_dir, data_path, output_path
 report: os.path.join(output_path, 'report.html')
 
 # ToDo: where to define this?
+output_path = os.path.join(output_path, 'stage02_preprocessing/')
 prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output'+neo_format)
-stage_02_output = 'stage_output_name'
+stage_output = 'stage_output_name'
 
 neo_format = '.nix' # fixed! Do not change!
 BLOCK_ORDER = config["BLOCK_ORDER"]
@@ -41,7 +42,7 @@ rule all:
                             BLOCK_ORDER[-1] ,BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'
     output:
-        os.path.join(output_path, stage_02_output+neo_format)
+        os.path.join(output_path, stage_output+neo_format)
     shell:
         """
         cp {input.data} {output}

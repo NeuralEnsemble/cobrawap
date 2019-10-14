@@ -1,0 +1,39 @@
+configfile: "config_LENS_170110_mouse2.yaml"
+
+import os
+import sys
+sys.path.append('../')
+from settings import working_dir, data_path, output_path
+
+output_path = os.path.join(output_path, 'stage01_curation/')
+
+neo_format = '.nix' # fixed! Do not change!
+DATA_PATH = config["DATA_PATH"]
+DATA_NAME = config["DATA_NAME"]
+SPATIAL_SCALE = config['SPATIAL_SCALE']
+SAMPLING_RATE = config["SAMPLING_RATE"]
+ANNOTATIONS = config["ANNOTATIONS"]
+
+# ToDo: can we write the curation rule general enough that it can be used
+# for any (/most) dataset? Just by changing the configfile
+rule curate_LENS_170110_mouse2:
+    input:
+        data = DATA_PATH,
+        script = 'scripts/LENS_170110_mouse2.py'
+        # os.path.join(__file__, 'scripts', DATA_NAME+'.py')
+    output:
+        data = os.path.join(output_path, 'output'+neo_format)
+    params:
+        data_name = DATA_NAME,
+        spatial_scale = SPATIAL_SCALE,
+        sampling_rate = SAMPLING_RATE,
+        annotations = ANNOTATIONS,
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --sampling_rate {params.sampling_rate} \
+                              --spatial_scale {params.spatial_scale} \
+                              --data_name {params.data_name} \
+                              --annotations {params.annotations}
+        """

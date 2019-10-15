@@ -1,0 +1,76 @@
+# Datasets which should be processed with identical settings.
+# To set as key-value pairs
+# Name_of_dataset: /path/to/data/files/
+DATA_SETS:
+    IDIBAPS_161101_rec07_RH: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/161101_rec07_Spontaneous_RH.smr'
+
+CURATION_SCRIPT: 'curate_IDIBAPS_data.py'
+
+# pixel size
+SPATIAL_SCALE: 0.55  # mm
+
+# specified in the data file
+SAMPLING_RATE: 'None' # Hz
+
+# Metadata
+ANNOTATIONS:
+    experimental_lab: 'Sanchez-Vives lab - Barcelona'
+    grid_size: [9,5]
+
+ARRAY_ANNOTATIONS: 'None'
+
+# The keyword arguments are passed as key value pairs.
+# Keywords must only contain letters, numbers, underscores, and spaces.
+# Values can be strings, int, float, bool, or None.
+# Values can also be aranged in 1D objects such as lists, or tuples
+# It is possible to specify nested subdict.
+KWARGS:
+    ELECTRODE_ANNOTATION_NAME: 'physical_channel_index'
+    NAME2COORDS:
+        0:  (0,1)
+        1:  (6,4)
+        2:  (3,3)
+        3:  (4,3)
+        4:  (5,3)
+        5:  (6,3)
+        6:  (7,3)
+        7:  (8,3)
+        8:  (1,2)
+        9:  (2,2)
+        10: (3,2)
+        11: (4,2)
+        12: (5,2)
+        13: (6,2)
+        14: (7,2)
+        15: (8,2)
+        16: (7,0)
+        17: (1,1)
+        18: (2,1)
+        19: (3,1)
+        20: (4,1)
+        21: (5,1)
+        22: (6,1)
+        23: (7,1)
+        24: (8,1)
+        25: (0,0)
+        26: (1,0)
+        27: (2,0)
+        28: (3,0)
+        29: (4,0)
+        30: (5,0)
+        31: (6,0)
+    ELECTRODE_LOCATION:
+        Visual Cortex: [1,4,5,6,7,12,13,14,15,21,22,23,24]
+        Retrospenial Cortex: [16,31,30,29]
+        Parietal Association Cortex: [3,11,20]
+        Somatosensory Cortex: [2,8,9,10,17,18,19]
+        Motor Cortex: [0,25,26,27,28]
+    ELECTRODE_COLOR: # color scheme to match to figures in publication
+        Visual Cortex: '#0C6BB1'
+        Retrospenial Cortex: '#422F58'
+        Parietal Association Cortex: '#01B24E'
+        Somatosensory Cortex: '#F92600'
+        Motor Cortex: '#EF6700'
+
+
+# dictionary mapping the channels (ELECTRODE_ANNOTATION_NAME) to their coordiantes on the grid (GRID_SIZE)

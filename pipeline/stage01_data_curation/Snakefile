@@ -1,9 +1,9 @@
-configfile: "config_LENS_170110_mouse2.yaml"
+configfile: "config_IDIBAPS.yaml"
 
 import os
 import sys
 sys.path.append('../')
-from settings import working_dir, data_path, output_path
+from settings import working_dir, output_path
 
 output_path = os.path.join(output_path, 'stage01_curation/')
 
@@ -13,7 +13,8 @@ CURATION_SCRIPT = config["CURATION_SCRIPT"]
 SPATIAL_SCALE = config['SPATIAL_SCALE']
 SAMPLING_RATE = config["SAMPLING_RATE"]
 ANNOTATIONS = config["ANNOTATIONS"]
-
+ARRAY_ANNOTATIONS = config["ARRAY_ANNOTATIONS"]
+KWARGS = config["KWARGS"]
 # ToDo: can we write the curation rule general enough that it can be used
 # for any (/most) dataset? Just by changing the configfile
 
@@ -35,6 +36,8 @@ rule curate:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,
         annotations = ANNOTATIONS,
+        array_annotations = ARRAY_ANNOTATIONS,
+        kwargs = KWARGS
     shell:
         """
         python {input.script} --data {input.data} \
@@ -42,5 +45,7 @@ rule curate:
                               --sampling_rate {params.sampling_rate} \
                               --spatial_scale {params.spatial_scale} \
                               --data_name {wildcards.data_name} \
-                              --annotations {params.annotations}
+                              --annotations {params.annotations} \
+                              --array_annotations {params.array_annotations} \
+                              --kwargs {params.kwargs} \
         """

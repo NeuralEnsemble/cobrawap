@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import argparse
 import neo
 import os
+sys.path.append(os.path.join(os.getcwd(),'../'))
+from utils import check_analogsignal_shape, remove_annotations
+
 
 def none_or_float(value):
     if value == 'None':
@@ -29,25 +32,23 @@ if __name__ == '__main__':
     remove_annotations([block] + block.segments
                        + block.segments[0].analogsignals)
 
-    images = block.segments[0].analogsignals[0]
-
-    images = butter(images,
-                    highpass_freq=args.highpass_freq,
-                    lowpass_freq=args.lowpass_freq,
-                    order=args.order,
-                    filter_function=args.filter_function,
-                    axis=0)
+    asig = butter(block.segments[0].analogsignals[0],
+                  highpass_freq=args.highpass_freq,
+                  lowpass_freq=args.lowpass_freq,
+                  order=args.order,
+                  filter_function=args.filter_function,
+                  axis=0)
 
     # save processed data
-    images.name += ""
-    images.description += "Frequency filtered with [{}, {}]Hz order {} \
-                           using {} scipy algorithm.({})."\
-                          .format(args.highpass_freq,
-                                  args.lowpass_freq,
-                                  args.order,
-                                  args.filter_function,
-                                  os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = images
+    asig.name += ""
+    asig.description += "Frequency filtered with [{}, {}]Hz order {} "\
+                      + " using {} scipy algorithm.({})."\
+                        .format(args.highpass_freq,
+                                args.lowpass_freq,
+                                args.order,
+                                args.filter_function,
+                                os.path.basename(__file__))
+    block.segments[0].analogsignals[0] = asig
 
     with neo.NixIO(args.output) as io:
         io.write(block)

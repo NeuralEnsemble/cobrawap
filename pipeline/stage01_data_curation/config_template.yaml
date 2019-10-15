@@ -1,0 +1,16 @@
+# Datasets which should be processed with identical settings.
+# To set as key-value pairs
+# Name_of_dataset: /path/to/data/files/
+DATA_SETS:
+    Dataset_name: '/path/to/data/'
+
+CURATION_SCRIPT: 'curate_LENS_data.py'
+
+# pixel size
+SPATIAL_SCALE: 0.05  # mm
+
+SAMPLING_RATE: 25  # Hz
+
+# Metadata
+ANNOTATIONS:
+    experimental_lab: 'Santa Corp, Antarctica'

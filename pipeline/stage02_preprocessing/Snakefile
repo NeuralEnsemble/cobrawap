@@ -5,24 +5,33 @@ configfile: "config.yaml"
 import os
 import sys
 sys.path.append('../')
-from settings import working_dir, data_path, output_path
-
-report: os.path.join(output_path, 'report.html')
-
-# ToDo: where to define this?
-output_path = os.path.join(output_path, 'stage02_preprocessing/')
-prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output'+neo_format)
-stage_output = 'stage_output_name'
+from settings import working_dir, output_path
 
 neo_format = '.nix' # fixed! Do not change!
 BLOCK_ORDER = config["BLOCK_ORDER"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
+NORMALIZE_BY = config["NORMALIZE_BY"]
+HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
+LOWPASS_FREQ = config["LOWPASS_FREQ"]
+FILTER_ORDER = config["FILTER_ORDER"]
+FILTER_FUNCTION = config["FILTER_FUNCTION"]
+PSD_FREQ_RES = config["PSD_FREQ_RES"]
+PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
+
+
+# ToDo: where to define this?
+prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_LENS_170110_mouse2_t1'+neo_format)
+output_path = os.path.join(output_path, 'stage02_preprocessing/')
+stage_output = 'stage_output_name'
+
+report: os.path.join(output_path, 'report.html')
+
 
 #### Housekeeping ####
 
 def locate(str_list, string):
-    if sting in str_list:
+    if string in str_list:
         return [i for i, el in enumerate(str_list) if el == string][0]
     else:
         raise ValueError("Can't find rule '{}'! Please check the spelling \
@@ -57,17 +66,17 @@ rule background_substraction:
     output:
         data = os.path.join(output_path, 'background_substraction',
                             '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, 'background_substraction',
+        img = report(os.path.join(output_path, '{rule_name}',
                                   'background'+PLOT_FORMAT),
                     caption='background'),
-        array = os.path.join(output_path, 'background_substraction',
+        array = os.path.join(output_path, '{rule_name}',
                              'background.npy')
     shell:
         """
         python {input.script} --data {input.data} \
                               --output {output.data} \
                               --output_img {output.img} \
-                              --output_array (output.array)
+                              --output_array {output.array}
         """
 
 rule normalization:
@@ -117,7 +126,8 @@ rule frequency_filter:
     output:
         data = os.path.join(output_path, 'frequency_filter',
                             '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, 'power_spectrum'+PLOT_FORMAT),
+        img = report(os.path.join(output_path, '{rule_name}',
+                                  'power_spectrum'+PLOT_FORMAT),
                      caption='Power Spectrum')
     shell:
         """
@@ -136,19 +146,19 @@ rule frequency_filter:
                                        --psd_overlap {params.psd_overlap} \
         """
 
-
-rule spatial_smooting:
-    input:
-        data = input_file,
-        script = 'scripts/spatial_smooting.py'
-    params:
-        macro_dim = MACRO_DIM
-    output:
-        data = os.path.join(output_path, 'spatial_smooting',
-                            '{rule_name}'+neo_format)
-    shell:
-        """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --macro_dim {params.macro_dim}
-        """
+#
+# rule spatial_smooting:
+#     input:
+#         data = input_file,
+#         script = 'scripts/spatial_smooting.py'
+#     params:
+#         macro_dim = MACRO_DIM
+#     output:
+#         data = os.path.join(output_path, 'spatial_smooting',
+#                             '{rule_name}'+neo_format)
+#     shell:
+#         """
+#         python {input.script} --data {input.data} \
+#                               --output {output.data} \
+#                               --macro_dim {params.macro_dim}
+#         """

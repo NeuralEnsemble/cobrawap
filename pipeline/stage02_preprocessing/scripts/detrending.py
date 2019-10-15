@@ -2,6 +2,9 @@ import numpy as np
 import neo
 import argparse
 import os
+sys.path.append(os.path.join(os.getcwd(),'../'))
+from utils import check_analogsignal_shape, remove_annotations
+
 
 
 def detrending(asig, order):
@@ -11,7 +14,7 @@ def detrending(asig, order):
     if order < 0 or order > 4:
         raise InputError("Detrending order must be between 0 and 4!")
 
-    dim_t, dim_x, dim_y = asig.shape
+    dim_t, num_channels = asig.shape
     X = asig.as_array()
     window_size = len(asig)
 
@@ -46,13 +49,13 @@ if __name__ == '__main__':
     remove_annotations([block] + block.segments
                        + block.segments[0].analogsignals)
 
-    images = detrending(block.segments[0].analogsignals[0], args.order)
+    asig = detrending(block.segments[0].analogsignals[0], args.order)
 
     # save processed data
-    images.name += ""
-    images.description += "Detrended by order {} ({})."\
+    asig.name += ""
+    asig.description += "Detrended by order {} ({})."\
                           .format(args.order, os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = images
+    block.segments[0].analogsignals[0] = asig
 
     with neo.NixIO(args.output) as io:
         io.write(block)

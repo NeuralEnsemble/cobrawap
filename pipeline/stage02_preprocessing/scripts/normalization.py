@@ -2,9 +2,11 @@ import numpy as np
 import argparse
 import neo
 import os
+sys.path.append(os.path.join(os.getcwd(),'../'))
+from utils import check_analogsignal_shape, remove_annotations
 
 
-def normalize(images, normalize_by):
+def normalize(asig, normalize_by):
     if normalize_by == 'median':
         norm_function = np.median
     elif normalize_by == 'max':
@@ -12,23 +14,22 @@ def normalize(images, normalize_by):
     elif normalize_by == 'mean':
         norm_function = np.mean
     else:
-        raise InputError("The method to normalize by is not recognized. \
-                          Please choose either 'mean', 'median', or 'max'.")
+        raise InputError("The method to normalize by is not recognized. "\
+                       + "Please choose either 'mean', 'median', or 'max'.")
 
-    dim_t, dim_x, dim_y = images.shape
-    coords = list(itertools.product(np.arange(dim_x), np.arange(dim_y)))
-    norm_images = images.as_array()
-    for x,y in coords:
-        norm_value = norm_function(norm_images[:,x,y])
+    dim_t, num_channels = asig.shape
+    norm_asig = asig.as_array()
+    for i in num_channels:
+        norm_value = norm_function(norm_asig[:,i])
         if norm_value:
-            norm_images[:,x,y] /= norm_value
+            norm_asig[:,i] /= norm_value
         else:
-            print('Normalization factor is {} for channel ({},{}) \
-                   and was skipped.'.format(nom_value, x, y))
+            print("Normalization factor is {} for channel {} ".format(nom_value, i)
+                + "and was skipped."
     for num in range(dim_t):
-        images[num] = norm_images[num]
-    del norm_images
-    return images
+        asig[num] = norm_asig[num]
+    del norm_asig
+    return asig
 
 
 if __name__ == '__main__':
@@ -46,13 +47,13 @@ if __name__ == '__main__':
     remove_annotations([block] + block.segments
                        + block.segments[0].analogsignals)
 
-    images = normalize(block.segments[0].analogsignals[0], args.normalize_by)
+    asig = normalize(block.segments[0].analogsignals[0], args.normalize_by)
 
     # save processed data
-    images.name += ""
-    images.description += "Normalized by {} ({})."\
-                          .format(args.normalize_by, os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = images
+    asig.name += ""
+    asig.description += "Normalized by {} ({})."\
+                        .format(args.normalize_by, os.path.basename(__file__))
+    block.segments[0].analogsignals[0] = asig
 
     with neo.NixIO(args.output) as io:
         io.write(block)

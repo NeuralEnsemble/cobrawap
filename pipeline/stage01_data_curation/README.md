@@ -28,7 +28,7 @@ The spatial aspects of the data must be provided with the following keywords
 as annotations to the AnalogSignal. For example:
 grid_size: (10,10)
 spatial_scale: 0.05  # mm
-positions: [(0,1), (0,2), (0,3), (0,4), ...]
+coords: [(0,1), (0,2), (0,3), (0,4), ...]
 
 For now the pipeline assumes equally spaced electrodes on a rectangular grid
 (not all positions must be occupied).

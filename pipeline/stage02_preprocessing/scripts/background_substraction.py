@@ -7,15 +7,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import neo
+import os
 import sys
-sys.path.append('../../')
+sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape, remove_annotations
 
 
-def substract_background(images, background):
-    for num, frame in enumerate(images):
-        images[num] = frame - background
-    return images
+def substract_background(asig, background):
+    for num, frame in enumerate(asig):
+        asig[num] = frame - background
+    return asig
 
 
 if __name__ == '__main__':
@@ -26,27 +27,29 @@ if __name__ == '__main__':
     CLI.add_argument("--output_array", nargs='?', type=str)
     args = CLI.parse_args()
 
-    # load images
+    # load data
     with neo.NixIO(args.data) as io:
         block = io.read_block()
 
     check_analogsignal_shape(block.segments[0].analogsignals)
-    remove_annotations([block] + block.segments
-                       + block.segments[0].analogsignals)
+    # remove_annotations([block] + block.segments
+    #                    + block.segments[0].analogsignals)
 
-    images = block.segments[0].analogsignals[0]
+    asig = block.segments[0].analogsignals[0]
 
-    # calculate average image as backgound
-    background = np.mean(images, axis=0)
+    # calculate average signal per channel as backgound
+    background = np.mean(asig, axis=0)
 
-    images = substract_background(images, background)
+    asig = substract_background(asig, background)
 
     # save background as numpy array
-    np.save(args.output_array, background)
+    dim_x, dim_y = asig.annotations['grid_size']
+    bkgr_img = background.reshape((dim_x, dim_y))
+    np.save(args.output_array, bkgr_img)
 
     # save background image
     fig, ax = plt.subplots()
-    ax.imshow(background, interpolation='nearest', cmap=plt.cm.gray)
+    ax.imshow(bkgr_img, interpolation='nearest', cmap=plt.cm.gray)
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -54,10 +57,10 @@ if __name__ == '__main__':
 
     # save processed data
     # ToDo: overwrite AnalogSignals or create new segement?
-    images.name += ""
-    images.description += "The mean of each channel was substracted ({})."\
-                          .format(os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = images
+    asig.name += ""
+    asig.description += "The mean of each channel was substracted ({})."\
+                        .format(os.path.basename(__file__))
+    block.segments[0].analogsignals[0] = asig
 
     with neo.NixIO(args.output) as io:
         io.write(block)

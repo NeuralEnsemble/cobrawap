@@ -3,6 +3,9 @@ import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 from elephant.spectral import welch_psd
+sys.path.append(os.path.join(os.getcwd(),'../'))
+from utils import check_analogsignal_shape
+
 
 
 def none_or_float(value):
@@ -27,9 +30,7 @@ if __name__ == '__main__':
 
     check_analogsignal_shape(block.segments[0].analogsignals)
 
-    images = block.segments[0].analogsignals[0]
-
-    freqs, psd = welch_psd(image_focus,
+    freqs, psd = welch_psd(block.segments[0].analogsignals[0],
                            freq_res=args.psd_freq_res*pq.Hz,
                            overlap=args.psd_overlap)
 

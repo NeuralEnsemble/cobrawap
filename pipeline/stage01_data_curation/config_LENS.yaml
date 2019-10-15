@@ -1,5 +1,3 @@
-# Calcium Imaging dataset "LENS_170110_mouse2"
-
 # Datasets which should be processed with identical settings.
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
@@ -13,5 +11,10 @@ SPATIAL_SCALE: 0.05  # mm
 
 SAMPLING_RATE: 25  # Hz
 
+# Metadata
 ANNOTATIONS:
-    experimental_lab: 'Pavone lab, Florence'
+    experimental_lab: 'Pavone lab - Florence'
+
+ARRAY_ANNOTATIONS: 'None'
+
+KWARGS: 'None'

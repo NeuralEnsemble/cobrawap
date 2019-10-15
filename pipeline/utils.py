@@ -1,48 +1,88 @@
 import numpy as np
 import neo
+import re
 
 def check_analogsignal_shape(asig):
-    shape = np.shape(np.squeeze(asig))
-    if shape[0] > 1:
-        raise TypeError("Either more than one AnalogSignal found \
-                         or AnalogSignal not in shape \
-                         (<time_steps>, <channels>)!")
-    else:
-        pass
-    return None
+    if type(asig) == list and len(asig) > 1:
+        raise TypeError("More than one AnalogSignal found. Make sure that the "\
+                      + "Segment has only one AnalogSignal of shape "\
+                      + "(<time_steps>, <channels>)!")
+    if type(asig) == list:
+        asig = asig[0]
+    if len(np.shape(np.squeeze(asig))) > 2:
+        raise TypeError("AnalogSignal is not in shape (<time_steps>, <channels>)!")
+    return True
 
 
 def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
     if type(objects) != list:
         objects = [objects]
-    for i in range(len(objects)):
+    for i, obj in enumerate(objects):
         for k in del_keys:
             if k in objects[i].annotations:
                 del objects[i].annotations[k]
     return None
 
+def guess_type(string):
+    try:
+        out = int(string)
+    except:
+        try:
+            out = float(string)
+        except:
+            out = str(string)
+            if out == 'None':
+                out = None
+            elif out == 'True':
+                out = True
+            elif out == 'False':
+                out = False
+    return out
 
-def str2dict(str_list):
+def str2dict(string):
     """
-    Enables to pass a dict as commandline argument.
+    Enables to pass lists, tuples as commandline argument.
     """
+    if string[0] == '{':
+        string = string[1:]
+    if string[-1] == '}':
+        string = string[:-1]
     my_dict = {}
-    all_values = ' '.join(str_list)
     # list or tuple values
     brackets = [delimiter for delimiter in ['[',']','(',')']
-                if delimiter in all_values]
+                if delimiter in string]
     if len(brackets):
-        for kv in all_values[1:-1].split("{},".format(brackets[1])):
+        for kv in string.split("{},".format(brackets[1])):
             k,v = kv.split(":")
             v = v.replace(brackets[0], '').replace(brackets[1], '')
-            my_dict[k.strip()] = [int(val) for val in v.split(',')]
+            values = [guess_type(val) for val in v.split(',')]
+            if len(values) == 1:
+                values = values[0]
+            my_dict[k.strip()] = values
     # scalar values
     else:
-        for kv in all_values[1:-1].split(','):
+        for kv in string.split(','):
             k,v = kv.split(":")
-            my_dict[k.strip()] = v.strip()
+            my_dict[k.strip()] = guess_type(v.strip())
     return my_dict
 
+def parse_string2dict(kwargs_str, **kwargs):
+    if kwargs_str is None:
+        return None
+    my_dict = {}
+    kwargs = ''.join(kwargs_str)[1:-1]
+    # match all nested dicts
+    pattern = re.compile("[\w\s]+:{[^}]*},*")
+    for match in pattern.findall(kwargs):
+        nested_dict_name, nested_dict = match.split(":{")
+        nested_dict = nested_dict[:-1]
+        my_dict[nested_dict_name] = str2dict(nested_dict)
+        kwargs = kwargs.replace(match, '')
+    # match entries with word value, list value, or tuple value
+    pattern = re.compile("[\w\s]+:(?:[\w\.]+|\[[^\]]+\]|\([^\)]+\))")
+    for match in pattern.findall(kwargs):
+        my_dict.update(str2dict(match))
+    return my_dict
 
 def ImageSequence2AnalogSignal(imgseq):
     # ToDo: tuple as array annotations? Or separte coords into coords_x and coords_y?
@@ -64,4 +104,5 @@ def ImageSequence2AnalogSignal(imgseq):
                             file_origin=imgseq.file_origin,
                             description=imgseq.description,
                             array_annotations={'coords': coords_list},
+                            grid_size= (dim_x, dim_y),
                             **imgseq.annotations)

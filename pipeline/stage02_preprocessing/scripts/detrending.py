@@ -2,6 +2,7 @@ import numpy as np
 import neo
 import argparse
 import os
+import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape, remove_annotations
 

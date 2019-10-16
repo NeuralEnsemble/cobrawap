@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import neo
 import os
+import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape, remove_annotations
 
@@ -19,13 +20,13 @@ def normalize(asig, normalize_by):
 
     dim_t, num_channels = asig.shape
     norm_asig = asig.as_array()
-    for i in num_channels:
+    for i in range(num_channels):
         norm_value = norm_function(norm_asig[:,i])
         if norm_value:
             norm_asig[:,i] /= norm_value
         else:
             print("Normalization factor is {} for channel {} ".format(nom_value, i)
-                + "and was skipped."
+                + "and was skipped.")
     for num in range(dim_t):
         asig[num] = norm_asig[num]
     del norm_asig

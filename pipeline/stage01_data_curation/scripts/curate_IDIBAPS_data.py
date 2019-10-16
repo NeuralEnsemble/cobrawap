@@ -74,7 +74,6 @@ if __name__ == '__main__':
         raise Warning('Additional AnalogSignal found. The pipeline can yet \
                        only process single AnalogSignals.')
 
-    block.segments[0].analogsignals.append(asig)
-
+    block.segments[0].analogsignals[0] = asig
     with neo.NixIO(args.output) as io:
         io.write(block)

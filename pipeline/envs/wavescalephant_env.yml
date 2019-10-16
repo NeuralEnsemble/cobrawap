@@ -7,7 +7,7 @@ dependencies:
   - pip >= 19.0.3
   - pip:
     - snakemake >= 5.7.0
-    - elephant >= 0.6.2
+    - elephant >= 0.6.3
     - neo >= 0.7.2
     - matplotlib
     - seaborn

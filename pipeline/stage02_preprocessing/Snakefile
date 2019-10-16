@@ -21,7 +21,7 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 
 
 # ToDo: where to define this?
-prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_LENS_170110_mouse2_t1'+neo_format)
+prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_IDIBAPS_161101_rec07_RH'+neo_format)
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
 stage_output = 'stage_output_name'
 
@@ -133,8 +133,8 @@ rule frequency_filter:
         """
         python {input.script} --data {input.data} \
                               --output {output.data} \
-                              --lowcut {params.lowcut} \
-                              --highcut {params.highcut} \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
                               --order {params.order} \
                               --filter_function {params.filter_function}
 

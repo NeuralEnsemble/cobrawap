@@ -41,7 +41,7 @@ def guess_type(string):
 
 def str2dict(string):
     """
-    Enables to pass lists, tuples as commandline argument.
+    Transforms a str(dict) back to dict
     """
     if string[0] == '{':
         string = string[1:]
@@ -79,7 +79,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict[nested_dict_name] = str2dict(nested_dict)
         kwargs = kwargs.replace(match, '')
     # match entries with word value, list value, or tuple value
-    pattern = re.compile("[\w\s]+:(?:[\w\.]+|\[[^\]]+\]|\([^\)]+\))")
+    pattern = re.compile("[\w\s]+:(?:[\w\.\s-]+|\[[^\]]+\]|\([^\)]+\))")
     for match in pattern.findall(kwargs):
         my_dict.update(str2dict(match))
     return my_dict

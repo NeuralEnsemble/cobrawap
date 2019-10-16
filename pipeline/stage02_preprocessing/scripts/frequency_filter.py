@@ -1,10 +1,13 @@
 import numpy as np
-from elephant.signal_processing import butter
 import matplotlib.pyplot as plt
 import argparse
 import neo
+import quantities as pq
 import os
+import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
+sys.path.insert(0, os.path.join(os.path.expanduser('~'), 'Projects/toolbox/elephant/'))
+from elephant.signal_processing import butter
 from utils import check_analogsignal_shape, remove_annotations
 
 
@@ -33,8 +36,8 @@ if __name__ == '__main__':
                        + block.segments[0].analogsignals)
 
     asig = butter(block.segments[0].analogsignals[0],
-                  highpass_freq=args.highpass_freq,
-                  lowpass_freq=args.lowpass_freq,
+                  highpass_freq=args.highpass_freq*pq.Hz,
+                  lowpass_freq=args.lowpass_freq*pq.Hz,
                   order=args.order,
                   filter_function=args.filter_function,
                   axis=0)

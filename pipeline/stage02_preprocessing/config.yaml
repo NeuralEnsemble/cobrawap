@@ -5,7 +5,7 @@
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'spatial_smooting', 'img_roi_selection'
-BLOCK_ORDER: ['background_substraction', 'normalization', 'frequency_filter', 'detrending']
+BLOCK_ORDER: ['frequency_filter', 'background_substraction', 'normalization', 'detrending']
 
 # ToDo: Param dict for each block? Or are there many shared parameters?
 

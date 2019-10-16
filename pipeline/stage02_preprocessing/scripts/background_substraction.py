@@ -9,6 +9,7 @@ import argparse
 import neo
 import os
 import sys
+import re
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape, remove_annotations
 
@@ -44,7 +45,12 @@ if __name__ == '__main__':
 
     # save background as numpy array
     dim_x, dim_y = asig.annotations['grid_size']
-    bkgr_img = background.reshape((dim_x, dim_y))
+    bkgr_img = np.empty((dim_x, dim_y)) * np.nan
+    for pixel, coords in zip(background, asig.array_annotations['coords']):
+        pattern = re.compile('\d+')
+        x, y = pattern.findall(coords)
+        bkgr_img[int(x)][int(y)] = pixel
+
     np.save(args.output_array, bkgr_img)
 
     # save background image

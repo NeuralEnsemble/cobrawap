@@ -4,7 +4,7 @@ import neo
 import os
 import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape, remove_annotations
+from utils import check_analogsignal_shape
 
 
 def normalize(asig, normalize_by):
@@ -45,8 +45,6 @@ if __name__ == '__main__':
         block = io.read_block()
 
     check_analogsignal_shape(block.segments[0].analogsignals)
-    remove_annotations([block] + block.segments
-                       + block.segments[0].analogsignals)
 
     asig = normalize(block.segments[0].analogsignals[0], args.normalize_by)
 

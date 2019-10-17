@@ -24,8 +24,11 @@ def detrending(asig, order):
     if order > 1:
         factor = [1, 1/2., 1/6.]
         for i in np.arange(order-1)+1:
-            detrend = np.linspace(-window_size/2., window_size/2., window_size)**i \
-                      * np.mean(np.diff(X, n=i, axis=0)) * factor[i-1]
+            detrend = np.zeros_like(X)
+            for channel, x in enumerate(X.T):
+                detrend[:,channel] =\
+                    np.linspace(-window_size/2., window_size/2., window_size)**i \
+                    * np.mean(np.diff(x, n=i)) * factor[i-1]
             X = X - detrend
 
     for num in range(dim_t):

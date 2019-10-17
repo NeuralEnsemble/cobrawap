@@ -5,6 +5,7 @@ channels:
 dependencies:
   - python >= 3.7
   - pip >= 19.0.3
+  - pygraphviz >= 2.40.1
   - pip:
     - snakemake >= 5.7.0
     - elephant >= 0.6.3

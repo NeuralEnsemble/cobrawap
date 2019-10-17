@@ -1,4 +1,5 @@
 configfile: "config_IDIBAPS.yaml"
+report: "report.rst"
 
 import os
 import sys
@@ -15,8 +16,6 @@ SAMPLING_RATE = config["SAMPLING_RATE"]
 ANNOTATIONS = config["ANNOTATIONS"]
 ARRAY_ANNOTATIONS = config["ARRAY_ANNOTATIONS"]
 KWARGS = config["KWARGS"]
-# ToDo: can we write the curation rule general enough that it can be used
-# for any (/most) dataset? Just by changing the configfile
 
 def input_file(wildcards):
     return DATA_SETS[wildcards.data_name]

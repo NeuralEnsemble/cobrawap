@@ -1,0 +1,114 @@
+# Stage 03 Trigger Detection
+
+configfile: "config.yaml"
+report: "report.rst"
+
+import os
+import sys
+sys.path.append('../')
+from settings import working_dir, output_path
+
+neo_format = '.nix' # fixed! Do not change!
+
+# ToDo: where to define this?
+prev_stage_output = os.path.join(output_path, 'stage02_preprocessing', 'stage_output_name'+neo_format)
+output_path = os.path.join(output_path, 'stage03_trigger_detection/')
+stage_output = 'stage_output_name'
+
+PLOT_FORMAT = config["PLOT_FORMAT"]
+TRANSFORMATION_BLOCKS = config["TRANSFORMATION_BLOCKS"]
+DETECTION_BLOCK = config["DETECTION_BLOCK"]
+MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
+MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
+MUA_RATE = config["MUA_RATE"]
+PSD_OVERLAP = config["PSD_OVERLAP"]
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNEL = config["PLOT_CHANNEL"]
+
+#### Housekeeping ####
+
+def locate(str_list, string):
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError("Can't find rule '{}'! Please check the spelling "\
+                       + "and the config file.".format(string))
+
+def transformation_input_file(wildcards):
+    idx = locate(TRANSFORMATION_BLOCKS, wildcards.rule_name)
+    if idx:
+        return os.path.join(output_path, 'transformation',
+                            TRANSFORMATION_BLOCKS[idx-1],
+                            TRANSFORMATION_BLOCKS[idx-1]+neo_format)
+    else:
+        return os.path.join(output_path, prev_stage_output)
+
+def trigger_detection_input_file(wildcards):
+    if len(TRANSFORMATION_BLOCKS):
+        return os.path.join(output_path, 'transformation',
+                            prev_stage_output+neo_format)
+    else:
+        return os.path.join(output_path,
+                            prev_stage_output+neo_format)
+
+rule all:
+    input:
+        data = os.path.join(output_path, DETECTION_BLOCK, stage_output+neo_format)
+    output:
+        data = os.path.join(output_path, stage_output+neo_format)
+    shell:
+        """
+        cp {input.data} {output.data}
+        """
+
+rule transformation:
+    input:
+        data = os.path.join(output_path, 'transformation',
+                            TRANSFORMATION_BLOCKS[-1],
+                            TRANSFORMATION_BLOCKS[-1]+neo_format),
+        configfile = 'config.yaml'
+    output:
+        data = os.path.join(output_path, 'transformation',
+                            prev_stage_output+neo_format)
+    shell:
+        """
+        cp {input.data} {output.data}
+        """
+
+#### Blocks ####
+
+rule MUA_estimation:
+    input:
+        data = transformation_input_file,
+        script = 'scripts/MUA_estimation.py',
+        plot_script = 'scripts/plot_MUA_trace.py'
+    params:
+        highpass_freq = MUA_HIGHPASS_FREQ,
+        lowpass_freq = MUA_LOWPASS_FREQ,
+        MUA_rate = MUA_RATE,
+        psd_overlap = PSD_OVERLAP,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channel = PLOT_CHANNEL
+    output:
+        data = os.path.join(output_path, 'transformation', 'MUA_estimation',
+                            '{rule_name}'+neo_format),
+        img = report(os.path.join(output_path, 'transformation', '{rule_name}',
+                                  'MUA_trace_{}-{}s_channel{}{}'\
+                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --MUA_rate {params.MUA_rate} \
+                              --psd_overlap {params.psd_overlap}
+        python {input.plot_script} --data {input.data} \
+                                   --MUA_data {output.data} \
+                                   --output {output.img} \
+                                   --tstart {params.plot_tstart} \
+                                   --tstop {params.plot_tstop} \
+                                   --channel {params.plot_channel}
+        """

@@ -1,6 +1,7 @@
 # Stage 02 Preprocessing
 
 configfile: "config.yaml"
+report: "report.rst"
 
 import os
 import sys
@@ -24,8 +25,6 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_IDIBAPS_161101_rec07_RH'+neo_format)
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
 stage_output = 'stage_output_name'
-
-report: os.path.join(output_path, 'report.html')
 
 
 #### Housekeeping ####
@@ -51,10 +50,10 @@ rule all:
                             BLOCK_ORDER[-1] ,BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'
     output:
-        os.path.join(output_path, stage_output+neo_format)
+        data = os.path.join(output_path, stage_output+neo_format)
     shell:
         """
-        cp {input.data} {output}
+        cp {input.data} {output.data}
         """
 
 #### Blocks ####
@@ -67,8 +66,7 @@ rule background_substraction:
         data = os.path.join(output_path, 'background_substraction',
                             '{rule_name}'+neo_format),
         img = report(os.path.join(output_path, '{rule_name}',
-                                  'background'+PLOT_FORMAT),
-                    caption='background'),
+                                  'background'+PLOT_FORMAT)),
         array = os.path.join(output_path, '{rule_name}',
                              'background.npy')
     shell:
@@ -127,8 +125,7 @@ rule frequency_filter:
         data = os.path.join(output_path, 'frequency_filter',
                             '{rule_name}'+neo_format),
         img = report(os.path.join(output_path, '{rule_name}',
-                                  'power_spectrum'+PLOT_FORMAT),
-                     caption='Power Spectrum')
+                                  'power_spectrum'+PLOT_FORMAT))
     shell:
         """
         python {input.script} --data {input.data} \

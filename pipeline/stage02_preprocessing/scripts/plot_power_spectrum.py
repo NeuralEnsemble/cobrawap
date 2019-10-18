@@ -41,8 +41,8 @@ if __name__ == '__main__':
     fig, ax = plt.subplots()
     # ToDo: plot also the channel-wise power spectra ?
     for channel in psd:
-        ax.smeilogy(freqs, channel, alpha=0.7)
-    ax.smeilogy(freqs, np.mean(psd, axis=0), linewidth=2, color='k', label='channel average')
+        ax.semilogy(freqs, channel, alpha=0.7)
+    ax.semilogy(freqs, np.mean(psd, axis=0), linewidth=2, color='k', label='channel average')
     ax.set_title('Power Spectrum')
     ax.set_xlabel('frequency [Hz]')
     ax.set_ylabel('power spectral density')

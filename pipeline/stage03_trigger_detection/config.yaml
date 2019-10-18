@@ -5,13 +5,13 @@ PLOT_FORMAT: '.png'
 ##################################
 # The list determines the combination and order of blocks to transform the
 # preprocessed signal. Default []
-# Available Blocks: 'MUA_estimation',
+# Available Blocks: 'MUA_estimation', 'zscore', 'normalize'
 TRANSFORMATION_BLOCKS: ['MUA_estimation']
 
 # DETECTION BLOCK
 #################
-# Available Blocks: 'Threshold', 'Hilbert_phase', 'Minima'
-DETECTION_BLOCK: 'Threshold'
+# Available Blocks: 'threshold', 'Hilbert_phase', 'Minima'
+DETECTION_BLOCK: 'threshold'
 
 # BLOCK - MUA_estimation
 ########################
@@ -25,21 +25,19 @@ PLOT_CHANNEL: 12  # default 'None' -> randomly selected
 
 # BLOCK - Threshold
 ###################
-# Thresdholding method: 'Fixed', 'Fitting', 'Moment'
-THRESHOLD_METHOD: 'Fitting'
+# Thresholding method: 'fixed', 'fitted', 'moment'
+THRESHOLD_METHOD: 'fixed'
 
 # Fitting Parameters
-FITTING_PARAMS:
-    FUNCTION: 'Gaussian'
+FIT_FUNCTION: 'Gaussian'
+SIGMA_FACTOR: 3
 
 # Fixed Parameters
-FIXED_PARAMS:
-    THRESDHOLD: 0
+FIXED_THRESHOLD: 0
 
 # Moment Parameters
-MOMENT_PARAMS:
-    ORDER: 2
-    FACTOR: 3
+MOMENT_ORDER: 2
+MOMENT_FACTOR: 3
 
 # BLOCK - Hilbert_phase
 #######################

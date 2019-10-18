@@ -15,7 +15,10 @@ def MUA_estimation(asig, highpass_freq, lowpass_freq, MUA_rate, psd_overlap):
     fs = asig.sampling_rate.rescale('Hz')
     fft_samples = int(np.round((fs/highpass_freq).magnitude))
     # MUA_rate can only be an int fraction of the orginal sampling_rate
-    subsample_order = int(fs/MUA_rate)
+    if MUA_rate > fs:
+        raise InputError("The requested MUA rate can not be larger than "\
+                       + "the inital sampling rate!")
+    subsample_order = int(np.round(fs/MUA_rate))
     eff_MUA_rate = fs/subsample_order
     print("effective MUA rate = {} Hz".format(eff_MUA_rate))
 

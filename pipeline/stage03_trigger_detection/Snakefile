@@ -8,13 +8,15 @@ import sys
 sys.path.append('../')
 from settings import working_dir, output_path
 
-neo_format = '.nix' # fixed! Do not change!
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage02_output.nix')
 
-# ToDo: where to define this?
-prev_stage_output = os.path.join(output_path, 'stage02_preprocessing', 'stage_output_name'+neo_format)
 output_path = os.path.join(output_path, 'stage03_trigger_detection/')
-stage_output = 'stage_output_name'
 
+neo_format = '.nix' # fixed! Do not change!
+STAGE_OUTPUT = config["OUTPUT"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 TRANSFORMATION_BLOCKS = config["TRANSFORMATION_BLOCKS"]
@@ -23,6 +25,7 @@ DETECTION_BLOCK = config["DETECTION_BLOCK"]
 MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
 MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
 MUA_RATE = config["MUA_RATE"]
+FFT_SAMPLES = config["FFT_SAMPLES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
@@ -30,6 +33,8 @@ PLOT_CHANNEL = config["PLOT_CHANNEL"]
 
 THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
+
+# ToDo: outsource Transofrmation as subsection via include?
 
 #### Housekeeping ####
 
@@ -47,24 +52,34 @@ def transformation_input_file(wildcards):
                             TRANSFORMATION_BLOCKS[idx-1],
                             TRANSFORMATION_BLOCKS[idx-1]+neo_format)
     else:
-        return os.path.join(output_path, prev_stage_output)
+        return os.path.join(output_path, stage_input)
 
 def trigger_detection_input_file(wildcards):
     if len(TRANSFORMATION_BLOCKS):
-        return os.path.join(output_path, 'transformation',
-                            prev_stage_output+neo_format)
+        return os.path.join(output_path, 'transformation', stage_input)
     else:
-        return os.path.join(output_path,
-                            prev_stage_output+neo_format)
+        return os.path.join(output_path, stage_input)
 
 rule all:
+    # ToDo: plot traces?
     input:
-        data = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+neo_format)
+        data = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+neo_format),
+        plot_script = 'scripts/plot_trigger_times.py'
+    params:
+        tstart = PLOT_TSTART,
+        tstop = PLOT_TSTOP,
+        channel = PLOT_CHANNEL
     output:
-        data = os.path.join(output_path, stage_output+neo_format)
+        data = os.path.join(output_path, STAGE_OUTPUT),
+        img = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+PLOT_FORMAT)
     shell:
         """
         cp {input.data} {output.data}
+        python {input.plot_script} --data {input.data} \
+                                   --output {output.img} \
+                                   --tstart {params.tstart} \
+                                   --tstop {params.tstop} \
+                                   --channel {params.channel}
         """
 
 rule transformation:
@@ -92,6 +107,7 @@ rule MUA_estimation:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
         MUA_rate = MUA_RATE,
+        fft_samples = FFT_SAMPLES,
         psd_overlap = PSD_OVERLAP,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
@@ -119,7 +135,6 @@ rule MUA_estimation:
         """
 
 rule threshold:
-    # ToDo: plot traces
     input:
         data = trigger_detection_input_file,
         thresholds = os.path.join(output_path, 'threshold',

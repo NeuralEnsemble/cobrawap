@@ -6,7 +6,7 @@ import sys
 sys.path.append('../')
 from settings import working_dir, output_path
 
-output_path = os.path.join(output_path, 'stage01_curation/')
+output_path = os.path.join(output_path, 'stage01_data_curation/')
 
 neo_format = '.nix' # fixed! Do not change!
 DATA_SETS = config["DATA_SETS"]
@@ -46,5 +46,5 @@ rule curate:
                               --data_name {wildcards.data_name} \
                               --annotations {params.annotations} \
                               --array_annotations {params.array_annotations} \
-                              --kwargs {params.kwargs} \
+                              --kwargs {params.kwargs}
         """

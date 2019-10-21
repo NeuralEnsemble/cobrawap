@@ -67,7 +67,7 @@ if __name__ == '__main__':
                                     .format(neo.__version__)
     if asig.description is None:
         asig.description = ''
-    asig.description += 'ECoG signal'
+    asig.description += 'ECoG signal. '
 
     # Save data
     if len(block.segments[0].analogsignals) > 1:

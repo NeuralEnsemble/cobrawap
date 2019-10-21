@@ -1,0 +1,76 @@
+import numpy as np
+from elephant.signal_processing import zscore
+import matplotlib.pyplot as plt
+import seaborn as sns
+import neo
+import quantities as pq
+import argparse
+import os
+import random
+
+
+def plot_states(event, ax, tstart, tstop):
+    if event.labels[0].decode('UTF-8') == 'DOWN':
+        ax.axvspan(tstart, event.times[0], alpha=0.5, color='red')
+    if event.labels[-1].decode('UTF-8') == 'UP':
+        ax.axvspan(event.times[-1], tstop, alpha=0.5, color='red')
+
+    for i, (time, label) in enumerate(zip(event.times, event.labels)):
+        if label.decode('UTF-8') == 'UP' and i < len(event.times)-1:
+            ax.axvspan(time, event.times[i+1], alpha=0.5, color='red')
+    return None
+
+
+def none_or_int(value):
+    if value == 'None':
+        return None
+    return int(value)
+
+if __name__ == '__main__':
+    CLI = argparse.ArgumentParser()
+    CLI.add_argument("--output",        nargs='?', type=str)
+    CLI.add_argument("--data",          nargs='?', type=str)
+    CLI.add_argument("--tstart",        nargs='?', type=float)
+    CLI.add_argument("--tstop",         nargs='?', type=float)
+    CLI.add_argument("--channel",       nargs='?', type=none_or_int)
+    args = CLI.parse_args()
+
+    with neo.NixIO(args.data) as io:
+        block = io.read_block()
+
+    asig = block.segments[0].analogsignals[0]
+    asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
+    events = block.segments[0].events
+
+    events = [evt.time_slice(args.tstart*pq.s, args.tstop*pq.s) for evt in events]
+    if args.channel is None:
+        args.channel = random.randint(0,channel_num)
+
+    if args.channel != int(events[args.channel].name):
+        raise ValueError("The ordering of analogsignals and transition "\
+                       + "events do not match!")
+
+    sns.set(style='ticks', palette="deep", context="notebook")
+    fig, ax = plt.subplots()
+
+    ax.plot(asig.times, asig.as_array()[:,args.channel], label='signal')
+
+    if 'DOWN'.encode('UTF-8') in events[args.channel].labels:
+        # plot up states
+        plot_states(events[args.channel], ax, tstart=args.tstart, tstop=args.tstop)
+    elif 'UP'.encode('UTF-8') in events[args.channel].labels:
+        # plot only up transitions
+        for trans_time in events[args.channel].times:
+            ax.axvline(trans_time)
+    else:
+        raise InputError("No 'UP' (or 'DOWN') transition events found")
+
+    ax.set_title('Channel {}'.format(args.channel))
+    ax.set_xlabel('time [s]')
+
+    plt.legend()
+
+    data_dir = os.path.dirname(args.output)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    plt.savefig(fname=args.output)

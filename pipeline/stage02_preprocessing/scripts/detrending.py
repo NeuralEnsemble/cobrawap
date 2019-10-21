@@ -68,8 +68,8 @@ if __name__ == '__main__':
 
     # save processed data
     asig.name += ""
-    asig.description += "Detrended by order {} ({})."\
-                          .format(args.order, os.path.basename(__file__))
+    asig.description += "Detrended by order {} ({}). "\
+                        .format(args.order, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 
     with neo.NixIO(args.output) as io:

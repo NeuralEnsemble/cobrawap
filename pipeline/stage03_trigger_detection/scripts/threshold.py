@@ -1,6 +1,7 @@
 import neo
 import numpy as np
 from itertools import groupby
+import quantities as pq
 import argparse
 
 
@@ -27,8 +28,23 @@ def threshold(asig, threshold_array):
                             threshold=threshold_array[channel])
             i += num_trans
             trans_events[label].append(evt)
-
+    # merge events
     return trans_events['UP'], trans_events['DOWN']
+
+
+def merge_events(up_events, down_events):
+    events = []
+    for ups, downs in zip(up_events, down_events):
+        assert ups.name == downs.name
+        times = np.append(ups.times, downs.times) * ups.times.units
+        labels = np.append(ups.labels, downs.labels)
+        sort_idx = np.argsort(times)
+        evt = neo.Event(times[sort_idx],
+                        labels=labels[sort_idx],
+                        name=ups.name,
+                        **ups.annotations)
+        events.append(evt)
+    return events
 
 
 if __name__ == '__main__':
@@ -44,9 +60,11 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
 
     up_events, down_events = threshold(asig, np.load(args.thresholds))
-    
-    block.segments[0].events += up_events
-    block.segments[0].events += down_events
+
+    events = merge_events(up_events, down_events)
+
+    prev_events = block.segments[0].events
+    block.segments[0].events = events + prev_events
 
     with neo.NixIO(args.output) as io:
         io.write(block)

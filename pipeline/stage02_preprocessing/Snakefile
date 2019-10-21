@@ -9,6 +9,7 @@ sys.path.append('../')
 from settings import working_dir, output_path
 
 neo_format = '.nix' # fixed! Do not change!
+STAGE_OUTPUT = config["OUTPUT"]
 BLOCK_ORDER = config["BLOCK_ORDER"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
@@ -22,9 +23,13 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 
 
 # ToDo: where to define this?
-prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_IDIBAPS_161101_rec07_RH'+neo_format)
+# prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_IDIBAPS_161101_rec07_RH'+neo_format)
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage01_output.nix')
+
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
-stage_output = 'stage_output_name'
 
 
 #### Housekeeping ####
@@ -42,18 +47,18 @@ def input_file(wildcards):
         return os.path.join(output_path,
                             BLOCK_ORDER[idx-1], BLOCK_ORDER[idx-1]+neo_format)
     else:
-        return os.path.join(output_path, prev_stage_output)
+        return os.path.join(output_path, stage_input)
 
 rule all:
     input:
         data = os.path.join(output_path,
-                            BLOCK_ORDER[-1] ,BLOCK_ORDER[-1]+neo_format),
+                            BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'
     output:
-        data = os.path.join(output_path, stage_output+neo_format)
+        data = os.path.join(output_path, STAGE_OUTPUT)
     shell:
         """
-        cp {input.data} {output.data}
+        ln -s {input.data} {output.data}
         """
 
 #### Blocks ####

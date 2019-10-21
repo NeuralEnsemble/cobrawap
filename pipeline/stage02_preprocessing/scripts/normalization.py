@@ -25,8 +25,8 @@ def normalize(asig, normalize_by):
         if norm_value:
             norm_asig[:,i] /= norm_value
         else:
-            print("Normalization factor is {} for channel {} ".format(nom_value, i)
-                + "and was skipped.")
+            print("Normalization factor is {} for channel {} "\
+                  .format(nom_value, i) + "and was skipped.")
     for num in range(dim_t):
         asig[num] = norm_asig[num]
     del norm_asig

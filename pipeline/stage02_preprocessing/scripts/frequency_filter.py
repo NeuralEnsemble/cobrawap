@@ -45,11 +45,11 @@ if __name__ == '__main__':
     # save processed data
     asig.name += ""
     asig.description += "Frequency filtered with [{}, {}]Hz order {} "\
-                      + " using {} scipy algorithm.({})."\
                         .format(args.highpass_freq,
                                 args.lowpass_freq,
-                                args.order,
-                                args.filter_function,
+                                args.order)\
+                      + " using {} scipy algorithm.({}). "\
+                        .format(args.filter_function,
                                 os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 

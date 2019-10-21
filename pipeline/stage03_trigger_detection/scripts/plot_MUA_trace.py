@@ -44,6 +44,8 @@ if __name__ == '__main__':
     ax.plot(MUA_asig.times, MUA_asig.as_array()[:,args.channel]+5,
             label='MUA')
 
+    # ToDo: add actual axis (left and right) for raw and MUA signal
+    
     ax.set_title('Channel {}'.format(args.channel))
     ax.set_xlabel('time [s]')
 

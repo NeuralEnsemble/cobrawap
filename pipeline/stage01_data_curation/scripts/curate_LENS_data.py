@@ -12,7 +12,7 @@ def none_or_str(value):
     if value == 'None':
         return None
     return str(value)
-    
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--data", nargs='?', type=str)
@@ -46,11 +46,11 @@ if __name__ == '__main__':
 
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
-    block.segments[0].description = 'Loaded with neo.TiffIO (neo version {})'\
+    block.segments[0].description = 'Loaded with neo.TiffIO (neo version {}). '\
                                     .format(neo.__version__)
     if asig.description is None:
         asig.description = ''
-    asig.description += 'Ca+ imaging signal'
+    asig.description += 'Ca+ imaging signal. '
 
     # Save data
     if len(block.segments[0].analogsignals):

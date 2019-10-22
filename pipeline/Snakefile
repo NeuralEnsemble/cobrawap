@@ -4,24 +4,25 @@ report: "report.rst"
 import os
 import sys
 import yaml
+import numpy as np
 sys.path.append('../')
 from settings import working_dir, output_path
 
 # https://groups.google.com/forum/#!msg/snakemake/AuSI24J4sOw/CqKCa-XsDgAJ
 
-# ToDo: load and overwrite input and output files in subworkflow configs
+# ToDo: load and overwrite input files in subworkflow configs
 # ToDo: write cleanup rule to remove temp_config files
 
 def read_stage_output(stage):
-    with open(os.path.join(working_dir, stage), 'r') as f:
+    with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
         config_dict = yaml.safe_load(f)
     if 'OUTPUT' in config_dict.keys():
         return os.path.join(output_path, stage, config_dict['OUTPUT'])
     else:
-        raise InputError("config file of stage {} ".format(stage)\
+        raise ValueError("config file of stage {} ".format(stage)\
                        + "does not define 'OUTPUT'!")
 
-def update_config(config_path, update_dict, new_config_path=None):
+def add_to_config(config_path, update_dict, new_config_path=None):
     with open(config_path, 'r') as f:
         config_dict = yaml.safe_load(f)
     if new_config_path is None:
@@ -33,10 +34,13 @@ def update_config(config_path, update_dict, new_config_path=None):
     return new_config_path
 
 def set_subworkflow_inputs(stages):
-    for i in np.arange(1, len(stages))):
+    for i in np.arange(1, len(stages)):
         update_dict = {'INPUT_FILE': read_stage_output(stages[i-1])}
-        update_config(os.path.join(working_dir, stage[i], 'config.yaml'),
+        config_path = os.path.join(working_dir, stages[i], 'config.yaml')
+        add_to_config(config_path=config_path,
                       update_dict=update_dict)
+
+set_subworkflow_inputs(config['STAGES'])
 
 # ToDo: write generic rule to connect subworkflows (with Namespace)
 # using input function
@@ -47,50 +51,50 @@ subworkflow stage01_data_curation:
     configfile:
         "stage01_data_curation/config_IDIBAPS.yaml"
 
+subworkflow stage02_preprocessing:
+    workdir:
+        "stage02_preprocessing/"
+    configfile:
+        "stage02_preprocessing/temp_config.yaml"
+
+subworkflow stage03_trigger_detection:
+    workdir:
+        "stage03_trigger_detection/"
+    configfile:
+        "stage03_trigger_detection/temp_config.yaml"
+
 
 rule exc_stage01:
     # ToDo: read output from stage config
     input:
         stage01_data_curation(read_stage_output('stage01_data_curation'))
     output:
-        os.path.join(output_path, 'stage01_output.nix')
+        temp(os.path.join(output_path, 'stage01_output.nix'))
     shell:
         """
         ln -s {input} {output}
         """
-
-subworkflow stage02_preprocessing:
-    workdir:
-        "stage02_preprocessing/"
-    configfile:
-        "stage02_preprocessing/config.yaml"
 
 rule exc_stage02:
     input:
-        stage02_preprocessing(read_stage_output('stage02_preprocessing')))
+        stage_output = stage02_preprocessing(read_stage_output('stage02_preprocessing')),
+        stage_input = temp(os.path.join(output_path, 'stage01_output.nix'))
     output:
-        os.path.join(output_path, 'stage02_output.nix')
+        temp(os.path.join(output_path, 'stage02_output.nix'))
     shell:
         """
-        ln -s {input} {output}
+        ln -s {input.stage_output} {output}
         """
-
-subworkflow stage03_trigger_detection:
-    workdir:
-        "stage03_trigger_detection/"
-    configfile:
-        os.path.join(output_path, "stage03_trigger_detection/temp_config.yaml")
 
 rule exc_stage03:
     input:
-        stage03_trigger_detection(os.path.join(output_path,
-                                  'stage03_trigger_detection',
-                                  'stage_output_name.nix'))
+        stage_output = stage02_preprocessing(read_stage_output('stage02_preprocessing')),
+        stage_input = temp(os.path.join(output_path, 'stage01_output.nix'))
     output:
-        os.path.join(output_path, 'stage03_output.nix')
+        temp(os.path.join(output_path, 'stage02_output.nix'))
     shell:
         """
-        ln -s {input} {output}
+        ln -s {input.stage_output} {output}
         """
 
 

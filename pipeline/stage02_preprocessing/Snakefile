@@ -22,12 +22,12 @@ PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
 
 
-# ToDo: where to define this?
-# prev_stage_output = os.path.join(output_path, 'stage01_curation', 'output_IDIBAPS_161101_rec07_RH'+neo_format)
+# ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
+
 if 'INPUT_FILE' in config:
     stage_input = config["INPUT_FILE"]
 else:
-    stage_input = os.path.join(output_path, 'stage01_output.nix')
+    stage_input = os.path.join(output_path, 'stage01_data_curation', 'IDIBAPS_data.nix')
 
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
 

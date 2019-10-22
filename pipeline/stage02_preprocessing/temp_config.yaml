@@ -1,0 +1,15 @@
+BLOCK_ORDER:
+- background_substraction
+- normalization
+- detrending
+DETRENDING_ORDER: 2
+FILTER_FUNCTION: filtfilt
+FILTER_ORDER: 2
+HIGHPASS_FREQ: 200
+INPUT_FILE: /home/rgutzen/ProjectsData/wave_analysis_pipeline/stage01_data_curation/IDIBAPS_data.nix
+LOWPASS_FREQ: 1500
+NORMALIZE_BY: max
+OUTPUT: preprocessed_data.nix
+PLOT_FORMAT: .png
+PSD_FREQ_RES: 5
+PSD_OVERLAP: 0.5

@@ -6,6 +6,8 @@ dependencies:
   - python >= 3.7
   - pip >= 19.0.3
   - pygraphviz >= 2.40.1
+  - jinja2 >= 2.10
+  - pygments >= 2.3.1
   - pip:
     - snakemake >= 5.7.0
     - elephant >= 0.6.3
@@ -14,6 +16,6 @@ dependencies:
     - seaborn
     - h5py == 2.9.0
     - nixio >= 1.5.0b1
-    - scikit-image == 0.15.0
-    - joblib == 0.13.2
-    - shapely == 1.6.4.post2
+    # - scikit-image == 0.15.0
+    # - joblib == 0.13.2
+    # - shapely == 1.6.4.post2

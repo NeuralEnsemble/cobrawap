@@ -1,40 +1,58 @@
-# Stage 1 - Data Curation
-<!-- ToDo:  - How to mark the capabilities of the dataset
-            - add guideline to curate data in general and add it ot the KG
-            - describe how to load and annotate data either from raw file or KG
-            - describe minimum amount of metadata required for the pipeline (incl namespace)
--->
+# Stage 01 - Data Curation
+This stage handles the loading transformation of the dataset into the standard format for the pipeline and the annotation with the required metadata.
 
+__INPUT__: A dataset of raw data of any recording modality and any format, along with information on the data acquisition and the experimental context.
 
+__OUTPUT__: A curated dataset in Neo format, saved as a Nix file, containing at least an AnalogSignal object and the minimal required metadata.
 
-The data curation stage is very specific to the given dataset. Therefore,
-each dataset essentially requires its own block, which should handle the
-following actions:
-* loading the data
-* transforming the data into the Neo format
-* adding the metadata from the config file
-* transform AnalogSignal to ImageSequence or vice versa
-* (run custom checks on the data, and annotate results (e.g. bad electrodes))
-* storing the neo object in the Nix format
+__BLOCKS__: Custom data curation specific to the dataset | Check of the data format, metadata, and namespace
 
-## Namespace
-For a dataset with the unique identifying name <data_name>,
-use the following naming scheme
-Rule: <data_name>
-Script: curate_<data_name>
-Configfile: config_<data_name>
+## Required Data Capabilities
+_What kind of data can go into the SWAP pipeline?_
+* It needs to exhibit propagating UP and DOWN states
+* Electrodes/Pixels must be regularly spaced on a rectangular grid (can include empty sites)
 
-## Neo structure
-The data should be contained in one AnalogSignal object with dimensions
-(time, channel). This AnalogSignal needs to be located in the
-first Segment. When the data is optical data represented as ImageSequence, it
-should also be transformed into a corresponding AnalogSignal.
+## Required Metadata
+#### Minimum metadata for SWAP pipeline
+_required, for a correct processing of the data_
+* Sampling rate of AnalogSignal
+* Distance between electrodes/pixels (as annotation ‘spatial_scale’ in AnalogSignal)
+* Relative spatial location of channels (as array_annotation ‘coords’ in AnalogSignal)
+* Grid size (as annotation ‘grid_size’ in AnalogSignal, given as a list [dimX,dimY])
 
-The spatial aspects of the data must be provided with the following keywords
-as annotations to the AnalogSignal. For example:
-grid_size: (10,10)
-spatial_scale: 0.05  # mm
-coords: [(0,1), (0,2), (0,3), (0,4), ...]
+#### Recommended metadata for SWAP pipeline
+_desired, for a correct interpretation of the results_
+* Units of AnalogSignal
+* Absolute cortical positioning of the electrodes
+* Type and dosage (or estimated level) of anesthetic
+* Species, and general animal information
+* Information on artifacts and erroneous signals
+* Any additional protocols or events (e.g. stimulation) influencing the signals
+* Lab where the experiment was performed (+ contact person performing the experiment)
 
-For now the pipeline assumes equally spaced electrodes on a rectangular grid
-(not all positions must be occupied).
+## Adding Datasets into the SWA pipeline
+There are two options to insert data into the pipeline. __Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset. __Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. Neo or BIDS), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using odML and odMLtables) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the KnowledgeGraph.
+
+#### Guide for option 1 - loading raw data and manually adding metadata
+The data curation stage is very specific and dependent on the type and format of the given dataset. Therefore, the user typically needs to write a custom curation script to prepare the dataset for the entry into the pipeline. Here, we provide a guideline and template for writing such a script and using it as a block in the Data Curation stage. Each type of dataset (e.g. coming from the same experiment) needs to be given an identifying name `<data_name>`, which is used to link it to the corresponding script and config file.
+
+1. Create a custom curation script and config file
+
+Create a script called *‘curate_\<data_name>.py’* in the scripts folder. Create a config file called *‘config.yaml’*. For the config file it is helpful to copy and edit the provided *‘config_template.yaml’* file or an existing config file of another dataset.
+
+2. Loading the raw data _[in script]_
+
+Check whether there is a Neo IO which can be used to load the data directly into the neo structure (https://neo.readthedocs.io/en/stable/io.html#module-neo.io), if not, write a custom loading routine and add the data into a new Neo object.
+
+3. Adding metadata via the config file _[in config and in script]_
+
+The *config.yaml* file needs to define at least the minimum amount of metadata as defined above. For a generic example see *‘config_template.yaml*. This example config file also introduces the Namespace for the different data and metadata attributes and should not be changed, since later stages build on that Namespace.
+In the script, the information specified in the config file are added to the data object as annotations. See *‘scripts/curate_template.py’* for a generic example. The script will store the data as a Nix file in the directory defined by `output_path` in *settings.py* in the subfolder *stage01_data_curation/* with the name specified in the config file.
+
+4. Making sure the script can be used by the curation block _[in Snakefile and in script]_
+
+In the standard case the user would not need to edit the Snakefile. However, in case of errors, there if the naming of the parameters passed from the config file to the script is consistent, the right config file is linked, and the output path is set correctly.
+
+5. Running the curation stage Snakefile manually
+
+Once the whole pipeline is configured it should be run directly from the top level, the *‘pipeline/’* folder, by calling the `snakemake` command. However, to check and debug the curation stage, it can be run on its own, by navigating into the *‘stage01_data_curation/’* folder, and calling snakemake. Additional to the Nix data file the stage also produces an example plot of the signals and metadata (using the `PLOT_*` parameters in *config.yaml*), as a check whether the loading and annotations worked correctly.

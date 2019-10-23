@@ -26,7 +26,7 @@ SAMPLING_RATE: 'None' # Hz
 ANNOTATIONS:
     experimental_lab: 'Sanchez-Vives lab - Barcelona'
     grid_size: [9,5]
-    anseteticum: 'Isoflurane'
+    anesthetic: 'Isoflurane'
 
 ARRAY_ANNOTATIONS: 'None'
 

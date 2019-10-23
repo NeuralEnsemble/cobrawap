@@ -28,7 +28,6 @@ def threshold(asig, threshold_array):
                             threshold=threshold_array[channel])
             i += num_trans
             trans_events[label].append(evt)
-    # merge events
     return trans_events['UP'], trans_events['DOWN']
 
 
@@ -62,6 +61,10 @@ if __name__ == '__main__':
     up_events, down_events = threshold(asig, np.load(args.thresholds))
 
     events = merge_events(up_events, down_events)
+
+    if not len(events):
+        raise ValueError("The choosen threshold lies not within the range "\
+                       + "of signal values!")
 
     prev_events = block.segments[0].events
     block.segments[0].events = events + prev_events

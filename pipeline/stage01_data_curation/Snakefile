@@ -1,3 +1,5 @@
+# Stage 01 Data Curation
+
 configfile: "config_IDIBAPS.yaml"
 report: "report.rst"
 
@@ -68,6 +70,6 @@ rule curate:
         python {input.plot_script} --data {output.data} \
                                    --output {output.img} \
                                    --tstart {params.plot_tstart} \
-                                   --t_stop {params.plot_tstop \
-                                   --channel {params.channel} \
+                                   --tstop {params.plot_tstop} \
+                                   --channel {params.plot_channel} \
         """

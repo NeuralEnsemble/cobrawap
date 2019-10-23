@@ -8,10 +8,7 @@ import numpy as np
 sys.path.append('../')
 from settings import working_dir, output_path
 
-# https://groups.google.com/forum/#!msg/snakemake/AuSI24J4sOw/CqKCa-XsDgAJ
-
-# ToDo: load and overwrite input files in subworkflow configs
-# ToDo: write cleanup rule to remove temp_config files
+STAGES = config["STAGES"]
 
 def read_stage_output(stage):
     with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
@@ -40,7 +37,7 @@ def set_subworkflow_inputs(stages):
         add_to_config(config_path=config_path,
                       update_dict=update_dict)
 
-set_subworkflow_inputs(config['STAGES'])
+set_subworkflow_inputs(STAGES)
 
 # ToDo: write generic rule to connect subworkflows (with Namespace)
 # using input function
@@ -64,8 +61,19 @@ subworkflow stage03_trigger_detection:
         "stage03_trigger_detection/temp_config.yaml"
 
 
+rule all:
+    input:
+        last_stage = os.path.join(output_path, 'stage03_output.nix'),
+        reports = expand(os.path.join(output_path, '{subworkflow_name}',
+                                      'report.html'),
+                         subworkflow_name=STAGES)
+    shell:
+        """
+        rm */temp*
+        """
+
+
 rule exc_stage01:
-    # ToDo: read output from stage config
     input:
         stage01_data_curation(read_stage_output('stage01_data_curation'))
     output:
@@ -78,7 +86,7 @@ rule exc_stage01:
 rule exc_stage02:
     input:
         stage_output = stage02_preprocessing(read_stage_output('stage02_preprocessing')),
-        stage_input = temp(os.path.join(output_path, 'stage01_output.nix'))
+        stage_input = os.path.join(output_path, 'stage01_output.nix')
     output:
         temp(os.path.join(output_path, 'stage02_output.nix'))
     shell:
@@ -88,8 +96,8 @@ rule exc_stage02:
 
 rule exc_stage03:
     input:
-        stage_output = stage02_preprocessing(read_stage_output('stage03_trigger_detection')),
-        stage_input = temp(os.path.join(output_path, 'stage02_output.nix'))
+        stage_output = stage03_trigger_detection(read_stage_output('stage03_trigger_detection')),
+        stage_input = os.path.join(output_path, 'stage02_output.nix')
     output:
         temp(os.path.join(output_path, 'stage03_output.nix'))
     shell:

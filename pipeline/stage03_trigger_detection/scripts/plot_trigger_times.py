@@ -41,7 +41,6 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
     asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
     events = block.segments[0].events
-
     events = [evt.time_slice(args.tstart*pq.s, args.tstop*pq.s) for evt in events]
     if args.channel is None:
         args.channel = random.randint(0,channel_num)

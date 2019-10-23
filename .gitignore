@@ -3,7 +3,9 @@
 */.snakemake
 pipeline/.snakemake
 pipeline/*/.snakemake
-
+pipeline/*/*/.snakemake
+temp*
+*/temp*
 #
 .idea/
 

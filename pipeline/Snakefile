@@ -88,10 +88,10 @@ rule exc_stage02:
 
 rule exc_stage03:
     input:
-        stage_output = stage02_preprocessing(read_stage_output('stage02_preprocessing')),
-        stage_input = temp(os.path.join(output_path, 'stage01_output.nix'))
+        stage_output = stage02_preprocessing(read_stage_output('stage03_trigger_detection')),
+        stage_input = temp(os.path.join(output_path, 'stage02_output.nix'))
     output:
-        temp(os.path.join(output_path, 'stage02_output.nix'))
+        temp(os.path.join(output_path, 'stage03_output.nix'))
     shell:
         """
         ln -s {input.stage_output} {output}

@@ -1,11 +1,11 @@
 # Stage 01 - Data Curation
-This stage handles the loading transformation of the dataset into the standard format for the pipeline and the annotation with the required metadata.
+This stage handles the loading and transformation of a dataset into the standard format for the pipeline and the annotation with the required metadata.
 
 __INPUT__: A dataset of raw data of any recording modality and any format, along with information on the data acquisition and the experimental context.
 
-__OUTPUT__: A curated dataset in Neo format, saved as a Nix file, containing at least an AnalogSignal object and the minimal required metadata.
+__OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, saved as a [Nix](https://github.com/G-Node/nix) file, containing at least an AnalogSignal object and the minimal required metadata.
 
-__BLOCKS__: Custom data curation specific to the dataset | Check of the data format, metadata, and namespace
+__BLOCKS__: Custom data curation, specific to the dataset | Check of the data format, metadata, and namespace
 
 ## Required Data Capabilities
 _What kind of data can go into the SWAP pipeline?_
@@ -16,9 +16,9 @@ _What kind of data can go into the SWAP pipeline?_
 #### Minimum metadata for SWAP pipeline
 _required, for a correct processing of the data_
 * Sampling rate of AnalogSignal
-* Distance between electrodes/pixels (as annotation ‘spatial_scale’ in AnalogSignal)
-* Relative spatial location of channels (as array_annotation ‘coords’ in AnalogSignal)
-* Grid size (as annotation ‘grid_size’ in AnalogSignal, given as a list [dimX,dimY])
+* Distance between electrodes/pixels (as annotation `spatial_scale` in AnalogSignal)
+* Relative spatial location of channels (as array_annotation `coords` in AnalogSignal)
+* Grid size (as annotation `grid_size` in AnalogSignal, given as a list [dimX,dimY])
 
 #### Recommended metadata for SWAP pipeline
 _desired, for a correct interpretation of the results_
@@ -31,7 +31,7 @@ _desired, for a correct interpretation of the results_
 * Lab where the experiment was performed (+ contact person performing the experiment)
 
 ## Adding Datasets into the SWA pipeline
-There are two options to insert data into the pipeline. __Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset. __Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. Neo or BIDS), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using odML and odMLtables) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the KnowledgeGraph.
+There are two options to insert data into the pipeline. __Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset. __Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. [Neo](https://neo.readthedocs.io/) or [BIDS](https://bids.neuroimaging.io)), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using [odML](https://g-node.github.io/python-odml/) and [odMLtables](https://github.com/INM-6/python-odmltables)) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the [KnowledgeGraph](https://www.humanbrainproject.eu/en/explore-the-brain/search/).
 
 #### Guide for option 1 - loading raw data and manually adding metadata
 The data curation stage is very specific and dependent on the type and format of the given dataset. Therefore, the user typically needs to write a custom curation script to prepare the dataset for the entry into the pipeline. Here, we provide a guideline and template for writing such a script and using it as a block in the Data Curation stage. Each type of dataset (e.g. coming from the same experiment) needs to be given an identifying name `<data_name>`, which is used to link it to the corresponding script and config file.
@@ -55,4 +55,4 @@ In the standard case the user would not need to edit the Snakefile. However, in 
 
 5. Running the curation stage Snakefile manually
 
-Once the whole pipeline is configured it should be run directly from the top level, the *‘pipeline/’* folder, by calling the `snakemake` command. However, to check and debug the curation stage, it can be run on its own, by navigating into the *‘stage01_data_curation/’* folder, and calling snakemake. Additional to the Nix data file the stage also produces an example plot of the signals and metadata (using the `PLOT_*` parameters in *config.yaml*), as a check whether the loading and annotations worked correctly.
+Once the whole pipeline is configured it should be run directly from the top level, the *‘pipeline/’* folder, by calling the `snakemake` command. However, to check and debug the curation stage, it can be run on its own, by navigating into the *‘stage01_data_curation/’* folder, and calling `snakemake`. Additional to the Nix data file the stage also produces an example plot of the signals and metadata (using the `PLOT_*` parameters in *config.yaml*), as a check whether the loading and annotations worked correctly.

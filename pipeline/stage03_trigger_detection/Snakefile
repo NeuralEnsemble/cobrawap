@@ -73,7 +73,8 @@ rule all:
         channel = PLOT_CHANNEL
     output:
         data = os.path.join(output_path, STAGE_OUTPUT),
-        img = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+PLOT_FORMAT)
+        img = report(os.path.join(output_path, DETECTION_BLOCK,
+                                  'transitions'+PLOT_FORMAT))
     shell:
         """
         ln -s {input.data} {output.data}

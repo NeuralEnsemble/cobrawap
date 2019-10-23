@@ -1,5 +1,11 @@
 # Stage 1 - Data Curation
-<!-- ToDo: How to mark the capabilities of the dataset -->
+<!-- ToDo:  - How to mark the capabilities of the dataset
+            - add guideline to curate data in general and add it ot the KG
+            - describe how to load and annotate data either from raw file or KG
+            - describe minimum amount of metadata required for the pipeline (incl namespace)
+-->
+
+
 
 The data curation stage is very specific to the given dataset. Therefore,
 each dataset essentially requires its own block, which should handle the

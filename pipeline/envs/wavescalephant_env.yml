@@ -9,7 +9,7 @@ dependencies:
   - jinja2 >= 2.10
   - pygments >= 2.3.1
   - pip:
-    - snakemake >= 5.7.0
+    - snakemake >= 5.7.1
     - elephant >= 0.6.3
     - neo >= 0.7.2
     - matplotlib

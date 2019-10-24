@@ -13,6 +13,15 @@ Istituto Superiore di Sanità, Roma, Italy: Maurizio Mattia, Antonio Pazienti.
 
 Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
 
+
+License
+-------
+The wavescalephant project is open source software and is licensed under the GNU General Public License v3 or later.
+
+Citation
+--------
+Please cite this repository if you use it in your work.
+
 Background
 ----------
 This work aims at offering to the community an analysis pipeline based on the algorythms described in arXiv:1902.08599_ (submitted, under review) and its evolution.
@@ -26,9 +35,9 @@ The overall outcome of this collaboration is to focus on the WaveScalES simulati
 The goal of WaveScalES_ is to unveil the underlying mechanisms of deep sleep, anaesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.
 Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances.
 
-In the framework of a collaboration between INFN, ISS, IDIBAPS and the Juelich Elephant team, we delivered a prototype of the Slow Waves Analysis Pipeline (characterisation of the cortex activity during deep sleep and anaesthesia); the preliminary version can be downloaded from this github. 
+In the framework of a collaboration between INFN, ISS, IDIBAPS and the Juelich Elephant team, we delivered a prototype of the Slow Waves Analysis Pipeline (characterisation of the cortex activity during deep sleep and anaesthesia); the preliminary version can be downloaded from this github.
 SWAP is currently a python pipeline based on Elephant, but the plan is to integrate the SWAP pipeline as a module into Elephant and offer it through the HBP platform by May 2020, as part of the HBP offer. The process of data curation and integration in the Knowledge Graph is ongoing.
-SWAP can be applied to experimental data and simulation outputs. It has been validated on an extensive in vivo data set, collected from the cerebral cortex of mice by Multi-Electrode Array. SWAP differentiates by area key-parameters related to the onset of slow oscillations. For example, it demonstrates gradients of key observables along the fronto-lateral to occipito-medial direction in recordings of anaesthetised mice. The pipeline discriminates between brain states, specifically different levels of anaesthesia. It also allows comparing simulation outputs obtained with different simulation engines (for example NEST or DPSNN simulations). 
+SWAP can be applied to experimental data and simulation outputs. It has been validated on an extensive in vivo data set, collected from the cerebral cortex of mice by Multi-Electrode Array. SWAP differentiates by area key-parameters related to the onset of slow oscillations. For example, it demonstrates gradients of key observables along the fronto-lateral to occipito-medial direction in recordings of anaesthetised mice. The pipeline discriminates between brain states, specifically different levels of anaesthesia. It also allows comparing simulation outputs obtained with different simulation engines (for example NEST or DPSNN simulations).
 The final release of the SWAP analysis pipeline, integrated in the HBP infrastructure, and the related set of curated examples of experimental data will be offered after the embargo period (May 2020) to the external community. Researchers will then either apply SWAP to their own experimental data or to the analysis of HBP curated data accessible through the HBP Knowledge Graph.
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
@@ -46,7 +55,7 @@ This workflow would include as a first step setting up a "scaffold" or prototype
 
 4. Visualization of the output in a Jupyter notebook;
 
-5. Reproducible analysis of electrophysiological data. 
+5. Reproducible analysis of electrophysiological data.
 
 
 From this ground, several directions of work are anticipated:
@@ -131,10 +140,3 @@ This requires a distribution of conda to be install (e.g. miniconda_).
 
 
 .. _miniconda: https://docs.conda.io/projects/conda/en/latest/user-guide/install/
-
-
-
-
-
-
-

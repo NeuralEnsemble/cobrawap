@@ -42,53 +42,53 @@ set_subworkflow_inputs(STAGES)
 # ToDo: write generic rule to connect subworkflows (with Namespace)
 # using input function
 
-subworkflow stage01_data_curation:
+subworkflow stage01:
     workdir:
-        "stage01_data_curation/"
+        os.path.join(working_dir, STAGES[0])
     configfile:
-        "stage01_data_curation/config_IDIBAPS.yaml"
+        os.path.join(working_dir, STAGES[0], "config_IDIBAPS.yaml")
 
-subworkflow stage02_preprocessing:
+subworkflow stage02:
     workdir:
-        "stage02_preprocessing/"
+        os.path.join(working_dir, STAGES[1])
     configfile:
-        "stage02_preprocessing/temp_config.yaml"
+        os.path.join(working_dir, STAGES[1], "temp_config.yaml")
 
-subworkflow stage03_trigger_detection:
+subworkflow stage03:
     workdir:
-        "stage03_trigger_detection/"
+        os.path.join(working_dir, STAGES[2])
     configfile:
-        "stage03_trigger_detection/temp_config.yaml"
+        os.path.join(working_dir, STAGES[2], "temp_config.yaml")
 
 
 rule all:
     input:
-        last_stage = os.path.join(output_path, 'stage03_output.nix'),
+        last_stage = os.path.join(output_path, '{}_output.nix'.format(STAGES[-1])),
         reports = expand(os.path.join(output_path, '{subworkflow_name}',
                                       'report.html'),
                          subworkflow_name=STAGES)
     shell:
         """
-        rm */temp*
+        rm */temp_config.yaml
         """
 
 
 rule exc_stage01:
     input:
-        stage01_data_curation(read_stage_output('stage01_data_curation'))
+        stage_output = stage01(read_stage_output(STAGES[0]))
     output:
-        temp(os.path.join(output_path, 'stage01_output.nix'))
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[0])))
     shell:
         """
-        ln -s {input} {output}
+        ln -s {input.stage_output} {output}
         """
 
 rule exc_stage02:
     input:
-        stage_output = stage02_preprocessing(read_stage_output('stage02_preprocessing')),
-        stage_input = os.path.join(output_path, 'stage01_output.nix')
+        stage_output = stage02(read_stage_output(STAGES[1])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[0]))
     output:
-        temp(os.path.join(output_path, 'stage02_output.nix'))
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[1])))
     shell:
         """
         ln -s {input.stage_output} {output}
@@ -96,10 +96,10 @@ rule exc_stage02:
 
 rule exc_stage03:
     input:
-        stage_output = stage03_trigger_detection(read_stage_output('stage03_trigger_detection')),
-        stage_input = os.path.join(output_path, 'stage02_output.nix')
+        stage_output = stage03(read_stage_output(STAGES[2])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[1]))
     output:
-        temp(os.path.join(output_path, 'stage03_output.nix'))
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[2])))
     shell:
         """
         ln -s {input.stage_output} {output}

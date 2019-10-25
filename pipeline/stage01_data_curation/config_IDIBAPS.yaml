@@ -7,6 +7,8 @@ OUTPUT: "IDIBAPS_data.nix"
 # Name_of_dataset: /path/to/data/files/
 DATA_SETS:
     IDIBAPS_161101_rec07_RH: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/161101_rec07_Spontaneous_RH.smr'
+    # IDIBAPS_1807013_KetaMEdeto_Rec03: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/1807013BrainStates_KetaMedeto_Rec03_24Omar.smr'
+
 
 CURATION_SCRIPT: 'curate_IDIBAPS_data.py'
 

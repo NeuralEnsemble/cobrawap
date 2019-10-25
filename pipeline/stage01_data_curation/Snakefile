@@ -7,6 +7,7 @@ import os
 import sys
 sys.path.append('../')
 from settings import working_dir, output_path
+from utils import ordereddict_to_dict
 
 output_path = os.path.join(output_path, 'stage01_data_curation/')
 
@@ -17,9 +18,9 @@ DATA_SETS = config["DATA_SETS"]
 CURATION_SCRIPT = config["CURATION_SCRIPT"]
 SPATIAL_SCALE = config['SPATIAL_SCALE']
 SAMPLING_RATE = config["SAMPLING_RATE"]
-ANNOTATIONS = config["ANNOTATIONS"]
-ARRAY_ANNOTATIONS = config["ARRAY_ANNOTATIONS"]
-KWARGS = config["KWARGS"]
+ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
+ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
+KWARGS = ordereddict_to_dict(config["KWARGS"])
 
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]

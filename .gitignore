@@ -6,7 +6,7 @@ pipeline/*/.snakemake
 pipeline/*/*/.snakemake
 temp*
 */temp*
-#
+
 .idea/
 
 # Byte-compiled / optimized / DLL files

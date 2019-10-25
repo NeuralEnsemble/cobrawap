@@ -84,6 +84,15 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict.update(str2dict(match))
     return my_dict
 
+def ordereddict_to_dict(input_dict):
+    if isinstance(input_dict, dict):
+        for k, v in input_dict.items():
+            if isinstance(v, dict):
+                input_dict[k] = ordereddict_to_dict(v)
+        return dict(input_dict)
+    else:
+        return input_dict
+
 def ImageSequence2AnalogSignal(imgseq):
     # ToDo: tuple as array annotations? Or separte coords into coords_x and coords_y?
     # ToDo: map potentially 2D array annotations to 1D and update

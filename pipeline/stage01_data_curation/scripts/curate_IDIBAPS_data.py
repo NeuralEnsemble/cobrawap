@@ -1,13 +1,49 @@
 import numpy as np
 import argparse
-import neo
 import quantities as pq
 import re
 import os
 import sys
+import neo
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import parse_string2dict, check_analogsignal_shape
 
+
+def merge_analogsingals(asigs):
+    min_length = np.min([len(asig.times) for asig in asigs])
+    max_length = np.max([len(asig.times) for asig in asigs])
+    if min_length != max_length:
+        print('Warning: the length of the analog signals differs '\
+            + 'between {} and {} '.format(min_length, max_length)\
+            + 'All signals will be cut to the same length and merged '\
+            + 'into one AnalogSignal object.')
+
+    if len(np.unique([asig.sampling_rate for asig in asigs])) > 1:
+        print([asig.sampling_rate for asig in asigs])
+        raise ValueError('The AnalogSignal objects have different '\
+                       + 'sampling rates!')
+
+    asig_array = np.zeros((min_length, len(asigs)))
+
+    for channel_number, asig in enumerate(asigs):
+        asig_array[:, channel_number] = np.squeeze(asig.as_array())
+
+    # ToDo: check if annotations have same keys
+    array_annotations = {}
+    for key in asigs[0].annotations.keys():
+        array_annotations[key] = []
+        for asig in asigs:
+            array_annotations[key] += [asig.annotations[key]]
+
+    array_annotations['name'] = []
+    for asig in asigs:
+        array_annotations['name'] += asig.name
+
+    return neo.AnalogSignal(asig_array,
+                                sampling_rate=asigs[0].sampling_rate,
+                                t_start=asigs[0].t_start,
+                                t_stop=asigs[0].t_stop,
+                                array_annotations=array_annotations)
 
 def none_or_float(value):
     if value == 'None':
@@ -36,8 +72,18 @@ if __name__ == '__main__':
     io = neo.Spike2IO(args.data)
     block = io.read_block()
 
+    asigs = block.segments[0].analogsignals
+
+    if len(asigs) > 1:
+        print('Merging {} AnalogSignals into one.'.format(len(asigs)))
+        asig = merge_analogsingals(asigs)
+    else:
+        asig = asigs[0]
+
+    # ToDo: In case of multiple AnalogSignal objects with slightly different
+    #       length. Cut and merge them into one AnalogSignal.
+    # ToDo: Move fomat check to a separate validation block
     check_analogsignal_shape(block.segments[0].analogsignals)
-    asig = block.segments[0].analogsignals[0]
 
     # add metadata
     kwargs = parse_string2dict(args.kwargs)

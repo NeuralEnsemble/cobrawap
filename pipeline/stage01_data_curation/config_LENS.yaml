@@ -1,3 +1,5 @@
+OUTPUT: 'LENS_data.nix'
+
 # Datasets which should be processed with identical settings.
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
@@ -18,3 +20,9 @@ ANNOTATIONS:
 ARRAY_ANNOTATIONS: 'None'
 
 KWARGS: 'None'
+
+# Plot settings
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNEL: [1,2,3,4,5]  # int, list of ints, or 'None' (default) -> picks channel by random
+PLOT_FORMAT: '.png'

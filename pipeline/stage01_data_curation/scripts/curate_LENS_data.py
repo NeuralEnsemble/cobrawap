@@ -6,7 +6,7 @@ import json
 import os
 import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import str2dict, remove_annotations, ImageSequence2AnalogSignal
+from utils import parse_string2dict, ImageSequence2AnalogSignal
 
 def none_or_str(value):
     if value == 'None':
@@ -33,14 +33,10 @@ if __name__ == '__main__':
 
     block = io.read_block()
 
-    remove_annotations([block] + block.segments
-                       + block.segments[0].analogsignals
-                       + block.segments[0].imagesequences)
-
     # Transform into analogsignals
     asig = ImageSequence2AnalogSignal(block.segments[0].imagesequences[0])
     if args.annotations is not None:
-        asig.annotations.update(str2dict(args.annotations))
+        asig.annotations.update(parse_string2dict(args.annotations))
 
     # ToDo: add metadata
 

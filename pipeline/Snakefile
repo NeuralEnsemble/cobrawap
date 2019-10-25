@@ -46,7 +46,7 @@ subworkflow stage01:
     workdir:
         os.path.join(working_dir, STAGES[0])
     configfile:
-        os.path.join(working_dir, STAGES[0], "config_IDIBAPS.yaml")
+        os.path.join(working_dir, STAGES[0], "config_LENS.yaml")
 
 subworkflow stage02:
     workdir:

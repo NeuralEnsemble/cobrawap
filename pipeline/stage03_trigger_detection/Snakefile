@@ -101,6 +101,8 @@ rule transformation:
 
 #### Blocks ####
 
+#### Transformation Blocks ####
+
 rule MUA_estimation:
     input:
         data = transformation_input_file,
@@ -136,6 +138,8 @@ rule MUA_estimation:
                                    --tstop {params.plot_tstop} \
                                    --channel {params.plot_channel}
         """
+
+#### Detection Blocks ####
 
 rule threshold:
     input:

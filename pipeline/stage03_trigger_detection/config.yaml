@@ -1,0 +1,57 @@
+
+OUTPUT: "trigger_times.nix"
+
+PLOT_FORMAT: '.png'
+
+# TRANSFORMATION BLOCKS (optional)
+##################################
+# The list determines the combination and order of blocks to transform the
+# preprocessed signal. Default []
+# Available Blocks: 'MUA_estimation', 'zscore', 'normalize'
+TRANSFORMATION_BLOCKS: ['MUA_estimation']
+
+# DETECTION BLOCK
+#################
+# Available Blocks: 'threshold', 'Hilbert_phase', 'Minima'
+DETECTION_BLOCK: 'threshold'
+
+# BLOCK - MUA_estimation
+########################
+MUA_HIGHPASS_FREQ: 200  # in Hz
+MUA_LOWPASS_FREQ: 1500  # in Hz
+# Rate of the MUA signal. Must be <= the original sampling rate
+MUA_RATE: 'None'  # in Hz (default: 'None', takes highpass_freq)
+# Number of samples to estimate the local power spectrum
+# default 'None', takes minimum number of samples determined
+# by the lower bound of the frequency band
+FFT_SAMPLES: 'None'
+PSD_OVERLAP: 0.5  # default (0.5)
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNEL: 12  # default 'None' -> randomly selected
+
+# BLOCK - Threshold
+###################
+# Thresholding method: 'fixed', 'fitted', 'moment'
+THRESHOLD_METHOD: 'fixed'
+
+# Fitting Parameters
+FIT_FUNCTION: 'Gaussian'
+SIGMA_FACTOR: 3
+
+# Fixed Parameters
+FIXED_THRESHOLD: 2
+
+# Moment Parameters
+MOMENT_ORDER: 2
+MOMENT_FACTOR: 3
+
+# BLOCK - Hilbert_phase
+#######################
+# Phase at which to define the upward transition [-pi, 0]
+TRANSITION_PHASE: -1.570796
+
+# BLOCK - Minima
+################
+MIN_HIGHPASS_FREQ: 200  # in Hz
+MIN_LOWPASS_FREQ: 1500  # in Hz

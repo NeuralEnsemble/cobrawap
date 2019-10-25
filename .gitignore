@@ -1,9 +1,12 @@
 
 # workflow folder
-snakemake_workflow/.snakemake
-snakemake_workflow/*/.snakemake
+*/.snakemake
+pipeline/.snakemake
+pipeline/*/.snakemake
+pipeline/*/*/.snakemake
+temp*
+*/temp*
 
-#
 .idea/
 
 # Byte-compiled / optimized / DLL files

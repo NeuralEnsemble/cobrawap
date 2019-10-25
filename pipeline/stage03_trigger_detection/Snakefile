@@ -1,0 +1,172 @@
+# Stage 03 Trigger Detection
+
+configfile: "config.yaml"
+report: "report.rst"
+
+import os
+import sys
+sys.path.append('../')
+from settings import working_dir, output_path
+
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage02_preprocessing',
+                               'preprocessed_data.nix')
+
+output_path = os.path.join(output_path, 'stage03_trigger_detection/')
+
+neo_format = '.nix' # fixed! Do not change!
+STAGE_OUTPUT = config["OUTPUT"]
+PLOT_FORMAT = config["PLOT_FORMAT"]
+
+TRANSFORMATION_BLOCKS = config["TRANSFORMATION_BLOCKS"]
+DETECTION_BLOCK = config["DETECTION_BLOCK"]
+
+MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
+MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
+MUA_RATE = config["MUA_RATE"]
+FFT_SAMPLES = config["FFT_SAMPLES"]
+PSD_OVERLAP = config["PSD_OVERLAP"]
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNEL = config["PLOT_CHANNEL"]
+
+THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
+FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
+
+# ToDo: outsource Transformation as subsection via include?
+
+#### Housekeeping ####
+
+def locate(str_list, string):
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError("Can't find rule '{}'! Please check the spelling "\
+                       + "and the config file.".format(string))
+
+def transformation_input_file(wildcards):
+    idx = locate(TRANSFORMATION_BLOCKS, wildcards.rule_name)
+    if idx:
+        return os.path.join(output_path, 'transformation',
+                            TRANSFORMATION_BLOCKS[idx-1],
+                            TRANSFORMATION_BLOCKS[idx-1]+neo_format)
+    else:
+        return stage_input
+
+def trigger_detection_input_file(wildcards):
+    if len(TRANSFORMATION_BLOCKS):
+        return os.path.join(output_path, 'transformation',
+                            'transformed_signal'+neo_format)
+    else:
+        return stage_input
+
+rule all:
+    # ToDo: plot traces?
+    input:
+        data = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+neo_format),
+        plot_script = 'scripts/plot_trigger_times.py'
+    params:
+        tstart = PLOT_TSTART,
+        tstop = PLOT_TSTOP,
+        channel = PLOT_CHANNEL
+    output:
+        data = os.path.join(output_path, STAGE_OUTPUT),
+        img = report(os.path.join(output_path, DETECTION_BLOCK,
+                                  'transitions'+PLOT_FORMAT))
+    shell:
+        """
+        ln -s {input.data} {output.data}
+        python {input.plot_script} --data {input.data} \
+                                   --output {output.img} \
+                                   --tstart {params.tstart} \
+                                   --tstop {params.tstop} \
+                                   --channel {params.channel}
+        """
+
+rule transformation:
+    input:
+        data = os.path.join(output_path, 'transformation',
+                            TRANSFORMATION_BLOCKS[-1],
+                            TRANSFORMATION_BLOCKS[-1]+neo_format),
+        configfile = 'config.yaml'
+    output:
+        data = os.path.join(output_path, 'transformation',
+                            'transformed_signal'+neo_format)
+    shell:
+        """
+        cp {input.data} {output.data}
+        """
+
+#### Blocks ####
+
+#### Transformation Blocks ####
+
+rule MUA_estimation:
+    input:
+        data = transformation_input_file,
+        script = 'scripts/MUA_estimation.py',
+        plot_script = 'scripts/plot_MUA_trace.py'
+    params:
+        highpass_freq = MUA_HIGHPASS_FREQ,
+        lowpass_freq = MUA_LOWPASS_FREQ,
+        MUA_rate = MUA_RATE,
+        fft_samples = FFT_SAMPLES,
+        psd_overlap = PSD_OVERLAP,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channel = PLOT_CHANNEL
+    output:
+        data = os.path.join(output_path, 'transformation', 'MUA_estimation',
+                            '{rule_name}'+neo_format),
+        img = report(os.path.join(output_path, 'transformation', '{rule_name}',
+                                  'MUA_trace_{}-{}s_channel{}{}'\
+                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --MUA_rate {params.MUA_rate} \
+                              --psd_overlap {params.psd_overlap}
+        python {input.plot_script} --data {input.data} \
+                                   --MUA_data {output.data} \
+                                   --output {output.img} \
+                                   --tstart {params.plot_tstart} \
+                                   --tstop {params.plot_tstop} \
+                                   --channel {params.plot_channel}
+        """
+
+#### Detection Blocks ####
+
+rule threshold:
+    input:
+        data = trigger_detection_input_file,
+        thresholds = os.path.join(output_path, 'threshold',
+                                  '{}_thresholds.npy'.format(THRESHOLD_METHOD)),
+        script = 'scripts/threshold.py'
+    output:
+        data = os.path.join(output_path, 'threshold', 'transitions'+neo_format)
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --thresholds {input.thresholds}
+        """
+
+rule calc_tresholds_fixed:
+    input:
+        data = trigger_detection_input_file,
+        script = 'scripts/calc_thresholds_fixed.py'
+    params:
+        threshold = FIXED_THRESHOLD
+    output:
+        array = os.path.join(output_path, 'threshold', 'fixed_thresholds.npy')
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.array} \
+                              --threshold {params.threshold}
+        """

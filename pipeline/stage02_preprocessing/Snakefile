@@ -1,0 +1,166 @@
+# Stage 02 Preprocessing
+
+configfile: "config.yaml"
+report: "report.rst"
+
+import os
+import sys
+sys.path.append('../')
+from settings import working_dir, output_path
+
+neo_format = '.nix' # fixed! Do not change!
+STAGE_OUTPUT = config["OUTPUT"]
+BLOCK_ORDER = config["BLOCK_ORDER"]
+PLOT_FORMAT = config["PLOT_FORMAT"]
+NORMALIZE_BY = config["NORMALIZE_BY"]
+HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
+LOWPASS_FREQ = config["LOWPASS_FREQ"]
+FILTER_ORDER = config["FILTER_ORDER"]
+FILTER_FUNCTION = config["FILTER_FUNCTION"]
+PSD_FREQ_RES = config["PSD_FREQ_RES"]
+PSD_OVERLAP = config["PSD_OVERLAP"]
+DETRENDING_ORDER = config["DETRENDING_ORDER"]
+
+
+# ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
+
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage01_data_curation', 'IDIBAPS_data.nix')
+
+output_path = os.path.join(output_path, 'stage02_preprocessing/')
+
+
+#### Housekeeping ####
+
+def locate(str_list, string):
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError("Can't find rule '{}'! Please check the spelling \
+                          and the config file.".format(string))
+
+def input_file(wildcards):
+    idx = locate(BLOCK_ORDER, wildcards.rule_name)
+    if idx:
+        return os.path.join(output_path,
+                            BLOCK_ORDER[idx-1], BLOCK_ORDER[idx-1]+neo_format)
+    else:
+        return os.path.join(output_path, stage_input)
+
+rule all:
+    input:
+        data = os.path.join(output_path,
+                            BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
+        configfile = 'config.yaml'
+    output:
+        data = os.path.join(output_path, STAGE_OUTPUT)
+    shell:
+        """
+        ln -s {input.data} {output.data}
+        """
+
+#### Blocks ####
+
+rule background_substraction:
+    input:
+        data = input_file,
+        script = 'scripts/background_substraction.py'
+    output:
+        data = os.path.join(output_path, 'background_substraction',
+                            '{rule_name}'+neo_format),
+        img = report(os.path.join(output_path, '{rule_name}',
+                                  'background'+PLOT_FORMAT)),
+        array = os.path.join(output_path, '{rule_name}',
+                             'background.npy')
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --output_img {output.img} \
+                              --output_array {output.array}
+        """
+
+rule normalization:
+    input:
+        data = input_file,
+        script = 'scripts/normalization.py'
+    params:
+        normalize_by = NORMALIZE_BY
+    output:
+        data = os.path.join(output_path, 'normalization',
+                            '{rule_name}'+neo_format)
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --normalize_by {params.normalize_by}
+        """
+
+rule detrending:
+    input:
+        data = input_file,
+        script = 'scripts/detrending.py'
+    params:
+        order = DETRENDING_ORDER
+    output:
+        data = os.path.join(output_path, 'detrending',
+                            '{rule_name}'+neo_format)
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --order {params.order}
+        """
+
+rule frequency_filter:
+    input:
+        data = input_file,
+        script = 'scripts/frequency_filter.py',
+        plotting_script = 'scripts/plot_power_spectrum.py'
+    params:
+        highpass_freq = HIGHPASS_FREQ,
+        lowpass_freq = LOWPASS_FREQ,
+        order = FILTER_ORDER,
+        filter_function = FILTER_FUNCTION,
+        psd_freq_res = PSD_FREQ_RES,
+        psd_overlap = PSD_OVERLAP
+    output:
+        data = os.path.join(output_path, 'frequency_filter',
+                            '{rule_name}'+neo_format),
+        img = report(os.path.join(output_path, '{rule_name}',
+                                  'power_spectrum'+PLOT_FORMAT))
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --order {params.order} \
+                              --filter_function {params.filter_function}
+
+        python {input.plotting_script} --data {input.data} \
+                                       --output {output.img} \
+                                       --highpass_freq {params.highpass_freq} \
+                                       --lowpass_freq {params.lowpass_freq} \
+                                       --psd_freq_res {params.psd_freq_res} \
+                                       --psd_overlap {params.psd_overlap} \
+        """
+
+#
+# rule spatial_smooting:
+#     input:
+#         data = input_file,
+#         script = 'scripts/spatial_smooting.py'
+#     params:
+#         macro_dim = MACRO_DIM
+#     output:
+#         data = os.path.join(output_path, 'spatial_smooting',
+#                             '{rule_name}'+neo_format)
+#     shell:
+#         """
+#         python {input.script} --data {input.data} \
+#                               --output {output.data} \
+#                               --macro_dim {params.macro_dim}
+#         """

@@ -1,0 +1,116 @@
+configfile: "config.yaml"
+report: "report.rst"
+
+import os
+import sys
+import yaml
+import numpy as np
+sys.path.append('../')
+from settings import working_dir, output_path
+
+STAGES = config["STAGES"]
+
+def read_stage_output(stage):
+    with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
+        config_dict = yaml.safe_load(f)
+    if 'OUTPUT' in config_dict.keys():
+        return os.path.join(output_path, stage, config_dict['OUTPUT'])
+    else:
+        raise ValueError("config file of stage {} ".format(stage)\
+                       + "does not define 'OUTPUT'!")
+
+def add_to_config(config_path, update_dict, new_config_path=None):
+    with open(config_path, 'r') as f:
+        config_dict = yaml.safe_load(f)
+    if new_config_path is None:
+        new_config_path = os.path.join(os.path.dirname(config_path),
+                                       'temp_config.yaml')
+    with open(new_config_path, 'w') as f:
+        config_dict.update(**update_dict)
+        f.write(yaml.dump(config_dict, default_flow_style=False))
+    return new_config_path
+
+def set_subworkflow_inputs(stages):
+    for i in np.arange(1, len(stages)):
+        update_dict = {'INPUT_FILE': read_stage_output(stages[i-1])}
+        config_path = os.path.join(working_dir, stages[i], 'config.yaml')
+        add_to_config(config_path=config_path,
+                      update_dict=update_dict)
+
+set_subworkflow_inputs(STAGES)
+
+# ToDo: write generic rule to connect subworkflows (with Namespace)
+# using input function
+
+subworkflow stage01:
+    workdir:
+        os.path.join(working_dir, STAGES[0])
+    configfile:
+        os.path.join(working_dir, STAGES[0], "config_LENS.yaml")
+
+subworkflow stage02:
+    workdir:
+        os.path.join(working_dir, STAGES[1])
+    configfile:
+        os.path.join(working_dir, STAGES[1], "temp_config.yaml")
+
+subworkflow stage03:
+    workdir:
+        os.path.join(working_dir, STAGES[2])
+    configfile:
+        os.path.join(working_dir, STAGES[2], "temp_config.yaml")
+
+
+rule all:
+    input:
+        last_stage = os.path.join(output_path, '{}_output.nix'.format(STAGES[-1])),
+        reports = expand(os.path.join(output_path, '{subworkflow_name}',
+                                      'report.html'),
+                         subworkflow_name=STAGES)
+    shell:
+        """
+        rm */temp_config.yaml
+        """
+
+
+rule exc_stage01:
+    input:
+        stage_output = stage01(read_stage_output(STAGES[0]))
+    output:
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[0])))
+    shell:
+        """
+        ln -s {input.stage_output} {output}
+        """
+
+rule exc_stage02:
+    input:
+        stage_output = stage02(read_stage_output(STAGES[1])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[0]))
+    output:
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[1])))
+    shell:
+        """
+        ln -s {input.stage_output} {output}
+        """
+
+rule exc_stage03:
+    input:
+        stage_output = stage03(read_stage_output(STAGES[2])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[1]))
+    output:
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[2])))
+    shell:
+        """
+        ln -s {input.stage_output} {output}
+        """
+
+
+rule create_report:
+    output:
+        report = os.path.join(output_path, '{subworkflow_name}', 'report.html')
+    shell:
+        """
+        cd {wildcards.subworkflow_name}
+        snakemake --report {output.report}
+        """

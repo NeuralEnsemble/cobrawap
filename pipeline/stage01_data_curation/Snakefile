@@ -1,0 +1,76 @@
+# Stage 01 Data Curation
+
+configfile: "config_LENS.yaml"
+report: "report.rst"
+
+import os
+import sys
+sys.path.append('../')
+from settings import working_dir, output_path
+from utils import ordereddict_to_dict
+
+output_path = os.path.join(output_path, 'stage01_data_curation/')
+
+neo_format = '.nix' # fixed! Do not change!
+STAGE_OUTPUT = config["OUTPUT"]
+
+DATA_SETS = config["DATA_SETS"]
+CURATION_SCRIPT = config["CURATION_SCRIPT"]
+SPATIAL_SCALE = config['SPATIAL_SCALE']
+SAMPLING_RATE = config["SAMPLING_RATE"]
+ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
+ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
+KWARGS = ordereddict_to_dict(config["KWARGS"])
+
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNEL = config["PLOT_CHANNEL"]
+PLOT_FORMAT = config["PLOT_FORMAT"]
+
+def input_file(wildcards):
+    return DATA_SETS[wildcards.data_name]
+
+rule all:
+    input:
+        expand(os.path.join(output_path, 'output_{name}'+neo_format),
+               name = DATA_SETS.keys())
+    output:
+        os.path.join(output_path, STAGE_OUTPUT)
+    shell:
+        """
+        ln -s {input[0]} {output}
+        """
+
+rule curate:
+    input:
+        data = input_file,
+        script = os.path.join('scripts/', CURATION_SCRIPT),
+        plot_script = 'scripts/plot_traces.py'
+    output:
+        data = os.path.join(output_path, 'output_{data_name}'+neo_format),
+        img = report(os.path.join(output_path, 'trace_{data_name}'+PLOT_FORMAT))
+    params:
+        spatial_scale = SPATIAL_SCALE,
+        sampling_rate = SAMPLING_RATE,
+        annotations = ANNOTATIONS,
+        array_annotations = ARRAY_ANNOTATIONS,
+        kwargs = KWARGS,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channel = PLOT_CHANNEL
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --sampling_rate {params.sampling_rate} \
+                              --spatial_scale {params.spatial_scale} \
+                              --data_name {wildcards.data_name} \
+                              --annotations {params.annotations} \
+                              --array_annotations {params.array_annotations} \
+                              --kwargs {params.kwargs}
+        python {input.plot_script} --data {output.data} \
+                                   --output {output.img} \
+                                   --tstart {params.plot_tstart} \
+                                   --tstop {params.plot_tstop} \
+                                   --channel {params.plot_channel} \
+        """

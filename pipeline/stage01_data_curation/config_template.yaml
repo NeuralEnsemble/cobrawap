@@ -1,0 +1,47 @@
+# Name of stage output file.
+# It will be created in directory
+# <output_path(in setting.py)>/stage01_data_curation/
+OUTPUT: "<data_name>.nix"
+
+# Datasets which should be processed with identical settings.
+# To set as key-value pairs
+# Name_of_dataset: /path/to/data/files/
+DATA_SETS:
+    Dataset_name: '/path/to/data/'
+
+# Name of script in scripts/ folder, handling the loadig and curation
+CURATION_SCRIPT: 'curate_<data_name>.py'
+
+# Distance between electrodes (or pixel size)
+SPATIAL_SCALE: 0.05  # mm
+
+# Rate of acquisition of data points
+# Can be 'None' if information is provided in the data file
+SAMPLING_RATE: 25  # Hz
+
+# Metadata - general information (non-specific to individual channels)
+# This must include an entry 'grid_size' with an int tuple
+# (x-dim, y-dim). The size of this rectangual grid would thus be
+# (x-dim*SPATIAL_SCALE, y-dim*SPATIAL_SCALE).
+ANNOTATIONS:
+    experimental_lab: 'Santa Corp, Antarctica'
+    grid_size: (10,15)
+    anesthetic: 'Isoflurane'
+
+# Metadata - channel-wise information (e.g. coordinates, SNR, ...), can be 'None'
+# Here, the entries must be lists of the same length as the number of channels
+ARRAY_ANNOTATIONS:
+    coords: ['(0,0)', '(1,0)', '(2,0)']
+
+# Script parameters
+# Here, additional parameters can be passed to the script,
+# to be used to determine additional annotations or array_annotations. Can be 'None'
+KWARGS: 'None'
+
+# Plotting parameters
+# These parameters are used to create an example plot to get a first view
+# on the signals and ensure that the data was loaded and annotated correctly
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 0  # in s
+PLOT_CHANNEL: 'None'  # int, or list of int, or 'None' -> randomly chosen channel
+PLOT_FORMAT: '.png'  # file extension for storing the plot

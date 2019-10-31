@@ -113,5 +113,5 @@ def ImageSequence2AnalogSignal(imgseq):
                             file_origin=imgseq.file_origin,
                             description=imgseq.description,
                             array_annotations={'coords': coords_list},
-                            grid_size= (dim_x, dim_y),
+                            grid_size=(dim_x, dim_y),
                             **imgseq.annotations)

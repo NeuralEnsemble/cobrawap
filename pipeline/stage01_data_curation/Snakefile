@@ -1,6 +1,6 @@
 # Stage 01 Data Curation
 
-configfile: "config_LENS.yaml"
+configfile: "config_IDIBAPS.yaml"
 report: "report.rst"
 
 import os

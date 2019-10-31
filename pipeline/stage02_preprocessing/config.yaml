@@ -6,7 +6,7 @@ OUTPUT: "preprocessed_data.nix"
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'spatial_smooting', 'img_roi_selection'
-BLOCK_ORDER: ['frequency_filter', 'background_substraction', 'normalization', 'detrending']
+BLOCK_ORDER: ['normalization']
 
 # ToDo: Param dict for each block? Or are there many shared parameters?
 

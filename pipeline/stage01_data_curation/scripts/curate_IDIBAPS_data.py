@@ -8,7 +8,6 @@ import neo
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import parse_string2dict, check_analogsignal_shape
 
-
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])
     max_length = np.max([len(asig.times) for asig in asigs])
@@ -90,8 +89,9 @@ if __name__ == '__main__':
 
     channels = asig.array_annotations[kwargs['ELECTRODE_ANNOTATION_NAME']]
 
-    coords = [str(kwargs['NAME2COORDS'][str(channel)]) for channel in channels]
-    asig.array_annotations.update(coords=coords)
+    coords = np.array([kwargs['NAME2COORDS'][str(channel)] for channel in channels])
+    asig.array_annotations.update(x_coords=coords[:,0])
+    asig.array_annotations.update(y_coords=coords[:,1])
 
     locations = []
     for channel in channels:
@@ -105,6 +105,15 @@ if __name__ == '__main__':
 
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
+
+    dim_t, channel_num = asig.as_array().shape
+
+    chidx = neo.ChannelIndex(name=asig.name,
+                             channel_ids=np.arange(channel_num),
+                             index=np.arange(channel_num),
+                             coordinates=coords*args.spatial_scale*pq.mm)
+    chidx.annotations.update(asig.array_annotations)
+    chidx.analogsignals.append(asig)
 
     # Save data
     block.name = args.data_name
@@ -121,5 +130,7 @@ if __name__ == '__main__':
                        only process single AnalogSignals.')
 
     block.segments[0].analogsignals[0] = asig
+    block.channel_indexes = [chidx]
+
     with neo.NixIO(args.output) as io:
         io.write(block)

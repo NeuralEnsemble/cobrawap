@@ -3,7 +3,7 @@ This stage handles the loading and transformation of a dataset into the standard
 
 __INPUT__: A dataset of raw data of any recording modality and any format, along with information on the data acquisition and the experimental context.
 
-__OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, saved as a [Nix](https://github.com/G-Node/nix) file, containing at least an AnalogSignal object and the minimal required metadata.
+__OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, saved as a [Nix](https://github.com/G-Node/nix) file, containing one Segment with one AnalogSignal object and the minimal required metadata. _(Details down below)_
 
 __BLOCKS__: Custom data curation, specific to the dataset | Check of the data format, metadata, and namespace
 
@@ -17,18 +17,26 @@ _What kind of data can go into the SWAP pipeline?_
 _required, for a correct processing of the data_
 * Sampling rate of AnalogSignal
 * Distance between electrodes/pixels (as annotation `spatial_scale` in AnalogSignal)
-* Relative spatial location of channels (as array_annotation `coords` in AnalogSignal)
-* Grid size (as annotation `grid_size` in AnalogSignal, given as a list [dimX,dimY])
+* Relative spatial location of channels (as coordinates in linked ChannelIndex object)
 
 #### Recommended metadata for SWAP pipeline
 _desired, for a correct interpretation of the results_
 * Units of AnalogSignal
+* Grid size (as annotation `grid_size` in AnalogSignal, given as a list [dimX,dimY])
 * Absolute cortical positioning of the electrodes
 * Type and dosage (or estimated level) of anesthetic
 * Species, and general animal information
 * Information on artifacts and erroneous signals
 * Any additional protocols or events (e.g. stimulation) influencing the signals
 * Lab where the experiment was performed (+ contact person performing the experiment)
+
+#### Structure of spatial information in Neo used for this pipeline
+* All signals are in an AnalogSignal object (times x N channels)
+* It is linked to a ChannelIndex object with
+    * the same *name* as the AnalogSignal
+    * *channel_ids*, an array with ids of 0 to N
+    * *index*, an array with ids of 0 to N
+    * *coordinates*, an array of tuples of length N
 
 ## Adding Datasets into the SWA pipeline
 There are two options to insert data into the pipeline. __Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset. __Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. [Neo](https://neo.readthedocs.io/) or [BIDS](https://bids.neuroimaging.io)), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using [odML](https://g-node.github.io/python-odml/) and [odMLtables](https://github.com/INM-6/python-odmltables)) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the [KnowledgeGraph](https://www.humanbrainproject.eu/en/explore-the-brain/search/).

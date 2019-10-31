@@ -19,6 +19,12 @@ def substract_background(asig, background):
         asig[num] = frame - background
     return asig
 
+def determine_spatial_scale(coords):
+    coords = np.array(coords)
+    dists = np.diff(coords[:,0])
+    dists = dists[np.nonzero(dists)]
+    return np.min(dists)
+
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
@@ -44,12 +50,14 @@ if __name__ == '__main__':
     asig = substract_background(asig, background)
 
     # save background as numpy array
-    dim_x, dim_y = asig.annotations['grid_size']
-    bkgr_img = np.empty((dim_x, dim_y)) * np.nan
-    for pixel, coords in zip(background, asig.array_annotations['coords']):
-        pattern = re.compile('\d+')
-        x, y = pattern.findall(coords)
-        bkgr_img[int(x)][int(y)] = pixel
+    chidx = block.channel_indexes[0]
+    spatial_scale = determine_spatial_scale(chidx.coordinates)\
+                  * chidx.coordinates[0][0].units
+    dim_x = np.max(np.array(chidx.coordinates)[:,0])/spatial_scale.magnitude
+    dim_y = np.max(np.array(chidx.coordinates)[:,1])/spatial_scale.magnitude
+    bkgr_img = np.empty((int(round(dim_x)), int(round(dim_y)))) * np.nan
+    for pixel, coords in zip(background, chidx.coordinates):
+        bkgr_img[int(coords[0])][int(coords[1])] = pixel
 
     np.save(args.output_array, bkgr_img)
 
@@ -62,7 +70,6 @@ if __name__ == '__main__':
     plt.savefig(args.output_img)
 
     # save processed data
-    # ToDo: overwrite AnalogSignals or create new segement?
     asig.name += ""
     asig.description += "The mean of each channel was substracted ({})."\
                         .format(os.path.basename(__file__))

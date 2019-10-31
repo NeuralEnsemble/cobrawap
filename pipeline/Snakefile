@@ -9,6 +9,7 @@ sys.path.append('../')
 from settings import working_dir, output_path
 
 STAGES = config["STAGES"]
+# ToDo: overwrite plotting configs
 
 def read_stage_output(stage):
     with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
@@ -46,7 +47,7 @@ subworkflow stage01:
     workdir:
         os.path.join(working_dir, STAGES[0])
     configfile:
-        os.path.join(working_dir, STAGES[0], "config_LENS.yaml")
+        os.path.join(working_dir, STAGES[0], "config_IDIBAPS.yaml")
 
 subworkflow stage02:
     workdir:

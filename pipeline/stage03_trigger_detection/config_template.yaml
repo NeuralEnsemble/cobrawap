@@ -8,12 +8,12 @@ PLOT_FORMAT: '.png'
 # The list determines the combination and order of blocks to transform the
 # preprocessed signal. Default []
 # Available Blocks: 'MUA_estimation', 'zscore', 'normalize'
-TRANSFORMATION_BLOCKS: ['MUA_estimation']
+TRANSFORMATION_BLOCKS: []
 
 # DETECTION BLOCK
 #################
-# Available Blocks: 'threshold', 'Hilbert_phase', 'Minima'
-DETECTION_BLOCK: 'threshold'
+# Available Blocks: 'threshold', 'hilbert_phase', 'minima'
+DETECTION_BLOCK: 'hilbert_phase'
 
 # BLOCK - MUA_estimation
 ########################

@@ -36,6 +36,7 @@ THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
+MINIMA_ORDER = config["MINIMA_ORDER"]
 
 # ToDo: outsource Transformation as subsection via include?
 
@@ -194,10 +195,13 @@ rule minima:
     input:
         data = trigger_detection_input_file,
         script = 'scripts/minima.py'
+    params:
+        order = MINIMA_ORDER
     output:
         data = os.path.join(output_path, 'minima', 'transitions'+neo_format)
     shell:
         """
         python {input.script} --data {input.data} \
-                              --output {output.data}
+                              --output {output.data} \
+                              --order {params.order}
         """

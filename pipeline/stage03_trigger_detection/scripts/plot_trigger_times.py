@@ -8,8 +8,7 @@ import argparse
 import os
 import random
 
-
-def plot_states(times, labels, ax, tstart, tstop):
+def plot_states(times, labels, ax, tstart, tstop, label=''):
     if labels[0].decode('UTF-8') == 'DOWN':
         ax.axvspan(tstart, times[0], alpha=0.5, color='red')
     if labels[-1].decode('UTF-8') == 'UP':
@@ -17,7 +16,8 @@ def plot_states(times, labels, ax, tstart, tstop):
 
     for i, (time, label) in enumerate(zip(times, labels)):
         if label.decode('UTF-8') == 'UP' and i < len(times)-1:
-            ax.axvspan(time, times[i+1], alpha=0.5, color='red')
+            ax.axvspan(time, times[i+1], alpha=0.5, color='red',
+                       label=label if not i else '')
     return None
 
 
@@ -59,11 +59,13 @@ if __name__ == '__main__':
 
     if 'DOWN'.encode('UTF-8') in labels:
         # plot up states
-        plot_states(times, labels, ax, tstart=args.tstart, tstop=args.tstop)
+        plot_states(times, labels, ax, tstart=args.tstart, tstop=args.tstop,
+                    label='UP states')
     elif 'UP'.encode('UTF-8') in labels:
         # plot only up transitions
-        for trans_time in times:
-            ax.axvline(trans_time)
+        for i, trans_time in enumerate(times):
+            ax.axvline(trans_time, c='k',
+                       label='UP transitions' if not i else '')
     else:
         raise ValueError("No 'UP' (or 'DOWN') transition events found")
 

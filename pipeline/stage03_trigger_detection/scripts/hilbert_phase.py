@@ -83,7 +83,5 @@ if __name__ == '__main__':
 
     block.segments[0].events.append(transition_event)
 
-    print(transition_event.labels)
-
     with neo.NixIO(args.output) as io:
         io.write(block)

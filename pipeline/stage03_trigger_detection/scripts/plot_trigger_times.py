@@ -38,6 +38,7 @@ if __name__ == '__main__':
     with neo.NixIO(args.data) as io:
         block = io.read_block()
 
+
     asig = block.segments[0].analogsignals[0]
     asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
@@ -64,7 +65,7 @@ if __name__ == '__main__':
         for trans_time in times:
             ax.axvline(trans_time)
     else:
-        raise InputError("No 'UP' (or 'DOWN') transition events found")
+        raise ValueError("No 'UP' (or 'DOWN') transition events found")
 
     ax.set_title('Channel {}'.format(args.channel))
     ax.set_xlabel('time [s]')

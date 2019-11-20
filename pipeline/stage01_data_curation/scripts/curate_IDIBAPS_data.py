@@ -113,7 +113,6 @@ if __name__ == '__main__':
                              index=np.arange(channel_num),
                              coordinates=coords*args.spatial_scale*pq.mm)
     chidx.annotations.update(asig.array_annotations)
-    chidx.analogsignals.append(asig)
 
     # Save data
     block.name = args.data_name
@@ -130,7 +129,9 @@ if __name__ == '__main__':
                        only process single AnalogSignals.')
 
     block.segments[0].analogsignals[0] = asig
-    block.channel_indexes = [chidx]
+    block.channel_indexes.append(chidx)
+    block.segments[0].analogsignals[0].channel_index = chidx
+    chidx.analogsignals.append(asig)
 
     with neo.NixIO(args.output) as io:
         io.write(block)

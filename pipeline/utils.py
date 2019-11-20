@@ -1,6 +1,7 @@
 import numpy as np
 import neo
 import re
+import itertools
 
 def check_analogsignal_shape(asig):
     if type(asig) == list and len(asig) > 1:
@@ -93,25 +94,106 @@ def ordereddict_to_dict(input_dict):
     else:
         return input_dict
 
-def ImageSequence2AnalogSignal(imgseq):
-    # ToDo: tuple as array annotations? Or separte coords into coords_x and coords_y?
+
+def determine_spatial_scale(coords):
+    coords = np.array(coords)
+    dists = np.diff(coords[:,0])
+    dists = dists[np.nonzero(dists)]
+    return np.min(dists)
+
+def determine_dims(coords):
+    spatial_scale = determine_spatial_scale(coords)
+    int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
+    dim_x, dim_y = np.max(int_coords[:,0])+1, np.max(int_coords[:,1])+1
+    return dim_x, dim_y
+
+def ImageSequence2AnalogSignal(block):
     # ToDo: map potentially 2D array annotations to 1D and update
-    dim_t, dim_x, dim_y = imgseq.as_array().shape
-    imgseq_flat = imgseq.as_array().reshape((dim_t, dim_x * dim_y))
+    for seg_count, segment in enumerate(block.segments):
+        for imgseq in segment.imagesequences:
+            dim_t, dim_x, dim_y = imgseq.as_array().shape
+            # coords = np.zeros((dim_x, dim_y, 2), dtype=int)
+            # for x, row in enumerate(coords):
+            #     for y, cell in enumerate(row):
+            #         coords[x][y][0] = x
+            #         coords[x][y][1] = y
+            # coords = coords.reshape((dim_x * dim_y, 2))
+            coords = np.array(list(itertools.product(np.arange(dim_x),
+                                                     np.arange(dim_y))))
 
-    coords = np.zeros((dim_x, dim_y, 2), dtype=int)
-    for x, row in enumerate(coords):
-        for y, cell in enumerate(row):
-            coords[x][y][0] = x
-            coords[x][y][1] = y
-    coords = coords.reshape((dim_x * dim_y, 2))
-    coords_list = [str((c[0],c[1])) for c in coords]
+            imgseq_flat = imgseq.as_array().reshape((dim_t, dim_x * dim_y))
 
-    return neo.AnalogSignal(signal=imgseq_flat,
-                            units=imgseq.units,
-                            sampling_rate=imgseq.sampling_rate,
-                            file_origin=imgseq.file_origin,
-                            description=imgseq.description,
-                            array_annotations={'coords': coords_list},
-                            grid_size=(dim_x, dim_y),
-                            **imgseq.annotations)
+            asig = neo.AnalogSignal(signal=imgseq_flat,
+                                    units=imgseq.units,
+                                    sampling_rate=imgseq.sampling_rate,
+                                    file_origin=imgseq.file_origin,
+                                    description=imgseq.description,
+                                    name=imgseq.name,
+                                    array_annotations={'x_coords': coords[:,0],
+                                                       'y_coords': coords[:,1]},
+                                    grid_size=(dim_x, dim_y),
+                                    spatial_scale=imgseq.spatial_scale,
+                                    **imgseq.annotations)
+
+            chidx = neo.ChannelIndex(name=asig.name,
+                                     channel_ids=np.arange(dim_x * dim_y),
+                                     index=np.arange(dim_x * dim_y),
+                                     coordinates=coords*imgseq.spatial_scale)
+
+            chidx.annotations.update(asig.array_annotations)
+            # asig.channel_index = chidx
+            chidx.analogsignals = [asig] + chidx.analogsignals
+            # block.channel_indexes.append(chidx)
+            block.segments[seg_count].analogsignals.append(asig)
+    return block
+
+
+def AnalogSignal2ImageSequence(block):
+    # ToDo: map 1D array annotations to 2D and update
+    for seg_count, segment in enumerate(block.segments):
+        for asig in segment.analogsignals:
+            asig_array = asig.as_array()
+            dim_t, dim_channels = asig_array.shape
+
+            # coords = asig.channel_index.coordinates
+            # temporary replacement
+            coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
+                                                    asig.array_annotations['y_coords'])],
+                              dtype=float)
+            # 
+            # spatial_scale = asig.annotations['spatial_scale']
+            # int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
+            # print(int_coords)
+
+            if len(coords) != dim_channels:
+                raise IndexError("Number of channels doesn't agree with "\
+                               + "number of coordinates!")
+
+            dim_x, dim_y = determine_dims(coords)
+
+            image_data = np.empty((dim_t, dim_x, dim_y))
+            image_data[:] = np.nan
+
+            for channel in range(dim_channels):
+                x, y = coords[channel]
+                x, y = int(x), int(y)
+                image_data[:, x, y] = asig_array[:, channel]
+
+            # spatial_scale = determine_spatial_scale(coords)*coords.units
+            spatial_scale = asig.annotations['spatial_scale']
+
+            array_annotations = {}
+            for k, v in asig.array_annotations.items():
+                array_annotations[k] = v.reshape((dim_x, dim_y))
+
+            imgseq = neo.ImageSequence(image_data=image_data,
+                                       units=asig.units,
+                                       sampling_rate=asig.sampling_rate,
+                                       name=asig.name,
+                                       description=asig.description,
+                                       file_origin=asig.file_origin,
+                                       # array_annotations=array_annotations,
+                                       **asig.annotations)
+
+            block.segments[seg_count].imagesequences.append(imgseq)
+    return block

@@ -34,26 +34,24 @@ if __name__ == '__main__':
     block = io.read_block()
 
     # Transform into analogsignals
-    asig = ImageSequence2AnalogSignal(block.segments[0].imagesequences[0])
+    block = ImageSequence2AnalogSignal(block)
+    if len(block.segments[0].analogsignals) > 1:
+        raise IOError("Additional analog signals detected! "\
+                    + "This pipeline only operates on single AnalogSignals.")
+
     if args.annotations is not None:
-        asig.annotations.update(parse_string2dict(args.annotations))
+        block.segments[0].analogsignals[0].annotations.\
+                                    update(parse_string2dict(args.annotations))
 
     # ToDo: add metadata
-
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
     block.segments[0].description = 'Loaded with neo.TiffIO (neo version {}). '\
                                     .format(neo.__version__)
-    if asig.description is None:
-        asig.description = ''
-    asig.description += 'Ca+ imaging signal. '
+    if block.segments[0].analogsignals[0].description is None:
+        block.segments[0].analogsignals[0].description = ''
+    block.segments[0].analogsignals[0].description += 'Ca+ imaging signal. '
 
     # Save data
-    if len(block.segments[0].analogsignals):
-        raise Warning('Additional AnalogSignal found. The pipeline can yet \
-                       only process single AnalogSignals.')
-
-    block.segments[0].analogsignals.append(asig)
-
     with neo.NixIO(args.output) as io:
         io.write(block)

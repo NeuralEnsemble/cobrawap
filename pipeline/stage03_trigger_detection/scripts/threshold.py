@@ -1,6 +1,5 @@
 import neo
 import numpy as np
-from itertools import groupby
 import quantities as pq
 import argparse
 

@@ -6,7 +6,7 @@ report: "report.rst"
 import os
 import sys
 sys.path.append('../')
-from settings import working_dir, output_path
+from settings import output_path
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
@@ -20,6 +20,7 @@ FILTER_FUNCTION = config["FILTER_FUNCTION"]
 PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
+INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
 
 
 # ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
@@ -27,7 +28,7 @@ DETRENDING_ORDER = config["DETRENDING_ORDER"]
 if 'INPUT_FILE' in config:
     stage_input = config["INPUT_FILE"]
 else:
-    stage_input = os.path.join(output_path, 'stage01_data_curation', 'IDIBAPS_data.nix')
+    stage_input = os.path.join(output_path, 'stage01_data_curation', 'LENS_data.nix')
 
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
 
@@ -148,6 +149,24 @@ rule frequency_filter:
                                        --psd_overlap {params.psd_overlap} \
         """
 
+rule roi_selection:
+    input:
+        data = input_file,
+        script = 'scripts/roi_selection.py'
+    params:
+        intensity_threshold = INTENSITY_THRESHOLD
+    output:
+        data = os.path.join(output_path, 'roi_selection',
+                            '{rule_name}'+neo_format),
+        image = report(os.path.join(output_path, 'roi_selection',
+                                    '{rule_name}'+PLOT_FORMAT))
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --image_output {output.image} \
+                              --intensity_threshold {params.intensity_threshold}
+        """
 #
 # rule spatial_smooting:
 #     input:

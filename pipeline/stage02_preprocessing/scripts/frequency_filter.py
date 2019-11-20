@@ -6,7 +6,7 @@ import quantities as pq
 import os
 import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
-sys.path.insert(0, os.path.join(os.path.expanduser('~'), 'Projects/toolbox/elephant/'))
+# sys.path.insert(0, os.path.join(os.path.expanduser('~'), 'Projects/toolbox/elephant/'))
 from elephant.signal_processing import butter
 from utils import check_analogsignal_shape, remove_annotations
 

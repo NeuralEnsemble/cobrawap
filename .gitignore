@@ -6,7 +6,8 @@ pipeline/*/.snakemake
 pipeline/*/*/.snakemake
 temp*
 */temp*
-
+pipeline/*/config.yaml
+pipeline/settings.py
 .idea/
 
 # Byte-compiled / optimized / DLL files

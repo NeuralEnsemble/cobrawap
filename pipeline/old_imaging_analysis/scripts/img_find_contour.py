@@ -1,5 +1,5 @@
 import numpy as np
-import skimage as sk
+from skimage import measure
 import matplotlib.pyplot as plt
 import shapely.geometry as geo
 import argparse
@@ -117,7 +117,7 @@ def close_contour(contour, num):
     contour_connect = np.array([connect_coords(i, num)
                                 for i in range(2)]).T
     return np.concatenate((contour, contour_connect))
-    
+
 
 def contour2mask(contour, dim_x, dim_y):
     mask = np.zeros((dim_x, dim_y), dtype=bool)

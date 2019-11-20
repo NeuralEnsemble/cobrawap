@@ -6,7 +6,7 @@ report: "report.rst"
 import os
 import sys
 sys.path.append('../')
-from settings import working_dir, output_path
+from settings import output_path
 
 if 'INPUT_FILE' in config:
     stage_input = config["INPUT_FILE"]
@@ -35,6 +35,8 @@ PLOT_CHANNEL = config["PLOT_CHANNEL"]
 THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 
+TRANSITION_PHASE = config["TRANSITION_PHASE"]
+
 # ToDo: outsource Transformation as subsection via include?
 
 #### Housekeeping ####
@@ -47,13 +49,18 @@ def locate(str_list, string):
                        + "and the config file.".format(string))
 
 def transformation_input_file(wildcards):
-    idx = locate(TRANSFORMATION_BLOCKS, wildcards.rule_name)
-    if idx:
+    if wildcards.rule_name == 'transformation':
         return os.path.join(output_path, 'transformation',
-                            TRANSFORMATION_BLOCKS[idx-1],
-                            TRANSFORMATION_BLOCKS[idx-1]+neo_format)
+                            TRANSFORMATION_BLOCKS[-1],
+                            TRANSFORMATION_BLOCKS[-1]+neo_format)
     else:
-        return stage_input
+        idx = locate(TRANSFORMATION_BLOCKS, wildcards.rule_name)
+        if idx:
+            return os.path.join(output_path, 'transformation',
+                                TRANSFORMATION_BLOCKS[idx-1],
+                                TRANSFORMATION_BLOCKS[idx-1]+neo_format)
+        else:
+            return stage_input
 
 def trigger_detection_input_file(wildcards):
     if len(TRANSFORMATION_BLOCKS):
@@ -63,7 +70,6 @@ def trigger_detection_input_file(wildcards):
         return stage_input
 
 rule all:
-    # ToDo: plot traces?
     input:
         data = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+neo_format),
         plot_script = 'scripts/plot_trigger_times.py'
@@ -87,12 +93,10 @@ rule all:
 
 rule transformation:
     input:
-        data = os.path.join(output_path, 'transformation',
-                            TRANSFORMATION_BLOCKS[-1],
-                            TRANSFORMATION_BLOCKS[-1]+neo_format),
+        data = transformation_input_file,
         configfile = 'config.yaml'
     output:
-        data = os.path.join(output_path, 'transformation',
+        data = os.path.join(output_path, '{rule_name}',
                             'transformed_signal'+neo_format)
     shell:
         """
@@ -169,4 +173,31 @@ rule calc_tresholds_fixed:
         python {input.script} --data {input.data} \
                               --output {output.array} \
                               --threshold {params.threshold}
+        """
+
+rule hilbert_phase:
+    input:
+        data = trigger_detection_input_file,
+        script = 'scripts/hilbert_phase.py'
+    params:
+        transition_phase = TRANSITION_PHASE
+    output:
+        data = os.path.join(output_path, 'hilbert_phase', 'transitions'+neo_format)
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --transition_phase {params.transition_phase}
+        """
+
+rule minima:
+    input:
+        data = trigger_detection_input_file,
+        script = 'scripts/minima.py'
+    output:
+        data = os.path.join(output_path, 'minima', 'transitions'+neo_format)
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data}
         """

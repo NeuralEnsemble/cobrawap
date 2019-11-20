@@ -1,12 +1,12 @@
 # Stage 01 Data Curation
 
-configfile: "config_IDIBAPS.yaml"
+configfile: "config.yaml"
 report: "report.rst"
 
 import os
 import sys
 sys.path.append('../')
-from settings import working_dir, output_path
+from settings import output_path
 from utils import ordereddict_to_dict
 
 output_path = os.path.join(output_path, 'stage01_data_curation/')

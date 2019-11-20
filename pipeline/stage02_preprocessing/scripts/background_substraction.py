@@ -11,19 +11,14 @@ import os
 import sys
 import re
 sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape, remove_annotations
+from utils import check_analogsignal_shape, determine_spatial_scale
 
 
 def substract_background(asig, background):
+    # Use duplicate_with_new_data ?
     for num, frame in enumerate(asig):
         asig[num] = frame - background
     return asig
-
-def determine_spatial_scale(coords):
-    coords = np.array(coords)
-    dists = np.diff(coords[:,0])
-    dists = dists[np.nonzero(dists)]
-    return np.min(dists)
 
 
 if __name__ == '__main__':
@@ -50,14 +45,22 @@ if __name__ == '__main__':
     asig = substract_background(asig, background)
 
     # save background as numpy array
-    chidx = block.channel_indexes[0]
-    spatial_scale = determine_spatial_scale(chidx.coordinates)\
-                  * chidx.coordinates[0][0].units
-    dim_x = np.max(np.array(chidx.coordinates)[:,0])/spatial_scale.magnitude
-    dim_y = np.max(np.array(chidx.coordinates)[:,1])/spatial_scale.magnitude
+
+    # coords = asig.channel_index.coordinates
+    # spatial_scale = determine_spatial_scale(coords)\
+    #               * chidx.coordinates[0][0].units
+    # temporary replacement:
+    coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
+                                            asig.array_annotations['y_coords'])],
+                      dtype=float) * asig.annotations['spatial_scale']
+    spatial_scale = asig.annotations['spatial_scale']
+    #####
+
+    dim_x = np.max(np.array(coords)[:,0])/spatial_scale.magnitude
+    dim_y = np.max(np.array(coords)[:,1])/spatial_scale.magnitude
     bkgr_img = np.empty((int(round(dim_x)), int(round(dim_y)))) * np.nan
-    for pixel, coords in zip(background, chidx.coordinates):
-        bkgr_img[int(coords[0])][int(coords[1])] = pixel
+    for pixel, xy in zip(background, coords):
+        bkgr_img[int(xy[0])][int(xy[1])] = pixel
 
     np.save(args.output_array, bkgr_img)
 

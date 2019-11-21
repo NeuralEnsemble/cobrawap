@@ -6,8 +6,9 @@ import sys
 import yaml
 import numpy as np
 sys.path.append('../')
-from settings import working_dir, output_path
+from settings import output_path
 
+working_dir = './'
 STAGES = config["STAGES"]
 # ToDo: overwrite plotting configs
 

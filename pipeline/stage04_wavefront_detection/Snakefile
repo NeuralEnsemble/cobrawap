@@ -1,5 +1,80 @@
+# Stage 04 Wavefront Detection
 
+configfile: "config.yaml"
+report: "report.rst"
+
+output_folder_name = 'stage04_wavefront_detection'
+
+import os
+import sys
+sys.path.append('../')
+from settings import output_path
+
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage03_trigger_detection',
+                               'trigger_times.nix')
+
+output_path = os.path.join(output_path, output_folder_name)
+
+PLOT_FORMAT = config["PLOT_FORMAT"]
+QUALITY = config["QUALITY"]
+SCALE_X = config["SCALE_X"]
+SCALE_Y = config["SCALE_Y"]
+FPS = config["FPS"]
 
 #### Blocks
 # remove_short_states
-# 
+#
+
+
+### Movie plotting rules
+rule plot_movie_frames:
+    input:
+        data = os.path.join('{path}', '{file}.nix'),
+        script = "scripts/plot_movie_frames.py",
+    params:
+        frame_name = 'frame',
+        frame_format = PLOT_FORMAT,
+    output:
+        frame_folder = directory(os.path.join('{path}', '{file}_frames')),
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --frame_folder {output.frame_folder} \
+                              --frame_format {params.frame_format} \
+                              --frame_name {params.frame_name} \
+        """
+
+rule plot_movie:
+    input:
+        os.path.join('{path}', '{file}_frames')
+    output:
+        os.path.join('{path}', '{file}.mp4')
+    params:
+        frame_path = lambda wildcards, input: os.path.join(input[0],
+                                                'frame_%05d.{}'\
+                                                .format(PLOT_FORMAT)),
+        quality = QUALITY,
+        scale_x = SCALE_X,
+        scale_y = SCALE_Y,
+        fps = FPS
+    shell:
+        """
+        ffmpeg -y -framerate {params.fps} \
+               -i {params.frame_path} -q {params.quality} \
+               -crf {params.quality} \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               {output}
+        """
+
+rule mp4_to_webm:
+    input:
+        '{path}.mp4'
+    output:
+        '{path}.webm'
+    shell:
+        """
+        ffmpeg -i {input} -vcodec libvpx -acodec libvorbis {output}
+        """

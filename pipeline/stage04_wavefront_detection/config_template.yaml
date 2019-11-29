@@ -1,0 +1,23 @@
+# Config file for Stage 4 - Wavefront Detection
+# Name of the output file
+OUTPUT: "waves.nix"
+
+PLOT_FORMAT: '.png'
+
+# Tigger Filter
+###############
+TRIGGER_FILTER: []
+
+# Wavefront Filter
+##################
+WAVEFRONT_FILTER: []
+
+# Wavefront Clustering
+######################
+# Using sklearn.cluster.DBSCAN
+METRIC: 'euclidean'
+# eps, maximum distance between points to be neigbours
+NEIGHBOUR_DISTANCE: 15
+MIN_SAMPLES_PER_WAVE: 30
+# Transformation factor from time dimension to space dimension.
+TIME_DIM: 250

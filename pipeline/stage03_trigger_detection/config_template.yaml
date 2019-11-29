@@ -1,5 +1,6 @@
-
-OUTPUT: "trigger_times.nix"
+# Config file for Stage 4 - Wavefront Detection
+# Name of the output file
+OUTPUT: "waves.nix"
 
 PLOT_FORMAT: '.png'
 
@@ -55,3 +56,10 @@ TRANSITION_PHASE: -1.570796
 ################
 MIN_HIGHPASS_FREQ: 200  # in Hz
 MIN_LOWPASS_FREQ: 1500  # in Hz
+
+# VIDEO SETTINGS
+################
+QUALITY: 5
+SCALE_X: 720
+SCALE_Y: 720
+FPS: 10

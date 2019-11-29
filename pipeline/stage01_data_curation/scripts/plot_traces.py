@@ -60,7 +60,7 @@ if __name__ == '__main__':
             + '\n ANNOTATIONS:\n' + annotations \
             + '\n ARRAY ANNOTATIONS:\n' + array_annotations)
 
-    ax.set_xlabel('time [s]')
+    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
     ax.set_ylabel(asig.units)
 
     plt.legend()

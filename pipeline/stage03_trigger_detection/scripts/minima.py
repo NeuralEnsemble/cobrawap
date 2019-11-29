@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 
 def detect_minima(asig, order):
     signal = asig.as_array()
-
     t_idx, channel_idx = argrelmin(signal, order=order, axis=0)
 
     sort_idx = np.argsort(t_idx)

@@ -1,3 +1,4 @@
+# Stage 03 - Trigger Detection
 
 ## Structure
 This stage has two kinds of rules.

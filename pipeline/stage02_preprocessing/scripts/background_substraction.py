@@ -52,12 +52,11 @@ if __name__ == '__main__':
     # temporary replacement:
     coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
                                             asig.array_annotations['y_coords'])],
-                      dtype=float) * asig.annotations['spatial_scale']
-    spatial_scale = asig.annotations['spatial_scale']
+                      dtype=float)
     #####
 
-    dim_x = np.max(np.array(coords)[:,0])/spatial_scale.magnitude
-    dim_y = np.max(np.array(coords)[:,1])/spatial_scale.magnitude
+    dim_x = np.max(np.array(coords)[:,0]) + 1
+    dim_y = np.max(np.array(coords)[:,1]) + 1
     bkgr_img = np.empty((int(round(dim_x)), int(round(dim_y)))) * np.nan
     for pixel, xy in zip(background, coords):
         bkgr_img[int(xy[0])][int(xy[1])] = pixel

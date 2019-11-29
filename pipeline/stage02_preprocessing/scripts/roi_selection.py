@@ -15,7 +15,10 @@ from utils import check_analogsignal_shape, AnalogSignal2ImageSequence
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...
-    contour_fake = measure.find_contours(img, contour_limit)
+    vmax = np.max(img)
+    vmin = np.min(img)
+    limit = vmin + contour_limit * (vmax-vmin)
+    contour_fake = measure.find_contours(img, limit)
     # Select the largest contour lines
     max_index = np.argmax([len(c) for c in contour_fake])
 
@@ -65,9 +68,9 @@ def calculate_contour(img, contour_limit):
     else:
         includes_corner = False
 
-    print('includes corner = ', includes_corner)
+    print('Contour includes corner = ', includes_corner)
 
-    print('There are contours found with contour limit = {}'.format(contour_limit))
+    # print('There are contours found with contour limit = {}'.format(contour_limit))
 
     return contour
 
@@ -139,7 +142,7 @@ if __name__ == '__main__':
     # save processed data
     imgseq_array[:, np.bitwise_not(mask)] = np.nan
     signal = imgseq_array.reshape((dim_t, dim_x * dim_y))
-    
+
     asig = block.segments[0].analogsignals[0]
     asig.name += ""
     asig.description += "Border regions with mean intensity below "\

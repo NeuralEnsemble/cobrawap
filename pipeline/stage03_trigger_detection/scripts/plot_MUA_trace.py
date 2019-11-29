@@ -45,9 +45,9 @@ if __name__ == '__main__':
             label='MUA')
 
     # ToDo: add actual axis (left and right) for raw and MUA signal
-    
+
     ax.set_title('Channel {}'.format(args.channel))
-    ax.set_xlabel('time [s]')
+    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
 
     plt.legend()
 

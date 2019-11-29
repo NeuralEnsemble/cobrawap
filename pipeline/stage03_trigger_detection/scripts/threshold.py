@@ -35,7 +35,10 @@ def threshold(asig, threshold_array):
                      labels=all_labels[sort_idx],
                      name='Transitions',
                      array_annotations={'channels':all_channels[sort_idx]},
-                     threshold=threshold_array)
+                     threshold=threshold_array,
+                     description='Transitions between down and up states with '\
+                                +'labels "UP" and "DOWN". '\
+                                +'Annotated with the channel id ("channels").'))
 
 
 if __name__ == '__main__':

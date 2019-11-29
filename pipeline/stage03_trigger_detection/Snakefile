@@ -38,6 +38,11 @@ FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
 
+QUALITY = config["QUALITY"]
+SCALE_X = config["SCALE_X"]
+SCALE_Y = config["SCALE_Y"]
+FPS = config["FPS"]
+
 # ToDo: outsource Transformation as subsection via include?
 
 #### Housekeeping ####
@@ -73,7 +78,7 @@ def trigger_detection_input_file(wildcards):
 rule all:
     input:
         data = os.path.join(output_path, DETECTION_BLOCK, 'transitions'+neo_format),
-        plot_script = 'scripts/plot_trigger_times.py'
+        plot_script = 'scripts/plot_trigger_times.py',
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
@@ -204,4 +209,57 @@ rule minima:
         python {input.script} --data {input.data} \
                               --output {output.data} \
                               --order {params.order}
+        """
+
+### Movie plotting rules
+rule plot_movie_frames:
+    input:
+        data = os.path.join('{path}', '{file}.nix'),
+        script = "scripts/plot_movie_frames.py",
+    params:
+        frame_name = 'frame',
+        frame_format = PLOT_FORMAT,
+    output:
+        frame_folder = directory(os.path.join('{path}', '{file}_frames')),
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --frame_folder {output.frame_folder} \
+                              --frame_format {params.frame_format} \
+                              --frame_name {params.frame_name} \
+        """
+
+rule plot_movie:
+    input:
+        os.path.join('{path}', '{file}_frames')
+    output:
+        os.path.join('{path}', '{file}.mp4')
+    params:
+        frame_path = lambda wildcards, input: os.path.join(input[0],
+                                                'frame_%05d.{}'\
+                                                .format(PLOT_FORMAT)),
+        quality = QUALITY,
+        scale_x = SCALE_X,
+        scale_y = SCALE_Y,
+        bitrate = '20M',
+        fps = FPS
+    shell:
+        """
+        ffmpeg -y -framerate {params.fps} \
+               -i {params.frame_path} -q {params.quality} \
+               -crf {params.quality} \
+               -vb {params.bitrate} \
+               -vcodec libx264 \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               {output}
+        """
+
+rule mp4_to_webm:
+    input:
+        '{path}.mp4'
+    output:
+        '{path}.webm'
+    shell:
+        """
+        ffmpeg -i {input} -vcodec libvpx -acodec libvorbis {output}
         """

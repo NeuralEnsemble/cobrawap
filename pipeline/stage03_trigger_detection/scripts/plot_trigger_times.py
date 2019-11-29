@@ -70,7 +70,7 @@ if __name__ == '__main__':
         raise ValueError("No 'UP' (or 'DOWN') transition events found")
 
     ax.set_title('Channel {}'.format(args.channel))
-    ax.set_xlabel('time [s]')
+    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
 
     plt.legend()
 

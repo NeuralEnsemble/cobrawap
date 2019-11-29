@@ -6,7 +6,6 @@ import quantities as pq
 import os
 import sys
 sys.path.append(os.path.join(os.getcwd(),'../'))
-# sys.path.insert(0, os.path.join(os.path.expanduser('~'), 'Projects/toolbox/elephant/'))
 from elephant.signal_processing import butter
 from utils import check_analogsignal_shape, remove_annotations
 
@@ -31,16 +30,13 @@ if __name__ == '__main__':
     with neo.NixIO(args.data) as io:
         block = io.read_block()
 
-    check_analogsignal_shape(block.segments[0].analogsignals)
-    remove_annotations([block] + block.segments
-                       + block.segments[0].analogsignals)
-
     asig = butter(block.segments[0].analogsignals[0],
                   highpass_freq=args.highpass_freq*pq.Hz,
                   lowpass_freq=args.lowpass_freq*pq.Hz,
                   order=args.order,
-                  filter_function=args.filter_function,
-                  axis=0)
+                  filter_function=args.filter_function)
+
+    asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
 
     # save processed data
     asig.name += ""

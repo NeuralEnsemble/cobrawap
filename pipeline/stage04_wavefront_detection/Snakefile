@@ -37,7 +37,7 @@ def clustering_input(wildcards):
 rule all:
     input:
         data = os.path.join(output_path, 'clustering', OUTPUT),
-        plot_script = 'scripts/plot_clustering.py
+        plot_script = 'scripts/plot_clustering.py'
     output:
         data = os.path.join(output_path, OUTPUT),
         img = report(os.path.join(output_path, 'cluster'+PLOT_FORMAT))

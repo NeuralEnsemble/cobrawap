@@ -1,0 +1,36 @@
+# Stage 05 Wave Characterization
+
+configfile: "config.yaml"
+report: "report.rst"
+
+output_folder_name = 'stage05_wave_characterization'
+
+import os
+import sys
+sys.path.append('../')
+from settings import output_path
+
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage04_wavefront_detection',
+                               'waves.nix')
+
+output_path = os.path.join(output_path, output_folder_name)
+
+PLOT_FORMAT = config["PLOT_FORMAT"]
+
+def input(wildcards):
+    return stage_input
+
+rule velocity:
+    input:
+        data = input,
+        script = 'scripts/velocity.py'
+    output:
+        data = os.path.join(output_path, 'velocity', 'velocities.npy')
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data}
+        """

@@ -1,6 +1,6 @@
-# Config file for Stage 4 - Wavefront Detection
-# Name of the output file
-OUTPUT: "waves.nix"
+# Config file for Stage 3 - Trigger Detection
+# Name of the output fileOUTPUT: "trigger_times.nix"
+OUTPUT: 'trigger_times.nix'
 
 PLOT_FORMAT: '.png'
 
@@ -14,7 +14,7 @@ TRANSFORMATION_BLOCKS: []
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
-DETECTION_BLOCK: 'hilbert_phase'
+DETECTION_BLOCK: 'threshold'
 
 # BLOCK - MUA_estimation
 ########################
@@ -29,15 +29,17 @@ FFT_SAMPLES: 'None'
 PSD_OVERLAP: 0.5  # default (0.5)
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNEL: 12  # default 'None' -> randomly selected
+PLOT_CHANNEL: 5050  # default 'None' -> randomly selected
 
 # BLOCK - Threshold
 ###################
 # Thresholding method: 'fixed', 'fitted', 'moment'
-THRESHOLD_METHOD: 'fixed'
+THRESHOLD_METHOD: 'fitted'
 
 # Fitting Parameters
+# available fit functions: 'Gaussian'
 FIT_FUNCTION: 'Gaussian'
+BIN_NUM: 100
 SIGMA_FACTOR: 3
 
 # Fixed Parameters
@@ -54,8 +56,9 @@ TRANSITION_PHASE: -1.570796
 
 # BLOCK - Minima
 ################
-MIN_HIGHPASS_FREQ: 200  # in Hz
-MIN_LOWPASS_FREQ: 1500  # in Hz
+# Number of neighbouring points which should be compared to define a local minimum.
+MINIMA_ORDER: 3
+
 
 # VIDEO SETTINGS
 ################

@@ -34,6 +34,9 @@ PLOT_CHANNEL = config["PLOT_CHANNEL"]
 
 THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
+FIT_FUNCTION = config["FIT_FUNCTION"]
+BIN_NUM = config["BIN_NUM"]
+SIGMA_FACTOR = config["SIGMA_FACTOR"]
 
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
@@ -179,6 +182,27 @@ rule calc_tresholds_fixed:
         python {input.script} --data {input.data} \
                               --output {output.array} \
                               --threshold {params.threshold}
+        """
+
+rule calc_tresholds_fitted:
+    input:
+        data = trigger_detection_input_file,
+        script = 'scripts/calc_thresholds_fitted.py'
+    params:
+        sigma_factor = SIGMA_FACTOR,
+        fit_function = FIT_FUNCTION,
+        bin_num = BIN_NUM,
+        show_plots = True
+    output:
+        array = os.path.join(output_path, 'threshold', 'fitted_thresholds.npy')
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.array} \
+                              --sigma_factor {params.sigma_factor} \
+                              --fit_function {params.fit_function} \
+                              --bin_num {params.bin_num} \
+                              --show_plots {params.show_plots}
         """
 
 rule hilbert_phase:

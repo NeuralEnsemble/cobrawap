@@ -35,19 +35,20 @@ if __name__ == '__main__':
                         metric=args.metric)
     clustering.fit(triggers)
 
-    # labels are from -1 to N, where -1 is noise
-    # in the annotations wave ids start from 1, and 0 is noise
+    # remove unclassified trigger points (label == -1)
+    cluster_idx = np.where(clustering.labels_ != -1)[0]
+    wave_idx = up_idx[cluster_idx]
 
-    wave_evt = neo.Event(times=evts.times[up_idx],
-                         labels=clustering.labels_ + 1,
+    wave_evt = neo.Event(times=evts.times[wave_idx],
+                         labels=clustering.labels_[cluster_idx],
                          name='Wavefronts',
-                         array_annotations={'channels':evts.array_annotations['channels'][up_idx],
-                                            'x_coords':triggers[:,0],
-                                            'y_coords':triggers[:,1]},
+                         array_annotations={'channels':evts.array_annotations['channels'][wave_idx],
+                                            'x_coords':triggers[:,0][cluster_idx],
+                                            'y_coords':triggers[:,1][cluster_idx]},
                          description='Transitions from down to up states. '\
                                     +'Labels are ids of wavefronts. '
                                     +'Annotated with the channel id ("channels") and '\
-                                    +'id of the corresponding wavefront ("wavefront").',
+                                    +'its position ("x_coords", "y_coords").',
                          cluster_algorithm='sklearn.cluster.DBSCAN',
                          cluster_eps=args.neighbour_distance,
                          cluster_metric=args.metric,

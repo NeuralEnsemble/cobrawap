@@ -52,6 +52,7 @@ def input_file(wildcards):
 
 rule all:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = os.path.join(output_path,
                             BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'
@@ -60,6 +61,17 @@ rule all:
     shell:
         """
         ln -s {input.data} {output.data}
+        """
+
+rule clear:
+    output:
+        temp(os.path.join(output_path, 'clear.done'))
+    params:
+        block_folder = expand(os.path.join(output_path, '{block}'),
+                              block=BLOCK_ORDER)
+    shell:
+        """
+        rm -r {params.block_folder}
         """
 
 #### Blocks ####

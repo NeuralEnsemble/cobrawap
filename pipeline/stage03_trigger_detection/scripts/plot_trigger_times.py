@@ -17,7 +17,7 @@ def plot_states(times, labels, ax, tstart, tstop, label=''):
     for i, (time, label) in enumerate(zip(times, labels)):
         if label.decode('UTF-8') == 'UP' and i < len(times)-1:
             ax.axvspan(time, times[i+1], alpha=0.5, color='red',
-                       label=label if not i else '')
+                       label=label.decode('UTF-8') if not i else '')
     return None
 
 
@@ -44,8 +44,10 @@ if __name__ == '__main__':
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
     event = event.time_slice(args.tstart*pq.s, args.tstop*pq.s)
 
+    dim_t, dim_channels = asig.shape
+
     if args.channel is None:
-        args.channel = random.randint(0,channel_num)
+        args.channel = random.randint(0, dim_channels)
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()

@@ -70,8 +70,8 @@ if __name__ == '__main__':
         ax.axis('image')
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_xlim((0, dim_x))
-        ax.set_ylim((dim_y, 0))
+        # ax.set_xlim((0, dim_x))
+        # ax.set_ylim((dim_y, 0))
         ax.set_ylabel('pixel size: {}'\
                       .format(asig.annotations['spatial_scale']))
         ax.set_xlabel('{:.2f} {}'.format(asig.times[num],

@@ -160,7 +160,7 @@ def AnalogSignal2ImageSequence(block):
             coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
                                                     asig.array_annotations['y_coords'])],
                               dtype=float)
-            # 
+            #
             # spatial_scale = asig.annotations['spatial_scale']
             # int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
             # print(int_coords)
@@ -182,9 +182,9 @@ def AnalogSignal2ImageSequence(block):
             # spatial_scale = determine_spatial_scale(coords)*coords.units
             spatial_scale = asig.annotations['spatial_scale']
 
-            array_annotations = {}
-            for k, v in asig.array_annotations.items():
-                array_annotations[k] = v.reshape((dim_x, dim_y))
+            # array_annotations = {}
+            # for k, v in asig.array_annotations.items():
+            #     array_annotations[k] = v.reshape((dim_x, dim_y))
 
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,

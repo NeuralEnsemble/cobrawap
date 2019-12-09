@@ -41,7 +41,7 @@ if __name__ == '__main__':
     ax.plot(asig.times, asig.as_array()[:,args.channel], label='original signal')
 
     MUA_asig = zscore(MUA_asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
-    ax.plot(MUA_asig.times, MUA_asig.as_array()[:,args.channel]+5,
+    ax.plot(MUA_asig.times, MUA_asig.as_array()[:,args.channel]+8,
             label='MUA')
 
     # ToDo: add actual axis (left and right) for raw and MUA signal

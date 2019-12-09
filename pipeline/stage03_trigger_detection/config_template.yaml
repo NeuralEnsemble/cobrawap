@@ -9,7 +9,7 @@ PLOT_FORMAT: '.png'
 # The list determines the combination and order of blocks to transform the
 # preprocessed signal. Default []
 # Available Blocks: 'MUA_estimation', 'zscore', 'normalize'
-TRANSFORMATION_BLOCKS: []
+TRANSFORMATION_BLOCKS: [MUA_estimation]
 
 # DETECTION BLOCK
 #################
@@ -18,18 +18,18 @@ DETECTION_BLOCK: 'threshold'
 
 # BLOCK - MUA_estimation
 ########################
-MUA_HIGHPASS_FREQ: 200  # in Hz
-MUA_LOWPASS_FREQ: 1500  # in Hz
+MUA_HIGHPASS_FREQ: 50  # in Hz
+MUA_LOWPASS_FREQ: 1200  # in Hz
 # Rate of the MUA signal. Must be <= the original sampling rate
-MUA_RATE: 'None'  # in Hz (default: 'None', takes highpass_freq)
-# Number of samples to estimate the local power spectrum
+MUA_RATE: 100 # in Hz (default: 'None', takes highpass_freq)
+# Length of time slice (in s) to estimate the local power spectrum
 # default 'None', takes minimum number of samples determined
 # by the lower bound of the frequency band
-FFT_SAMPLES: 'None'
+FFT_SLICE: 0.1
 PSD_OVERLAP: 0.5  # default (0.5)
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNEL: 5050  # default 'None' -> randomly selected
+PLOT_CHANNEL: 12  # default 'None' -> randomly selected
 
 # BLOCK - Threshold
 ###################

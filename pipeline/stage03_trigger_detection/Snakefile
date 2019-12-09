@@ -26,7 +26,7 @@ DETECTION_BLOCK = config["DETECTION_BLOCK"]
 MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
 MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
 MUA_RATE = config["MUA_RATE"]
-FFT_SAMPLES = config["FFT_SAMPLES"]
+FFT_SLICE = config["FFT_SLICE"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
@@ -125,7 +125,7 @@ rule MUA_estimation:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
         MUA_rate = MUA_RATE,
-        fft_samples = FFT_SAMPLES,
+        fft_slice = FFT_SLICE,
         psd_overlap = PSD_OVERLAP,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
@@ -143,6 +143,7 @@ rule MUA_estimation:
                               --highpass_freq {params.highpass_freq} \
                               --lowpass_freq {params.lowpass_freq} \
                               --MUA_rate {params.MUA_rate} \
+                              --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
         python {input.plot_script} --data {input.data} \
                                    --MUA_data {output.data} \

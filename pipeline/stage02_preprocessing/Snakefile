@@ -60,24 +60,26 @@ rule all:
         data = os.path.join(output_path, STAGE_OUTPUT)
     shell:
         """
-        ln -s {input.data} {output.data}
+        ln -s "{input.data}" "{output.data}"
         """
 
 rule clear:
     output:
         temp(os.path.join(output_path, 'clear.done'))
     params:
-        block_folder = expand(os.path.join(output_path, '{block}'),
-                              block=BLOCK_ORDER)
+        block_folder = ['"'+os.path.join(output_path, block)+'"'
+                        for block in BLOCK_ORDER]
     shell:
         """
-        rm -r {params.block_folder}
+        rm -rf {params.block_folder}
+        touch "{output}"
         """
 
 #### Blocks ####
 
 rule background_substraction:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = input_file,
         script = 'scripts/background_substraction.py'
     output:
@@ -89,14 +91,15 @@ rule background_substraction:
                              'background.npy')
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --output_img {output.img} \
-                              --output_array {output.array}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --output_array "{output.array}"
         """
 
 rule normalization:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = input_file,
         script = 'scripts/normalization.py'
     params:
@@ -106,13 +109,14 @@ rule normalization:
                             '{rule_name}'+neo_format)
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --normalize_by {params.normalize_by}
         """
 
 rule detrending:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = input_file,
         script = 'scripts/detrending.py'
     params:
@@ -122,13 +126,14 @@ rule detrending:
                             '{rule_name}'+neo_format)
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --order {params.order}
         """
 
 rule frequency_filter:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = input_file,
         script = 'scripts/frequency_filter.py',
         plotting_script = 'scripts/plot_power_spectrum.py'
@@ -146,15 +151,15 @@ rule frequency_filter:
                                   'power_spectrum'+PLOT_FORMAT))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --highpass_freq {params.highpass_freq} \
                               --lowpass_freq {params.lowpass_freq} \
                               --order {params.order} \
                               --filter_function {params.filter_function}
 
-        python {input.plotting_script} --data {input.data} \
-                                       --output {output.img} \
+        python {input.plotting_script} --data "{input.data}" \
+                                       --output "{output.img}" \
                                        --highpass_freq {params.highpass_freq} \
                                        --lowpass_freq {params.lowpass_freq} \
                                        --psd_freq_res {params.psd_freq_res} \
@@ -163,6 +168,7 @@ rule frequency_filter:
 
 rule roi_selection:
     input:
+        clear = os.path.join(output_path, 'clear.done'),
         data = input_file,
         script = 'scripts/roi_selection.py'
     params:
@@ -174,9 +180,9 @@ rule roi_selection:
                                     '{rule_name}'+PLOT_FORMAT))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --image_output {output.image} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --image_output "{output.image}" \
                               --intensity_threshold {params.intensity_threshold}
         """
 #

@@ -6,7 +6,7 @@ import os
 import matplotlib.pyplot as plt
 
 
-def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100):
+def logMUA_distribution(logMUA, fixed_threshold, sigma_threshold, plot, bins=100, output_path):
     # signal amplitude distribution
     logMUA = logMUA[np.isfinite(logMUA)]
     hist, edges = np.histogram(logMUA, bins=bins, density=True)

@@ -43,9 +43,9 @@ rule all:
         img = report(os.path.join(output_path, 'cluster'+PLOT_FORMAT))
     shell:
         """
-        ln -s {input.data} {output.data}
-        python {input.plot_script} --data {output.data} \
-                                   --output {output.img} \
+        ln -s "{input.data}" "{output.data}"
+        python {input.plot_script} --data "{output.data}" \
+                                   --output "{output.img}" \
         """
 
 #### Blocks
@@ -68,12 +68,12 @@ rule clustering:
         img = report(os.path.join(output_path, 'clustering', 'wave_clustering'+PLOT_FORMAT))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --metric {params.metric} \
                               --time_dim {params.time_dim} \
                               --neighbour_distance {params.neighbour_distance} \
                               --min_samples {params.min_samples}
-        python {input.plot_script} --data {output.data} \
-                                   --output {output.img}
+        python {input.plot_script} --data "{output.data}" \
+                                   --output "{output.img}"
         """

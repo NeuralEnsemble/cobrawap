@@ -70,27 +70,6 @@ def MUA_estimation(asig, highpass_freq, lowpass_freq, MUA_rate, psd_overlap,
             print("MUA signal estimated in frequency range "\
                 + "{:.2f} - {:.2f} Hz.".format(freqs[1], freqs[high_idx]))
 
-        if t_stop < 6*pq.s:
-            fig, ax = plt.subplots(ncols=2)
-            current_signal = asig.time_slice(t_start=asig.t_start, t_stop=6*pq.s)
-            palette = sns.color_palette("Set2")
-            for j, channel_psd in enumerate(psd[:8]):
-                ax[0].plot(freqs, channel_psd, c=palette[j])
-                ax[1].plot(current_signal.times,
-                           current_signal.as_array()[:,j],
-                           color=palette[j])
-                ax[1].axvspan(t_start, t_stop, alpha=0.2, color='k')
-            ax[1].set_title('{:.3f} - {:.3f}s'.format(t_start, t_stop))
-            ax[1].set_xlabel('time [s]')
-            ax[0].set_xlabel('frequency [Hz]')
-            ax[0].set_ylabel('spectral density')
-            ax[0].set_ylim((0,3*10**-7))
-            frame_folder = '/home/rgutzen/ProjectsData/wave_analysis_pipeline/stage03_trigger_detection/transformation/MUA_estimation/MUA_estimation_frames'
-            if not os.path.exists(frame_folder):
-                os.makedirs(frame_folder)
-            plt.savefig(os.path.join(frame_folder, 'frame_{}.png'.format(str(i).zfill(5))))
-            plt.close(fig)
-
         avg_power = np.mean(psd, axis=-1)
         avg_power_in_freq_band = np.mean(psd[:,1:high_idx], axis=-1)
         MUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/

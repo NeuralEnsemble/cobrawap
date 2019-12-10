@@ -66,6 +66,7 @@ subworkflow stage03:
 rule all:
     input:
         last_stage = os.path.join(output_path, '{}_output.nix'.format(STAGES[-1])),
+        clear_reports = os.path.join(output_path, 'clear.done'),
         reports = expand(os.path.join(output_path, '{subworkflow_name}',
                                       'report.html'),
                          subworkflow_name=STAGES)
@@ -73,7 +74,6 @@ rule all:
         """
         rm */temp_config.yaml
         """
-
 
 rule exc_stage01:
     input:
@@ -107,7 +107,6 @@ rule exc_stage03:
         ln -s {input.stage_output} {output}
         """
 
-
 rule create_report:
     output:
         report = os.path.join(output_path, '{subworkflow_name}', 'report.html')
@@ -115,4 +114,14 @@ rule create_report:
         """
         cd {wildcards.subworkflow_name}
         snakemake --report {output.report}
+        """
+
+rule clear_reports:
+    output:
+        temp(os.path.join(output_path, 'clear.done'))
+    params:
+        output_path = output_path
+    shell:
+        """
+        rm {params.output_path}/*/report.html
         """

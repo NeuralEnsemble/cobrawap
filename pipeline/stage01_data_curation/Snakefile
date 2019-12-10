@@ -38,7 +38,7 @@ rule all:
         os.path.join(output_path, STAGE_OUTPUT)
     shell:
         """
-        ln -s {input[0]} {output}
+        ln -s "{input[0]}" "{output}"
         """
 
 rule curate:
@@ -60,16 +60,16 @@ rule curate:
         plot_channel = PLOT_CHANNEL
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --sampling_rate {params.sampling_rate} \
                               --spatial_scale {params.spatial_scale} \
                               --data_name {wildcards.data_name} \
                               --annotations {params.annotations} \
                               --array_annotations {params.array_annotations} \
                               --kwargs {params.kwargs}
-        python {input.plot_script} --data {output.data} \
-                                   --output {output.img} \
+        python {input.plot_script} --data "{output.data}" \
+                                   --output "{output.img}" \
                                    --tstart {params.plot_tstart} \
                                    --tstop {params.plot_tstop} \
                                    --channel {params.plot_channel} \

@@ -92,9 +92,9 @@ rule all:
                                   'transitions'+PLOT_FORMAT))
     shell:
         """
-        ln -s {input.data} {output.data}
-        python {input.plot_script} --data {input.data} \
-                                   --output {output.img} \
+        ln -s "{input.data}" "{output.data}"
+        python {input.plot_script} --data "{input.data}" \
+                                   --output "{output.img}" \
                                    --tstart {params.tstart} \
                                    --tstop {params.tstop} \
                                    --channel {params.channel}
@@ -109,7 +109,7 @@ rule transformation:
                             'transformed_signal'+neo_format)
     shell:
         """
-        cp {input.data} {output.data}
+        cp "{input.data}" "{output.data}"
         """
 
 #### Blocks ####
@@ -138,16 +138,16 @@ rule MUA_estimation:
                                   .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --highpass_freq {params.highpass_freq} \
                               --lowpass_freq {params.lowpass_freq} \
                               --MUA_rate {params.MUA_rate} \
                               --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
-        python {input.plot_script} --data {input.data} \
-                                   --MUA_data {output.data} \
-                                   --output {output.img} \
+        python {input.plot_script} --data "{input.data}" \
+                                   --MUA_data "{output.data}" \
+                                   --output "{output.img}" \
                                    --tstart {params.plot_tstart} \
                                    --tstop {params.plot_tstop} \
                                    --channel {params.plot_channel}
@@ -165,9 +165,9 @@ rule threshold:
         data = os.path.join(output_path, 'threshold', 'transitions'+neo_format)
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --thresholds {input.thresholds}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --thresholds "{input.thresholds}"
         """
 
 rule calc_tresholds_fixed:
@@ -180,8 +180,8 @@ rule calc_tresholds_fixed:
         array = os.path.join(output_path, 'threshold', 'fixed_thresholds.npy')
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.array} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.array}" \
                               --threshold {params.threshold}
         """
 
@@ -198,8 +198,8 @@ rule calc_tresholds_fitted:
         array = os.path.join(output_path, 'threshold', 'fitted_thresholds.npy')
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.array} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.array}" \
                               --sigma_factor {params.sigma_factor} \
                               --fit_function {params.fit_function} \
                               --bin_num {params.bin_num} \
@@ -216,8 +216,8 @@ rule hilbert_phase:
         data = os.path.join(output_path, 'hilbert_phase', 'transitions'+neo_format)
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --transition_phase {params.transition_phase}
         """
 
@@ -231,8 +231,8 @@ rule minima:
         data = os.path.join(output_path, 'minima', 'transitions'+neo_format)
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
                               --order {params.order}
         """
 
@@ -248,8 +248,8 @@ rule plot_movie_frames:
         frame_folder = directory(os.path.join('{path}', '{file}_frames')),
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --frame_folder {output.frame_folder} \
+        python {input.script} --data "{input.data}" \
+                              --frame_folder "{output.frame_folder}" \
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
         """
@@ -271,12 +271,12 @@ rule plot_movie:
     shell:
         """
         ffmpeg -y -framerate {params.fps} \
-               -i {params.frame_path} -q {params.quality} \
+               -i "{params.frame_path}" -q {params.quality} \
                -crf {params.quality} \
                -vb {params.bitrate} \
                -vcodec libx264 \
                -vf scale={params.scale_x}:{params.scale_y} \
-               {output}
+               "{output}"
         """
 
 rule mp4_to_webm:
@@ -286,5 +286,5 @@ rule mp4_to_webm:
         '{path}.webm'
     shell:
         """
-        ffmpeg -i {input} -vcodec libvpx -acodec libvorbis {output}
+        ffmpeg -i "{input}" -vcodec libvpx -acodec libvorbis "{output}"
         """

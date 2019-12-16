@@ -18,7 +18,7 @@ if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--data",   nargs='?', type=str)
-    CLI.add_argument("--MUA_data",   nargs='?', type=str)
+    CLI.add_argument("--logMUA_data",   nargs='?', type=str)
     CLI.add_argument("--tstart", nargs='?', type=float)
     CLI.add_argument("--tstop",  nargs='?', type=float)
     CLI.add_argument("--channel",nargs='?', type=none_or_int)
@@ -26,8 +26,8 @@ if __name__ == '__main__':
 
     with neo.NixIO(args.data) as io:
         asig = io.read_block().segments[0].analogsignals[0]
-    with neo.NixIO(args.MUA_data) as io:
-        MUA_asig = io.read_block().segments[0].analogsignals[0]
+    with neo.NixIO(args.logMUA_data) as io:
+        logMUA_asig = io.read_block().segments[0].analogsignals[0]
 
     dim_t, channel_num = asig.shape
 
@@ -40,11 +40,11 @@ if __name__ == '__main__':
     asig = zscore(asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
     ax.plot(asig.times, asig.as_array()[:,args.channel], label='original signal')
 
-    MUA_asig = zscore(MUA_asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
-    ax.plot(MUA_asig.times, MUA_asig.as_array()[:,args.channel]+8,
-            label='MUA')
+    logMUA_asig = zscore(logMUA_asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
+    ax.plot(logMUA_asig.times, logMUA_asig.as_array()[:,args.channel]+8,
+            label='log MUA')
 
-    # ToDo: add actual axis (left and right) for raw and MUA signal
+    # ToDo: add actual axis (left and right) for raw and logMUA signal
 
     ax.set_title('Channel {}'.format(args.channel))
     ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))

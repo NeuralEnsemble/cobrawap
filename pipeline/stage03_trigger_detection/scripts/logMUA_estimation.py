@@ -12,7 +12,7 @@ sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape
 
 
-def MUA_estimation(asig, highpass_freq, lowpass_freq, MUA_rate, psd_overlap,
+def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate, psd_overlap,
                    fft_slice):
     time_steps, channel_num = asig.shape
     fs = asig.sampling_rate.rescale('Hz')
@@ -22,28 +22,28 @@ def MUA_estimation(asig, highpass_freq, lowpass_freq, MUA_rate, psd_overlap,
         raise InputError("Too few fft samples to estimate the frequency "\
                        + "content in the range [{} {}]Hz."\
                          . format(highpass_freq, lowpass_freq))
-    # MUA_rate can only be an int fraction of the orginal sampling_rate
-    if MUA_rate is None:
-        MUA_rate = highpass_freq
-    if MUA_rate > fs:
-        raise InputError("The requested MUA rate can not be larger than "\
+    # logMUA_rate can only be an int fraction of the orginal sampling_rate
+    if logMUA_rate is None:
+        logMUA_rate = highpass_freq
+    if logMUA_rate > fs:
+        raise InputError("The requested logMUA rate can not be larger than "\
                        + "the inital sampling rate!")
-    subsample_order = int(fs/MUA_rate)
-    eff_MUA_rate = fs/subsample_order
-    print("effective MUA rate = {} Hz".format(eff_MUA_rate))
+    subsample_order = int(fs/logMUA_rate)
+    eff_logMUA_rate = fs/subsample_order
+    print("effective logMUA rate = {} Hz".format(eff_logMUA_rate))
 
-    if 1/eff_MUA_rate > fft_slice:
-        raise ValueError("The given MUA_rate is too low to capture "\
-                       + "the MUA estimate of all the signal with "\
+    if 1/eff_logMUA_rate > fft_slice:
+        raise ValueError("The given logMUA_rate is too low to capture "\
+                       + "the logMUA estimate of all the signal with "\
                        + "sample size {}. ".format(fft_slice)\
-                       + "Either increase the MUA_rate "\
+                       + "Either increase the logMUA_rate "\
                        + "or increase fft_slice.")
 
     subsample_times = np.arange(asig.t_start.rescale('s'),
                                 asig.t_stop.rescale('s'),
-                                1/eff_MUA_rate) * asig.t_start.units
+                                1/eff_logMUA_rate) * asig.t_start.units
 
-    MUA_signal = np.zeros((len(subsample_times), channel_num))
+    logMUA_signal = np.zeros((len(subsample_times), channel_num))
 
     for i, t in enumerate(subsample_times):
         if t < asig.t_start.rescale('s') + fft_slice/2:
@@ -65,24 +65,23 @@ def MUA_estimation(asig, highpass_freq, lowpass_freq, MUA_rate, psd_overlap,
                                nfft=None)
 
         high_idx = (np.abs(freqs - lowpass_freq)).argmin()
-        # ToDo: log !?
         if not i:
-            print("MUA signal estimated in frequency range "\
+            print("logMUA signal estimated in frequency range "\
                 + "{:.2f} - {:.2f} Hz.".format(freqs[1], freqs[high_idx]))
 
         avg_power = np.mean(psd, axis=-1)
         avg_power_in_freq_band = np.mean(psd[:,1:high_idx], axis=-1)
-        MUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/
+        logMUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/
                                           avg_power))
 
-    MUA_asig = asig.duplicate_with_new_data(MUA_signal)
-    MUA_asig.array_annotations = asig.array_annotations
-    MUA_asig.sampling_rate = eff_MUA_rate
-    MUA_asig.annotate(freq_band = [highpass_freq, lowpass_freq],
+    logMUA_asig = asig.duplicate_with_new_data(logMUA_signal)
+    logMUA_asig.array_annotations = asig.array_annotations
+    logMUA_asig.sampling_rate = eff_logMUA_rate
+    logMUA_asig.annotate(freq_band = [highpass_freq, lowpass_freq],
                       psd_freq_res = highpass_freq,
                       psd_overlap = psd_overlap,
                       psd_fs = fs)
-    return MUA_asig
+    return logMUA_asig
 
 
 def none_or_float(value):
@@ -97,7 +96,7 @@ if __name__ == '__main__':
     CLI.add_argument("--data",          nargs='?', type=str)
     CLI.add_argument("--highpass_freq", nargs='?', type=float)
     CLI.add_argument("--lowpass_freq",  nargs='?', type=float)
-    CLI.add_argument("--MUA_rate",      nargs='?', type=none_or_float)
+    CLI.add_argument("--logMUA_rate",      nargs='?', type=none_or_float)
     CLI.add_argument("--psd_overlap",   nargs='?', type=float)
     CLI.add_argument("--fft_slice",   nargs='?', type=none_or_float)
     args = CLI.parse_args()
@@ -107,24 +106,24 @@ if __name__ == '__main__':
 
     check_analogsignal_shape(block.segments[0].analogsignals)
 
-    MUA_rate = None if args.MUA_rate is None \
-               else args.MUA_rate*pq.Hz
+    logMUA_rate = None if args.logMUA_rate is None \
+               else args.logMUA_rate*pq.Hz
 
     fft_slice = None if args.fft_slice is None \
                 else args.fft_slice*pq.s
 
 
     asig = block.segments[0].analogsignals[0]
-    asig = MUA_estimation(asig,
+    asig = logMUA_estimation(asig,
                           highpass_freq=args.highpass_freq*pq.Hz,
                           lowpass_freq=args.lowpass_freq*pq.Hz,
-                          MUA_rate=MUA_rate,
+                          logMUA_rate=logMUA_rate,
                           psd_overlap=args.psd_overlap,
                           fft_slice=fft_slice)
 
     # save processed data
     asig.name += ""
-    asig.description += "Estimated MUA signal [{}, {}] Hz ({}). "\
+    asig.description += "Estimated logMUA signal [{}, {}] Hz ({}). "\
                         .format(args.highpass_freq, args.lowpass_freq,
                                 os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig

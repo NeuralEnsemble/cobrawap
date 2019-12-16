@@ -5,7 +5,7 @@ __INPUT__: A dataset of raw data of any recording modality and any format, along
 
 __OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, saved as a [Nix](https://github.com/G-Node/nix) file, containing one Segment with one AnalogSignal object and the minimal required metadata. _(Details down below)_
 
-__BLOCKS__: Custom data curation, specific to the dataset | Check of the data format, metadata, and namespace
+__BLOCKS__: Custom data curation specific to the dataset; check of the data format, metadata, and namespace
 
 ## Required Data Capabilities
 _What kind of data can go into the SWAP pipeline?_
@@ -15,9 +15,9 @@ _What kind of data can go into the SWAP pipeline?_
 ## Required Metadata
 #### Minimum metadata for SWAP pipeline
 _required, for a correct processing of the data_
-* Sampling rate of AnalogSignal
+* Sampling rate of the signals
 * Distance between electrodes/pixels (as annotation `spatial_scale` in AnalogSignal)
-* Relative spatial location of channels (as coordinates in linked ChannelIndex object)
+* Relative spatial location of channels (as array_annotations `x_coords` and `y_coords` in AnalogSignal; _[use ChannelIndex objects instead, when [#773](https://github.com/NeuralEnsemble/python-neo/issues/773) is fixed]_)
 
 #### Recommended metadata for SWAP pipeline
 _desired, for a correct interpretation of the results_
@@ -30,16 +30,21 @@ _desired, for a correct interpretation of the results_
 * Any additional protocols or events (e.g. stimulation) influencing the signals
 * Lab where the experiment was performed (+ contact person performing the experiment)
 
+<!--
 #### Structure of spatial information in Neo used for this pipeline
 * All signals are in an AnalogSignal object (times x N channels)
 * It is linked to a ChannelIndex object with
     * the same *name* as the AnalogSignal
     * *channel_ids*, an array with ids of 0 to N
     * *index*, an array with ids of 0 to N
-    * *coordinates*, an array of tuples of length N
+    * *coordinates*, an array of tuples of length N -->
 
 ## Adding Datasets into the SWA pipeline
-There are two options to insert data into the pipeline. __Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset. __Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. [Neo](https://neo.readthedocs.io/) or [BIDS](https://bids.neuroimaging.io)), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using [odML](https://g-node.github.io/python-odml/) and [odMLtables](https://github.com/INM-6/python-odmltables)) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the [KnowledgeGraph](https://www.humanbrainproject.eu/en/explore-the-brain/search/).
+There are two options to insert data into the pipeline.
+
+__Option 1__ is loading the raw data and manually adding the minimum amount of metadata as annotations (+ eventual additional information). This is the quick way to get started with the analysis and getting preliminary insight into the dataset.
+
+__Option 2__ is the proper way to enable deep and reproducible insight, but requires more time and effort. This option would be the full extensive description of a dataset using __a)__ standard formats to structure and represent the data (e.g. [Neo](https://neo.readthedocs.io/) or [BIDS](https://bids.neuroimaging.io)), and __b)__ the inclusion of all available metadata describing every aspect of the experiment, represented in a standardized human and machine readable way (e.g. using [odML](https://g-node.github.io/python-odml/) and [odMLtables](https://github.com/INM-6/python-odmltables)) storing and linking it with the data, and __c)__ the storage in an accessible (versioned) repository alongside a concise documentation, a license, and a citation guide. Some of the aspects of option 2 go hand in hand with filing the dataset into the in the [KnowledgeGraph](https://www.humanbrainproject.eu/en/explore-the-brain/search/).
 
 #### Guide for option 1 - loading raw data and manually adding metadata
 The data curation stage is very specific and dependent on the type and format of the given dataset. Therefore, the user typically needs to write a custom curation script to prepare the dataset for the entry into the pipeline. Here, we provide a guideline and template for writing such a script and using it as a block in the Data Curation stage. Each type of dataset (e.g. coming from the same experiment) needs to be given an identifying name `<data_name>`, which is used to link it to the corresponding script and config file.

@@ -52,7 +52,6 @@ def input_file(wildcards):
 
 rule all:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
         data = os.path.join(output_path,
                             BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'

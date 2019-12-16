@@ -25,7 +25,7 @@ DETECTION_BLOCK = config["DETECTION_BLOCK"]
 
 MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
 MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
-MUA_RATE = config["MUA_RATE"]
+logMUA_RATE = config["logMUA_RATE"]
 FFT_SLICE = config["FFT_SLICE"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -116,25 +116,25 @@ rule transformation:
 
 #### Transformation Blocks ####
 
-rule MUA_estimation:
+rule logMUA_estimation:
     input:
         data = transformation_input_file,
-        script = 'scripts/MUA_estimation.py',
-        plot_script = 'scripts/plot_MUA_trace.py'
+        script = 'scripts/logMUA_estimation.py',
+        plot_script = 'scripts/plot_logMUA_trace.py'
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
-        MUA_rate = MUA_RATE,
+        logMUA_rate = logMUA_RATE,
         fft_slice = FFT_SLICE,
         psd_overlap = PSD_OVERLAP,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
         plot_channel = PLOT_CHANNEL
     output:
-        data = os.path.join(output_path, 'transformation', 'MUA_estimation',
+        data = os.path.join(output_path, 'transformation', 'logMUA_estimation',
                             '{rule_name}'+neo_format),
         img = report(os.path.join(output_path, 'transformation', '{rule_name}',
-                                  'MUA_trace_{}-{}s_channel{}{}'\
+                                  'logMUA_trace_{}-{}s_channel{}{}'\
                                   .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
@@ -142,11 +142,11 @@ rule MUA_estimation:
                               --output "{output.data}" \
                               --highpass_freq {params.highpass_freq} \
                               --lowpass_freq {params.lowpass_freq} \
-                              --MUA_rate {params.MUA_rate} \
+                              --logMUA_rate {params.logMUA_rate} \
                               --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
         python {input.plot_script} --data "{input.data}" \
-                                   --MUA_data "{output.data}" \
+                                   --logMUA_data "{output.data}" \
                                    --output "{output.img}" \
                                    --tstart {params.plot_tstart} \
                                    --tstop {params.plot_tstop} \
@@ -193,17 +193,21 @@ rule calc_tresholds_fitted:
         sigma_factor = SIGMA_FACTOR,
         fit_function = FIT_FUNCTION,
         bin_num = BIN_NUM,
-        show_plots = True
+        plot_channel = PLOT_CHANNEL
     output:
-        array = os.path.join(output_path, 'threshold', 'fitted_thresholds.npy')
+        array = os.path.join(output_path, 'threshold', 'fitted_thresholds.npy'),
+        img = report(os.path.join(output_path, 'threshold',
+                     'amplitude_distribution_channel{}{}'\
+                     .format(PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
         python {input.script} --data "{input.data}" \
                               --output "{output.array}" \
+                              --output_img "{output.img}" \
                               --sigma_factor {params.sigma_factor} \
                               --fit_function {params.fit_function} \
                               --bin_num {params.bin_num} \
-                              --show_plots {params.show_plots}
+                              --plot_channel {params.plot_channel}
         """
 
 rule hilbert_phase:

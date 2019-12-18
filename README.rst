@@ -5,9 +5,9 @@ This repository hosts the collaboration between WP3.2 and WP5.7
 
 Involved members
 ----------------
-Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula
+Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula.
 
-Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu
+Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu.
 
 Istituto Superiore di Sanità (ISS), Roma, Italy: Maurizio Mattia, Antonio Pazienti.
 

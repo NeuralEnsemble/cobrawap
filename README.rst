@@ -25,9 +25,10 @@ Please cite this repository if you use it in your work.
 
 Background
 ----------
-This work aims at offering to the community an analysis pipeline based on the algorythms described in arXiv:1902.08599_ (submitted, under review) and its evolution.
+This work aims at offering to the community an analysis pipeline based on the algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and arXiv:1811.11687_ (submitted, under review).
 
 .. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
+.. _arXiv:1811.11687: https://arxiv.org/abs/1811.11687
 
 Overarching goal, strategy and roadmap
 --------------------------------------

@@ -19,18 +19,58 @@ else:
 output_path = os.path.join(output_path, output_folder_name)
 
 PLOT_FORMAT = config["PLOT_FORMAT"]
+MEASURES = config["MEASURE"]
 
 def input(wildcards):
     return stage_input
+
+def measures_output(wildcards):
+    return [os.path.join(output_path, measure, measure+'.csv')
+            for measure in MEASURES]
+
+rule all:
+    input:
+        data = measures_output,
+        config = 'config.yaml'
+        script = 'scripts/merge_dataframes.py'
+    output:
+        data = os.path.join(output_path, 'measures.csv')
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
+# ToDo: combine rule with {metric} wildcard?
 
 rule velocity:
     input:
         data = input,
         script = 'scripts/velocity.py'
     output:
-        data = os.path.join(output_path, 'velocity', 'velocities.npy')
+        data = os.path.join(output_path, 'velocity', 'velocities.csv'),
+        img = report(os.path.join(output_path, 'velocity',
+                                  'velocities'+PLOT_FORMAT))
     shell:
         """
         python {input.script} --data {input.data} \
-                              --output {output.data}
+                              --output {output.data} \
+                              --output_img {output.img}
         """
+
+rule direction:
+    input:
+        data = input,
+        script = 'scripts/direction.py'
+    output:
+        data = os.path.join(output_path, 'direction', 'direction.csv'),
+        img = report(os.path.join(output_path, 'direction',
+                                  'direction'+PLOT_FORMAT))
+    shell:
+        """
+        python {input.script} --data {input.data} \
+                              --output {output.data} \
+                              --output_img {output.img}
+        """
+
+# rule gradient_direction:
+# slice signal for each wave

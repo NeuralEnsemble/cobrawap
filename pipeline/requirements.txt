@@ -5,7 +5,7 @@
 - snakemake >= 5.8.1
 # - neo >= 0.8.0
 # - git+git://github.com/NeuralEnsemble/python-neo.git #(pip install from git repo branch)
-- git+git://github.com:G-Node/python-neo.git@fix/nixio-read-channel-names
+- git+https://github.com/G-Node/python-neo.git@fix/nixio-read-channel-names
 # - elephant >= 0.6.3
 - git+git://github.com/NeuralEnsemble/elephant.git #(pip install from git repo branch)
 - nixio >= 1.5.0b4
@@ -13,3 +13,4 @@
 - matplotlib
 - seaborn
 - networkx
+- shapely

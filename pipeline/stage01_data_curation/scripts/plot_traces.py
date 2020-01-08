@@ -27,6 +27,7 @@ if __name__ == '__main__':
     with neo.NixIO(args.data) as io:
         asig = io.read_block().segments[0].analogsignals
 
+
     check_analogsignal_shape(asig)
     asig = asig[0]
 

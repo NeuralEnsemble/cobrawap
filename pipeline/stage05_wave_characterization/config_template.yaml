@@ -1,0 +1,9 @@
+# Config file for Stage 5 - Wave Characterization
+
+OUTPUT: 'velocity/velocities.npy'
+
+PLOT_FORMAT: '.png'
+
+# Measure to compute
+# 'velocity', 'direction'
+MEASURES: ['direction']

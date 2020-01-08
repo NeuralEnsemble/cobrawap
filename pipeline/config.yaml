@@ -3,6 +3,8 @@ STAGES:
     - 'stage01_data_curation'
     - 'stage02_preprocessing'
     - 'stage03_trigger_detection'
+    - 'stage04_wavefront_detection'
+    - 'stage05_wave_characterization'
 
 # Plot settings
 PLOT_TSTART: 0  # in s

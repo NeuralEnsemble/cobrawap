@@ -45,6 +45,8 @@ QUALITY = config["QUALITY"]
 SCALE_X = config["SCALE_X"]
 SCALE_Y = config["SCALE_Y"]
 FPS = config["FPS"]
+BITRATE = config["BITRATE"]
+COLORMAP = config["COLORMAP"]
 
 # ToDo: outsource Transformation as subsection via include?
 
@@ -103,13 +105,27 @@ rule all:
 rule transformation:
     input:
         data = transformation_input_file,
-        configfile = 'config.yaml'
+        configfile = 'config.yaml',
+        plot_script = 'scripts/plot_transformed_trace.py'
+    params:
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channel = PLOT_CHANNEL
     output:
         data = os.path.join(output_path, '{rule_name}',
-                            'transformed_signal'+neo_format)
+                            'transformed_signal'+neo_format),
+        img = report(os.path.join(output_path, 'transformation', '{rule_name}',
+                                  'transformed_trace_{}-{}s_channel{}{}'\
+                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
         cp "{input.data}" "{output.data}"
+        python {input.plot_script} --data "{input.data}" \
+                                   --trans_data "{output.data}" \
+                                   --output "{output.img}" \
+                                   --tstart {params.plot_tstart} \
+                                   --tstop {params.plot_tstop} \
+                                   --channel {params.plot_channel}
         """
 
 #### Blocks ####
@@ -120,7 +136,7 @@ rule logMUA_estimation:
     input:
         data = transformation_input_file,
         script = 'scripts/logMUA_estimation.py',
-        plot_script = 'scripts/plot_logMUA_trace.py'
+        plot_script = 'scripts/plot_trans_trace.py'
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
@@ -146,11 +162,24 @@ rule logMUA_estimation:
                               --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
         python {input.plot_script} --data "{input.data}" \
-                                   --logMUA_data "{output.data}" \
+                                   --trans_data "{output.data}" \
                                    --output "{output.img}" \
                                    --tstart {params.plot_tstart} \
                                    --tstop {params.plot_tstop} \
                                    --channel {params.plot_channel}
+        """
+
+rule phase:
+    input:
+        data = transformation_input_file,
+        script = 'scripts/phase_transform.py'
+    output:
+        data = os.path.join(output_path, 'transformation', 'phase',
+                            '{rule_name}'+neo_format)
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
         """
 
 #### Detection Blocks ####
@@ -248,6 +277,7 @@ rule plot_movie_frames:
     params:
         frame_name = 'frame',
         frame_format = PLOT_FORMAT,
+        colormap = COLORMAP
     output:
         frame_folder = directory(os.path.join('{path}', '{file}_frames')),
     shell:
@@ -256,6 +286,7 @@ rule plot_movie_frames:
                               --frame_folder "{output.frame_folder}" \
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
+                              --colormap {params.colormap}
         """
 
 rule plot_movie:
@@ -265,17 +296,17 @@ rule plot_movie:
         os.path.join('{path}', '{file}.mp4')
     params:
         frame_path = lambda wildcards, input: os.path.join(input[0],
-                                                'frame_%05d.{}'\
+                                                'frame_%05d{}'\
                                                 .format(PLOT_FORMAT)),
         quality = QUALITY,
         scale_x = SCALE_X,
         scale_y = SCALE_Y,
-        bitrate = '20M',
+        bitrate = BITRATE,
         fps = FPS
     shell:
         """
         ffmpeg -y -framerate {params.fps} \
-               -i "{params.frame_path}" -q {params.quality} \
+               -i "{params.frame_path}" \
                -crf {params.quality} \
                -vb {params.bitrate} \
                -vcodec libx264 \

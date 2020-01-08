@@ -28,7 +28,7 @@ INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
 if 'INPUT_FILE' in config:
     stage_input = config["INPUT_FILE"]
 else:
-    stage_input = os.path.join(output_path, 'stage01_data_curation', 'LENS_data.nix')
+    stage_input = os.path.join(output_path, 'stage01_data_curation', 'data.nix')
 
 output_path = os.path.join(output_path, 'stage02_preprocessing/')
 

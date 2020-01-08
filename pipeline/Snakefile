@@ -8,7 +8,7 @@ import numpy as np
 sys.path.append('../')
 from settings import output_path
 
-working_dir = './'
+working_dir = ''
 STAGES = config["STAGES"]
 # ToDo: overwrite plotting configs
 
@@ -62,6 +62,18 @@ subworkflow stage03:
     configfile:
         os.path.join(working_dir, STAGES[2], "temp_config.yaml")
 
+subworkflow stage04:
+    workdir:
+        os.path.join(working_dir, STAGES[3])
+    configfile:
+        os.path.join(working_dir, STAGES[3], "temp_config.yaml")
+
+subworkflow stage05:
+    workdir:
+        os.path.join(working_dir, STAGES[4])
+    configfile:
+        os.path.join(working_dir, STAGES[4], "temp_config.yaml")
+
 
 rule all:
     input:
@@ -76,7 +88,8 @@ rule all:
 
 rule exc_stage01:
     input:
-        stage_output = stage01(read_stage_output(STAGES[0]))
+        stage_output = stage01(read_stage_output(STAGES[0])),
+        config = os.path.join(working_dir, STAGES[0], "config.yaml")
     output:
         temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[0])))
     shell:
@@ -87,7 +100,8 @@ rule exc_stage01:
 rule exc_stage02:
     input:
         stage_output = stage02(read_stage_output(STAGES[1])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[0]))
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[0])),
+        config = os.path.join(working_dir, STAGES[1], "config.yaml")
     output:
         temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[1])))
     shell:
@@ -98,7 +112,8 @@ rule exc_stage02:
 rule exc_stage03:
     input:
         stage_output = stage03(read_stage_output(STAGES[2])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[1]))
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[1])),
+        config = os.path.join(working_dir, STAGES[2], "config.yaml")
     output:
         temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[2])))
     shell:
@@ -106,9 +121,34 @@ rule exc_stage03:
         ln -s {input.stage_output} {output}
         """
 
-rule create_report:
+rule exc_stage04:
+    input:
+        stage_output = stage04(read_stage_output(STAGES[3])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[2])),
+        config = os.path.join(working_dir, STAGES[3], "config.yaml")
     output:
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[3])))
+    shell:
+        """
+        ln -s {input.stage_output} {output}
+        """
+
+rule exc_stage05:
+    input:
+        stage_output = stage05(read_stage_output(STAGES[4])),
+        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[3])),
+        config = os.path.join(working_dir, STAGES[4], "config.yaml")
+    output:
+        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[4])))
+    shell:
+        """
+        ln -s {input.stage_output} {output}
+        """
+
+rule create_report:
+    input:
         clear = os.path.join(output_path, '{subworkflow_name}', 'report.clear'),
+    output:
         report = os.path.join(output_path, '{subworkflow_name}', 'report.html')
     shell:
         """
@@ -119,8 +159,6 @@ rule create_report:
 rule clear_report:
     output:
         temp(os.path.join('{path}', 'report.clear'))
-    params:
-        output_path = output_path
     shell:
         """
         rm -f "{wildcards.path}/report.html"

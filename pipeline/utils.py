@@ -102,8 +102,9 @@ def determine_spatial_scale(coords):
     return np.min(dists)
 
 def determine_dims(coords):
-    spatial_scale = determine_spatial_scale(coords)
-    int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
+    # spatial_scale = determine_spatial_scale(coords)
+    # int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
+    int_coords = np.round(np.array(coords)).astype(int)
     dim_x, dim_y = np.max(int_coords[:,0])+1, np.max(int_coords[:,1])+1
     return dim_x, dim_y
 

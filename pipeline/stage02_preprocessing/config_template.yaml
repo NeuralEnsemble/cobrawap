@@ -5,9 +5,10 @@ OUTPUT: "preprocessed_data.nix"
 # and in which order. Execution order is from first to last entry.
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
-# 'spatial_smooting', 'img_roi_selection'
-BLOCK_ORDER: ['roi_selection'] #, 'background_substraction', 'normalization']
+# 'spatial_smooting', 'roi_selection'
+BLOCK_ORDER: ['frequency_filter']
 
+# ToDo: Param dict for each block? Or are there many shared parameters?
 
 # General parameters
 ####################
@@ -27,8 +28,8 @@ NORMALIZE_BY: 'max'
 ##########################
 # parameters to be passed to the butterworth frequency filter
 # function by elephant
-HIGHPASS_FREQ: 200  # in Hz
-LOWPASS_FREQ: 1500  # in Hz
+HIGHPASS_FREQ: 0  # in Hz
+LOWPASS_FREQ: 150  # in Hz
 FILTER_ORDER: 2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
@@ -48,7 +49,6 @@ DETRENDING_ORDER: 2
 
 # BLOCK - spatial_smooting
 ##########################
-
 
 # BLOCK - img_roi_selection
 ###########################

@@ -25,8 +25,7 @@ if __name__ == '__main__':
     # build 3D array of trigger times
     triggers = np.zeros((len(up_idx), 3))
     triggers[:,2] = evts.times[up_idx] * args.time_dim
-    for i, (channel, t) in enumerate(zip(evts.array_annotations['channels'][up_idx],
-                                         evts.times)):
+    for i, channel in enumerate(evts.array_annotations['channels'][up_idx]):
         triggers[i][0] = asig.array_annotations['x_coords'][int(channel)]
         triggers[i][1] = asig.array_annotations['y_coords'][int(channel)]
 
@@ -49,6 +48,7 @@ if __name__ == '__main__':
                                     +'Labels are ids of wavefronts. '
                                     +'Annotated with the channel id ("channels") and '\
                                     +'its position ("x_coords", "y_coords").',
+                         spatial_scale=asig.annotations['spatial_scale'],
                          cluster_algorithm='sklearn.cluster.DBSCAN',
                          cluster_eps=args.neighbour_distance,
                          cluster_metric=args.metric,

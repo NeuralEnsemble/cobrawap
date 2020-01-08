@@ -19,5 +19,5 @@ METRIC: 'euclidean'
 # eps, maximum distance between points to be neigbours
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
-# Transformation factor from time dimension to space dimension.
+# Transformation factor from time dimension to space dimension (in the units the data is presented).
 TIME_DIM: 250

@@ -14,6 +14,7 @@ if __name__ == '__main__':
     CLI.add_argument("--frame_folder",  nargs='?', type=str)
     CLI.add_argument("--frame_name",    nargs='?', type=str)
     CLI.add_argument("--frame_format",  nargs='?', type=str)
+    CLI.add_argument("--colormap",      nargs='?', type=str)
 
     args = CLI.parse_args()
 
@@ -54,10 +55,17 @@ if __name__ == '__main__':
     dim_x = np.max(asig.array_annotations['x_coords'])
     dim_y = np.max(asig.array_annotations['y_coords'])
 
+    # 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
+    if args.colormap == 'gray':
+        cmap = plt.cm.gray
+    else:
+        cmap = plt.get_cmap(args.colormap)
+
     for num, frame in enumerate(imgseq.as_array()):
         fig, ax = plt.subplots()
-        img = ax.imshow(frame, interpolation='nearest', cmap=plt.cm.gray,
+        img = ax.imshow(frame, interpolation='nearest', cmap=cmap,
                         vmin=vmin, vmax=vmax)
+        plt.colorbar(img, ax=ax)
 
         if len(ups) and up_coords[num].size:
             ax.plot(up_coords[num][:,1], up_coords[num][:,0],
@@ -74,13 +82,12 @@ if __name__ == '__main__':
         # ax.set_ylim((dim_y, 0))
         ax.set_ylabel('pixel size: {}'\
                       .format(asig.annotations['spatial_scale']))
-        ax.set_xlabel('{:.2f} {}'.format(asig.times[num],
-                                    asig.times.units.dimensionality.string))
+        ax.set_xlabel('{:.3f} s'.format(asig.times[num].rescale('s')))
 
         if not os.path.exists(args.frame_folder):
             os.makedirs(args.frame_folder)
         plt.savefig(os.path.join(args.frame_folder,
                                  args.frame_name
-                                 + '_{}.{}'.format(str(num).zfill(5),
+                                 + '_{}{}'.format(str(num).zfill(5),
                                                    args.frame_format)))
         plt.close(fig)

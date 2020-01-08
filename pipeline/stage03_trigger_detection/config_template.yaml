@@ -3,47 +3,50 @@
 OUTPUT: 'trigger_times.nix'
 
 PLOT_FORMAT: '.png'
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNEL: 50  # int or None. default 'None' -> randomly selected
 
 # TRANSFORMATION BLOCKS (optional)
 ##################################
 # The list determines the combination and order of blocks to transform the
 # preprocessed signal. Default []
-# Available Blocks: 'MUA_estimation', 'zscore', 'normalize'
-TRANSFORMATION_BLOCKS: [MUA_estimation]
+# Available Blocks: 'logMUA_estimation', 'phase', 'zscore', 'normalize'
+TRANSFORMATION_BLOCKS: ['phase']
 
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
 DETECTION_BLOCK: 'threshold'
 
-# BLOCK - MUA_estimation
+# BLOCK - logMUA_estimation
 ########################
 MUA_HIGHPASS_FREQ: 50  # in Hz
 MUA_LOWPASS_FREQ: 1200  # in Hz
-# Rate of the MUA signal. Must be <= the original sampling rate
-MUA_RATE: 100 # in Hz (default: 'None', takes highpass_freq)
+# Rate of the logMUA signal. Must be <= the original sampling rate
+# in Hz (default: 'None', takes highpass_freq)
+logMUA_RATE: 70
 # Length of time slice (in s) to estimate the local power spectrum
 # default 'None', takes minimum number of samples determined
 # by the lower bound of the frequency band
 FFT_SLICE: 0.1
 PSD_OVERLAP: 0.5  # default (0.5)
-PLOT_TSTART: 0  # in s
-PLOT_TSTOP: 10  # in s
-PLOT_CHANNEL: 12  # default 'None' -> randomly selected
 
 # BLOCK - Threshold
 ###################
 # Thresholding method: 'fixed', 'fitted', 'moment'
-THRESHOLD_METHOD: 'fitted'
+THRESHOLD_METHOD: 'fixed'
 
 # Fitting Parameters
 # available fit functions: 'Gaussian'
 FIT_FUNCTION: 'Gaussian'
 BIN_NUM: 100
-SIGMA_FACTOR: 3
+# Factor to multiply with the standard deviation
+# to determine threshold
+SIGMA_FACTOR: 2.5
 
 # Fixed Parameters
-FIXED_THRESHOLD: 2
+FIXED_THRESHOLD: 0
 
 # Moment Parameters
 MOMENT_ORDER: 2
@@ -62,7 +65,10 @@ MINIMA_ORDER: 3
 
 # VIDEO SETTINGS
 ################
-QUALITY: 5
+QUALITY: 5 #0(good) - 31(bad)
 SCALE_X: 720
 SCALE_Y: 720
 FPS: 10
+BITRATE: 20M
+# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
+COLORMAP: 'twilight'

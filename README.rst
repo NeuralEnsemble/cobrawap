@@ -5,14 +5,15 @@ This repository hosts the collaboration between WP3.2 and WP5.7
 
 Involved members
 ----------------
-Istituto Nazionale di Fisica Nucleare, Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula
+Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula.
 
-Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu
+Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu.
 
-Istituto Superiore di Sanità, Roma, Italy: Maurizio Mattia, Antonio Pazienti.
+Istituto Superiore di Sanità (ISS), Roma, Italy: Maurizio Mattia, Antonio Pazienti.
 
 Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
 
+European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy: Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
 
 License
 -------
@@ -24,9 +25,10 @@ Please cite this repository if you use it in your work.
 
 Background
 ----------
-This work aims at offering to the community an analysis pipeline based on the algorythms described in arXiv:1902.08599_ (submitted, under review) and its evolution.
+This work aims at offering to the community an analysis pipeline based on the algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and arXiv:1811.11687_ (submitted, under review).
 
 .. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
+.. _arXiv:1811.11687: https://arxiv.org/abs/1811.11687
 
 Overarching goal, strategy and roadmap
 --------------------------------------

@@ -6,4 +6,4 @@ PLOT_FORMAT: '.png'
 
 # Measure to compute
 # 'velocity', 'direction'
-MEASURES: ['direction']
+MEASURES: ['velocity', 'direction']

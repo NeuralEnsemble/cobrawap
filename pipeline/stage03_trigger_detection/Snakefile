@@ -18,6 +18,7 @@ output_path = os.path.join(output_path, 'stage03_trigger_detection/')
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 TRANSFORMATION_BLOCKS = config["TRANSFORMATION_BLOCKS"]
@@ -87,14 +88,15 @@ rule all:
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
-        channel = PLOT_CHANNEL
+        channel = PLOT_CHANNEL,
+        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(output_path, STAGE_OUTPUT),
         img = report(os.path.join(output_path, DETECTION_BLOCK,
                                   'transitions'+PLOT_FORMAT))
     shell:
         """
-        ln -s "{input.data}" "{output.data}"
+        {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{input.data}" \
                                    --output "{output.img}" \
                                    --tstart {params.tstart} \

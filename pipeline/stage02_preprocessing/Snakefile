@@ -10,6 +10,7 @@ from settings import output_path
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 BLOCK_ORDER = config["BLOCK_ORDER"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
@@ -55,11 +56,13 @@ rule all:
         data = os.path.join(output_path,
                             BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
         configfile = 'config.yaml'
+    params:
+        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(output_path, STAGE_OUTPUT)
     shell:
         """
-        ln -s "{input.data}" "{output.data}"
+        {params.command} "{input.data}" "{output.data}"
         """
 
 rule clear:

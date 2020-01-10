@@ -13,6 +13,7 @@ output_path = os.path.join(output_path, 'stage01_data_curation/')
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 
 DATA_SETS = config["DATA_SETS"]
 CURATION_SCRIPT = config["CURATION_SCRIPT"]
@@ -34,11 +35,13 @@ rule all:
     input:
         expand(os.path.join(output_path, 'output_{name}'+neo_format),
                name = DATA_SETS.keys())
+    params:
+        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         os.path.join(output_path, STAGE_OUTPUT)
     shell:
         """
-        ln -s "{input[0]}" "{output}"
+        {params.command} "{input[0]}" "{output}"
         """
 
 rule curate:

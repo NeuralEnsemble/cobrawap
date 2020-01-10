@@ -19,6 +19,7 @@ else:
 output_path = os.path.join(output_path, output_folder_name)
 
 OUTPUT = config["OUTPUT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 TRIGGER_FILTER = config["TRIGGER_FILTER"]
 WAVEFRONT_FILTER = config["WAVEFRONT_FILTER"]
@@ -38,6 +39,8 @@ rule all:
     input:
         data = os.path.join(output_path, 'clustering', OUTPUT),
         plot_script = 'scripts/plot_clustering.py'
+    params:
+        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(output_path, OUTPUT),
         img = report(os.path.join(output_path, 'cluster'+PLOT_FORMAT))

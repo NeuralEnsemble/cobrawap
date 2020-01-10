@@ -19,26 +19,28 @@ else:
 output_path = os.path.join(output_path, output_folder_name)
 
 PLOT_FORMAT = config["PLOT_FORMAT"]
-MEASURES = config["MEASURE"]
+MEASURES = config["MEASURES"]
 
 def input(wildcards):
     return stage_input
 
 def measures_output(wildcards):
-    return [os.path.join(output_path, measure, measure+'.csv')
+    return ["{}".format(os.path.join(output_path, measure, measure+'.csv'))
             for measure in MEASURES]
 
 rule all:
     input:
         data = measures_output,
-        config = 'config.yaml'
+        config = 'config.yaml',
         script = 'scripts/merge_dataframes.py'
     output:
-        data = os.path.join(output_path, 'measures.csv')
+        data = os.path.join(output_path, 'measures.csv'),
+        img = report(os.path.join(output_path, 'overview_measures.html'))
     shell:
         """
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}"
+        python {input.script} --data {input.data} \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
         """
 # ToDo: combine rule with {metric} wildcard?
 
@@ -47,9 +49,9 @@ rule velocity:
         data = input,
         script = 'scripts/velocity.py'
     output:
-        data = os.path.join(output_path, 'velocity', 'velocities.csv'),
+        data = os.path.join(output_path, 'velocity', 'velocity.csv'),
         img = report(os.path.join(output_path, 'velocity',
-                                  'velocities'+PLOT_FORMAT))
+                                  'velocity'+PLOT_FORMAT))
     shell:
         """
         python {input.script} --data {input.data} \

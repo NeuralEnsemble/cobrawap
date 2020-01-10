@@ -30,10 +30,10 @@ if __name__ == '__main__':
 
     velocities = np.zeros((len(wave_ids), 2))
 
-    nrows = int(np.round(np.sqrt(len(wave_ids)+1)))
-    ncols = int(np.ceil((len(wave_ids)+1)/nrows))
-    # print(nrows, ncols)
-    fig, ax = plt.subplots(nrows=nrows, ncols=ncols)
+    ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
+    nrows = int(np.ceil((len(wave_ids)+1)/ncols))
+    fig, ax = plt.subplots(nrows=nrows, ncols=ncols,
+                           figsize=(3*nrows, 3*ncols))
 
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
@@ -49,8 +49,8 @@ if __name__ == '__main__':
                                   np.sqrt(vx_err**2 + vy_err**2)])
 
         # Plot fit
-        row = int(i/nrows)
-        col = i-row*ncols
+        row = int(i/ncols)
+        col = i % ncols
         cax = ax[row][col]
         cax.plot(evts.times[idx].magnitude,
                 evts.array_annotations['x_coords'][idx]*spatial_scale.magnitude,
@@ -77,8 +77,8 @@ if __name__ == '__main__':
     ax[-1][-1].set_title('velocities [{}]'.format(v_unit))
 
     for i in range(len(wave_ids), nrows*ncols-1):
-        row = int(i/nrows)
-        col = i-row*ncols
+        row = int(i/ncols)
+        col = i % ncols
         ax[row][col].set_axis_off()
 
     plt.tight_layout()
@@ -89,5 +89,6 @@ if __name__ == '__main__':
                       columns=['velocity', 'velocity_std'],
                       index=wave_ids)
     df['velocity_unit'] = [v_unit]*len(wave_ids)
+    df.index.name = 'wave_id'
 
     df.to_csv(args.output)

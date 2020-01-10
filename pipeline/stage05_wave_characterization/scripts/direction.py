@@ -2,17 +2,18 @@ import neo
 import numpy as np
 import quantities as pq
 import matplotlib.pyplot as plt
+from matplotlib import patches
 import os
 import argparse
 import scipy
 import pandas as pd
+import seaborn as sns
 
 def calc_displacement(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
-    # ToDo
     d0, d1 = offset + slope*times[0], offset + slope*times[-1]
     displacement = d1 - d0
-    displacement_err = np.sqrt((stderr*times[0])**2 + (stderr*times[-1])**2)
+    displacement_err = np.sqrt(stderr**2 + (stderr*(times[-1]-times[0]))**2)
     return displacement, displacement_err
 
 if __name__ == '__main__':
@@ -28,7 +29,6 @@ if __name__ == '__main__':
     evts = [ev for ev in block.segments[0].events if ev.name== 'Wavefronts'][0]
 
     spatial_scale = evts.annotations['spatial_scale']
-    # v_unit = (spatial_scale.units/evts.times.units).dimensionality.string
 
     wave_ids = [label.decode('UTF-8') for label in np.unique(evts.labels)]
 
@@ -44,31 +44,39 @@ if __name__ == '__main__':
         dy, dy_err = calc_displacement(evts.times[idx].magnitude,
                                    evts.array_annotations['y_coords'][idx]
                                  * spatial_scale.magnitude)
-        directions[i] = np.array([dx + 1j*dy, dx_err - 1j*dy_err])
+        directions[i] = np.array([dx + 1j*dy, dx_err + 1j*dy_err])
 
-    nrows = int(np.round(np.sqrt(len(wave_ids))))
-    ncols = int(np.ceil((len(wave_ids))/nrows))
+    ncols = int(np.round(np.sqrt(len(wave_ids))))
+    nrows = int(np.ceil((len(wave_ids))/ncols))
     fig, ax = plt.subplots(nrows=nrows, ncols=ncols,
-                           subplot_kw={'projection': 'polar'})
+                           figsize=(3*nrows, 3*ncols))
 
     rmax = np.max(np.abs(directions[:,0]))
     for i, d in enumerate(directions):
-        row = int(i/nrows)
-        col = i-row*ncols
+        row = int(i/ncols)
+        col = i % ncols
         cax = ax[row][col]
-        cax.plot([np.angle(d[0])]*2, [0,np.abs(d[0])], color='r', alpha=0.8)
-        cax.fill_between(np.linspace(np.angle(d[0]+d[1]), np.angle(d[0]-d[1]), 40),
-                         np.linspace(0, 0, 40),
-                         np.linspace(np.abs(d[0]), np.abs(d[0]), 40),
-                         alpha=0.7)
+
+        cax.plot([0,np.real(d[0])], [0,np.imag(d[0])], color='r', alpha=0.8)
+        ellipsis = patches.Ellipse(xy=(np.real(d[0]), np.imag(d[0])),
+                                   width=2*np.real(d[1]), height=2*np.imag(d[1]),
+                                   alpha=0.5)
+        cax.add_artist(ellipsis)
         cax.set_title('wave {}'.format(wave_ids[i]))
-        cax.set_ylim((0,rmax))
-        cax.set_xticks([0])
-        cax.set_xticklabels(['x'])
+        cax.set_ylim((-rmax,rmax))
+        cax.set_xlim((-rmax,rmax))
+        cax.axhline(0, c='k')
+        cax.axvline(0, c='k')
+        cax.axes.get_xaxis().set_visible(False)
+        cax.axes.get_yaxis().set_visible(False)
+        cax.set_xticks([])
+        cax.set_yticks([])
+        sns.despine(left=True, bottom=True)
+
 
     for i in range(len(directions), nrows*ncols):
-        row = int(i/nrows)
-        col = i-row*ncols
+        row = int(i/ncols)
+        col = i % ncols
         ax[row][col].set_axis_off()
 
     plt.tight_layout()
@@ -78,6 +86,6 @@ if __name__ == '__main__':
     df = pd.DataFrame(directions,
                       columns=['direction', 'direction_std'],
                       index=wave_ids)
-    # df['direction_unit'] = [v_unit]*len(wave_ids)
+    df.index.name = 'wave_id'
 
     df.to_csv(args.output)

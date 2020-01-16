@@ -1,6 +1,0 @@
-[submodule "EPhysData-Analysis"]
-	path = EPhysData-Analysis
-	url = git@github.com:gulpgiulia/EPhysData-Analysis.git
-[submodule "OpticalData-Analysis"]
-	path = OpticalData-Analysis
-	url = git@github.com:gulpgiulia/OpticalData-Analysis.git

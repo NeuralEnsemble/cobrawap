@@ -159,7 +159,6 @@ rule frequency_filter:
                               --lowpass_freq {params.lowpass_freq} \
                               --order {params.order} \
                               --filter_function {params.filter_function}
-
         python {input.plotting_script} --data "{input.data}" \
                                        --output "{output.img}" \
                                        --highpass_freq {params.highpass_freq} \

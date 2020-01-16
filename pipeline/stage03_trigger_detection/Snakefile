@@ -138,7 +138,7 @@ rule logMUA_estimation:
     input:
         data = transformation_input_file,
         script = 'scripts/logMUA_estimation.py',
-        plot_script = 'scripts/plot_trans_trace.py'
+        plot_script = 'scripts/plot_transformed_trace.py'
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,

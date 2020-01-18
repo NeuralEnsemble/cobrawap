@@ -19,6 +19,8 @@ DATA_SETS = config["DATA_SETS"]
 CURATION_SCRIPT = config["CURATION_SCRIPT"]
 SPATIAL_SCALE = config['SPATIAL_SCALE']
 SAMPLING_RATE = config["SAMPLING_RATE"]
+T_START = config["T_START"]
+T_STOP = config["T_STOP"]
 ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
 ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
 KWARGS = ordereddict_to_dict(config["KWARGS"])
@@ -55,6 +57,8 @@ rule curate:
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,
+        t_start = T_START,
+        t_stop = T_STOP,
         annotations = ANNOTATIONS,
         array_annotations = ARRAY_ANNOTATIONS,
         kwargs = KWARGS,
@@ -67,6 +71,8 @@ rule curate:
                               --output "{output.data}" \
                               --sampling_rate {params.sampling_rate} \
                               --spatial_scale {params.spatial_scale} \
+                              --t_start {params.t_start} \
+                              --t_stop {params.t_stop} \
                               --data_name {wildcards.data_name} \
                               --annotations {params.annotations} \
                               --array_annotations {params.array_annotations} \

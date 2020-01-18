@@ -112,17 +112,18 @@ rule transformation:
     params:
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        plot_channel = PLOT_CHANNEL
+        plot_channel = PLOT_CHANNEL,
+        stage_input = stage_input
     output:
         data = os.path.join(output_path, '{rule_name}',
                             'transformed_signal'+neo_format),
-        img = report(os.path.join(output_path, 'transformation', '{rule_name}',
+        img = report(os.path.join(output_path, '{rule_name}',
                                   'transformed_trace_{}-{}s_channel{}{}'\
                                   .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
         cp "{input.data}" "{output.data}"
-        python {input.plot_script} --data "{input.data}" \
+        python {input.plot_script} --data "{params.stage_input}" \
                                    --trans_data "{output.data}" \
                                    --output "{output.img}" \
                                    --tstart {params.plot_tstart} \

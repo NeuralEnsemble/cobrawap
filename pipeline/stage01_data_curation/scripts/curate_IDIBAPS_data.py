@@ -60,6 +60,8 @@ if __name__ == '__main__':
     CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float)
     CLI.add_argument("--spatial_scale", nargs='?', type=float)
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float)
+    CLI.add_argument("--t_stop", nargs='?', type=none_or_float)
     CLI.add_argument("--data_name", nargs='?', type=str)
     CLI.add_argument("--annotations", nargs='+', type=none_or_str)
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str)
@@ -83,6 +85,15 @@ if __name__ == '__main__':
     #       length. Cut and merge them into one AnalogSignal.
     # ToDo: Move fomat check to a separate validation block
     check_analogsignal_shape(block.segments[0].analogsignals)
+
+    # slice signal
+    if args.t_start is not None or args.t_stop is not None:
+        if args.t_start is None:
+            args.t_start == asig.t_start.rescale('s').magnitude
+        if args.t_stop is None:
+                args.t_stop == asig.t_stop.rescale('s').magnitude
+        asig = asig.time_slice(t_start=args.t_start*pq.s,
+                               t_stop=args.t_stop*pq.s)
 
     # add metadata
     kwargs = parse_string2dict(args.kwargs)

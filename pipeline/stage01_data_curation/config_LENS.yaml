@@ -18,6 +18,12 @@ SPATIAL_SCALE: 0.05  # mm
 
 SAMPLING_RATE: 25  # Hz
 
+# time slice in s
+# if None, the entire recording is used
+T_START: 0
+T_STOP: 10
+
+
 # Metadata
 ANNOTATIONS:
     experimental_lab: 'Pavone lab - Florence'

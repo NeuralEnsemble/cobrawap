@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
     asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
+
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
     event = event.time_slice(args.tstart*pq.s, args.tstop*pq.s)
 

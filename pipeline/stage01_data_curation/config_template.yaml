@@ -25,6 +25,11 @@ SPATIAL_SCALE: 0.05  # mm
 # Can be 'None' if information is provided in the data file
 SAMPLING_RATE: 25  # Hz
 
+# Time slice in s
+# if None, the entire recording is used
+T_START: 0
+T_STOP: 10
+
 # Metadata - general information (non-specific to individual channels)
 # This must include an entry 'grid_size' with an int tuple
 # (x-dim, y-dim). The size of this rectangual grid would thus be

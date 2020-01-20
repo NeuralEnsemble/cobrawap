@@ -54,9 +54,9 @@ rule velocity:
                                   'velocity'+PLOT_FORMAT))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --output_img {output.img}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
         """
 
 rule direction:
@@ -69,9 +69,9 @@ rule direction:
                                   'direction'+PLOT_FORMAT))
     shell:
         """
-        python {input.script} --data {input.data} \
-                              --output {output.data} \
-                              --output_img {output.img}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
         """
 
 # rule gradient_direction:

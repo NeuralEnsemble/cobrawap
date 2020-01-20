@@ -1,6 +1,6 @@
 # Config file for Stage 5 - Wave Characterization
 
-OUTPUT: 'velocity/velocities.npy'
+OUTPUT: 'measures.csv'
 
 PLOT_FORMAT: '.png'
 

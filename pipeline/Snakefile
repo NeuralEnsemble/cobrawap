@@ -153,7 +153,8 @@ rule create_report:
     shell:
         """
         cd {wildcards.subworkflow_name}
-        snakemake --report {output.report}
+        snakemake --report {output.report} || \
+        echo "Creation of report for {wildcards.subworkflow_name} failed."
         """
 
 rule clear_report:

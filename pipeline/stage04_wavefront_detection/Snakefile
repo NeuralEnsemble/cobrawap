@@ -46,7 +46,7 @@ rule all:
         img = report(os.path.join(output_path, 'cluster'+PLOT_FORMAT))
     shell:
         """
-        ln -s "{input.data}" "{output.data}"
+        {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{output.data}" \
                                    --output "{output.img}" \
         """

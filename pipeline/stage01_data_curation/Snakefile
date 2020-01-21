@@ -79,7 +79,7 @@ rule curate:
                               --kwargs {params.kwargs}
         python {input.plot_script} --data "{output.data}" \
                                    --output "{output.img}" \
-                                   --tstart {params.plot_tstart} \
-                                   --tstop {params.plot_tstop} \
+                                   --t_start {params.plot_tstart} \
+                                   --t_stop {params.plot_tstop} \
                                    --channel {params.plot_channel} \
         """

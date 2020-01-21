@@ -19,8 +19,8 @@ if __name__ == '__main__':
     CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--data",   nargs='?', type=str)
     CLI.add_argument("--trans_data",   nargs='?', type=str)
-    CLI.add_argument("--tstart", nargs='?', type=float)
-    CLI.add_argument("--tstop",  nargs='?', type=float)
+    CLI.add_argument("--t_start", nargs='?', type=float)
+    CLI.add_argument("--t_stop",  nargs='?', type=float)
     CLI.add_argument("--channel",nargs='?', type=none_or_int)
     args = CLI.parse_args()
 
@@ -31,16 +31,19 @@ if __name__ == '__main__':
 
     dim_t, channel_num = asig.shape
 
-    if args.channel is None:
+    if args.channel is None or args.channel <= channel_num:
         args.channel = random.randint(0,channel_num)
+
+    args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
+    args.t_stop = max([args.t_stop, asig.t_stop.rescale('s').magnitude])
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()
 
-    asig = zscore(asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
+    asig = zscore(asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s))
     ax.plot(asig.times, asig.as_array()[:,args.channel], label='original signal')
 
-    trans_asig = zscore(trans_asig.time_slice(args.tstart*pq.s, args.tstop*pq.s))
+    trans_asig = zscore(trans_asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s))
     ax.plot(trans_asig.times, trans_asig.as_array()[:,args.channel]+8,
             label='transformed signal')
 

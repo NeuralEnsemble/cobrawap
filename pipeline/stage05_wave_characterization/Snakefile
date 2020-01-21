@@ -25,7 +25,7 @@ def input(wildcards):
     return stage_input
 
 def measures_output(wildcards):
-    return ["{}".format(os.path.join(output_path, measure, measure+'.csv'))
+    return [os.path.join(output_path, measure, measure+'.csv')
             for measure in MEASURES]
 
 rule all:
@@ -33,6 +33,9 @@ rule all:
         data = measures_output,
         config = 'config.yaml',
         script = 'scripts/merge_dataframes.py'
+    params:
+        data = lambda wildcards, input:
+                      ['"{}"'.format(path) for path in input.data]
     output:
         data = os.path.join(output_path, 'measures.csv'),
         img = report(os.path.join(output_path, 'overview_measures.html'))
@@ -76,3 +79,5 @@ rule direction:
 
 # rule gradient_direction:
 # slice signal for each wave
+
+# rule frequency

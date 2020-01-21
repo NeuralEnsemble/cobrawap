@@ -99,8 +99,8 @@ rule all:
         {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{input.data}" \
                                    --output "{output.img}" \
-                                   --tstart {params.tstart} \
-                                   --tstop {params.tstop} \
+                                   --t_start {params.tstart} \
+                                   --t_stop {params.tstop} \
                                    --channel {params.channel}
         """
 
@@ -126,8 +126,8 @@ rule transformation:
         python {input.plot_script} --data "{params.stage_input}" \
                                    --trans_data "{output.data}" \
                                    --output "{output.img}" \
-                                   --tstart {params.plot_tstart} \
-                                   --tstop {params.plot_tstop} \
+                                   --t_start {params.plot_tstart} \
+                                   --t_stop {params.plot_tstop} \
                                    --channel {params.plot_channel}
         """
 

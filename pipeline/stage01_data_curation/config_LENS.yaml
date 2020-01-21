@@ -20,8 +20,8 @@ SAMPLING_RATE: 25  # Hz
 
 # time slice in s
 # if None, the entire recording is used
-T_START: 0
-T_STOP: 10
+T_START: 'None'
+T_STOP: 'None'
 
 
 # Metadata

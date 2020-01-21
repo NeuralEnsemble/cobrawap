@@ -44,17 +44,19 @@ def locate(str_list, string):
                           and the config file.".format(string))
 
 def input_file(wildcards):
-    idx = locate(BLOCK_ORDER, wildcards.rule_name)
-    if idx:
-        return os.path.join(output_path,
+    if hasattr(wildcards, 'rule_name'):
+        idx = locate(BLOCK_ORDER, wildcards.rule_name)
+        if idx:
+            return os.path.join(output_path,
                             BLOCK_ORDER[idx-1], BLOCK_ORDER[idx-1]+neo_format)
-    else:
-        return os.path.join(output_path, stage_input)
+    elif len(BLOCK_ORDER):
+        return os.path.join(output_path,
+                            BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format)
+    return os.path.join(output_path, stage_input)
 
 rule all:
     input:
-        data = os.path.join(output_path,
-                            BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format),
+        data = input_file,
         configfile = 'config.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'

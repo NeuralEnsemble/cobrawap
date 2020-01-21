@@ -8,11 +8,11 @@ import argparse
 import os
 import random
 
-def plot_states(times, labels, ax, tstart, tstop, label=''):
+def plot_states(times, labels, ax, t_start, t_stop, label=''):
     if labels[0].decode('UTF-8') == 'DOWN':
-        ax.axvspan(tstart, times[0], alpha=0.5, color='red')
+        ax.axvspan(t_start, times[0], alpha=0.5, color='red')
     if labels[-1].decode('UTF-8') == 'UP':
-        ax.axvspan(times[-1], tstop, alpha=0.5, color='red')
+        ax.axvspan(times[-1], t_stop, alpha=0.5, color='red')
 
     for i, (time, label) in enumerate(zip(times, labels)):
         if label.decode('UTF-8') == 'UP' and i < len(times)-1:
@@ -30,24 +30,26 @@ if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--output",        nargs='?', type=str)
     CLI.add_argument("--data",          nargs='?', type=str)
-    CLI.add_argument("--tstart",        nargs='?', type=float)
-    CLI.add_argument("--tstop",         nargs='?', type=float)
+    CLI.add_argument("--t_start",        nargs='?', type=float)
+    CLI.add_argument("--t_stop",         nargs='?', type=float)
     CLI.add_argument("--channel",       nargs='?', type=none_or_int)
     args = CLI.parse_args()
 
     with neo.NixIO(args.data) as io:
         block = io.read_block()
 
-
     asig = block.segments[0].analogsignals[0]
-    asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
+    args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
+    args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
+
+    asig = asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
-    event = event.time_slice(args.tstart*pq.s, args.tstop*pq.s)
+    event = event.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
     dim_t, dim_channels = asig.shape
 
-    if args.channel is None:
+    if args.channel is None or args.channel <= dim_channels:
         args.channel = random.randint(0, dim_channels)
 
     sns.set(style='ticks', palette="deep", context="notebook")
@@ -62,7 +64,7 @@ if __name__ == '__main__':
 
     if 'DOWN'.encode('UTF-8') in labels:
         # plot up states
-        plot_states(times, labels, ax, tstart=args.tstart, tstop=args.tstop,
+        plot_states(times, labels, ax, t_start=args.t_start, t_stop=args.t_stop,
                     label='UP states')
     elif 'UP'.encode('UTF-8') in labels:
         # plot only up transitions

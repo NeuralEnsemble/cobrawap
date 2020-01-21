@@ -19,6 +19,8 @@ if __name__ == '__main__':
     CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--sampling_rate", nargs='?', type=float)
     CLI.add_argument("--spatial_scale", nargs='?', type=float)
+    CLI.add_argument("--t_start", nargs='?', type=float)
+    CLI.add_argument("--t_stop", nargs='?', type=float)
     CLI.add_argument("--data_name", nargs='?', type=str)
     CLI.add_argument("--annotations", nargs='+', type=none_or_str)
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str)

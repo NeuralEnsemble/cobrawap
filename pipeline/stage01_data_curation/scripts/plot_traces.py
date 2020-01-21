@@ -19,25 +19,28 @@ if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--data", nargs='?', type=str)
     CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--tstart", nargs='?', type=float)
-    CLI.add_argument("--tstop", nargs='?', type=float)
+    CLI.add_argument("--t_start", nargs='?', type=float)
+    CLI.add_argument("--t_stop", nargs='?', type=float)
     CLI.add_argument("--channel", nargs='+', type=none_or_int)
     args = CLI.parse_args()
 
     with neo.NixIO(args.data) as io:
         asig = io.read_block().segments[0].analogsignals
 
-
     check_analogsignal_shape(asig)
     asig = asig[0]
 
     dim_t, channel_num = asig.shape
 
+    if not isinstance(args.channel, list):
+        args.channel = [args.channel]
     for i, channel in enumerate(args.channel):
-        if channel is None:
+        if channel is None or channel >= channel_num:
             args.channel[i] = random.randint(0,channel_num)
 
-    asig = asig.time_slice(args.tstart*pq.s, args.tstop*pq.s)
+    args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
+    args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
+    asig = asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()

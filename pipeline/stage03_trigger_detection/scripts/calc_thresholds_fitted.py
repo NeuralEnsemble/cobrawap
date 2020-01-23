@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 
 warnings.simplefilter("error", OptimizeWarning)
 
-
 def fit_amplitude_distribution(signal, sigma_factor, fit_function,
                                bins, plot_channel):
     # signal amplitude distribution

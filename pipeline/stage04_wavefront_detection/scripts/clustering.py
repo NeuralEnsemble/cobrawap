@@ -18,7 +18,11 @@ if __name__ == '__main__':
         block = io.read_block()
 
     asig = block.segments[0].analogsignals[0]
-    evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions'][0]
+    evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions']
+    if evts:
+        evts = evts[0]
+    else:
+        raise InputError("The input file does not contain any 'Transitions' events!")
 
     up_idx = np.where(evts.labels == 'UP'.encode('UTF-8'))[0]
 

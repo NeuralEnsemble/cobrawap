@@ -47,20 +47,37 @@ rule all:
         """
 # ToDo: combine rule with {metric} wildcard?
 
-rule velocity:
+rule velocity_planar:
     input:
         data = input,
-        script = 'scripts/velocity.py'
+        script = 'scripts/velocity_planar.py'
     output:
-        data = os.path.join(output_path, 'velocity', 'velocity.csv'),
-        img = report(os.path.join(output_path, 'velocity',
-                                  'velocity'+PLOT_FORMAT))
+        data = os.path.join(output_path, 'velocity_planar', 'velocity_planar.csv'),
+        img = report(os.path.join(output_path, 'velocity_planar',
+                                  'velocity_planar'+PLOT_FORMAT))
     shell:
         """
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}"
         """
+
+rule velocity_gradient:
+    input:
+        data = input,
+        script = 'scripts/velocity_gradient.py'
+    output:
+        data = os.path.join(output_path, 'velocity_gradient',
+                                         'velocity_gradient.csv'),
+        img = report(os.path.join(output_path, 'velocity_gradient',
+                                  'velocity_gradient'+PLOT_FORMAT))
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
+        """
+
 
 rule direction:
     input:
@@ -80,4 +97,4 @@ rule direction:
 # rule gradient_direction:
 # slice signal for each wave
 
-# rule frequency
+# rule inter_wave_distance:

@@ -35,7 +35,7 @@ if __name__ == '__main__':
         args.channel = random.randint(0,channel_num)
 
     args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
-    args.t_stop = max([args.t_stop, asig.t_stop.rescale('s').magnitude])
+    args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()

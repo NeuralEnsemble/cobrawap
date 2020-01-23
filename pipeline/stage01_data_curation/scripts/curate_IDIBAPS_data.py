@@ -6,7 +6,7 @@ import os
 import sys
 import neo
 sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import parse_string2dict, check_analogsignal_shape
+from utils import parse_string2dict, check_analogsignal_shape, remove_annotations
 
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])
@@ -25,24 +25,24 @@ def merge_analogsingals(asigs):
     asig_array = np.zeros((min_length, len(asigs)))
 
     for channel_number, asig in enumerate(asigs):
-        asig_array[:, channel_number] = np.squeeze(asig.as_array())
+        asig_array[:, channel_number] = np.squeeze(asig.as_array()[:min_length])
 
     # ToDo: check if annotations have same keys
-    array_annotations = {}
-    for key in asigs[0].annotations.keys():
-        array_annotations[key] = []
-        for asig in asigs:
-            array_annotations[key] += [asig.annotations[key]]
 
-    array_annotations['name'] = []
-    for asig in asigs:
-        array_annotations['name'] += asig.name
 
-    return neo.AnalogSignal(asig_array,
+    # array_annotations['name'] = []
+    # for asig in asigs:
+    #     array_annotations['name'] += asig.name
+
+    merged_asig = neo.AnalogSignal(asig_array*asigs[0].units,
                                 sampling_rate=asigs[0].sampling_rate,
-                                t_start=asigs[0].t_start,
-                                t_stop=asigs[0].t_stop,
-                                array_annotations=array_annotations)
+                                t_start=asigs[0].t_start)
+    for key in asigs[0].annotations.keys():
+        try:
+            merged_asig.array_annotations[key] = np.array([a.annotations[key] for a in asigs])
+        except:
+            print('can not merge annotation ', key)
+    return merged_asig
 
 def none_or_float(value):
     if value == 'None':
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     # Load data
-    io = neo.Spike2IO(args.data)
+    io = neo.Spike2IO(args.data, try_signal_grouping=False)
     block = io.read_block()
 
     asigs = block.segments[0].analogsignals
@@ -81,12 +81,8 @@ if __name__ == '__main__':
     else:
         asig = asigs[0]
 
-    # ToDo: In case of multiple AnalogSignal objects with slightly different
-    #       length. Cut and merge them into one AnalogSignal.
-    # ToDo: Move fomat check to a separate validation block
-    check_analogsignal_shape(block.segments[0].analogsignals)
+    block.segments[0].analogsignals = [asig]
 
-    # slice signal
     if args.t_start is not None or args.t_stop is not None:
         if args.t_start is None:
             args.t_start == asig.t_start.rescale('s').magnitude
@@ -100,30 +96,30 @@ if __name__ == '__main__':
 
     channels = asig.array_annotations[kwargs['ELECTRODE_ANNOTATION_NAME']]
 
-    coords = np.array([kwargs['NAME2COORDS'][str(channel)] for channel in channels])
+    coords = np.array([kwargs['NAME2COORDS'][str(channel)] for channel in channels.astype(int)])
     asig.array_annotations.update(x_coords=coords[:,0])
     asig.array_annotations.update(y_coords=coords[:,1])
 
-    locations = []
-    for channel in channels:
-        locations.append([loc for loc in kwargs['ELECTRODE_LOCATION'].keys()
-                          if channel in kwargs['ELECTRODE_LOCATION'][loc]][0])
-    asig.array_annotations.update(electrode_location=locations)
+    # locations = []
+    # for channel in channels:
+    #     locations.append([loc for loc in kwargs['ELECTRODE_LOCATION'].keys()
+    #                       if channel in kwargs['ELECTRODE_LOCATION'][loc]][0])
+    # asig.array_annotations.update(electrode_location=locations)
 
-    colors = [kwargs['ELECTRODE_COLOR'][loc] for loc in
-              asig.array_annotations['electrode_location']]
-    asig.array_annotations.update(electrode_color=colors)
+    # colors = [kwargs['ELECTRODE_COLOR'][loc] for loc in
+    #           asig.array_annotations['electrode_location']]
+    # asig.array_annotations.update(electrode_color=colors)
 
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
 
     dim_t, channel_num = asig.as_array().shape
 
-    chidx = neo.ChannelIndex(name=asig.name,
-                             channel_ids=np.arange(channel_num),
-                             index=np.arange(channel_num),
-                             coordinates=coords*args.spatial_scale*pq.mm)
-    chidx.annotations.update(asig.array_annotations)
+    # chidx = neo.ChannelIndex(name=asig.name,
+    #                          channel_ids=np.arange(channel_num),
+    #                          index=np.arange(channel_num),
+    #                          coordinates=coords*args.spatial_scale*pq.mm)
+    # chidx.annotations.update(asig.array_annotations)
 
     # Save data
     block.name = args.data_name
@@ -136,13 +132,15 @@ if __name__ == '__main__':
 
     # Save data
     if len(block.segments[0].analogsignals) > 1:
-        raise Warning('Additional AnalogSignal found. The pipeline can yet \
+        print ('Additional AnalogSignal found. The pipeline can yet \
                        only process single AnalogSignals.')
 
-    block.segments[0].analogsignals[0] = asig
-    block.channel_indexes.append(chidx)
-    block.segments[0].analogsignals[0].channel_index = chidx
-    chidx.analogsignals.append(asig)
+    print(asig.annotations)
+    print(asig.array_annotations)
+    print(asig.__dict__)
+    # block.channel_indexes.append(chidx)
+    # block.segments[0].analogsignals[0].channel_index = chidx
+    # chidx.analogsignals.append(asig)
 
     with neo.NixIO(args.output) as io:
         io.write(block)

@@ -5,5 +5,5 @@ OUTPUT: 'measures.csv'
 PLOT_FORMAT: '.png'
 
 # Measure to compute
-# 'velocity', 'direction'
-MEASURES: ['velocity', 'direction']
+# 'velocity_planar', 'velocity_gradient', 'direction'
+MEASURES: ['velocity_planer', 'velocity_gradient', 'direction']

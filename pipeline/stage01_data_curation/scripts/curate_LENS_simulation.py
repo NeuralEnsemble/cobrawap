@@ -5,6 +5,7 @@ import quantities as pq
 import json
 import os
 import sys
+import scipy
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import parse_string2dict, ImageSequence2AnalogSignal
 
@@ -12,7 +13,7 @@ def none_or_float(value):
     if value == 'None':
         return None
     return float(value)
-    
+
 def none_or_str(value):
     if value == 'None':
         return None
@@ -32,32 +33,35 @@ if __name__ == '__main__':
     CLI.add_argument("--kwargs", nargs='+', type=none_or_str)
     args = CLI.parse_args()
 
-    # Load optical data
-    io = neo.io.tiffio.TiffIO(directory_path=args.data,
-                              sampling_rate=args.sampling_rate*pq.Hz,
-                              spatial_scale=args.spatial_scale*pq.mm,
-                              units='dimensionless')
+    mat = scipy.io.loadmat(args.data)
 
-    block = io.read_block()
+    asig = neo.AnalogSignal(mat['NuE'].T,
+                            units='dimensionless',
+                            t_start=0*pq.s,
+                            sampling_rate=args.sampling_rate*pq.Hz,
+                            spatial_scale=args.spatial_scale*pq.mm,
+                            )
 
-    # Transform into analogsignals
-    block = ImageSequence2AnalogSignal(block)
-    if len(block.segments[0].analogsignals) > 1:
-        raise IOError("Additional analog signals detected! "\
-                    + "This pipeline only operates on single AnalogSignals.")
+    asig.array_annotate(x_coords=np.squeeze(mat['x_pos_sel']),
+                        y_coords=np.squeeze(mat['y_pos_sel']))
 
-    if args.annotations is not None:
-        block.segments[0].analogsignals[0].annotations.\
-                                    update(parse_string2dict(args.annotations))
+    if args.t_start is not None or args.t_stop is not None:
+        if args.t_start is None:
+            args.t_start == asig.t_start.rescale('s').magnitude
+        if args.t_stop is None:
+                args.t_stop == asig.t_stop.rescale('s').magnitude
+        asig = asig.time_slice(t_start=args.t_start*pq.s,
+                               t_stop=args.t_stop*pq.s)
 
-    # ToDo: add metadata
+    block = neo.Block()
+    seg = neo.Segment()
+    block.segments.append(seg)
+    block.segments[0].analogsignals.append(asig)
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
-    block.segments[0].description = 'Loaded with neo.TiffIO (neo version {}). '\
-                                    .format(neo.__version__)
     if block.segments[0].analogsignals[0].description is None:
         block.segments[0].analogsignals[0].description = ''
-    block.segments[0].analogsignals[0].description += 'Ca+ imaging signal. '
+    block.segments[0].analogsignals[0].description += 'simulated Ca+ imaging signal. '
 
     # Save data
     with neo.NixIO(args.output) as io:

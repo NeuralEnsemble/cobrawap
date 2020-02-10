@@ -90,8 +90,8 @@ if __name__ == '__main__':
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape
 
-    if args.plot_channel is None:
-        args.plot_channel = random.randint(0, dim_channels)
+    if args.plot_channel is None or args.plot_channel >= dim_channels:
+        args.plot_channel = random.randint(0, dim_channels-1)
 
     thresholds = np.zeros(dim_channels)
 

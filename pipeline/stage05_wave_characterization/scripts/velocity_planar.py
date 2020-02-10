@@ -50,8 +50,11 @@ if __name__ == '__main__':
 
         # Plot fit
         row = int(i/ncols)
-        col = i % ncols
-        cax = ax[row][col]
+        if ncols == 1:
+            cax = ax[row]
+        else:
+            col = i % ncols
+            cax = ax[row][col]
         cax.plot(evts.times[idx].magnitude,
                 evts.array_annotations['x_coords'][idx]*spatial_scale.magnitude,
                 color='b', label='x coords', linestyle='', marker='.', alpha=0.5)

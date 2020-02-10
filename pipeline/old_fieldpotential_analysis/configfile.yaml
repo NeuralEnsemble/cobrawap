@@ -1,0 +1,100 @@
+# Data path to be appended to data_path (see settings)
+PATH: 'IDIBAPS'
+
+# Name of the .smr data file
+FILENAME: ['161101_rec07_Spontaneous_RH']
+
+SAVE_IMAGE_FORMAT: 'png'
+
+# min and max of frequency band in Hz
+FREQ_BAND: [200, 1500]
+
+# Minimal duration of a state to be detected
+# in bins of the estimated MUA signal.
+# MUA binsize ~ 1 / MIN_FREQ_BAND
+MIN_STATE_DURATION: 7
+# When true, short down states are removed before short up states.
+REMOVE_DOWN_FIRST: True
+
+# Threshold for detecting up states;
+# the threshold can either have a fixed value across channels
+# (measures from center of fitted Gaussian)
+# or be set in units of sigma
+# (corresponding to respective Gaussian fit)
+# FIXED_THRESHOLD has priority, 0 = None
+FIXED_THRESHOLD: 0
+SIGMA_THRESHOLD: 3
+
+# Detrending: 0 - no detrending;
+#             1 - mean detrending;
+#             2 - mean and slope detrending (linear): this should be the default.
+#             3 - quadratic detrending.
+#             4 - cubic detrending.
+DETRENDING_ORDER: 2
+
+# Settings to be passed to the welch_psd function of elephant
+PSD_OVERLAP: 0.7
+PSD_FREQ_RES: 15 # Hz
+
+# Window around state transitions to plot, in bins
+SLOPE_WINDOW: 50
+
+# METADATA
+ELECTRODE_DISTANCE: 0.55 # mm
+# PIXEL_SIZE: 0.55 #mm
+
+# Key in the annotation dict, corresponding to the electrode location
+ELECTRODE_ANNOTATION_NAME: 'physical_channel_index'
+
+ELECTRODE_LOCATION:
+    Visual Cortex: [1,4,5,6,7,12,13,14,15,21,22,23,24]
+    Retrospenial Cortex: [16,31,30,29]
+    Parietal Association Cortex: [3,11,20]
+    Somatosensory Cortex: [2,8,9,10,17,18,19]
+    Motor Cortex: [0,25,26,27,28]
+
+# color scheme to match to figures in publication
+ELECTRODE_COLOR:
+    Visual Cortex: '#0C6BB1'
+    Retrospenial Cortex: '#422F58'
+    Parietal Association Cortex: '#01B24E'
+    Somatosensory Cortex: '#F92600'
+    Motor Cortex: '#EF6700'
+
+# Dimensions of the grid where the electrodes/pixels are located
+GRID_SIZE: [9,5]
+
+# dictionary mapping the channels (ELECTRODE_ANNOTATION_NAME) to their coordiantes on the grid (GRID_SIZE)
+NAME2COORDS:
+    0:  (0,1)
+    1:  (6,4)
+    2:  (3,3)
+    3:  (4,3)
+    4:  (5,3)
+    5:  (6,3)
+    6:  (7,3)
+    7:  (8,3)
+    8:  (1,2)
+    9:  (2,2)
+    10: (3,2)
+    11: (4,2)
+    12: (5,2)
+    13: (6,2)
+    14: (7,2)
+    15: (8,2)
+    16: (7,0)
+    17: (1,1)
+    18: (2,1)
+    19: (3,1)
+    20: (4,1)
+    21: (5,1)
+    22: (6,1)
+    23: (7,1)
+    24: (8,1)
+    25: (0,0)
+    26: (1,0)
+    27: (2,0)
+    28: (3,0)
+    29: (4,0)
+    30: (5,0)
+    31: (6,0)

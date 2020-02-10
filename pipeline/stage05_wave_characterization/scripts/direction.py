@@ -54,8 +54,11 @@ if __name__ == '__main__':
     rmax = np.max(np.abs(directions[:,0]))
     for i, d in enumerate(directions):
         row = int(i/ncols)
-        col = i % ncols
-        cax = ax[row][col]
+        if ncols == 1:
+            cax = ax[row]
+        else:
+            col = i % ncols
+            cax = ax[row][col]
 
         cax.plot([0,np.real(d[0])], [0,np.imag(d[0])], color='r', alpha=0.8)
         ellipsis = patches.Ellipse(xy=(np.real(d[0]), np.imag(d[0])),
@@ -63,8 +66,9 @@ if __name__ == '__main__':
                                    alpha=0.5)
         cax.add_artist(ellipsis)
         cax.set_title('wave {}'.format(wave_ids[i]))
-        cax.set_ylim((-rmax,rmax))
-        cax.set_xlim((-rmax,rmax))
+        if np.isfinite(rmax):
+            cax.set_ylim((-rmax,rmax))
+            cax.set_xlim((-rmax,rmax))
         cax.axhline(0, c='k')
         cax.axvline(0, c='k')
         cax.axes.get_xaxis().set_visible(False)

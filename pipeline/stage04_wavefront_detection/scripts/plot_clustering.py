@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap
 import seaborn as sns
+import random
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
@@ -20,7 +21,9 @@ if __name__ == '__main__':
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    cmap = sns.color_palette('bright') * len(evts.labels)
+    N = len(np.unique(evts.labels))
+    cmap = sns.husl_palette(N, h=.5, l=.6)
+    cmap = random.sample([c for c in cmap], N)
     cmap = ListedColormap(cmap)
 
     ax.scatter(evts.times,

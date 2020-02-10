@@ -38,6 +38,9 @@ if __name__ == '__main__':
                         metric=args.metric)
     clustering.fit(triggers)
 
+    if len(np.unique(clustering.labels_)) < 1:
+        raise ValueError("No Clusters found, please adapt the parameters!")
+
     # remove unclassified trigger points (label == -1)
     cluster_idx = np.where(clustering.labels_ != -1)[0]
     wave_idx = up_idx[cluster_idx]

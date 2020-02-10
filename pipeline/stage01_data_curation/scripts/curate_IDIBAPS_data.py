@@ -70,8 +70,13 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     # Load data
-    io = neo.Spike2IO(args.data, try_signal_grouping=False)
-    block = io.read_block()
+    try:
+        io = neo.Spike2IO(args.data, try_signal_grouping=True)
+        block = io.read_block()
+    except e:
+        print(e)
+        io = neo.Spike2IO(args.data, try_signal_grouping=False)
+        block = io.read_block()
 
     asigs = block.segments[0].analogsignals
 
@@ -80,8 +85,6 @@ if __name__ == '__main__':
         asig = merge_analogsingals(asigs)
     else:
         asig = asigs[0]
-
-    block.segments[0].analogsignals = [asig]
 
     if args.t_start is not None or args.t_stop is not None:
         if args.t_start is None:
@@ -130,14 +133,13 @@ if __name__ == '__main__':
         asig.description = ''
     asig.description += 'ECoG signal. '
 
-    # Save data
-    if len(block.segments[0].analogsignals) > 1:
-        print ('Additional AnalogSignal found. The pipeline can yet \
-                       only process single AnalogSignals.')
+    block.segments[0].analogsignals = [asig]
 
-    print(asig.annotations)
-    print(asig.array_annotations)
-    print(asig.__dict__)
+    # Save data
+    # if len(block.segments[0].analogsignals) > 1:
+    #     print ('Additional AnalogSignal found. The pipeline can yet \
+    #                    only process single AnalogSignals.')
+
     # block.channel_indexes.append(chidx)
     # block.segments[0].analogsignals[0].channel_index = chidx
     # chidx.analogsignals.append(asig)

@@ -42,6 +42,7 @@ SIGMA_FACTOR = config["SIGMA_FACTOR"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
 
+FRAME_RATE = config["FRAME_RATE"]
 QUALITY = config["QUALITY"]
 SCALE_X = config["SCALE_X"]
 SCALE_Y = config["SCALE_Y"]
@@ -138,8 +139,8 @@ rule transformation:
 rule logMUA_estimation:
     input:
         data = transformation_input_file,
-        script = 'scripts/logMUA_estimation.py',
-        plot_script = 'scripts/plot_transformed_trace.py'
+        script = 'scripts/transformation/logMUA_estimation.py',
+        plot_script = 'scripts/transformation/plot_logMUA_estimation.py'
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
@@ -165,8 +166,10 @@ rule logMUA_estimation:
                               --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
         python {input.plot_script} --data "{input.data}" \
-                                   --trans_data "{output.data}" \
+                                   --logMUA_data "{output.data}" \
                                    --output "{output.img}" \
+                                   --highpass_freq {params.highpass_freq} \
+                                   --lowpass_freq {params.lowpass_freq} \
                                    --t_start {params.plot_tstart} \
                                    --t_stop {params.plot_tstop} \
                                    --channel {params.plot_channel}
@@ -175,7 +178,7 @@ rule logMUA_estimation:
 rule phase:
     input:
         data = transformation_input_file,
-        script = 'scripts/phase_transform.py'
+        script = 'scripts/transformation/phase_transform.py'
     output:
         data = os.path.join(output_path, 'transformation', 'phase',
                             '{rule_name}'+neo_format)
@@ -192,7 +195,7 @@ rule threshold:
         data = trigger_detection_input_file,
         thresholds = os.path.join(output_path, 'threshold',
                                   '{}_thresholds.npy'.format(THRESHOLD_METHOD)),
-        script = 'scripts/threshold.py'
+        script = 'scripts/detection/threshold.py'
     output:
         data = os.path.join(output_path, 'threshold', 'transitions'+neo_format)
     shell:
@@ -205,7 +208,7 @@ rule threshold:
 rule calc_tresholds_fixed:
     input:
         data = trigger_detection_input_file,
-        script = 'scripts/calc_thresholds_fixed.py'
+        script = 'scripts/detection/calc_thresholds_fixed.py'
     params:
         threshold = FIXED_THRESHOLD
     output:
@@ -220,7 +223,7 @@ rule calc_tresholds_fixed:
 rule calc_tresholds_fitted:
     input:
         data = trigger_detection_input_file,
-        script = 'scripts/calc_thresholds_fitted.py'
+        script = 'scripts/detection/calc_thresholds_fitted.py'
     params:
         sigma_factor = SIGMA_FACTOR,
         fit_function = FIT_FUNCTION,
@@ -245,7 +248,7 @@ rule calc_tresholds_fitted:
 rule hilbert_phase:
     input:
         data = trigger_detection_input_file,
-        script = 'scripts/hilbert_phase.py'
+        script = 'scripts/detection/hilbert_phase.py'
     params:
         transition_phase = TRANSITION_PHASE
     output:
@@ -260,7 +263,7 @@ rule hilbert_phase:
 rule minima:
     input:
         data = trigger_detection_input_file,
-        script = 'scripts/minima.py'
+        script = 'scripts/detection/minima.py'
     params:
         order = MINIMA_ORDER
     output:
@@ -273,6 +276,21 @@ rule minima:
         """
 
 ### Movie plotting rules
+
+rule time_slice:
+    input:
+        data = '{file_path}.nix',
+        script = 'scripts/transformation/time_slice.py'
+    output:
+        data = '{file_path}_{t_start}-{t_stop}s.nix'
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+        """
+
 rule plot_movie_frames:
     input:
         data = os.path.join('{path}', '{file}.nix'),
@@ -280,7 +298,8 @@ rule plot_movie_frames:
     params:
         frame_name = 'frame',
         frame_format = PLOT_FORMAT,
-        colormap = COLORMAP
+        colormap = COLORMAP,
+        frame_rate = FRAME_RATE
     output:
         frame_folder = directory(os.path.join('{path}', '{file}_frames')),
     shell:
@@ -289,6 +308,7 @@ rule plot_movie_frames:
                               --frame_folder "{output.frame_folder}" \
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
+                              --frame_rate {params.frame_rate} \
                               --colormap {params.colormap}
         """
 
@@ -325,4 +345,15 @@ rule mp4_to_webm:
     shell:
         """
         ffmpeg -i "{input}" -vcodec libvpx -acodec libvorbis "{output}"
+        """
+
+rule mp4_to_gif:
+    input:
+        '{path}.mp4'
+    output:
+        '{path}_{scale}px.gif'
+
+    shell:
+        """
+        ffmpeg -i "{input}" -vf "scale={wildcards.scale}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 {output}
         """

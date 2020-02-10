@@ -12,8 +12,8 @@ sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import check_analogsignal_shape
 
 
-def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate, psd_overlap,
-                   fft_slice):
+def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
+                      psd_overlap, fft_slice):
     time_steps, channel_num = asig.shape
     fs = asig.sampling_rate.rescale('Hz')
     if fft_slice is None:

@@ -8,12 +8,18 @@ import scipy
 sys.path.append(os.path.join(os.getcwd(),'../'))
 from utils import AnalogSignal2ImageSequence
 
+def none_or_float(value):
+    if value == 'None':
+        return None
+    return float(value)
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--data",          nargs='?', type=str)
     CLI.add_argument("--frame_folder",  nargs='?', type=str)
     CLI.add_argument("--frame_name",    nargs='?', type=str)
     CLI.add_argument("--frame_format",  nargs='?', type=str)
+    CLI.add_argument("--frame_rate",    nargs='?', type=none_or_float)
     CLI.add_argument("--colormap",      nargs='?', type=str)
 
     args = CLI.parse_args()
@@ -27,12 +33,16 @@ if __name__ == '__main__':
     imgseq = blk.segments[0].imagesequences[0]
     asig = blk.segments[0].analogsignals[0]
 
-    event = [ev for ev in events if ev.name == 'Transitions'][0]
-    ups = np.array([(t,event.array_annotations['channels'][i])
-                     for i, t in enumerate(event)
-                     if event.labels[i].decode('UTF-8') == 'UP'],
-                   dtype=[('time', 'float'), ('channel', 'int')])
-    ups = np.sort(ups, order=['time', 'channel'])
+    trans_events = [ev for ev in events if ev.name == 'Transitions']
+    if len(trans_events):
+        event = trans_events[0]
+        ups = np.array([(t,event.array_annotations['channels'][i])
+                         for i, t in enumerate(event)
+                         if event.labels[i].decode('UTF-8') == 'UP'],
+                       dtype=[('time', 'float'), ('channel', 'int')])
+        ups = np.sort(ups, order=['time', 'channel'])
+    else:
+        ups = []
 
     def channels2coords(channels):
         if isinstance(channels, (list, np.ndarray)):
@@ -54,6 +64,8 @@ if __name__ == '__main__':
 
     dim_x = np.max(asig.array_annotations['x_coords'])
     dim_y = np.max(asig.array_annotations['y_coords'])
+    dim_t = len(imgseq.as_array())
+    markersize = 100/max([dim_x, dim_y])
 
     # 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
     if args.colormap == 'gray':
@@ -61,15 +73,23 @@ if __name__ == '__main__':
     else:
         cmap = plt.get_cmap(args.colormap)
 
-    for num, frame in enumerate(imgseq.as_array()):
+    # strech or compress
+    if args.frame_rate is None:
+        frame_idx = np.arange(dim_t, dtype=int)
+    else:
+        num_frames = (asig.t_stop.rescale('s').magnitude
+                    - asig.t_start.rescale('s').magnitude) * args.frame_rate
+        frame_idx = np.linspace(0, dim_t-1, num_frames).astype(int)
+
+    for i, frame_num in enumerate(frame_idx):
         fig, ax = plt.subplots()
-        img = ax.imshow(frame, interpolation='nearest', cmap=cmap,
-                        vmin=vmin, vmax=vmax)
+        img = ax.imshow(imgseq.as_array()[frame_num], interpolation='nearest',
+                        cmap=cmap, vmin=vmin, vmax=vmax)
         plt.colorbar(img, ax=ax)
 
-        if len(ups) and up_coords[num].size:
-            ax.plot(up_coords[num][:,1], up_coords[num][:,0],
-                    marker='D', color='b', markersize=1, linestyle='None')
+        if len(ups) and up_coords[frame_num].size:
+            ax.plot(up_coords[frame_num][:,1], up_coords[frame_num][:,0],
+                    marker='D', color='b', markersize=markersize, linestyle='None')
             # if len(pixels[0]) > 0.005*pixel_num:
             #     slope, intercept, _, _, stderr = scipy.stats.linregress(pixels[1], pixels[0])
             #     if stderr < 0.18:
@@ -82,12 +102,12 @@ if __name__ == '__main__':
         # ax.set_ylim((dim_y, 0))
         ax.set_ylabel('pixel size: {}'\
                       .format(asig.annotations['spatial_scale']))
-        ax.set_xlabel('{:.3f} s'.format(asig.times[num].rescale('s')))
+        ax.set_xlabel('{:.3f} s'.format(asig.times[frame_num].rescale('s')))
 
         if not os.path.exists(args.frame_folder):
             os.makedirs(args.frame_folder)
         plt.savefig(os.path.join(args.frame_folder,
                                  args.frame_name
-                                 + '_{}{}'.format(str(num).zfill(5),
+                                 + '_{}{}'.format(str(i).zfill(5),
                                                    args.frame_format)))
         plt.close(fig)

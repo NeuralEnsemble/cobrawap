@@ -152,12 +152,19 @@ def ImageSequence2AnalogSignal(block):
 def AnalogSignal2ImageSequence(block):
     # ToDo: map 1D array annotations to 2D and update
     for seg_count, segment in enumerate(block.segments):
-        for asig in segment.analogsignals:
+        for asig_count, asig in enumerate(segment.analogsignals):
             asig_array = asig.as_array()
             dim_t, dim_channels = asig_array.shape
 
             # coords = asig.channel_index.coordinates
             # temporary replacement
+            if 'x_coords' not in asig.array_annotations\
+                or 'y_coords' not in asig.array_annotations:
+                print('AnalogSignal {} in Segment {} has no spatial Information '\
+                      .format(asig_count, seg_count)\
+                    + ' as array_annotations "x_coords" "y_coords", skip.')
+                break
+
             coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
                                                     asig.array_annotations['y_coords'])],
                               dtype=float)

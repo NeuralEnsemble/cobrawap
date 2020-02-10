@@ -31,8 +31,9 @@ if __name__ == '__main__':
 
     dim_t, channel_num = asig.shape
 
-    if args.channel is None or args.channel <= channel_num:
-        args.channel = random.randint(0,channel_num)
+    if args.channel is None or args.channel >= channel_num:
+        print(args.channel, channel_num)
+        args.channel = random.randint(0, channel_num-1)
 
     args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
     args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])

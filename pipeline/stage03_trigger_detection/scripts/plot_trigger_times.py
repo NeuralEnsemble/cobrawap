@@ -49,8 +49,8 @@ if __name__ == '__main__':
 
     dim_t, dim_channels = asig.shape
 
-    if args.channel is None or args.channel <= dim_channels:
-        args.channel = random.randint(0, dim_channels)
+    if args.channel is None or args.channel >= dim_channels:
+        args.channel = random.randint(0, dim_channels-1)
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()
@@ -72,7 +72,7 @@ if __name__ == '__main__':
             ax.axvline(trans_time, c='k',
                        label='UP transitions' if not i else '')
     else:
-        raise ValueError("No 'UP' (or 'DOWN') transition events found")
+        print("Warning: No 'UP' (or 'DOWN') transition events found!")
 
     ax.set_title('Channel {}'.format(args.channel))
     ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))

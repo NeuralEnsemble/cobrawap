@@ -5,11 +5,14 @@ report: "report.rst"
 
 import os
 import sys
-sys.path.append('../')
+utils_path = '../'
+sys.path.append(utils_path)
+add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+
 from settings import output_path
 from utils import ordereddict_to_dict
-
 output_path = os.path.join(output_path, 'stage01_data_curation/')
+
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
@@ -80,6 +83,7 @@ rule enter_data:
         plot_channel = PLOT_CHANNEL
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --sampling_rate {params.sampling_rate} \

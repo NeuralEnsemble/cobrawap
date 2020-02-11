@@ -5,8 +5,8 @@ import re
 import os
 import sys
 import neo
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import parse_string2dict, check_analogsignal_shape, remove_annotations
+# sys.path.append(os.path.join(os.getcwd(),'../'))
+from utils import parse_string2dict, remove_annotations
 
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])

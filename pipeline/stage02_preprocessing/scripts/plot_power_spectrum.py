@@ -7,8 +7,7 @@ import seaborn as sns
 from elephant.spectral import welch_psd
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape
+from utils import neo_load
 
 
 def none_or_float(value):

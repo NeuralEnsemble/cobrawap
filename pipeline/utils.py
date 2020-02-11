@@ -2,18 +2,19 @@ import numpy as np
 import neo
 import re
 import itertools
+import os
+import matplotlib.pyplot as plt
 
-def check_analogsignal_shape(asig):
-    if type(asig) == list and len(asig) > 1:
-        raise TypeError("More than one AnalogSignal found. Make sure that the "\
-                      + "Segment has only one AnalogSignal of shape "\
-                      + "(<time_steps>, <channels>)!")
-    if type(asig) == list:
-        asig = asig[0]
-    if len(np.shape(np.squeeze(asig))) > 2:
-        raise TypeError("AnalogSignal is not in shape (<time_steps>, <channels>)!")
-    return True
-
+# def check_analogsignal_shape(asig):
+#     if type(asig) == list and len(asig) > 1:
+#         raise TypeError("More than one AnalogSignal found. Make sure that the "\
+#                       + "Segment has only one AnalogSignal of shape "\
+#                       + "(<time_steps>, <channels>)!")
+#     if type(asig) == list:
+#         asig = asig[0]
+#     if len(np.shape(np.squeeze(asig))) > 2:
+#         raise TypeError("AnalogSignal is not in shape (<time_steps>, <channels>)!")
+#     return True
 
 def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
     if type(objects) != list:
@@ -205,3 +206,26 @@ def AnalogSignal2ImageSequence(block):
 
             block.segments[seg_count].imagesequences.append(imgseq)
     return block
+
+def load_neo(filename, object='block', *args, **kwargs):
+    # ToDo: write container to enabling with statement for all IOs
+    #       and ensure that files are closed
+    with neo.io.get_io(filename, *args, **kwargs) as io:
+        block = io.read_block()
+    if object == 'block':
+        return block
+    elif object == 'analogsignal':
+        return block.segments[0].analogsignals[0]
+
+def save_plot(filename):
+    dirname = os.path.dirname(filename)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
+    plt.savefig(fname=filename, bbox_inches='tight')
+    return None
+
+#### Argparse types ####
+def none_or_int(value):
+    if value == 'None':
+        return None
+    return int(value)

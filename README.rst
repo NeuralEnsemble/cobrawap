@@ -1,19 +1,21 @@
 ==============
 WaveScalephant
 ==============
-This repository hosts the collaboration between WP3.2 and WP5.7
+This repository aims at delivering reusable and modular pipelines for a multi-scale, multi-methodology analysis of slow wave activity, brain states and their complexity; the repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners.
 
 Involved members
 ----------------
-Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula.
+- Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy: Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula.
 
-Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu.
+- Forschungszentrum Jülich, Germany: Michael Denker, Robin Gutzen, Alper Yegenoglu.
 
-Istituto Superiore di Sanità (ISS), Roma, Italy: Maurizio Mattia, Antonio Pazienti.
+- Istituto Superiore di Sanità (ISS), Roma, Italy: Maurizio Mattia, Antonio Pazienti.
 
-Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
+- Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain: Miguel Dasilva, Maria V. Sanchez-Vives.
 
-European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy: Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
+- European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy: Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
+
+- University of Milano (UniMi), Italy: Andrea Pigorini, Thierry Nieus, Marcello Massimini 
 
 License
 -------
@@ -23,19 +25,18 @@ Citation
 --------
 Please cite this repository if you use it in your work.
 
-Background
-----------
-This work aims at offering to the community an analysis pipeline based on the algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and in [Celotto et al (2020)](https://www.mdpi.com/629916).
-
-.. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
-.. _arXiv:1811.11687: https://arxiv.org/abs/1811.11687
-
-
 Releases planned by 2020-03-31 (HBP-SGA2-M24)
 ---------------------------------------------
 - Component C2051 (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analyisis Pipleine COmponent cabable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analyis. See RelatedRepositories.rst
 
 - Component C2053 (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modulare slow wave analyisis pipeline that cna be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recorsings (ECoG) in mouse.
+
+Background
+----------
+Starting point: algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and in [Celotto et al (2020)](https://www.mdpi.com/629916).
+
+.. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
+.. _arXiv:1811.11687: https://arxiv.org/abs/1811.11687
 
 Overarching goal, strategy and roadmap
 --------------------------------------
@@ -47,7 +48,7 @@ Sleep is present in all animal species notwithstanding the risk associated with 
 In the framework of a collaboration between INFN, ISS, IDIBAPS and the Juelich Elephant team, we delivered a prototype of the Slow Waves Analysis Pipeline (characterisation of the cortex activity during deep sleep and anaesthesia); the preliminary version can be downloaded from this github.
 SWAP is currently a python pipeline based on Elephant, but the plan is to integrate the SWAP pipeline as a module into Elephant and offer it through the HBP platform by May 2020, as part of the HBP offer. The process of data curation and integration in the Knowledge Graph is ongoing.
 SWAP can be applied to experimental data and simulation outputs. It has been validated on an extensive in vivo data set, collected from the cerebral cortex of mice by Multi-Electrode Array. SWAP differentiates by area key-parameters related to the onset of slow oscillations. For example, it demonstrates gradients of key observables along the fronto-lateral to occipito-medial direction in recordings of anaesthetised mice. The pipeline discriminates between brain states, specifically different levels of anaesthesia. It also allows comparing simulation outputs obtained with different simulation engines (for example NEST or DPSNN simulations).
-The final release of the SWAP analysis pipeline, integrated in the HBP infrastructure, and the related set of curated examples of experimental data will be offered after the embargo period (May 2020) to the external community. Researchers will then either apply SWAP to their own experimental data or to the analysis of HBP curated data accessible through the HBP Knowledge Graph.
+The final release of the SWAP analysis pipeline, integrated in the HBP infrastructure, and the related set of curated examples of experimental data will be offered to the external community through EBRAINS. Researchers will then either apply SWAP to their own experimental data or to the analysis of HBP curated data accessible through the HBP Knowledge Graph.
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
@@ -55,30 +56,17 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 Current status and possible developments
 ----------------------------------------
 
-This workflow would include as a first step setting up a "scaffold" or prototype upon which to build:
+The current prototype includes:
 
-1. Performing the simulation of a WaveScalES model using DPSNN and NEST on an HBP HPC system (e.g., JULIA) from within the notebook;
+1. Reproducible analysis of electrophysiological and optical data, on the characterization of cortical slow wave activity and local slow oscillations. 
+2. Integration of existing general tools (Elephant, Neo, Snakemake) and custom implementations (see RelatedRepositories.rtf).
+3. Definition of a unique data representation in the framework of Neo and link with the data curation needs.
+4. Delivery of showcase Jupyter Notebooks for testbench applications and the visualization of the output.
 
-2. Transformation of the simulation outputs from NEST and DPSNN into a unified and practical Neo data representation;
+Possible developments and work in progress relate to:
 
-3. Trivial analysis of the data using existing Elephant analysis functions (here it was mentioned: firing rates, spectra, wave direction,...);
-
-4. Visualization of the output in a Jupyter notebook;
-
-5. Reproducible analysis of electrophysiological data.
-
-
-From this ground, several directions of work are anticipated:
-
-* Integration of the analysis into concrete comparisons/validations of the HBP validation framework (currently developed by SP6 and members at Juelich). This could include two types of validations:
-    * models for DPSNN against NEST (i.e., are both engines giving comparable output?);
-    * different models developed by SP3 (how do different models/parameters/... differ in the activity they produce?). This step would involve work in getting the WaveScalES models into the HBP model catalog.
-
-* Use case for the online analysis of a running simulations.
-    * Currently, work has begun in Juelich to develop systems that enable users to couple simulations running on NEST to online visualization and analysis (in collab. with Simlab Neuroscience).
-    * This is an ambitious project, but this workflow may provide good use cases:
-        * Perform rudimentary analysis of waves and visualize them online;
-        * Online visualization of synaptic strengths and evolution of plasticity with time.
+1. Extension to the output of simulations, aiming at comparing different engines (DPSNN and NEST) and different approaches (spiking vs mean-field); provide notebooks for steering the workflow.
+2. Transformation of the simulation outputs into a unified and practical Neo data representation;
 
 * Bring together analysis methods used by both labs for the analysis and characterization of wave-like activity and UP/DN state detection in the Elephant tool.
     * Impact: Validated, common analysis tools; exchange of methods and knowledge across labs;

@@ -27,9 +27,9 @@ Please cite this repository if you use it in your work.
 
 Releases planned by 2020-03-31 (HBP-SGA2-M24)
 ---------------------------------------------
-- Component C2051 (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analyisis Pipleine COmponent cabable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analyis. See RelatedRepositories.rst
+- **Component C2051** (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analyisis Pipleine COmponent cabable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analyis. See RelatedRepositories.rst
 
-- Component C2053 (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modulare slow wave analyisis pipeline that cna be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recorsings (ECoG) in mouse.
+- **Component C2053** (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modulare slow wave analyisis pipeline that cna be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recorsings (ECoG) in mouse. 
 
 Background
 ----------
@@ -40,9 +40,9 @@ Starting point: algorythms described in [De Bonis et al (2019)](https://doi.org/
 
 Overarching goal, strategy and roadmap
 --------------------------------------
-The overall outcome of this collaboration is to focus on the WaveScalES simulation work and data analysis performed in SP3, and make it accessible as a workflow in a collaborative fashion using tools from SP5 (e.g., Elephant), 6 (e.g., NEST), and 7 (e.g., storage).
+The overall outcome of this collaboration is to focus on the WaveScalES simulation work and data analysis performed in SP3, and make it accessible as a workflow in a collaborative fashion using tools from SP5 (e.g., Elephant), SP6 (e.g., NEST), and SP7 (e.g., storage).
 
-The goal of WaveScalES_ is to unveil the underlying mechanisms of deep sleep, anaesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.
+The goal of WaveScalES_ (description at the date 2019-03-31, SGA2-M12) is to unveil the underlying mechanisms of deep sleep, anaesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.
 Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances.
 
 In the framework of a collaboration between INFN, ISS, IDIBAPS and the Juelich Elephant team, we delivered a prototype of the Slow Waves Analysis Pipeline (characterisation of the cortex activity during deep sleep and anaesthesia); the preliminary version can be downloaded from this github.
@@ -52,9 +52,17 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
+WavescalEphant short- and mid- term goals 
+-----------------------------------------
+* Bring together analysis methods used by different labs for the analysis and characterization of wave-like activity and UP/DN state detection, exploiting existing tools like Elephant.
+    * Impact: deliber validated, common analysis tools; exchange of methods and knowledge across labs;
+    * Further work: Joint development of viewing capabilities of wave activity (e.g., functions to efficient plot waves in the collab, movie like wave plotting, etc...).
 
-Current status and possible developments
-----------------------------------------
+* Extension to the comparison to simulated data vs. experimental data; include also synergies with EBRAINS and other HBP platform resources (e.g. the Knowledge Graph). 
+
+
+Current status of the project and possible developments
+-------------------------------------------------------
 
 The current prototype includes:
 
@@ -67,13 +75,6 @@ Possible developments and work in progress relate to:
 
 1. Extension to the output of simulations, aiming at comparing different engines (DPSNN and NEST) and different approaches (spiking vs mean-field); provide notebooks for steering the workflow.
 2. Transformation of the simulation outputs into a unified and practical Neo data representation;
-
-* Bring together analysis methods used by both labs for the analysis and characterization of wave-like activity and UP/DN state detection in the Elephant tool.
-    * Impact: Validated, common analysis tools; exchange of methods and knowledge across labs;
-    * Further work: Joint development of viewing capabilities of wave activity (e.g., functions to efficient plot waves in the collab, movie like wave plotting).
-
-* Extension of scaffold to the comparison of simulated data vs. experimental data.
-    * This would be performed formally in a separate collaboration, however, despite new challenges associated with experimental datasets (e.g., register data with the SP5 Knowledgegraph and Neural Activity Resource), there would be very strong syngergies coming from this work.
 
 Repository structure
 --------------------

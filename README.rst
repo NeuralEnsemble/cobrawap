@@ -54,11 +54,12 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 
 WavescalEphant short- and mid- term goals 
 -----------------------------------------
-* Bring together analysis methods used by different labs for the analysis and characterization of wave-like activity and UP/DN state detection, exploiting existing tools like Elephant.
-    * Impact: deliber validated, common analysis tools; exchange of methods and knowledge across labs;
-    * Further work: Joint development of viewing capabilities of wave activity (e.g., functions to efficient plot waves in the collab, movie like wave plotting, etc...).
 
-* Extension to the comparison to simulated data vs. experimental data; include also synergies with EBRAINS and other HBP platform resources (e.g. the Knowledge Graph). 
+* Bring together analysis methods used by different labs for the analysis and characterization of wave-like activity and UP/DN state detection, exploiting existing tools like Elephant.
+    * Impact: deliver validated, common analysis tools; exchange of methods and knowledge across labs;
+    * Further work: joint development of viewing capabilities of wave activity (e.g., functions to efficient plot waves in the collab, movie like wave plotting, etc...), synergies enables with other SPs and partners.
+
+* Extend the comparison to simulated data vs. experimental data; include also synergies with EBRAINS and other HBP platform resources (e.g. the Knowledge Graph). 
 
 
 Current status of the project and possible developments

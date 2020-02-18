@@ -1,5 +1,5 @@
 ==============
-WaveScalephant
+WaveScalEphant
 ==============
 This repository aims at delivering reusable and modular pipelines for a multi-scale, multi-methodology analysis of slow wave activity, brain states and their complexity; the repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners.
 
@@ -52,7 +52,7 @@ The final release of the SWAP analysis pipeline, integrated in the HBP infrastru
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
 
-WavescalEphant short- and mid- term goals 
+WaveScalEphant short- and mid- term goals 
 -----------------------------------------
 
 * Bring together analysis methods used by different labs for the analysis and characterization of wave-like activity and UP/DN state detection, exploiting existing tools like Elephant.

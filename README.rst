@@ -25,10 +25,17 @@ Please cite this repository if you use it in your work.
 
 Background
 ----------
-This work aims at offering to the community an analysis pipeline based on the algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and arXiv:1811.11687_ (submitted, under review).
+This work aims at offering to the community an analysis pipeline based on the algorythms described in [De Bonis et al (2019)](https://doi.org/10.3389/fnsys.2019.00070) and in [Celotto et al (2020)](https://www.mdpi.com/629916).
 
 .. _arXiv:1902.08599: https://arxiv.org/abs/1902.08599
 .. _arXiv:1811.11687: https://arxiv.org/abs/1811.11687
+
+
+Releases planned by 2020-03-31 (HBP-SGA2-M24)
+---------------------------------------------
+- Component C2051 (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analyisis Pipleine COmponent cabable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analyis. See RelatedRepositories.rst
+
+- Component C2053 (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modulare slow wave analyisis pipeline that cna be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recorsings (ECoG) in mouse.
 
 Overarching goal, strategy and roadmap
 --------------------------------------
@@ -43,6 +50,7 @@ SWAP can be applied to experimental data and simulation outputs. It has been val
 The final release of the SWAP analysis pipeline, integrated in the HBP infrastructure, and the related set of curated examples of experimental data will be offered after the embargo period (May 2020) to the external community. Researchers will then either apply SWAP to their own experimental data or to the analysis of HBP curated data accessible through the HBP Knowledge Graph.
 
 .. _WaveScalES: https://drive.google.com/file/d/1BYZmhz_qJ8MKPOIeyTZw6zjqfVMcCCCk/view
+
 
 Current status and possible developments
 ----------------------------------------

@@ -1,8 +1,13 @@
+"""
+ToDo: Split up script into topics (parse_utils, io_utils, ...)?
+"""
 import numpy as np
 import neo
 import re
 import itertools
+import random
 import os
+import quantities as pq
 import matplotlib.pyplot as plt
 
 # def check_analogsignal_shape(asig):
@@ -25,6 +30,7 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
                 del objects[i].annotations[k]
     return None
 
+
 def guess_type(string):
     try:
         out = int(string)
@@ -40,6 +46,7 @@ def guess_type(string):
             elif out == 'False':
                 out = False
     return out
+
 
 def str2dict(string):
     """
@@ -68,6 +75,7 @@ def str2dict(string):
             my_dict[k.strip()] = guess_type(v.strip())
     return my_dict
 
+
 def parse_string2dict(kwargs_str, **kwargs):
     if kwargs_str is None:
         return None
@@ -86,6 +94,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict.update(str2dict(match))
     return my_dict
 
+
 def ordereddict_to_dict(input_dict):
     if isinstance(input_dict, dict):
         for k, v in input_dict.items():
@@ -94,6 +103,48 @@ def ordereddict_to_dict(input_dict):
         return dict(input_dict)
     else:
         return input_dict
+
+
+def parse_plot_channels(channels, input_file):
+    channels = channels if isinstance(channels, list) else [channels]
+    channels = [none_or_int(channel) for channel in channels]
+    if None in channels:
+        dim_t, channel_num = load_neo(input_file, object='analogsignal',
+                                      lazy=True).shape
+        for i, channel in enumerate(channels):
+            if channel is None or channel >= channel_num:
+                channels[i] = random.randint(0,channel_num-1)
+    return channels
+
+
+def time_slice(neo_obj, t_start=None, t_stop=None, unit='s', lazy=False):
+    """
+    Robustly time-slices neo.AnalogSignal, neo.IrregularSampledSigna, or neo.ImageSequence, with `t_start` and `t_stop` given in seconds.
+    """
+    if not hasattr(neo_obj, 'time_slice'):
+        raise TypeError(f"{neo_obj} has no function 'time_slice'!")
+    if t_start is None and t_stop is None:
+        return neo_obj
+    t_start = neo_obj.t_start.rescale('s').magnitude if t_start is None\
+              else max([t_start, neo_obj.t_start.rescale('s').magnitude])
+    t_stop = neo_obj.t_stop.rescale('s').magnitude if t_stop is None\
+             else min([t_stop, neo_obj.t_stop.rescale('s').magnitude])
+    if lazy:
+        return neo_obj.load(time_slice=(t_start*pq.s, t_stop*pq.s))
+    else:
+        return neo_obj.time_slice(t_start*pq.s, t_stop*pq.s)
+
+
+def none_or_X(value, type):
+    try:
+        return type(value)
+    except ValueError:
+        return None
+
+none_or_int = lambda v: none_or_X(v, int)
+none_or_float = lambda v: none_or_X(v, float)
+none_or_str = lambda v: none_or_X(v, str)
+str_list = lambda v: s.split(',')
 
 
 def determine_spatial_scale(coords):
@@ -206,16 +257,43 @@ def AnalogSignal2ImageSequence(block):
 
             block.segments[seg_count].imagesequences.append(imgseq)
     return block
+    
 
-def load_neo(filename, object='block', *args, **kwargs):
-    # ToDo: write container to enabling with statement for all IOs
-    #       and ensure that files are closed
-    with neo.io.get_io(filename, *args, **kwargs) as io:
-        block = io.read_block()
+def load_neo(filename, object='block', lazy=False, *args, **kwargs):
+    try:
+        io = neo.io.get_io(filename, *args, **kwargs)
+        if lazy and io.support_lazy:
+            block = io.read_block(lazy=lazy)
+        elif lazy and isinstance(io, neo.io.nixio.NixIO):
+            with neo.NixIOFr(filename, *args, **kwargs) as nio:
+                block = nio.read_block(lazy=lazy)
+        else:
+            block = io.read_block()
+        yield block
+    except Exception:
+        print(Exception)
+    finally:
+        if not lazy:
+            io.close()
+
     if object == 'block':
         return block
     elif object == 'analogsignal':
         return block.segments[0].analogsignals[0]
+    else:
+        raise InputError(f"{object} not recognized! Choose 'block' or 'analogsignal'.")
+
+
+def write_neo(filename, block, *args, **kwargs):
+    try:
+        io = neo.io.get_io(filename, *args, **kwargs)
+        io.write(block)
+    except Exception:
+        print(Exception)
+    finally:
+        io.close()
+    return True
+
 
 def save_plot(filename):
     dirname = os.path.dirname(filename)
@@ -223,9 +301,3 @@ def save_plot(filename):
         os.makedirs(dirname)
     plt.savefig(fname=filename, bbox_inches='tight')
     return None
-
-#### Argparse types ####
-def none_or_int(value):
-    if value == 'None':
-        return None
-    return int(value)

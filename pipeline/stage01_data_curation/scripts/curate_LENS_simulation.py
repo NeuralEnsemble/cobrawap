@@ -6,31 +6,28 @@ import json
 import os
 import sys
 import scipy
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import parse_string2dict, ImageSequence2AnalogSignal
-
-def none_or_float(value):
-    if value == 'None':
-        return None
-    return float(value)
-
-def none_or_str(value):
-    if value == 'None':
-        return None
-    return str(value)
+from utils import parse_string2dict, ImageSequence2AnalogSignal, write_neo,
+                  none_or_float, none_or_str
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--sampling_rate", nargs='?', type=float)
-    CLI.add_argument("--spatial_scale", nargs='?', type=float)
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float)
-    CLI.add_argument("--t_stop", nargs='?', type=none_or_float)
-    CLI.add_argument("--data_name", nargs='?', type=str)
-    CLI.add_argument("--annotations", nargs='+', type=none_or_str)
-    CLI.add_argument("--array_annotations", nargs='+', type=none_or_str)
-    CLI.add_argument("--kwargs", nargs='+', type=none_or_str)
+    argparse.ArgumentParser(description=__doc__,
+            formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data directory")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float,
+                     default=None, help="sampling rate in Hz")
+    CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
+                     help="distance between electrodes or pixels in mm")
+    CLI.add_argument("--data_name", nargs='?', type=str, default='None',
+                     help="chosen name of the dataset")
+    CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
+                     help="metadata of the dataset")
+    CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
+                     default=None, help="channel-wise metadata")
+    CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
+                     help="additional optional arguments")
     args = CLI.parse_args()
 
     mat = scipy.io.loadmat(args.data)
@@ -64,5 +61,4 @@ if __name__ == '__main__':
     block.segments[0].analogsignals[0].description += 'simulated Ca+ imaging signal. '
 
     # Save data
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

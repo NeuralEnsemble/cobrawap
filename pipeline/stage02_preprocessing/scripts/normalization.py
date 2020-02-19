@@ -1,10 +1,12 @@
+"""
+Divides all signals by their max/mean/median value.
+"""
 import numpy as np
 import argparse
 import neo
 import os
 import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape
+from utils import write_neo, load_neo
 
 
 def normalize(asig, normalize_by):
@@ -34,25 +36,23 @@ def normalize(asig, normalize_by):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--normalize_by", nargs='?', type=str)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
+                     help="division factor: 'max', 'mean', or 'median'")
     args = CLI.parse_args()
 
-    # load images
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    check_analogsignal_shape(block.segments[0].analogsignals)
+    block = load_neo(args.data)
 
     asig = normalize(block.segments[0].analogsignals[0], args.normalize_by)
 
-    # save processed data
     asig.name += ""
     asig.description += "Normalized by {} ({})."\
                         .format(args.normalize_by, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

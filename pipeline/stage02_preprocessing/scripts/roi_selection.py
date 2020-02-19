@@ -1,17 +1,14 @@
 """
 Selects a region of interest (ROI) by threshold the intensity signal.
 """
-
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import measure
 import shapely.geometry as geo
 import argparse
-import neo
 import os
-import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape, AnalogSignal2ImageSequence
+from utils import load_neo, write_neo, none_or_str
+
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...
@@ -69,9 +66,6 @@ def calculate_contour(img, contour_limit):
         includes_corner = False
 
     print('Contour includes corner = ', includes_corner)
-
-    # print('There are contours found with contour limit = {}'.format(contour_limit))
-
     return contour
 
 
@@ -100,57 +94,61 @@ def contour2mask(contour, dim_x, dim_y):
     return mask
 
 
-if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--image_output", nargs='?', type=str)
-    CLI.add_argument("--intensity_threshold", nargs='?', type=float)
-    args = CLI.parse_args()
-
-    # load data
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    block = AnalogSignal2ImageSequence(block)
-    imgseq = block.segments[0].imagesequences[-1]
-    imgseq_array = imgseq.as_array()
-    dim_t, dim_x, dim_y = imgseq_array.shape
-
-    avg_img = np.mean(imgseq_array, axis=0)
-
-    # Calculate image contour
-    contour = calculate_contour(img=avg_img,
-                                contour_limit=args.intensity_threshold)
-
-    contour = close_contour(contour, num=100)
-
-    mask = contour2mask(contour=contour,
-                        dim_x=dim_x,
-                        dim_y=dim_y)
-
-    # print roi with avg image
+def plot_roi(img, contour):
     fig, ax = plt.subplots()
-    ax.imshow(avg_img, interpolation='nearest', cmap=plt.cm.gray)
+    ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray)
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
     ax.plot(contour[:, 1], contour[:, 0], linewidth=2)
-    plt.draw()
-    plt.savefig(args.image_output)
+    plt.draw())
+    return ax
 
-    # save processed data
+
+if __name__ == '__main__':
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
+                     help="path of output image", default=None)
+    CLI.add_argument("--intensity_threshold", nargs='?', type=float,
+                     help="threshold for mask [0,1]", default=0.5)
+    args = CLI.parse_args()
+
+    block = load_neo(args.data)
+    block = AnalogSignal2ImageSequence(block)
+
+    # get average image
+    imgseq = block.segments[0].imagesequences[-1]
+    imgseq_array = imgseq.as_array()
+    dim_t, dim_x, dim_y = imgseq_array.shape
+    avg_img = np.mean(imgseq_array, axis=0)
+
+    # calculate mask
+    contour = calculate_contour(img=avg_img,
+                                contour_limit=args.intensity_threshold)
+    contour = close_contour(contour, num=100)
+    mask = contour2mask(contour=contour,
+                        dim_x=dim_x,
+                        dim_y=dim_y)
+
+    # apply mask
     imgseq_array[:, np.bitwise_not(mask)] = np.nan
     signal = imgseq_array.reshape((dim_t, dim_x * dim_y))
+    asig = block.segments[0].analogsignals[0].duplicate_with_new_data(signal)
+    asig.array_annotate(**block.segments[0].analogsignals[0].array_annotations)
 
-    asig = block.segments[0].analogsignals[0]
+    # save data and figure
     asig.name += ""
     asig.description += "Border regions with mean intensity below "\
                       + "{args.intensity_threshold} were discarded. "\
                       + "({})".format(os.path.basename(__file__))
-    new_asig = block.segments[0].analogsignals[0].duplicate_with_new_data(signal)
-    new_asig.array_annotate(**asig.array_annotations)
-    block.segments[0].analogsignals[0] = new_asig
+    block.segments[0].analogsignals[0] = asig
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    plot_roi(avg_img, contour)
+    plt.savefig(args.image_output)
+
+    write_neo(args.output, block)

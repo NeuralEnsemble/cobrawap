@@ -1,34 +1,32 @@
-import numpy as np
-import matplotlib.pyplot as plt
+"""
+Filters the given signals between a highpass and a lowpass frequency using
+a butterworth filter.
+"""
 import argparse
-import neo
 import quantities as pq
 import os
-import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
 from elephant.signal_processing import butter
-from utils import check_analogsignal_shape, remove_annotations
-
-
-def none_or_float(value):
-    if value == 'None':
-        return None
-    return float(value)
+from utils import load_neo, write_neo, none_or_float
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float)
-    CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float)
-    CLI.add_argument("--order", nargs='?', type=int)
-    CLI.add_argument("--filter_function", nargs='?', type=str)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
+                     default=None, help="lower bound of frequency band in Hz")
+    CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
+                     default=None, help="upper bound of frequency band in Hz")
+    CLI.add_argument("--order", nargs='?', type=int, default=2,
+                     help="order of the filter function")
+    CLI.add_argument("--filter_function", nargs='?', type=str, default='filtfilt',
+                     help="filterfunction used in the scipy backend")
     args = CLI.parse_args()
 
-    # load images
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
+    block = load_neo(args.data)
 
     asig = butter(block.segments[0].analogsignals[0],
                   highpass_freq=args.highpass_freq*pq.Hz,
@@ -38,7 +36,6 @@ if __name__ == '__main__':
 
     asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
 
-    # save processed data
     asig.name += ""
     asig.description += "Frequency filtered with [{}, {}]Hz order {} "\
                         .format(args.highpass_freq,
@@ -49,5 +46,4 @@ if __name__ == '__main__':
                                 os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

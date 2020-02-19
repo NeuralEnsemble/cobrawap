@@ -5,8 +5,7 @@ import re
 import os
 import sys
 import neo
-# sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import parse_string2dict, remove_annotations
+from utils import load_neo, write_neo, none_or_float, none_or_str, time_slice
 
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])
@@ -27,13 +26,6 @@ def merge_analogsingals(asigs):
     for channel_number, asig in enumerate(asigs):
         asig_array[:, channel_number] = np.squeeze(asig.as_array()[:min_length])
 
-    # ToDo: check if annotations have same keys
-
-
-    # array_annotations['name'] = []
-    # for asig in asigs:
-    #     array_annotations['name'] += asig.name
-
     merged_asig = neo.AnalogSignal(asig_array*asigs[0].units,
                                 sampling_rate=asigs[0].sampling_rate,
                                 t_start=asigs[0].t_start)
@@ -44,32 +36,28 @@ def merge_analogsingals(asigs):
             print('can not merge annotation ', key)
     return merged_asig
 
-def none_or_float(value):
-    if value == 'None':
-        return None
-    return float(value)
-
-def none_or_str(value):
-    if value == 'None':
-        return None
-    return str(value)
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float)
-    CLI.add_argument("--spatial_scale", nargs='?', type=float)
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float)
-    CLI.add_argument("--t_stop", nargs='?', type=none_or_float)
-    CLI.add_argument("--data_name", nargs='?', type=str)
-    CLI.add_argument("--annotations", nargs='+', type=none_or_str)
-    CLI.add_argument("--array_annotations", nargs='+', type=none_or_str)
-    CLI.add_argument("--kwargs", nargs='+', type=none_or_str)
-
+    argparse.ArgumentParser(description=__doc__,
+            formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float,
+                     default=None, help="sampling rate in Hz")
+    CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
+                     help="distance between electrodes or pixels in mm")
+    CLI.add_argument("--data_name", nargs='?', type=str, default='None',
+                     help="chosen name of the dataset")
+    CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
+                     help="metadata of the dataset")
+    CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
+                     default=None, help="channel-wise metadata")
+    CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
+                     help="additional optional arguments")
     args = CLI.parse_args()
 
-    # Load data
     try:
         io = neo.Spike2IO(args.data, try_signal_grouping=True)
         block = io.read_block()
@@ -81,18 +69,12 @@ if __name__ == '__main__':
     asigs = block.segments[0].analogsignals
 
     if len(asigs) > 1:
-        print('Merging {} AnalogSignals into one.'.format(len(asigs)))
+        print(f'Merging {len(asigs)} AnalogSignals into one.')
         asig = merge_analogsingals(asigs)
     else:
         asig = asigs[0]
 
-    if args.t_start is not None or args.t_stop is not None:
-        if args.t_start is None:
-            args.t_start == asig.t_start.rescale('s').magnitude
-        if args.t_stop is None:
-                args.t_stop == asig.t_stop.rescale('s').magnitude
-        asig = asig.time_slice(t_start=args.t_start*pq.s,
-                               t_stop=args.t_stop*pq.s)
+    asig = time_slice(asig, args.t_start, args.t_stop)
 
     # add metadata
     kwargs = parse_string2dict(args.kwargs)
@@ -116,15 +98,13 @@ if __name__ == '__main__':
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
 
-    dim_t, channel_num = asig.as_array().shape
-
+    # dim_t, channel_num = asig.as_array().shape
     # chidx = neo.ChannelIndex(name=asig.name,
     #                          channel_ids=np.arange(channel_num),
     #                          index=np.arange(channel_num),
     #                          coordinates=coords*args.spatial_scale*pq.mm)
     # chidx.annotations.update(asig.array_annotations)
 
-    # Save data
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
     block.segments[0].description = 'Loaded with neo.Spike2IO (neo version {})'\
@@ -135,14 +115,8 @@ if __name__ == '__main__':
 
     block.segments[0].analogsignals = [asig]
 
-    # Save data
-    # if len(block.segments[0].analogsignals) > 1:
-    #     print ('Additional AnalogSignal found. The pipeline can yet \
-    #                    only process single AnalogSignals.')
-
     # block.channel_indexes.append(chidx)
     # block.segments[0].analogsignals[0].channel_index = chidx
     # chidx.analogsignals.append(asig)
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

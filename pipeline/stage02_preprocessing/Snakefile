@@ -5,6 +5,9 @@ report: "report.rst"
 
 import os
 import sys
+utils_path = '../'
+add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+
 sys.path.append('../')
 from settings import output_path
 
@@ -95,6 +98,7 @@ rule background_substraction:
                              'background.npy')
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
@@ -113,6 +117,7 @@ rule normalization:
                             '{rule_name}'+neo_format)
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --normalize_by {params.normalize_by}
@@ -130,6 +135,7 @@ rule detrending:
                             '{rule_name}'+neo_format)
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --order {params.order}
@@ -155,6 +161,7 @@ rule frequency_filter:
                                   'power_spectrum'+PLOT_FORMAT))
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --highpass_freq {params.highpass_freq} \
@@ -179,28 +186,13 @@ rule roi_selection:
     output:
         data = os.path.join(output_path, 'roi_selection',
                             '{rule_name}'+neo_format),
-        image = report(os.path.join(output_path, 'roi_selection',
+        img = report(os.path.join(output_path, 'roi_selection',
                                     '{rule_name}'+PLOT_FORMAT))
     shell:
         """
+        {add_utils}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --image_output "{output.image}" \
+                              --output_img "{output.img}" \
                               --intensity_threshold {params.intensity_threshold}
         """
-#
-# rule spatial_smooting:
-#     input:
-#         data = input_file,
-#         script = 'scripts/spatial_smooting.py'
-#     params:
-#         macro_dim = MACRO_DIM
-#     output:
-#         data = os.path.join(output_path, 'spatial_smooting',
-#                             '{rule_name}'+neo_format)
-#     shell:
-#         """
-#         python {input.script} --data {input.data} \
-#                               --output {output.data} \
-#                               --macro_dim {params.macro_dim}
-#         """

@@ -46,20 +46,13 @@ if __name__ == '__main__':
     CLI.add_argument("--channel", nargs='+', type=none_or_int, default='None',
                      help="list of channels to plot")
     args = CLI.parse_args()
-    CLI.print_help()
 
     asig = load_neo(args.data, 'analogsignal')
 
-    # parsing plotting channels
-    dim_t, channel_num = asig.shape
-    for i, channel in enumerate(args.channel):
-        if channel is None or channel >= channel_num:
-            args.channel[i] = random.randint(0,channel_num)
-
     # slicing signals
-    args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
-    args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
-    asig = asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
+    t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
+    t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
+    asig = asig.load(time_slice=(t_start*pq.s, t_stop*pq.s))
 
     fig = plot_traces(asig, args.channel)
 

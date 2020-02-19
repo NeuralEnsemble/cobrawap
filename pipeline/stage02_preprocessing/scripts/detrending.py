@@ -1,12 +1,11 @@
+"""
+ToDo
+"""
 import numpy as np
 import neo
 import argparse
 import os
-import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape, remove_annotations
-
-
+from utils import load_neo, write_neo
 
 def detrending(signal, order):
     if isinstance(signal, neo.AnalogSignal):
@@ -48,29 +47,24 @@ def detrending(signal, order):
         return X
 
 
-
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--order", nargs='?', type=int)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--order", nargs='?', type=int, default=2,
+                     help="detrending order")
     args = CLI.parse_args()
 
-    # load images
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    check_analogsignal_shape(block.segments[0].analogsignals)
-    remove_annotations([block] + block.segments
-                       + block.segments[0].analogsignals)
+    block = load_neo(args.data)
 
     asig = detrending(block.segments[0].analogsignals[0], args.order)
 
-    # save processed data
     asig.name += ""
     asig.description += "Detrended by order {} ({}). "\
                         .format(args.order, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

@@ -108,6 +108,7 @@ def ordereddict_to_dict(input_dict):
 def parse_plot_channels(channels, input_file):
     channels = channels if isinstance(channels, list) else [channels]
     channels = [none_or_int(channel) for channel in channels]
+    # ToDo: check is channel exsits, even when there is no None
     if None in channels:
         dim_t, channel_num = load_neo(input_file, object='analogsignal',
                                       lazy=True).shape
@@ -117,11 +118,13 @@ def parse_plot_channels(channels, input_file):
     return channels
 
 
-def time_slice(neo_obj, t_start=None, t_stop=None, unit='s', lazy=False):
+def time_slice(neo_obj, t_start=None, t_stop=None, unit='s',
+               lazy=False, channel_indexes=None):
     """
-    Robustly time-slices neo.AnalogSignal, neo.IrregularSampledSigna, or neo.ImageSequence, with `t_start` and `t_stop` given in seconds.
+    Robustly time-slices neo.AnalogSignal, neo.IrregularSampledSignal, neo.ImageSequence, or neo.Event,
+    with `t_start` and `t_stop` given in seconds.
     """
-    if not hasattr(neo_obj, 'time_slice'):
+    if not lazy and not hasattr(neo_obj, 'time_slice'):
         raise TypeError(f"{neo_obj} has no function 'time_slice'!")
     if t_start is None and t_stop is None:
         return neo_obj
@@ -131,8 +134,9 @@ def time_slice(neo_obj, t_start=None, t_stop=None, unit='s', lazy=False):
     if hasattr(neo_obj, 't_stop'):
         t_stop = neo_obj.t_stop.rescale('s').magnitude if t_stop is None\
                  else min([t_stop, neo_obj.t_stop.rescale('s').magnitude])
-    if lazy:
-        return neo_obj.load(time_slice=(t_start*pq.s, t_stop*pq.s))
+    if lazy and hasattr(neo_obj, 'load'):
+        return neo_obj.load(time_slice=(t_start*pq.s, t_stop*pq.s),
+                            channel_indexes=channel_indexes)
     else:
         return neo_obj.time_slice(t_start*pq.s, t_stop*pq.s)
 
@@ -266,16 +270,16 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         io = neo.io.get_io(filename, *args, **kwargs)
         if lazy and io.support_lazy:
             block = io.read_block(lazy=lazy)
-        elif lazy and isinstance(io, neo.io.nixio.NixIO):
-            with neo.NixIOFr(filename, *args, **kwargs) as nio:
-                block = nio.read_block(lazy=lazy)
+        # elif lazy and isinstance(io, neo.io.nixio.NixIO):
+        #     with neo.NixIOFr(filename, *args, **kwargs) as nio:
+        #         block = nio.read_block(lazy=lazy)
         else:
             block = io.read_block()
-        yield block
-    except Exception:
-        print(Exception)
+    except Exception as e:
+        io.close()
+        raise e
     finally:
-        if not lazy:
+        if not lazy and hasattr(io, 'close'):
             io.close()
 
     if object == 'block':

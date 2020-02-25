@@ -12,6 +12,14 @@ sys.path.append('../')
 from settings import output_path
 from utils import parse_plot_channels
 
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
+
+output_path = os.path.join(output_path, 'stage02_processing/')
+
+
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
 USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
@@ -37,14 +45,6 @@ FFT_SLICE = config["FFT_SLICE"]
 
 # ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
 
-if 'INPUT_FILE' in config:
-    stage_input = config["INPUT_FILE"]
-else:
-    stage_input = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
-
-output_path = os.path.join(output_path, 'stage02_processing/')
-
-
 #### Housekeeping ####
 
 def locate(str_list, string):
@@ -68,29 +68,36 @@ def input_file(wildcards):
 rule all:
     input:
         data = input_file,
-        configfile = 'config.yaml',
-        plot_script = 'scripts/plot_processed_trace.py'
+        img = [os.path.join(output_path,
+               f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}{PLOT_FORMAT}')
+               for channel in PLOT_CHANNEL],
+        configfile = 'config.yaml'
     params:
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        plot_channel = PLOT_CHANNEL,
-        stage_input = stage_input,
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(output_path, STAGE_OUTPUT),
-        img = report(os.path.join(output_path,
-                                  'processed_trace_{}-{}s_channel{}{}'\
-                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
+        """
+
+rule plot_processed_traces:
+    input:
+        stage_input = stage_input,
+        stage_output = input_file,
+        script = 'scripts/plot_processed_trace.py'
+    output:
+        img = report(os.path.join(output_path,
+                                  'processed_trace_{t_start}-{t_stop}s_channel{channel}'+PLOT_FORMAT))
+    shell:
+        """
         {add_utils}
-        python {input.plot_script} --data "{params.stage_input}" \
-                                   --trans_data "{output.data}" \
-                                   --output "{output.img}" \
-                                   --t_start {params.plot_tstart} \
-                                   --t_stop {params.plot_tstop} \
-                                   --channel {params.plot_channel}
+        python {input.script} --original_data "{input.stage_input}" \
+                              --processed_data "{input.stage_output}" \
+                              --output "{output.img}" \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+                              --channel {wildcards.channel}
         """
 
 rule clear:

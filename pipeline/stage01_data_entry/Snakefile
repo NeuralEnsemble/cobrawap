@@ -1,4 +1,4 @@
-# Stage 01 Data Curation
+# Stage 01 Data Entry
 
 configfile: "config.yaml"
 report: "report.rst"

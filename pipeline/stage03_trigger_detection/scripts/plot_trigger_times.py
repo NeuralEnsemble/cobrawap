@@ -1,12 +1,43 @@
-import numpy as np
-from elephant.signal_processing import zscore
 import matplotlib.pyplot as plt
 import seaborn as sns
-import neo
 import quantities as pq
 import argparse
-import os
 import random
+import os
+from utils import none_or_int, load_neo, save_plot, time_slice
+
+
+def plot_trigger_times(asig, event, channel):
+    sns.set(style='ticks', palette="deep", context="notebook")
+    fig, ax = plt.subplots()
+
+    ax.plot(asig.times, asig.as_array()[:,channel], label='signal')
+
+    times = [time for i, time in enumerate(event.times)
+             if event.array_annotations['channels'][i]==channel]
+    labels = [label for i, label in enumerate(event.labels)
+             if event.array_annotations['channels'][i]==channel]
+
+    if 'DOWN'.encode('UTF-8') in labels:
+        # plot up states
+        plot_states(times, labels, ax,
+                    t_start=asig.t_start, t_stop=asig.t_stop, label='UP states')
+    elif 'UP'.encode('UTF-8') in labels:
+        # plot only up transitions
+        for i, trans_time in enumerate(times):
+            ax.axvline(trans_time, c='k',
+                       label='UP transitions' if not i else '')
+    else:
+        print("Warning: No 'UP' (or 'DOWN') transition events "\
+            + f"in channel {channel} found!")
+
+    ax.set_title(f'Channel {channel}')
+    ax.set_xlabel(f'time [{asig.times.units.dimensionality.string}]')
+    ax.set_ylabel(f'signal [{asig.units.dimensionality.string}]')
+
+    plt.legend()
+    return fig
+
 
 def plot_states(times, labels, ax, t_start, t_stop, label=''):
     if labels[0].decode('UTF-8') == 'DOWN':
@@ -21,65 +52,33 @@ def plot_states(times, labels, ax, t_start, t_stop, label=''):
     return None
 
 
-def none_or_int(value):
-    if value == 'None':
-        return None
-    return int(value)
-
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",        nargs='?', type=str)
-    CLI.add_argument("--data",          nargs='?', type=str)
-    CLI.add_argument("--t_start",        nargs='?', type=float)
-    CLI.add_argument("--t_stop",         nargs='?', type=float)
-    CLI.add_argument("--channel",       nargs='?', type=none_or_int)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=lambda v: v.split(','),
+                     required=True, help="path of output figure(s)")
+    CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+                     help="start time in seconds")
+    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+                     help="stop time in seconds")
+    CLI.add_argument("--channel", nargs='+', type=none_or_int, default='None',
+                     help="list of channels to plot")
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
+    block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
-    args.t_start = max([args.t_start, asig.t_start.rescale('s').magnitude])
-    args.t_stop = min([args.t_stop, asig.t_stop.rescale('s').magnitude])
 
-    asig = asig.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
+    # slice signals
+    asig = time_slice(asig, args.t_start, args.t_stop)
 
+    # get transition events
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
     event = event.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
-    dim_t, dim_channels = asig.shape
-
-    if args.channel is None or args.channel >= dim_channels:
-        args.channel = random.randint(0, dim_channels-1)
-
-    sns.set(style='ticks', palette="deep", context="notebook")
-    fig, ax = plt.subplots()
-
-    ax.plot(asig.times, asig.as_array()[:,args.channel], label='signal')
-
-    times = [time for i, time in enumerate(event.times)
-             if event.array_annotations['channels'][i]==args.channel]
-    labels = [label for i, label in enumerate(event.labels)
-             if event.array_annotations['channels'][i]==args.channel]
-
-    if 'DOWN'.encode('UTF-8') in labels:
-        # plot up states
-        plot_states(times, labels, ax, t_start=args.t_start, t_stop=args.t_stop,
-                    label='UP states')
-    elif 'UP'.encode('UTF-8') in labels:
-        # plot only up transitions
-        for i, trans_time in enumerate(times):
-            ax.axvline(trans_time, c='k',
-                       label='UP transitions' if not i else '')
-    else:
-        print("Warning: No 'UP' (or 'DOWN') transition events found!")
-
-    ax.set_title('Channel {}'.format(args.channel))
-    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
-
-    plt.legend()
-
-    data_dir = os.path.dirname(args.output)
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir)
-    plt.savefig(fname=args.output)
+    for output, channel in zip(args.output, args.channel):
+        plot_trigger_times(asig=asig,
+                           event=event,
+                           channel=channel)
+        save_plot(output)

@@ -1,15 +1,9 @@
 import numpy as np
 from elephant.spectral import welch_psd
-from elephant.signal_processing import zscore
-import neo
 import quantities as pq
 import argparse
-import matplotlib.pyplot as plt
-import seaborn as sns
 import os
-import sys
-sys.path.append(os.path.join(os.getcwd(),'../'))
-from utils import check_analogsignal_shape
+from utils import load_neo, write_neo, none_or_float
 
 
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
@@ -84,49 +78,44 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
     return logMUA_asig
 
 
-def none_or_float(value):
-    if value == 'None':
-        return None
-    return float(value)
-
-
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",        nargs='?', type=str)
-    CLI.add_argument("--data",          nargs='?', type=str)
-    CLI.add_argument("--highpass_freq", nargs='?', type=float)
-    CLI.add_argument("--lowpass_freq",  nargs='?', type=float)
-    CLI.add_argument("--logMUA_rate",      nargs='?', type=none_or_float)
-    CLI.add_argument("--psd_overlap",   nargs='?', type=float)
-    CLI.add_argument("--fft_slice",   nargs='?', type=none_or_float)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--highpass_freq", nargs='?', type=float, required=True,
+                     help="lower bound of frequency band in Hz")
+    CLI.add_argument("--lowpass_freq", nargs='?', type=float, required=True,
+                     help="upper bound of frequency band in Hz")
+    CLI.add_argument("--logMUA_rate", nargs='?', type=none_or_float, default=None,
+                     help="rate of the signal after transformation")
+    CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
+                     help="overlap parameter for Welch's algorithm [0-1]")
+    CLI.add_argument("--fft_slice",   nargs='?', type=none_or_float, default=None,
+                     help="time window length used for power spectrum estimate, in s")
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    check_analogsignal_shape(block.segments[0].analogsignals)
+    block = load_neo(args.data)
 
     logMUA_rate = None if args.logMUA_rate is None \
-               else args.logMUA_rate*pq.Hz
+                  else args.logMUA_rate*pq.Hz
 
     fft_slice = None if args.fft_slice is None \
                 else args.fft_slice*pq.s
 
-
-    asig = block.segments[0].analogsignals[0]
-    asig = logMUA_estimation(asig,
+    asig = logMUA_estimation(block.segments[0].analogsignals[0],
                           highpass_freq=args.highpass_freq*pq.Hz,
                           lowpass_freq=args.lowpass_freq*pq.Hz,
                           logMUA_rate=logMUA_rate,
                           psd_overlap=args.psd_overlap,
                           fft_slice=fft_slice)
 
-    # save processed data
     asig.name += ""
     asig.description += "Estimated logMUA signal [{}, {}] Hz ({}). "\
                         .format(args.highpass_freq, args.lowpass_freq,
                                 os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

@@ -1,4 +1,4 @@
-# Stage 2 - Preprocessing
+# Stage 2 - Processing
 This stage prepares the data for analysis. The user can select the required pre-processing steps depending on the data and analysis objectives.
 
 [config template](config_template.yaml)
@@ -24,6 +24,8 @@ Activity signals, cleaned and pre-processed to user specifications
 
 ## Usage
 In this stage all blocks can be selected and arranged in arbitrary order. The execution order is specified by the config parameter `BLOCK_ORDER`.
+
+Other as in other stages, in this stage, all blocks are re-executed with every snakemake call. Because, the execution order of the blocks is completely modular and might change in-between runs, rerunning all blocks with the latest execution order ensures that no intermediate file with a contradicting origination confounds the results. 
 
 ## Blocks
 |Name | Description | Parameters |

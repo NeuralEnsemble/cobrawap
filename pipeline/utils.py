@@ -125,10 +125,12 @@ def time_slice(neo_obj, t_start=None, t_stop=None, unit='s', lazy=False):
         raise TypeError(f"{neo_obj} has no function 'time_slice'!")
     if t_start is None and t_stop is None:
         return neo_obj
-    t_start = neo_obj.t_start.rescale('s').magnitude if t_start is None\
-              else max([t_start, neo_obj.t_start.rescale('s').magnitude])
-    t_stop = neo_obj.t_stop.rescale('s').magnitude if t_stop is None\
-             else min([t_stop, neo_obj.t_stop.rescale('s').magnitude])
+    if hasattr(neo_obj, 't_start'):
+        t_start = neo_obj.t_start.rescale('s').magnitude if t_start is None\
+                  else max([t_start, neo_obj.t_start.rescale('s').magnitude])
+    if hasattr(neo_obj, 't_stop'):
+        t_stop = neo_obj.t_stop.rescale('s').magnitude if t_stop is None\
+                 else min([t_stop, neo_obj.t_stop.rescale('s').magnitude])
     if lazy:
         return neo_obj.load(time_slice=(t_start*pq.s, t_stop*pq.s))
     else:
@@ -257,7 +259,7 @@ def AnalogSignal2ImageSequence(block):
 
             block.segments[seg_count].imagesequences.append(imgseq)
     return block
-    
+
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):
     try:

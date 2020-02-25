@@ -1,4 +1,5 @@
-# Config file for Stage 1 - Data Curation
+# Config file for Stage 1 - Data Entry
+
 # Name of stage output file.
 # It will be created in directory
 # <output_path(in setting.py)>/stage01_data_curation/

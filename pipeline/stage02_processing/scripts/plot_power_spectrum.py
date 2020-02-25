@@ -28,7 +28,6 @@ def plot_psd(freqs, psd, highpass_freq, lowpass_freq):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data",    nargs='?', type=str, required=True,

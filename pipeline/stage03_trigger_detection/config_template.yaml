@@ -12,30 +12,10 @@ PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
 PLOT_CHANNEL: 50  # int or None. default 'None' -> randomly selected
 
-# TRANSFORMATION BLOCKS (optional)
-##################################
-# The list determines the combination and order of blocks to transform the
-# preprocessed signal. Default []
-# Available Blocks: 'logMUA_estimation', 'phase', 'zscore', 'normalize'
-TRANSFORMATION_BLOCKS: ['phase']
-
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
 DETECTION_BLOCK: 'threshold'
-
-# BLOCK - logMUA_estimation
-########################
-MUA_HIGHPASS_FREQ: 50  # in Hz
-MUA_LOWPASS_FREQ: 1200  # in Hz
-# Rate of the logMUA signal. Must be <= the original sampling rate
-# in Hz (default: 'None', takes highpass_freq)
-logMUA_RATE: 70
-# Length of time slice (in s) to estimate the local power spectrum
-# default 'None', takes minimum number of samples determined
-# by the lower bound of the frequency band
-FFT_SLICE: 0.1
-PSD_OVERLAP: 0.5  # default (0.5)
 
 # BLOCK - Threshold
 ###################

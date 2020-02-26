@@ -1,4 +1,4 @@
-# Stage 01 Data Curation
+# Stage 01 Data Entry
 
 configfile: "config.yaml"
 report: "report.rst"
@@ -11,7 +11,7 @@ add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 
 from settings import output_path
 from utils import ordereddict_to_dict
-output_path = os.path.join(output_path, 'stage01_data_curation/')
+output_path = os.path.join(output_path, 'stage01_data_entry/')
 
 
 neo_format = '.nix' # fixed! Do not change!

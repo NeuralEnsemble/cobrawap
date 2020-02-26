@@ -10,11 +10,23 @@ add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 
 sys.path.append('../')
 from settings import output_path
+from utils import parse_plot_channels
+
+if 'INPUT_FILE' in config:
+    stage_input = config["INPUT_FILE"]
+else:
+    stage_input = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
+
+output_path = os.path.join(output_path, 'stage02_processing/')
+
 
 neo_format = '.nix' # fixed! Do not change!
 STAGE_OUTPUT = config["OUTPUT"]
 USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 BLOCK_ORDER = config["BLOCK_ORDER"]
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNEL = parse_plot_channels(config["PLOT_CHANNEL"], stage_input)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
 HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
@@ -25,17 +37,13 @@ PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
 INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
+MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
+MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
+logMUA_RATE = config["logMUA_RATE"]
+FFT_SLICE = config["FFT_SLICE"]
 
 
 # ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
-
-if 'INPUT_FILE' in config:
-    stage_input = config["INPUT_FILE"]
-else:
-    stage_input = os.path.join(output_path, 'stage01_data_curation', 'data.nix')
-
-output_path = os.path.join(output_path, 'stage02_preprocessing/')
-
 
 #### Housekeeping ####
 
@@ -60,14 +68,36 @@ def input_file(wildcards):
 rule all:
     input:
         data = input_file,
+        img = [os.path.join(output_path,
+               f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}{PLOT_FORMAT}')
+               for channel in PLOT_CHANNEL],
         configfile = 'config.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(output_path, STAGE_OUTPUT)
+        data = os.path.join(output_path, STAGE_OUTPUT),
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
+        """
+
+rule plot_processed_traces:
+    input:
+        stage_input = stage_input,
+        stage_output = input_file,
+        script = 'scripts/plot_processed_trace.py'
+    output:
+        img = report(os.path.join(output_path,
+                                  'processed_trace_{t_start}-{t_stop}s_channel{channel}'+PLOT_FORMAT))
+    shell:
+        """
+        {add_utils}
+        python {input.script} --original_data "{input.stage_input}" \
+                              --processed_data "{input.stage_output}" \
+                              --output "{output.img}" \
+                              --t_start {wildcards.t_start} \
+                              --t_stop {wildcards.t_stop} \
+                              --channel {wildcards.channel}
         """
 
 rule clear:
@@ -195,4 +225,74 @@ rule roi_selection:
                               --output "{output.data}" \
                               --output_img "{output.img}" \
                               --intensity_threshold {params.intensity_threshold}
+        """
+
+rule logMUA_estimation:
+    input:
+        clear = os.path.join(output_path, 'clear.done'),
+        data = input_file,
+        script = 'scripts/logMUA_estimation.py',
+        plot_script = 'scripts/plot_logMUA_estimation.py'
+    params:
+        highpass_freq = MUA_HIGHPASS_FREQ,
+        lowpass_freq = MUA_LOWPASS_FREQ,
+        logMUA_rate = logMUA_RATE,
+        fft_slice = FFT_SLICE,
+        psd_overlap = PSD_OVERLAP,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channel = PLOT_CHANNEL
+    output:
+        data = os.path.join(output_path, 'logMUA_estimation',
+                            '{rule_name}'+neo_format),
+        img = report(os.path.join(output_path, '{rule_name}',
+                                  'logMUA_trace_{}-{}s_channel{}{}'\
+                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
+    shell:
+        """
+        {add_utils}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --logMUA_rate {params.logMUA_rate} \
+                              --fft_slice {params.fft_slice} \
+                              --psd_overlap {params.psd_overlap}
+        python {input.plot_script} --data "{input.data}" \
+                                   --logMUA_data "{output.data}" \
+                                   --output "{output.img}" \
+                                   --highpass_freq {params.highpass_freq} \
+                                   --lowpass_freq {params.lowpass_freq} \
+                                   --t_start {params.plot_tstart} \
+                                   --t_stop {params.plot_tstop} \
+                                   --channel {params.plot_channel}
+        """
+
+rule phase_transform:
+    input:
+        clear = os.path.join(output_path, 'clear.done'),
+        data = input_file,
+        script = 'scripts/phase_transform.py'
+    output:
+        data = os.path.join(output_path, 'phase_transform',
+                            '{rule_name}'+neo_format)
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
+
+
+rule zscore:
+    input:
+        clear = os.path.join(output_path, 'clear.done'),
+        data = input_file,
+        script = 'scripts/z_score.py'
+    output:
+        data = os.path.join(output_path, 'zscore',
+                            '{rule_name}'+neo_format)
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
         """

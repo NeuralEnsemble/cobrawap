@@ -5,7 +5,8 @@ import re
 import os
 import sys
 import neo
-from utils import load_neo, write_neo, none_or_float, none_or_str, time_slice
+from utils import load_neo, write_neo, none_or_float, none_or_str, time_slice,\
+                  parse_string2dict
 
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])
@@ -38,7 +39,7 @@ def merge_analogsingals(asigs):
 
 
 if __name__ == '__main__':
-    argparse.ArgumentParser(description=__doc__,
+    CLI = argparse.ArgumentParser(description=__doc__,
             formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data")
@@ -50,6 +51,10 @@ if __name__ == '__main__':
                      help="distance between electrodes or pixels in mm")
     CLI.add_argument("--data_name", nargs='?', type=str, default='None',
                      help="chosen name of the dataset")
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
+                     help="start time in seconds")
+    CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
+                     help="stop time in seconds")
     CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
                      help="metadata of the dataset")
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
@@ -59,12 +64,10 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     try:
-        io = neo.Spike2IO(args.data, try_signal_grouping=True)
-        block = io.read_block()
-    except e:
+        block = load_neo(args.data, try_signal_grouping=True)
+    except Exception as e:
         print(e)
-        io = neo.Spike2IO(args.data, try_signal_grouping=False)
-        block = io.read_block()
+        block = load_neo(args.data, try_signal_grouping=True)
 
     asigs = block.segments[0].analogsignals
 
@@ -118,5 +121,6 @@ if __name__ == '__main__':
     # block.channel_indexes.append(chidx)
     # block.segments[0].analogsignals[0].channel_index = chidx
     # chidx.analogsignals.append(asig)
+    block.channel_indexes = []
 
     write_neo(args.output, block)

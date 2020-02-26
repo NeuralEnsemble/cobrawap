@@ -10,7 +10,7 @@ from utils import parse_string2dict, ImageSequence2AnalogSignal, write_neo,
                   none_or_float, none_or_str
 
 if __name__ == '__main__':
-    argparse.ArgumentParser(description=__doc__,
+    CLI = argparse.ArgumentParser(description=__doc__,
             formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data directory")

@@ -1,7 +1,7 @@
 
 STAGES:
-    - 'stage01_data_curation'
-    - 'stage02_preprocessing'
+    - 'stage01_data_entry'
+    - 'stage02_processing'
     - 'stage03_trigger_detection'
     - 'stage04_wavefront_detection'
     - 'stage05_wave_characterization'

@@ -1,6 +1,6 @@
-# Config file for Stage 2 - Preprocessing
+# Config file for Stage 2 - Processing
 # Name of the output file
-OUTPUT: "preprocessed_data.nix"
+OUTPUT: "processed_data.nix"
 
 # If True (default), the output file of a stage is created as symbolic link
 # to the last block output. If False, a duplicate is created (e.g. for cloud
@@ -11,13 +11,15 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # and in which order. Execution order is from first to last entry.
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
-# 'spatial_smooting', 'roi_selection'
+# 'spatial_smooting', 'roi_selection', 'logMUA_estimation', 'phase_transform',
+# 'zscore'
 BLOCK_ORDER: ['frequency_filter']
-
-# ToDo: Param dict for each block? Or are there many shared parameters?
 
 # General parameters
 ####################
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNEL: 50  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: '.png'
 
 # BLOCK - background_substraction
@@ -53,11 +55,21 @@ PSD_OVERLAP: 0.5
 #             4 - cubic detrending.
 DETRENDING_ORDER: 2
 
-# BLOCK - spatial_smooting
-##########################
-
 # BLOCK - img_roi_selection
 ###########################
 # Threshold below which the pixels are discarded (set to nan).
 # Given in percent of the range between minimum and maximum intensity.
 INTENSITY_THRESHOLD: 0.5
+
+# BLOCK - logMUA_estimation
+########################
+MUA_HIGHPASS_FREQ: 50  # in Hz
+MUA_LOWPASS_FREQ: 1200  # in Hz
+# Rate of the logMUA signal. Must be <= the original sampling rate
+# in Hz (default: 'None', takes highpass_freq)
+logMUA_RATE: 70
+# Length of time slice (in s) to estimate the local power spectrum
+# default 'None', takes minimum number of samples determined
+# by the lower bound of the frequency band
+FFT_SLICE: 0.1
+# PSD_OVERLAP: determined by setting in block frequency_filter

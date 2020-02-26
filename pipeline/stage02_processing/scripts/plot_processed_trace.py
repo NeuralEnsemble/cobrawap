@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import numpy as np
 import argparse
 import os
 import random
@@ -49,12 +48,10 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     orig_asig = load_neo(args.original_data, 'analogsignal', lazy=True)
-
     orig_asig = time_slice(orig_asig, t_start=args.t_start, t_stop=args.t_stop,
                            lazy=True, channel_indexes=args.channel)
 
     proc_asig = load_neo(args.processed_data, 'analogsignal', lazy=True)
-
     proc_asig = time_slice(proc_asig, t_start=args.t_start, t_stop=args.t_stop,
                            lazy=True, channel_indexes=args.channel)
 

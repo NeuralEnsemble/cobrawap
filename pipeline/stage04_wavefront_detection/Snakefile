@@ -3,27 +3,34 @@
 configfile: "config.yaml"
 report: "report.rst"
 
-output_folder_name = 'stage04_wavefront_detection'
-
 import os
 import sys
-sys.path.append('../')
-from settings import output_path
+utils_path = '../'
+sys.path.append(utils_path)
 
-if 'INPUT_FILE' in config:
-    stage_input = config["INPUT_FILE"]
+from settings import output_path
+from utils import parse_plot_channels
+
+STAGE_NAME = config["STAGE_NAME"]
+STAGE_OUTPUT = config["STAGE_OUTPUT"]
+NEO_FORMAT = config["NEO_FORMAT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
+
+if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
+    STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    stage_input = os.path.join(output_path, 'stage03_trigger_detection',
+    STAGE_INPUT = os.path.join(output_path, 'stage03_trigger_detection',
                                'trigger_times.nix')
 
-output_path = os.path.join(output_path, output_folder_name)
-
-OUTPUT = config["OUTPUT"]
-USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
+
 TRIGGER_FILTER = config["TRIGGER_FILTER"]
 WAVEFRONT_FILTER = config["WAVEFRONT_FILTER"]
-
 METRIC = config["METRIC"]
 TIME_DIM = config["TIME_DIM"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
@@ -31,31 +38,30 @@ MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
 
 def clustering_input(wildcards):
     if len(TRIGGER_FILTER):
-        return os.path.join(output_path, TRIGGER_FILTER[-1], 'trigger_times.nix')
+        return os.path.join(OUTPUT_DIR, TRIGGER_FILTER[-1], 'trigger_times.nix')
     else:
-        return stage_input
+        return STAGE_INPUT
 
 rule all:
     input:
-        data = os.path.join(output_path, 'clustering', OUTPUT),
+        data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
         plot_script = 'scripts/plot_clustering.py'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(output_path, OUTPUT),
-        img = report(os.path.join(output_path, 'cluster'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
+        img = report(os.path.join(OUTPUT_DIR, 'cluster.'+PLOT_FORMAT))
     shell:
         """
+        {ADD_UTILS}
         {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{output.data}" \
                                    --output "{output.img}" \
         """
 
 #### Blocks
-# remove_short_states
-#
+# ToDo: rule remove_short_states
 
-### Clustering Block
 rule clustering:
     input:
         data = clustering_input,
@@ -67,10 +73,11 @@ rule clustering:
         neighbour_distance = NEIGHBOUR_DISTANCE,
         min_samples = MIN_SAMPLES_PER_WAVE
     output:
-        data = os.path.join(output_path, 'clustering', OUTPUT),
-        img = report(os.path.join(output_path, 'clustering', 'wave_clustering'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
+        img = report(os.path.join(OUTPUT_DIR, 'clustering', 'wave_clustering.'+PLOT_FORMAT))
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --metric {params.metric} \

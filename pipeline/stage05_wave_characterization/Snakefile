@@ -3,29 +3,39 @@
 configfile: "config.yaml"
 report: "report.rst"
 
-output_folder_name = 'stage05_wave_characterization'
-
 import os
 import sys
-sys.path.append('../')
+utils_path = '../'
+sys.path.append(utils_path)
+
 from settings import output_path
+from utils import parse_plot_channels
 
-if 'INPUT_FILE' in config:
-    stage_input = config["INPUT_FILE"]
+STAGE_NAME = config["STAGE_NAME"]
+STAGE_OUTPUT = config["STAGE_OUTPUT"]
+# NEO_FORMAT = config["NEO_FORMAT"]
+USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
+
+if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
+    STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    stage_input = os.path.join(output_path, 'stage04_wavefront_detection',
-                               'waves.nix')
+    STAGE_INPUT = os.path.join(output_path, 'stage03_trigger_detection',
+                               'trigger_times.nix')
 
-output_path = os.path.join(output_path, output_folder_name)
-
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
+
 MEASURES = config["MEASURES"]
 
 def input(wildcards):
-    return stage_input
+    return STAGE_INPUT
 
 def measures_output(wildcards):
-    return [os.path.join(output_path, measure, measure+'.csv')
+    return [os.path.join(OUTPUT_DIR, measure, measure+'.csv')
             for measure in MEASURES]
 
 rule all:
@@ -37,26 +47,29 @@ rule all:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data]
     output:
-        data = os.path.join(output_path, 'measures.csv'),
-        img = report(os.path.join(output_path, 'overview_measures.html'))
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
+        img = report(os.path.join(OUTPUT_DIR, 'overview_measures.html'))
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data {input.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}"
         """
-# ToDo: combine rule with {metric} wildcard?
+
+# ToDo: combine rules with {metric} wildcard?
 
 rule velocity_planar:
     input:
         data = input,
         script = 'scripts/velocity_planar.py'
     output:
-        data = os.path.join(output_path, 'velocity_planar', 'velocity_planar.csv'),
-        img = report(os.path.join(output_path, 'velocity_planar',
-                                  'velocity_planar'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, 'velocity_planar', 'velocity_planar.csv'),
+        img = report(os.path.join(OUTPUT_DIR, 'velocity_planar',
+                                  'velocity_planar.'+PLOT_FORMAT))
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}"
@@ -67,12 +80,13 @@ rule velocity_gradient:
         data = input,
         script = 'scripts/velocity_gradient.py'
     output:
-        data = os.path.join(output_path, 'velocity_gradient',
+        data = os.path.join(OUTPUT_DIR, 'velocity_gradient',
                                          'velocity_gradient.csv'),
-        img = report(os.path.join(output_path, 'velocity_gradient',
-                                  'velocity_gradient'+PLOT_FORMAT))
+        img = report(os.path.join(OUTPUT_DIR, 'velocity_gradient',
+                                  'velocity_gradient.'+PLOT_FORMAT))
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}"
@@ -84,17 +98,20 @@ rule direction:
         data = input,
         script = 'scripts/direction.py'
     output:
-        data = os.path.join(output_path, 'direction', 'direction.csv'),
-        img = report(os.path.join(output_path, 'direction',
-                                  'direction'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, 'direction', 'direction.csv'),
+        img = report(os.path.join(OUTPUT_DIR, 'direction',
+                                  'direction.'+PLOT_FORMAT))
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}"
         """
 
 # rule gradient_direction:
-# slice signal for each wave
+    # slice signal for each wave
+
+# rule wave_classification:
 
 # rule inter_wave_distance:

@@ -2,12 +2,8 @@
 ToDo: write docstring
 """
 
-import numpy as np
 import argparse
-import neo
 import quantities as pq
-import os
-import sys
 from utils import parse_string2dict, ImageSequence2AnalogSignal, none_or_float,\
                   none_or_int, load_neo, write_neo, time_slice
 
@@ -25,9 +21,9 @@ if __name__ == '__main__':
                      help="distance between electrodes or pixels in mm")
     CLI.add_argument("--data_name", nargs='?', type=str, default='None',
                      help="chosen name of the dataset")
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=0,
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
                      help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=10,
+    CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
                      help="stop time in seconds")
     CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
                      help="metadata of the dataset")
@@ -75,5 +71,5 @@ if __name__ == '__main__':
     # Update the annotated AnalogSignal object in the Neo Block
     block.segments[0].analogsignals[0] = asig
 
-    # Save data into Nix file
+    # Save data to file
     write_neo(args.output, block)

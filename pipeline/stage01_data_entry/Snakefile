@@ -7,16 +7,21 @@ import os
 import sys
 utils_path = '../'
 sys.path.append(utils_path)
-add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 
 from settings import output_path
 from utils import ordereddict_to_dict
-output_path = os.path.join(output_path, 'stage01_data_entry/')
 
-
-neo_format = '.nix' # fixed! Do not change!
-STAGE_OUTPUT = config["OUTPUT"]
+STAGE_NAME = config["STAGE_NAME"]
+STAGE_OUTPUT = config["STAGE_OUTPUT"]
+NEO_FORMAT = config["NEO_FORMAT"]
 USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
+
+PLOT_TSTART = config["PLOT_TSTART"]
+PLOT_TSTOP = config["PLOT_TSTOP"]
+PLOT_CHANNELS = config["PLOT_CHANNELS"]
+PLOT_FORMAT = config["PLOT_FORMAT"]
 
 DATA_SETS = config["DATA_SETS"]
 CURATION_SCRIPT = config["CURATION_SCRIPT"]
@@ -28,24 +33,20 @@ ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
 ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
 KWARGS = ordereddict_to_dict(config["KWARGS"])
 
-PLOT_TSTART = config["PLOT_TSTART"]
-PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNEL = config["PLOT_CHANNEL"]
-PLOT_FORMAT = config["PLOT_FORMAT"]
 
 def input_file(wildcards):
     return DATA_SETS[wildcards.data_name]
 
 rule all:
     input:
-        data = expand(os.path.join(output_path, 'output_{name}'+neo_format),
-               name = DATA_SETS.keys()),
-        check = expand(os.path.join(output_path, 'output_{name}.check'),
-               name = DATA_SETS.keys())
+        data = expand(os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT),
+               data_name = DATA_SETS.keys()),
+        check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
+               data_name = DATA_SETS.keys())
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        os.path.join(output_path, STAGE_OUTPUT)
+        os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
     shell:
         """
         {params.command} "{input.data[0]}" "{output}"
@@ -54,9 +55,9 @@ rule all:
 rule check_input:
     # ToDo!
     input:
-        data = os.path.join(output_path, 'output_{data_name}'+neo_format)
+        data = os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT)
     output:
-        temp(os.path.join(output_path, 'output_{data_name}.check'))
+        temp(os.path.join(OUTPUT_DIR, 'output_{data_name}.check'))
     shell:
         """
         touch "{output}"
@@ -68,8 +69,8 @@ rule enter_data:
         script = os.path.join('scripts/', CURATION_SCRIPT),
         plot_script = 'scripts/plot_traces.py'
     output:
-        data = os.path.join(output_path, 'output_{data_name}'+neo_format),
-        img = report(os.path.join(output_path, 'trace_{data_name}'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, 'trace_{data_name}.'+PLOT_FORMAT))
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,
@@ -80,10 +81,10 @@ rule enter_data:
         kwargs = KWARGS,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        plot_channel = PLOT_CHANNEL
+        plot_channels = PLOT_CHANNELS
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --sampling_rate {params.sampling_rate} \
@@ -98,5 +99,5 @@ rule enter_data:
                                    --output "{output.img}" \
                                    --t_start {params.plot_tstart} \
                                    --t_stop {params.plot_tstop} \
-                                   --channel {params.plot_channel} \
+                                   --channels {params.plot_channels} \
         """

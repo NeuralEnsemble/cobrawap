@@ -1,9 +1,17 @@
 # Config file for Stage 5 - Wave Characterization
 
-OUTPUT: 'measures.csv'
+# Name of stage, must be identical with folder name
+STAGE_NAME: 'stage05_wave_characterization'
 
-PLOT_FORMAT: '.png'
+# Name of the output file
+STAGE_OUTPUT: 'measures.csv'
 
-# Measure to compute
+# Plotting parameters
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
+PLOT_FORMAT: 'png'
+
+# Measures to compute
 # 'velocity_planar', 'velocity_gradient', 'direction'
 MEASURES: ['velocity_planer', 'velocity_gradient', 'direction']

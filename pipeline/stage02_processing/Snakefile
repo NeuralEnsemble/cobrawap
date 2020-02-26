@@ -1,4 +1,4 @@
-# Stage 02 Preprocessing
+# Stage 02 Processing
 
 configfile: "config.yaml"
 report: "report.rst"
@@ -6,28 +6,29 @@ report: "report.rst"
 import os
 import sys
 utils_path = '../'
-add_utils = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+sys.path.append(utils_path)
 
-sys.path.append('../')
 from settings import output_path
 from utils import parse_plot_channels
 
-if 'INPUT_FILE' in config:
-    stage_input = config["INPUT_FILE"]
-else:
-    stage_input = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
-
-output_path = os.path.join(output_path, 'stage02_processing/')
-
-
-neo_format = '.nix' # fixed! Do not change!
-STAGE_OUTPUT = config["OUTPUT"]
+STAGE_NAME = config["STAGE_NAME"]
+STAGE_OUTPUT = config["STAGE_OUTPUT"]
+NEO_FORMAT = config["NEO_FORMAT"]
 USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
-BLOCK_ORDER = config["BLOCK_ORDER"]
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
+
+if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
+    STAGE_INPUT = config["STAGE_INPUT"]
+else:
+    STAGE_INPUT = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
+
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNEL = parse_plot_channels(config["PLOT_CHANNEL"], stage_input)
+PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
+
+BLOCK_ORDER = config["BLOCK_ORDER"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
 HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
 LOWPASS_FREQ = config["LOWPASS_FREQ"]
@@ -42,9 +43,6 @@ MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
 logMUA_RATE = config["logMUA_RATE"]
 FFT_SLICE = config["FFT_SLICE"]
 
-
-# ToDo: add rule to check the stage input (sampling_rate, spatial_scale, coords, ...)
-
 #### Housekeeping ####
 
 def locate(str_list, string):
@@ -58,24 +56,24 @@ def input_file(wildcards):
     if hasattr(wildcards, 'rule_name'):
         idx = locate(BLOCK_ORDER, wildcards.rule_name)
         if idx:
-            return os.path.join(output_path,
-                            BLOCK_ORDER[idx-1], BLOCK_ORDER[idx-1]+neo_format)
+            return os.path.join(OUTPUT_DIR, BLOCK_ORDER[idx-1],
+                                BLOCK_ORDER[idx-1]+'.'+NEO_FORMAT)
     elif len(BLOCK_ORDER):
-        return os.path.join(output_path,
-                            BLOCK_ORDER[-1], BLOCK_ORDER[-1]+neo_format)
-    return os.path.join(output_path, stage_input)
+        return os.path.join(OUTPUT_DIR, BLOCK_ORDER[-1],
+                            BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
+    return os.path.join(OUTPUT_DIR, STAGE_INPUT)
 
 rule all:
     input:
         data = input_file,
-        img = [os.path.join(output_path,
-               f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}{PLOT_FORMAT}')
-               for channel in PLOT_CHANNEL],
+        img = [os.path.join(OUTPUT_DIR,
+               f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}.{PLOT_FORMAT}')
+               for channel in PLOT_CHANNELS],
         configfile = 'config.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(output_path, STAGE_OUTPUT),
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
@@ -83,15 +81,15 @@ rule all:
 
 rule plot_processed_traces:
     input:
-        stage_input = stage_input,
+        stage_input = STAGE_INPUT,
         stage_output = input_file,
         script = 'scripts/plot_processed_trace.py'
     output:
-        img = report(os.path.join(output_path,
-                                  'processed_trace_{t_start}-{t_stop}s_channel{channel}'+PLOT_FORMAT))
+        img = report(os.path.join(OUTPUT_DIR,
+                                  'processed_trace_{t_start}-{t_stop}s_channel{channel}.'+PLOT_FORMAT))
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --original_data "{input.stage_input}" \
                               --processed_data "{input.stage_output}" \
                               --output "{output.img}" \
@@ -102,9 +100,9 @@ rule plot_processed_traces:
 
 rule clear:
     output:
-        temp(os.path.join(output_path, 'clear.done'))
+        temp(os.path.join(OUTPUT_DIR, 'clear.done'))
     params:
-        block_folder = ['"'+os.path.join(output_path, block)+'"'
+        block_folder = ['"'+os.path.join(OUTPUT_DIR, block)+'"'
                         for block in BLOCK_ORDER]
     shell:
         """
@@ -116,19 +114,19 @@ rule clear:
 
 rule background_substraction:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/background_substraction.py'
     output:
-        data = os.path.join(output_path, 'background_substraction',
-                            '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, '{rule_name}',
-                                  'background'+PLOT_FORMAT)),
-        array = os.path.join(output_path, '{rule_name}',
+        data = os.path.join(OUTPUT_DIR, 'background_substraction',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+                                  'background.'+PLOT_FORMAT)),
+        array = os.path.join(OUTPUT_DIR, '{rule_name}',
                              'background.npy')
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
@@ -137,17 +135,17 @@ rule background_substraction:
 
 rule normalization:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/normalization.py'
     params:
         normalize_by = NORMALIZE_BY
     output:
-        data = os.path.join(output_path, 'normalization',
-                            '{rule_name}'+neo_format)
+        data = os.path.join(OUTPUT_DIR, 'normalization',
+                            '{rule_name}.'+NEO_FORMAT)
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --normalize_by {params.normalize_by}
@@ -155,17 +153,17 @@ rule normalization:
 
 rule detrending:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/detrending.py'
     params:
         order = DETRENDING_ORDER
     output:
-        data = os.path.join(output_path, 'detrending',
-                            '{rule_name}'+neo_format)
+        data = os.path.join(OUTPUT_DIR, 'detrending',
+                            '{rule_name}.'+NEO_FORMAT)
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --order {params.order}
@@ -173,7 +171,7 @@ rule detrending:
 
 rule frequency_filter:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/frequency_filter.py',
         plotting_script = 'scripts/plot_power_spectrum.py'
@@ -185,13 +183,13 @@ rule frequency_filter:
         psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP
     output:
-        data = os.path.join(output_path, 'frequency_filter',
-                            '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, '{rule_name}',
-                                  'power_spectrum'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, 'frequency_filter',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+                                  'power_spectrum.'+PLOT_FORMAT))
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --highpass_freq {params.highpass_freq} \
@@ -208,19 +206,19 @@ rule frequency_filter:
 
 rule roi_selection:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/roi_selection.py'
     params:
         intensity_threshold = INTENSITY_THRESHOLD
     output:
-        data = os.path.join(output_path, 'roi_selection',
-                            '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, 'roi_selection',
-                                    '{rule_name}'+PLOT_FORMAT))
+        data = os.path.join(OUTPUT_DIR, 'roi_selection',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, 'roi_selection',
+                                    '{rule_name}.'+PLOT_FORMAT))
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
@@ -229,10 +227,9 @@ rule roi_selection:
 
 rule logMUA_estimation:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
-        script = 'scripts/logMUA_estimation.py',
-        plot_script = 'scripts/plot_logMUA_estimation.py'
+        script = 'scripts/logMUA_estimation.py'
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
@@ -241,58 +238,59 @@ rule logMUA_estimation:
         psd_overlap = PSD_OVERLAP,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        plot_channel = PLOT_CHANNEL
+        plot_channels = PLOT_CHANNELS
+        img = ','.join([os.path.join(OUTPUT_DIR, 'logMUA_estimation',
+                                     f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
+                                    +f'_channel{channel}.{PLOT_FORMAT}')
+                                     for channel in PLOT_CHANNELS]),
     output:
-        data = os.path.join(output_path, 'logMUA_estimation',
-                            '{rule_name}'+neo_format),
-        img = report(os.path.join(output_path, '{rule_name}',
-                                  'logMUA_trace_{}-{}s_channel{}{}'\
-                                  .format(PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT)))
+        data = os.path.join(OUTPUT_DIR, 'logMUA_estimation',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+                                  f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
+                                 +f'_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
-        {add_utils}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
+                              --output_img "{params.img}" \
                               --highpass_freq {params.highpass_freq} \
                               --lowpass_freq {params.lowpass_freq} \
                               --logMUA_rate {params.logMUA_rate} \
                               --fft_slice {params.fft_slice} \
                               --psd_overlap {params.psd_overlap}
-        python {input.plot_script} --data "{input.data}" \
-                                   --logMUA_data "{output.data}" \
-                                   --output "{output.img}" \
-                                   --highpass_freq {params.highpass_freq} \
-                                   --lowpass_freq {params.lowpass_freq} \
-                                   --t_start {params.plot_tstart} \
-                                   --t_stop {params.plot_tstop} \
-                                   --channel {params.plot_channel}
+                              --t_start {params.plot_tstart} \
+                              --t_stop {params.plot_tstop} \
+                              --channels {params.plot_channels}
         """
 
 rule phase_transform:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/phase_transform.py'
     output:
-        data = os.path.join(output_path, 'phase_transform',
-                            '{rule_name}'+neo_format)
+        data = os.path.join(OUTPUT_DIR, 'phase_transform',
+                            '{rule_name}.'+NEO_FORMAT)
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """
 
-
 rule zscore:
     input:
-        clear = os.path.join(output_path, 'clear.done'),
+        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
         script = 'scripts/z_score.py'
     output:
-        data = os.path.join(output_path, 'zscore',
-                            '{rule_name}'+neo_format)
+        data = os.path.join(OUTPUT_DIR, 'zscore',
+                            '{rule_name}.'+NEO_FORMAT)
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """

@@ -1,9 +1,15 @@
 # Config file for Stage 1 - Data Entry
 
+# Name of stage, must be identical with folder name
+STAGE_NAME: 'stage01_data_entry'
+
 # Name of stage output file.
 # It will be created in directory
 # <output_path(in setting.py)>/stage01_data_curation/
 OUTPUT: "<data_name>.nix"
+
+# File format in which all intermediate neo objects are stored
+NEO_FORMAT: 'nix'
 
 # If True (default), the output file of a stage is created as symbolic link
 # to the last block output. If False, a duplicate is created (e.g. for cloud
@@ -28,8 +34,8 @@ SAMPLING_RATE: 25  # Hz
 
 # Time slice in s
 # if None, the entire recording is used
-T_START: 0
-T_STOP: 10
+T_START: None
+T_STOP: None
 
 # Metadata - general information (non-specific to individual channels)
 # This must include an entry 'grid_size' with an int tuple
@@ -54,6 +60,6 @@ KWARGS: 'None'
 # These parameters are used to create an example plot to get a first view
 # on the signals and ensure that the data was loaded and annotated correctly
 PLOT_TSTART: 0  # in s
-PLOT_TSTOP: 0  # in s
-PLOT_CHANNEL: 'None'  # int, or list of int, or 'None' -> randomly chosen channel
-PLOT_FORMAT: '.png'  # file extension for storing the plot
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNELS: 'None'  # int, or list of int, or 'None' -> randomly chosen channel
+PLOT_FORMAT: 'png'  # file extension for storing the plot

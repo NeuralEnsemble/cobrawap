@@ -8,9 +8,10 @@ import numpy as np
 sys.path.append('../')
 from settings import output_path
 
+# the working directory is by default the directory of the Snakefile
 working_dir = ''
+
 STAGES = config["STAGES"]
-# ToDo: overwrite plotting configs
 
 def read_stage_output(stage):
     with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:

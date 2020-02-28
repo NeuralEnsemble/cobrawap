@@ -14,13 +14,14 @@ working_dir = ''
 STAGES = config["STAGES"]
 
 def read_stage_output(stage):
+    output_namespace = "STAGE_OUTPUT"
     with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
         config_dict = yaml.safe_load(f)
-    if 'OUTPUT' in config_dict.keys():
-        return os.path.join(output_path, stage, config_dict['OUTPUT'])
+    if output_namespace in config_dict.keys():
+        return os.path.join(output_path, stage, config_dict[output_namespace])
     else:
-        raise ValueError("config file of stage {} ".format(stage)\
-                       + "does not define 'OUTPUT'!")
+        raise ValueError(f"config file of stage {stage} "
+                       + f"does not define {output_namespace}!")
 
 def add_to_config(config_path, update_dict, new_config_path=None):
     with open(config_path, 'r') as f:
@@ -34,17 +35,15 @@ def add_to_config(config_path, update_dict, new_config_path=None):
     return new_config_path
 
 def set_subworkflow_inputs(stages):
+    intput_namespace = "STAGE_INTPUT"
     update_dict = config
     for i, stage in enumerate(stages):
         if i:
-            update_dict['INPUT_FILE'] = read_stage_output(stages[i-1])
+            update_dict[intput_namespace] = read_stage_output(stages[i-1])
         add_to_config(config_path=os.path.join(working_dir, stage, 'config.yaml'),
                       update_dict=update_dict)
 
 set_subworkflow_inputs(STAGES)
-
-# ToDo: write generic rule to connect subworkflows (with Namespace)
-# using input function
 
 subworkflow stage01:
     workdir:
@@ -76,9 +75,31 @@ subworkflow stage05:
     configfile:
         os.path.join(working_dir, STAGES[4], "temp_config.yaml")
 
+def stage_input(wildcards):
+        stage_num = [i for i, stage in enumerate(STAGES)
+                                    if stage == wildcards.stage][0]
+        if stage_num:
+            return os.path.join(output_path, f'{STAGES[stage_num-1]}.done')
+        else:
+            return []
+
+def stage_output(wildcards):
+    if wildcards.stage == STAGES[0]:
+        return stage01(read_stage_output(wildcards.stage))
+    elif wildcards.stage == STAGES[1]:
+        return stage02(read_stage_output(wildcards.stage))
+    elif wildcards.stage == STAGES[2]:
+        return stage03(read_stage_output(wildcards.stage))
+    elif wildcards.stage == STAGES[3]:
+        return stage04(read_stage_output(wildcards.stage))
+    elif wildcards.stage == STAGES[4]:
+        return stage05(read_stage_output(wildcards.stage))
+    else:
+        raise InputError(f"Don't recognize stage {wildcards.stage}!")
+
 rule all:
     input:
-        last_stage = os.path.join(output_path, '{}_output.nix'.format(STAGES[-1])),
+        last_stage = os.path.join(output_path, f'{STAGES[-1]}.done'),
         reports = expand(os.path.join(output_path, '{subworkflow_name}',
                                       'report.html'),
                          subworkflow_name=STAGES)
@@ -87,63 +108,16 @@ rule all:
         rm */temp_config.yaml
         """
 
-rule exc_stage01:
+rule execute_stage:
     input:
-        stage_output = stage01(read_stage_output(STAGES[0])),
-        config = os.path.join(working_dir, STAGES[0], "config.yaml")
+        stage_input = stage_input,
+        stage_output = stage_output,
+        config = os.path.join(working_dir, '{stage}', "config.yaml")
     output:
-        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[0])))
+        temp(os.path.join(output_path, '{stage}.done'))
     shell:
         """
-        ln -s {input.stage_output} {output}
-        """
-
-rule exc_stage02:
-    input:
-        stage_output = stage02(read_stage_output(STAGES[1])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[0])),
-        config = os.path.join(working_dir, STAGES[1], "config.yaml")
-    output:
-        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[1])))
-    shell:
-        """
-        ln -s {input.stage_output} {output}
-        """
-
-rule exc_stage03:
-    input:
-        stage_output = stage03(read_stage_output(STAGES[2])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[1])),
-        config = os.path.join(working_dir, STAGES[2], "config.yaml")
-    output:
-        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[2])))
-    shell:
-        """
-        ln -s {input.stage_output} {output}
-        """
-
-rule exc_stage04:
-    input:
-        stage_output = stage04(read_stage_output(STAGES[3])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[2])),
-        config = os.path.join(working_dir, STAGES[3], "config.yaml")
-    output:
-        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[3])))
-    shell:
-        """
-        ln -s {input.stage_output} {output}
-        """
-
-rule exc_stage05:
-    input:
-        stage_output = stage05(read_stage_output(STAGES[4])),
-        stage_input = os.path.join(output_path, '{}_output.nix'.format(STAGES[3])),
-        config = os.path.join(working_dir, STAGES[4], "config.yaml")
-    output:
-        temp(os.path.join(output_path, '{}_output.nix'.format(STAGES[4])))
-    shell:
-        """
-        ln -s {input.stage_output} {output}
+        touch {output}
         """
 
 rule create_report:

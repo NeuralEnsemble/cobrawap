@@ -238,7 +238,7 @@ rule logMUA_estimation:
         psd_overlap = PSD_OVERLAP,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        plot_channels = PLOT_CHANNELS
+        plot_channels = PLOT_CHANNELS,
         img = ','.join([os.path.join(OUTPUT_DIR, 'logMUA_estimation',
                                      f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
                                     +f'_channel{channel}.{PLOT_FORMAT}')

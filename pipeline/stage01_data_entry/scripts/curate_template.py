@@ -19,16 +19,12 @@ if __name__ == '__main__':
                      default=None, help="sampling rate in Hz")
     CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
                      help="distance between electrodes or pixels in mm")
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float, required=True,
-                     help="start time, in s, delimits the interval of recordings to be analysed")
-    CLI.add_argument("--t_stop", nargs='?', type=none_or_float, required=True,
-                     help="stop time, in s, delimits the interval of recordings to be analysed")
     CLI.add_argument("--data_name", nargs='?', type=str, default='None',
                      help="chosen name of the dataset")
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
-                     help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
-                     help="stop time in seconds")
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float, required=None,
+                     help="start time, in s, delimits the interval of recordings to be analysed")
+    CLI.add_argument("--t_stop", nargs='?', type=none_or_float, required=None,
+                     help="stop time, in s, delimits the interval of recordings to be analysed")
     CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
                      help="metadata of the dataset")
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,

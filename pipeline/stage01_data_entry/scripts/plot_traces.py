@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import quantities as pq
 import random
-from utils import load_neo, save_plot, time_slice, parse_plot_channels
+from utils import load_neo, save_plot, time_slice, parse_plot_channels,\
+                  none_or_int
 
 
 def plot_traces(asig, channels):
@@ -46,7 +47,7 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
                      help="stop time in seconds")
-    CLI.add_argument("--channels", nargs='+', type=int, default=0,
+    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
                      help="list of channels to plot")
     args = CLI.parse_args()
 
@@ -55,8 +56,8 @@ if __name__ == '__main__':
     channels = parse_plot_channels(args.channels, args.data)
 
     asig = time_slice(asig, t_start=args.t_start, t_stop=args.t_stop,
-                      lazy=True, channel_indexes=args.channels)
+                      lazy=True, channel_indexes=channels)
 
-    fig = plot_traces(asig, args.channels)
+    fig = plot_traces(asig, channels)
 
     save_plot(args.output)

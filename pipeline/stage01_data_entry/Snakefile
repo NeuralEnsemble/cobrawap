@@ -57,7 +57,7 @@ rule check_input:
     input:
         data = os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT)
     output:
-        temp(os.path.join(OUTPUT_DIR, 'output_{data_name}.check'))
+        temp(os.path.join(OUTPUT_DIR, '{data_name}.check'))
     shell:
         """
         touch "{output}"

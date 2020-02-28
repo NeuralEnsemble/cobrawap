@@ -21,7 +21,7 @@ OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(STAGE_INPUT_path, 'stage02_processing',
+    STAGE_INPUT = os.path.join(output_path, 'stage02_processing',
                                'processed_data.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -29,6 +29,7 @@ PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
+DETECTION_BLOCK = config["DETECTION_BLOCK"]
 THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 FIT_FUNCTION = config["FIT_FUNCTION"]
@@ -48,7 +49,7 @@ COLORMAP = config["COLORMAP"]
 
 rule all:
     input:
-        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK, 'transitions'+NEO_FORMAT),
+        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK, 'transitions.'+NEO_FORMAT),
         plot_script = 'scripts/plot_trigger_times.py',
     params:
         tstart = PLOT_TSTART,
@@ -77,7 +78,7 @@ rule threshold:
     input:
         data = STAGE_INPUT,
         thresholds = os.path.join(OUTPUT_DIR, 'threshold',
-                                  f'{THRESHOLD_METHOD}_thresholds.npy')
+                                  f'{THRESHOLD_METHOD}_thresholds.npy'),
         script = 'scripts/threshold.py'
     output:
         data = os.path.join(OUTPUT_DIR, 'threshold', 'transitions.'+NEO_FORMAT)

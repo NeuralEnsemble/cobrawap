@@ -55,15 +55,15 @@ def plot_states(times, labels, ax, t_start, t_stop, label=''):
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=lambda v: v.split(','),
+    CLI.add_argument("--output", nargs='?', type=lambda v: v.split(','),
                      required=True, help="path of output figure(s)")
     CLI.add_argument("--t_start", nargs='?', type=float, default=0,
                      help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+    CLI.add_argument("--t_stop", nargs='?', type=float, default=10,
                      help="stop time in seconds")
-    CLI.add_argument("--channel", nargs='+', type=none_or_int, default='None',
+    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
     args = CLI.parse_args()
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
     event = event.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
-    for output, channel in zip(args.output, args.channel):
+    for output, channel in zip(args.output, args.channels):
         plot_trigger_times(asig=asig,
                            event=event,
                            channel=channel)

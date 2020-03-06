@@ -117,7 +117,7 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--output_img", nargs='+', type=none_or_str, default=None,
+    CLI.add_argument("--output_img", nargs='+', type=lambda v: v.split(','), default=None,
                      help="path of output image files")
     CLI.add_argument("--highpass_freq", nargs='?', type=float, dafult=200,
                      help="lower bound of frequency band in Hz")
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
                      help="stop time in seconds")
-    CLI.add_argument("--channels", nargs='+', type=int, default=0,
+    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
     args = CLI.parse_args()
 
@@ -153,6 +153,9 @@ if __name__ == '__main__':
                              fft_slice=fft_slice)
 
     if args.output_img[0] is not None:
+        if not len(args.output_img) == len(args.channels):
+            raise InputError("The number of plotting channels must "\
+                           + "correspond to the number of image output pahts!")
         for output_img, channel in zip(args.output_img, args.channels):
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
                                    logMUA_asig=asig,

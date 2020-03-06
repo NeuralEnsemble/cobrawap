@@ -173,20 +173,17 @@ rule frequency_filter:
     input:
         clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
-        script = 'scripts/frequency_filter.py',
-        plotting_script = 'scripts/plot_power_spectrum.py'
+        img = os.path.join(OUTPUT_DIR, 'frequency_filter',
+                           f'power_spectrum.{PLOT_FORMAT}'),
+        script = 'scripts/frequency_filter.py'
     params:
         highpass_freq = HIGHPASS_FREQ,
         lowpass_freq = LOWPASS_FREQ,
         order = FILTER_ORDER,
         filter_function = FILTER_FUNCTION,
-        psd_freq_res = PSD_FREQ_RES,
-        psd_overlap = PSD_OVERLAP
     output:
         data = os.path.join(OUTPUT_DIR, 'frequency_filter',
-                            '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
-                                  'power_spectrum.'+PLOT_FORMAT))
+                            '{rule_name}.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}
@@ -196,12 +193,29 @@ rule frequency_filter:
                               --lowpass_freq {params.lowpass_freq} \
                               --order {params.order} \
                               --filter_function {params.filter_function}
-        python {input.plotting_script} --data "{input.data}" \
-                                       --output "{output.img}" \
-                                       --highpass_freq {params.highpass_freq} \
-                                       --lowpass_freq {params.lowpass_freq} \
-                                       --psd_freq_res {params.psd_freq_res} \
-                                       --psd_overlap {params.psd_overlap} \
+        """
+
+rule plot_power_spectrum:
+    input:
+        data = input_file,
+        script = 'scripts/plot_power_spectrum.py'
+    params:
+        highpass_freq = HIGHPASS_FREQ,
+        lowpass_freq = LOWPASS_FREQ,
+        psd_freq_res = PSD_FREQ_RES,
+        psd_overlap = PSD_OVERLAP
+    output:
+        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+                                  f'power_spectrum.{PLOT_FORMAT}'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.img}" \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --psd_freq_res {params.psd_freq_res} \
+                              --psd_overlap {params.psd_overlap} \
         """
 
 rule roi_selection:

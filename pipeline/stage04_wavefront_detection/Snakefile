@@ -50,7 +50,7 @@ rule all:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
-        img = report(os.path.join(OUTPUT_DIR, 'cluster.'+PLOT_FORMAT))
+        img = report(os.path.join(OUTPUT_DIR, f'cluster.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}

@@ -49,7 +49,8 @@ COLORMAP = config["COLORMAP"]
 
 rule all:
     input:
-        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK, 'transitions.'+NEO_FORMAT),
+        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+                            'transitions.'+NEO_FORMAT),
         plot_script = 'scripts/plot_trigger_times.py',
     params:
         tstart = PLOT_TSTART,
@@ -71,8 +72,9 @@ rule all:
                                    --output "{params.img}" \
                                    --t_start {params.tstart} \
                                    --t_stop {params.tstop} \
-                                   --channel {params.channels} \
+                                   --channels {params.channels} \
         """
+
 
 rule threshold:
     input:
@@ -114,22 +116,24 @@ rule calc_tresholds_fitted:
         sigma_factor = SIGMA_FACTOR,
         fit_function = FIT_FUNCTION,
         bin_num = BIN_NUM,
-        plot_channels = PLOT_CHANNELS
+        plot_channels = PLOT_CHANNELS,
+        img = ','.join([os.path.join(OUTPUT_DIR, 'threshold',
+                        f'transitions_channel{channel}.{PLOT_FORMAT}')
+                        for channel in PLOT_CHANNELS])
     output:
         array = os.path.join(OUTPUT_DIR, 'threshold', 'fitted_thresholds.npy'),
         img = report(os.path.join(OUTPUT_DIR, 'threshold',
-                     'amplitude_distribution_channel{}.{}'\
-                     .format(PLOT_CHANNELS, PLOT_FORMAT)))
+                        f'transitions_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.array}" \
-                              --output_img "{output.img}" \
+                              --output_img "{params.img}" \
                               --sigma_factor {params.sigma_factor} \
                               --fit_function {params.fit_function} \
                               --bin_num {params.bin_num} \
-                              --plot_channel {params.plot_channels}
+                              --plot_channels {params.plot_channels}
         """
 
 rule hilbert_phase:

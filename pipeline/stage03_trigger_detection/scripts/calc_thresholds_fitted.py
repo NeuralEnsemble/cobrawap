@@ -7,6 +7,7 @@ import scipy as sc
 import warnings
 from scipy.optimize import OptimizeWarning
 import matplotlib.pyplot as plt
+from utils import load_neo, save_plot, none_or_int
 
 warnings.simplefilter("error", OptimizeWarning)
 
@@ -67,36 +68,35 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
 
     return m0 + sigma_factor * s0
 
-def none_or_int(value):
-    if value == 'None':
-        return None
-    return int(value)
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--output_img",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--fit_function", nargs='?', type=str)
-    CLI.add_argument("--sigma_factor", nargs='?', type=float)
-    CLI.add_argument("--bin_num", nargs='?', type=int)
-    CLI.add_argument("--plot_channel", nargs='?', type=none_or_int)
-
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output thresholds (numpy array)")
+    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
+                     default=None, help="path(s) of output figure(s)")
+    CLI.add_argument("--fit_function", nargs='?', type=str, default='Gaussian',
+                     help="function to fit the amplitude distribution")
+    CLI.add_argument("--sigma_factor", nargs='?', type=float, default=3,
+                     help="sigma_factor x standard deviation = threshold")
+    CLI.add_argument("--bin_num", nargs='?', type=int, default=100,
+                     help='number of bins for the amplitude histogram')
+    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int,
+                     default=None, help="list of channels to plot")
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        asig = io.read_block().segments[0].analogsignals[0]
+    asig = load_neo(args.data, 'analogsignal')
 
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape
 
-    if args.plot_channel is None or args.plot_channel >= dim_channels:
-        args.plot_channel = random.randint(0, dim_channels-1)
-
     thresholds = np.zeros(dim_channels)
 
     for channel in np.arange(dim_channels):
-        if channel == args.plot_channel:
+        if channel in args.plot_channels:
             plot_channel = channel
         else:
             plot_channel = False
@@ -106,7 +106,6 @@ if __name__ == '__main__':
                                                          args.bin_num,
                                                          plot_channel)
         if plot_channel:
-            plt.savefig(args.output_img)
-
+            save_plot(args.output_img)
 
     np.save(args.output, thresholds)

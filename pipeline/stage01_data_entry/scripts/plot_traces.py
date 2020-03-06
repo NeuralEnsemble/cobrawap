@@ -20,12 +20,13 @@ def plot_traces(asig, channels):
     for i, signal in enumerate(asig.as_array()[:,channels].T):
         ax.plot(asig.times, signal + i*offset)
 
-    annotations = [f'{k}: {v}' for k,v in asig.annotations.items()]
-    array_annotations = [f'{k}: {v[channels[0]]}'
-                         for k,v in asig.array_annotations.items()]
+    annotations = [f'{k}: {v}' for k,v in asig.annotations.items()
+                               if k not in ['nix_name', 'neo_name']]
+    array_annotations = [f'{k}: {v[channels]}'
+                        for k,v in asig.array_annotations.items()]
 
-    ax.text(ax.get_xlim()[1]*1.02, ax.get_ylim()[0],
-            f'ANNOTATIONS FOR CHANNEL {channels[0]} \n'\
+    ax.text(ax.get_xlim()[1]*1.05, ax.get_ylim()[0],
+            f'ANNOTATIONS FOR CHANNEL(s) {channels} \n'\
             + '\n ANNOTATIONS:\n' + '\n'.join(annotations) \
             + '\n\n ARRAY ANNOTATIONS:\n' + '\n'.join(array_annotations))
 

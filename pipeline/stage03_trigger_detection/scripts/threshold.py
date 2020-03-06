@@ -1,7 +1,7 @@
 import neo
 import numpy as np
-import quantities as pq
 import argparse
+from utils import load_neo, write_neo
 
 
 def threshold(asig, threshold_array):
@@ -12,7 +12,7 @@ def threshold(asig, threshold_array):
     rolled_state_array = np.roll(state_array, 1, axis=0)
 
     all_times = np.array([])
-    all_channels = np.array([])
+    all_channels = np.array([], dtype=int)
     all_labels = np.array([])
     for label, func in zip(['UP',        'DOWN'],
                            [lambda x: x, lambda x: np.bitwise_not(x)]):
@@ -31,25 +31,35 @@ def threshold(asig, threshold_array):
 
     sort_idx = np.argsort(all_times)
 
-    return neo.Event(times=all_times[sort_idx]*asig.times.units,
+    evt = neo.Event(times=all_times[sort_idx]*asig.times.units,
                      labels=all_labels[sort_idx],
                      name='Transitions',
                      array_annotations={'channels':all_channels[sort_idx]},
                      threshold=threshold_array,
+                     spatial_scale=asig.annotations['spatial_scale'],
                      description='Transitions between down and up states with '\
                                 +'labels "UP" and "DOWN". '\
                                 +'Annotated with the channel id ("channels").')
 
+    for key in asig.array_annotations.keys():
+        evt_ann = {key : asig.array_annotations[key][all_channels[sort_idx]]}
+        evt.array_annotations.update(evt_ann)
+
+    return evt
+
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--thresholds", nargs='?', type=str)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
+                     help="path of thresholds (numpy array)")
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
+    block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]
 
@@ -57,5 +67,4 @@ if __name__ == '__main__':
 
     block.segments[0].events.append(transition_event)
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)

@@ -8,6 +8,7 @@ import argparse
 import scipy
 import pandas as pd
 import seaborn as sns
+from utils import load_neo, save_plot, none_or_str
 
 def calc_displacement(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
@@ -16,18 +17,7 @@ def calc_displacement(times, locations):
     displacement_err = np.sqrt(stderr**2 + (stderr*(times[-1]-times[0]))**2)
     return displacement, displacement_err
 
-if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--output_img",      nargs='?', type=str)
-    args = CLI.parse_args()
-
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    evts = [ev for ev in block.segments[0].events if ev.name== 'Wavefronts'][0]
-
+def calc_directions(evts):
     spatial_scale = evts.annotations['spatial_scale']
 
     wave_ids = [label.decode('UTF-8') for label in np.unique(evts.labels)]
@@ -83,13 +73,32 @@ if __name__ == '__main__':
         col = i % ncols
         ax[row][col].set_axis_off()
 
-    plt.tight_layout()
-    plt.savefig(args.output_img)
-
-    # save as DataFrame
+    # transfrom to DataFrame
     df = pd.DataFrame(directions,
                       columns=['direction', 'direction_std'],
                       index=wave_ids)
     df.index.name = 'wave_id'
+    return df
 
-    df.to_csv(args.output)
+
+if __name__ == '__main__':
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                     help="path of output image file")
+    args = CLI.parse_args()
+
+    block = load_neo(args.data)
+
+    evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
+
+    directions_df = calc_directions(evts)
+
+    if args.output_img is not None:
+        save_plot(args.output_img)
+
+    directions_df.to_csv(args.output)

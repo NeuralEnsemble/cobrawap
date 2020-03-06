@@ -52,6 +52,7 @@ rule all:
         data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
         plot_script = 'scripts/plot_trigger_times.py',
+        configfile = 'config.yaml'
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
@@ -92,6 +93,7 @@ rule threshold:
                               --thresholds "{input.thresholds}"
         """
 
+
 rule calc_tresholds_fixed:
     input:
         data = STAGE_INPUT,
@@ -118,12 +120,12 @@ rule calc_tresholds_fitted:
         bin_num = BIN_NUM,
         plot_channels = PLOT_CHANNELS,
         img = ','.join([os.path.join(OUTPUT_DIR, 'threshold',
-                        f'transitions_channel{channel}.{PLOT_FORMAT}')
+                        f'amplitudes_channel{channel}.{PLOT_FORMAT}')
                         for channel in PLOT_CHANNELS])
     output:
         array = os.path.join(OUTPUT_DIR, 'threshold', 'fitted_thresholds.npy'),
         img = report(os.path.join(OUTPUT_DIR, 'threshold',
-                        f'transitions_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
+                        f'amplitudes_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
@@ -141,15 +143,27 @@ rule hilbert_phase:
         data = STAGE_INPUT,
         script = 'scripts/hilbert_phase.py'
     params:
-        transition_phase = TRANSITION_PHASE
+        transition_phase = TRANSITION_PHASE,
+        plot_channels = PLOT_CHANNELS,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        img = ','.join([os.path.join(OUTPUT_DIR, 'hilbert_phase',
+                        f'transitions_channel{channel}.'+PLOT_FORMAT)
+                        for channel in PLOT_CHANNELS])
     output:
-        data = os.path.join(OUTPUT_DIR, 'hilbert_phase', 'transitions.'+NEO_FORMAT)
+        data = os.path.join(OUTPUT_DIR, 'hilbert_phase', 'transitions.'+NEO_FORMAT),
+        img = report(os.path.join(OUTPUT_DIR, 'hilbert_phase',
+                     f'transitions_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --transition_phase {params.transition_phase}
+                              --output_img "{params.img}" \
+                              --transition_phase {params.transition_phase} \
+                              --plot_channels {params.plot_channels} \
+                              --plot_tstart {params.plot_tstart} \
+                              --plot_tstart {params.plot_tstart}
         """
 
 rule minima:

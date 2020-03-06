@@ -7,6 +7,7 @@ pipeline/*/*/.snakemake
 temp*
 */temp*
 pipeline/*/config.yaml
+pipeline/config.yaml
 pipeline/settings.py
 .idea/
 

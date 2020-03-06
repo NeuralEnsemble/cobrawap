@@ -35,5 +35,5 @@ KWARGS: 'None'
 # Plot settings
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNEL: [1,2,3,4,5]  # int, list of ints, or 'None' (default) -> picks channel by random
-PLOT_FORMAT: '.png'
+PLOT_CHANNELS: [1,2,3,4,5]  # int, list of ints, or 'None' (default) -> picks channel by random
+PLOT_FORMAT: 'png'

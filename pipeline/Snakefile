@@ -29,21 +29,29 @@ def add_to_config(config_path, update_dict, new_config_path=None):
     if new_config_path is None:
         new_config_path = os.path.join(os.path.dirname(config_path),
                                        'temp_config.yaml')
-    with open(new_config_path, 'w') as f:
         config_dict.update(**update_dict)
+    with open(new_config_path, 'w') as f:
         f.write(yaml.dump(config_dict, default_flow_style=False))
     return new_config_path
 
 def set_subworkflow_inputs(stages):
     intput_namespace = "STAGE_INTPUT"
-    update_dict = config
+    update_dict = {}
     for i, stage in enumerate(stages):
         if i:
             update_dict[intput_namespace] = read_stage_output(stages[i-1])
         add_to_config(config_path=os.path.join(working_dir, stage, 'config.yaml'),
                       update_dict=update_dict)
+    return None
+
+def overwrite_configs(stages):
+    for stage in stages:
+        add_to_config(config_path=os.path.join(working_dir, stage, 'config.yaml'),
+                      update_dict=config)
+    return None
 
 set_subworkflow_inputs(STAGES)
+overwrite_configs(STAGES)
 
 subworkflow stage01:
     workdir:

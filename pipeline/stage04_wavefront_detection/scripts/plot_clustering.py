@@ -7,6 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 import random
+from utils import load_neo, save_plot
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
@@ -14,8 +15,7 @@ if __name__ == '__main__':
     CLI.add_argument("--data",      nargs='?', type=str)
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
+    block = load_neo(args.data)
 
     evts = [ev for ev in block.segments[0].events if ev.name== 'Wavefronts'][0]
 
@@ -37,4 +37,4 @@ if __name__ == '__main__':
     ax.set_zlabel('y-pixel')
     ax.view_init(45, -75)
 
-    plt.savefig(args.output)
+    save_plot(args.output)

@@ -6,23 +6,13 @@ import os
 import argparse
 import scipy
 import pandas as pd
+from utils import load_neo, none_or_str, save_plot
 
-def calc_velocity(times, locations):
+def linregress(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
     return slope, stderr, offset
 
-if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--output_img",      nargs='?', type=str)
-    args = CLI.parse_args()
-
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
-
-    evts = [ev for ev in block.segments[0].events if ev.name== 'Wavefronts'][0]
-
+def calc_planar_velocities(evts):
     spatial_scale = evts.annotations['spatial_scale']
     v_unit = (spatial_scale.units/evts.times.units).dimensionality.string
 
@@ -39,15 +29,14 @@ if __name__ == '__main__':
     for i, wave_i in enumerate(wave_ids):
         # Fit wave displacement
         idx = np.where(evts.labels == wave_i.encode('UTF-8'))[0]
-        vx, vx_err, dx = calc_velocity(evts.times[idx].magnitude,
+        vx, vx_err, dx = linregress(evts.times[idx].magnitude,
                                    evts.array_annotations['x_coords'][idx]
                                    * spatial_scale.magnitude)
-        vy, vy_err, dy = calc_velocity(evts.times[idx].magnitude,
+        vy, vy_err, dy = linregress(evts.times[idx].magnitude,
                                    evts.array_annotations['y_coords'][idx]
                                    * spatial_scale.magnitude)
         velocities[i] = np.array([np.sqrt(vx**2 + vy**2),
                                   np.sqrt(vx_err**2 + vy_err**2)])
-
         # Plot fit
         row = int(i/ncols)
         if ncols == 1:
@@ -84,14 +73,34 @@ if __name__ == '__main__':
         col = i % ncols
         ax[row][col].set_axis_off()
 
-    plt.tight_layout()
-    plt.savefig(args.output_img)
-
-    # save as DataFrame
+    # transform to DataFrame
     df = pd.DataFrame(velocities,
                       columns=['velocity', 'velocity_std'],
                       index=wave_ids)
     df['velocity_unit'] = [v_unit]*len(wave_ids)
     df.index.name = 'wave_id'
 
-    df.to_csv(args.output)
+    return df
+
+
+if __name__ == '__main__':
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                     help="path of output image file")
+    args = CLI.parse_args()
+
+    block = load_neo(args.data)
+
+    evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
+
+    velocities_df = calc_planar_velocities(evts)
+
+    if args.output_img is not None:
+        save_plot(args.output_img)
+
+    velocities_df.to_csv(args.output)

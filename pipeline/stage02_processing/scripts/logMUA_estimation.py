@@ -1,6 +1,7 @@
 import numpy as np
 from elephant.spectral import welch_psd
-from elephant.signal_processing import zscore, butter
+from elephant.signal_processing import butter
+from scipy.stats import zscore
 import quantities as pq
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -92,16 +93,16 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
     fig, ax = plt.subplots()
 
     ax.plot(asig.times,
-            zscore(asig).as_array()[:,channel],
+            zscore(asig.as_array()[:,channel]),
             label='original signal')
 
     ax.plot(filt_asig.times,
-            zscore(filt_asig).as_array()[:,channel] + 10,
+            zscore(filt_asig.as_array()[:,channel]) + 10,
             label=f'signal [{highpass_freq}-{lowpass_freq}Hz]',
             alpha=0.5)
 
     ax.plot(logMUA_asig.times,
-            zscore(logMUA_asig).as_array()[:,channel] + 20,
+            zscore(logMUA_asig.as_array()[:,channel]) + 20,
             label='logMUA')
 
     ax.set_title('Channel {}'.format(channel))
@@ -152,7 +153,7 @@ if __name__ == '__main__':
                              psd_overlap=args.psd_overlap,
                              fft_slice=fft_slice)
 
-    if args.output_img[0] is not None:
+    if args.channels[0] is not None:
         if not len(args.output_img) == len(args.channels):
             raise InputError("The number of plotting channels must "\
                            + "correspond to the number of image output pahts!")

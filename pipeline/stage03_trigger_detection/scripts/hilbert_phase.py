@@ -2,22 +2,18 @@ import neo
 import numpy as np
 import quantities as pq
 from scipy.signal import hilbert
+from scipy.stats import zscore
 import argparse
 import matplotlib.pyplot as plt
-
+from utils import load_neo, write_neo, time_slice, none_or_int
 
 def detect_transitions(asig, transition_phase):
-    # ToDo: replace with elephant function when signal can be neo object
+    # ToDo: replace with elephant function
     signal = asig.as_array()
     dim_t, channel_num = signal.shape
 
     hilbert_signal = hilbert(signal, axis=0)
     hilbert_phase = np.angle(hilbert_signal)
-
-    # plt.plot(np.real(hilbert_signal[:250,5050]), color='r')
-    # plt.plot(np.imag(hilbert_signal[:250,5050]), color='b')
-    # plt.plot(hilbert_phase[:250,5050], color='g')
-    # plt.show()
 
     def _detect_phase_crossings(phase):
         t_idx, channel_idx = np.where(np.diff(np.signbit(hilbert_phase-phase), axis=0))
@@ -60,24 +56,62 @@ def detect_transitions(asig, transition_phase):
     # save transitions as Event labels:'UP', array_annotations: channels
     sort_idx = np.argsort(up_transitions)
 
-    return neo.Event(times=up_transitions[sort_idx]*asig.times.units,
+    evt = neo.Event(times=up_transitions[sort_idx]*asig.times.units,
                      labels=['UP'] * len(up_transitions),
                      name='Transitions',
                      array_annotations={'channels':channels[sort_idx]},
                      hilbert_transition_phase=transition_phase,
+                     spatial_scale=asig.annotations['spatial_scale'],
                      description='Transitions from down to up states. '\
                                 +'annotated with the channel id ("channels").')
+    for key in asig.array_annotations.keys():
+        evt_ann = {key : asig.array_annotations[key][channels[sort_idx]]}
+        evt.array_annotations.update(evt_ann)
+    return evt
+
+
+    def plot_hilbert_phase(asig, event, channel):
+        signal = asig.as_array()[:channel]
+
+        hilbert_signal = hilbert(signal, axis=0)
+        hilbert_phase = np.angle(hilbert_signal)
+
+        sns.set(style='ticks', palette="deep", context="notebook")
+        fig, ax = plt.subplots()
+
+        ax.plot(asig.times, zscore(singal), label='signal')
+        ax.plot(asig.times, hilbert_phase, label='hilbert phase')
+
+        for t, c in zip(event.times, event.array_annotations['channels']):
+            if c == channel:
+                ax.axvline(t, color='k')
+
+        ax.set_title('Channel {}'.format(channel))
+        ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
+        plt.legend()
+        return ax
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--transition_phase", nargs='?', type=float)
+    CLI = argparse.ArgumentParser(description=__doc__,
+                   formatter_class=argparse.RawDescriptionHelpFormatter)
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
+                     help="path to input data in neo format")
+    CLI.add_argument("--output", nargs='?', type=str, required=True,
+                     help="path of output file")
+    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
+                     default='None', help="path(s) of output figure(s)")
+    CLI.add_argument("--transition_phase", nargs='?', type=float,
+                     default=-1.570796, help="phase to use as threshold for the upward transition")
+    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=None,
+                     help="list of channels to plot")
+    CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+                     help="start time in seconds")
+    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+                     help="stop time in seconds")
     args = CLI.parse_args()
 
-    with neo.NixIO(args.data) as io:
-        block = io.read_block()
+    block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]
 
@@ -85,5 +119,14 @@ if __name__ == '__main__':
 
     block.segments[0].events.append(transition_event)
 
-    with neo.NixIO(args.output) as io:
-        io.write(block)
+    write_neo(args.output, block)
+
+    if args.channels[0] is not None:
+        if not len(args.output_img) == len(args.channels):
+            raise InputError("The number of plotting channels must "\
+                           + "correspond to the number of image output paths!")
+        for output, channel in zip(args.output_img, args.channels):
+            plot_hilbert_phase(asig=time_slice(asig, args.t_start, args.t_stop),
+                               event=time_slice(transition_event, args.t_start, args.t_stop),
+                               channel=int(channel))
+            save_plot(output)

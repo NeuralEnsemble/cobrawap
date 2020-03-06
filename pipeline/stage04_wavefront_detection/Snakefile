@@ -74,7 +74,7 @@ rule clustering:
         min_samples = MIN_SAMPLES_PER_WAVE
     output:
         data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
-        img = report(os.path.join(OUTPUT_DIR, 'clustering', 'wave_clustering.'+PLOT_FORMAT))
+        img = report(os.path.join(OUTPUT_DIR, 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}

@@ -173,9 +173,9 @@ rule frequency_filter:
     input:
         clear = os.path.join(OUTPUT_DIR, 'clear.done'),
         data = input_file,
-        img = os.path.join(OUTPUT_DIR, 'frequency_filter',
-                           f'power_spectrum.{PLOT_FORMAT}'),
-        script = 'scripts/frequency_filter.py'
+        img = os.path.join(OUTPUT_DIR,
+                           f'frequency_filter_power_spectrum.{PLOT_FORMAT}'),
+        script = 'scripts/frequency_filter.py',
     params:
         highpass_freq = HIGHPASS_FREQ,
         lowpass_freq = LOWPASS_FREQ,
@@ -205,8 +205,8 @@ rule plot_power_spectrum:
         psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP
     output:
-        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
-                                  f'power_spectrum.{PLOT_FORMAT}'))
+        img = report(os.path.join(OUTPUT_DIR, '{rule_name}_'\
+                                  +f'power_spectrum.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}

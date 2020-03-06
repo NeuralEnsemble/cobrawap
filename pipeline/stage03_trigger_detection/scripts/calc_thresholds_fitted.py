@@ -106,6 +106,7 @@ if __name__ == '__main__':
                                                          args.bin_num,
                                                          plot_channel)
         if plot_channel:
-            save_plot(args.output_img)
+            fig_idx = np.where(channel == args.plot_channels)[0]
+            save_plot(args.output_img[fig_idx])
 
     np.save(args.output, thresholds)

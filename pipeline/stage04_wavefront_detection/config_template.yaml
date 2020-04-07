@@ -37,3 +37,19 @@ NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
 # Transformation factor from time dimension to space dimension (in the units the data is presented).
 TIME_DIM: 250
+
+# Optical Flow (Horn-Schunck algorithm)
+##############
+# weight of the smoothness constraint over the brightness constancy constraint
+ALPHA: 0.1
+# maximum number of iterations optimizing the vector field
+MAX_NITER: 100
+# the optimization end either after MAX_NITER iteration or when the
+# maximal change between iterations is smaller than the CONVERGENCE_LIMIT
+CONVERGENCE_LIMIT: 0.0001
+# standard deviations for the Gaussian filter applied on the vector field
+# [t_std, x_std, y_std]. [0,0,0] for no filter
+GAUSSIAN_SIGMA: [0,3,3]
+# Kernel filter to use to calucualte the spatial derivatives.
+# "Simple", "Prewitt", "Sobel", or "Roberts"
+DERIVATIVE_FILTER: 'Simple'

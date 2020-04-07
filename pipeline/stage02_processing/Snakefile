@@ -273,7 +273,7 @@ rule logMUA_estimation:
                               --lowpass_freq {params.lowpass_freq} \
                               --logMUA_rate {params.logMUA_rate} \
                               --fft_slice {params.fft_slice} \
-                              --psd_overlap {params.psd_overlap}
+                              --psd_overlap {params.psd_overlap} \
                               --t_start {params.plot_tstart} \
                               --t_stop {params.plot_tstop} \
                               --channels {params.plot_channels}

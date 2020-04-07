@@ -32,14 +32,14 @@ def threshold(asig, threshold_array):
     sort_idx = np.argsort(all_times)
 
     evt = neo.Event(times=all_times[sort_idx]*asig.times.units,
-                     labels=all_labels[sort_idx],
-                     name='Transitions',
-                     array_annotations={'channels':all_channels[sort_idx]},
-                     threshold=threshold_array,
-                     spatial_scale=asig.annotations['spatial_scale'],
-                     description='Transitions between down and up states with '\
-                                +'labels "UP" and "DOWN". '\
-                                +'Annotated with the channel id ("channels").')
+                    labels=all_labels[sort_idx],
+                    name='Transitions',
+                    array_annotations={'channels':all_channels[sort_idx]},
+                    threshold=threshold_array,
+                    spatial_scale=asig.annotations['spatial_scale'],
+                    description='Transitions between down and up states with '\
+                            +'labels "UP" and "DOWN". '\
+                            +'Annotated with the channel id ("channels").')
 
     for key in asig.array_annotations.keys():
         evt_ann = {key : asig.array_annotations[key][all_channels[sort_idx]]}

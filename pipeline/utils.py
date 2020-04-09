@@ -183,28 +183,31 @@ def ImageSequence2AnalogSignal(block):
                                                      np.arange(dim_y))))
 
             imgseq_flat = imgseq.as_array().reshape((dim_t, dim_x * dim_y))
-
             asig = neo.AnalogSignal(signal=imgseq_flat,
                                     units=imgseq.units,
+                                    dtype=imgseq.dtype,
+                                    # t_start=imgseq.t_start, # NotImplementedError
                                     sampling_rate=imgseq.sampling_rate,
                                     file_origin=imgseq.file_origin,
                                     description=imgseq.description,
                                     name=imgseq.name,
                                     array_annotations={'x_coords': coords[:,0],
                                                        'y_coords': coords[:,1]},
-                                    grid_size=(dim_x, dim_y),
+                                    # grid_size=(dim_x, dim_y),
                                     spatial_scale=imgseq.spatial_scale,
                                     **imgseq.annotations)
 
-            chidx = neo.ChannelIndex(name=asig.name,
-                                     channel_ids=np.arange(dim_x * dim_y),
-                                     index=np.arange(dim_x * dim_y),
-                                     coordinates=coords*imgseq.spatial_scale)
+            # chidx = neo.ChannelIndex(name=asig.name,
+            #                          channel_ids=np.arange(dim_x * dim_y),
+            #                          index=np.arange(dim_x * dim_y),
+            #                          coordinates=coords*imgseq.spatial_scale)
 
-            chidx.annotations.update(asig.array_annotations)
+            # chidx.annotations.update(asig.array_annotations)
             # asig.channel_index = chidx
-            chidx.analogsignals = [asig] + chidx.analogsignals
+            # chidx.analogsignals = [asig] + chidx.analogsignals
             # block.channel_indexes.append(chidx)
+
+            remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
             block.segments[seg_count].analogsignals.append(asig)
     return block
 
@@ -239,7 +242,7 @@ def AnalogSignal2ImageSequence(block):
 
             dim_x, dim_y = determine_dims(coords)
 
-            image_data = np.empty((dim_t, dim_x, dim_y))
+            image_data = np.empty((dim_t, dim_x, dim_y), dtype=asig.dtype)
             image_data[:] = np.nan
 
             for channel in range(dim_channels):
@@ -256,6 +259,8 @@ def AnalogSignal2ImageSequence(block):
 
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,
+                                       dtype=asig.dtype,
+                                       # t_start=asig.t_start, # NotImplementedError
                                        sampling_rate=asig.sampling_rate,
                                        name=asig.name,
                                        description=asig.description,
@@ -263,6 +268,7 @@ def AnalogSignal2ImageSequence(block):
                                        # array_annotations=array_annotations,
                                        **asig.annotations)
 
+            remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
             block.segments[seg_count].imagesequences.append(imgseq)
     return block
 
@@ -278,18 +284,21 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         else:
             block = io.read_block()
     except Exception as e:
-        io.close()
+        # io.close()
         raise e
     finally:
         if not lazy and hasattr(io, 'close'):
             io.close()
+
+    if block is None:
+        raise IOError(f'{filename} does not exist!')
 
     if object == 'block':
         return block
     elif object == 'analogsignal':
         return block.segments[0].analogsignals[0]
     else:
-        raise InputError(f"{object} not recognized! Choose 'block' or 'analogsignal'.")
+        raise IOError(f"{object} not recognized! Choose 'block' or 'analogsignal'.")
 
 
 def write_neo(filename, block, *args, **kwargs):

@@ -7,7 +7,8 @@ from skimage import measure
 import shapely.geometry as geo
 import argparse
 import os
-from utils import load_neo, write_neo, none_or_str
+from utils import load_neo, write_neo, none_or_str, save_plot, \
+                  AnalogSignal2ImageSequence
 
 
 def calculate_contour(img, contour_limit):
@@ -101,7 +102,7 @@ def plot_roi(img, contour):
     ax.set_xticks([])
     ax.set_yticks([])
     ax.plot(contour[:, 1], contour[:, 0], linewidth=2)
-    plt.draw())
+    plt.draw()
     return ax
 
 
@@ -149,6 +150,6 @@ if __name__ == '__main__':
     block.segments[0].analogsignals[0] = asig
 
     plot_roi(avg_img, contour)
-    plt.savefig(args.image_output)
+    save_plot(args.output_img)
 
     write_neo(args.output, block)

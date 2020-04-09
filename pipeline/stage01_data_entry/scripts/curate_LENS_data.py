@@ -5,8 +5,8 @@ import quantities as pq
 import json
 import os
 import sys
-from utils import parse_string2dict, ImageSequence2AnalogSignal,
-                  none_or_float, none_or_str, write_neo
+from utils import parse_string2dict, ImageSequence2AnalogSignal, \
+                  none_or_float, none_or_str, write_neo, time_slice
 
 
 if __name__ == '__main__':
@@ -28,6 +28,10 @@ if __name__ == '__main__':
                      default=None, help="channel-wise metadata")
     CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
                      help="additional optional arguments")
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
+                     help="start time in seconds")
+    CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
+                     help="stop time in seconds")
     args = CLI.parse_args()
 
     # Load optical data
@@ -41,6 +45,9 @@ if __name__ == '__main__':
     # Transform into analogsignals
     block.segments[0].analogsignals = []
     block = ImageSequence2AnalogSignal(block)
+
+    block.segments[0].analogsignals[0] = time_slice(
+                block.segments[0].analogsignals[0], args.t_start, args.t_stop)
 
     if args.annotations is not None:
         block.segments[0].analogsignals[0].annotations.\

@@ -36,6 +36,12 @@ TIME_DIM = config["TIME_DIM"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
 MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
 
+ALPHA = config["ALPHA"]
+MAX_NITER = config["MAX_NITER"]
+CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
+GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
+DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
+
 def clustering_input(wildcards):
     if len(TRIGGER_FILTER):
         return os.path.join(OUTPUT_DIR, TRIGGER_FILTER[-1], 'trigger_times.nix')
@@ -86,4 +92,32 @@ rule clustering:
                               --min_samples {params.min_samples}
         python {input.plot_script} --data "{output.data}" \
                                    --output "{output.img}"
+        """
+
+rule optical_flow:
+    input:
+        data = clustering_input,
+        script = 'scripts/horn_schunck.py'
+    params:
+        alpha = ALPHA,
+        max_Niter = MAX_NITER,
+        convergence_limit = CONVERGENCE_LIMIT,
+        gaussian_sigma = GAUSSIAN_SIGMA,
+        derivative_filter = DERIVATIVE_FILTER
+    output:
+        data = os.path.join(OUTPUT_DIR, 'optical_flow', STAGE_OUTPUT),
+        img = os.path.join(OUTPUT_DIR, 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --alpha {params.alpha} \
+                              --max_Niter {params.max_Niter} \
+                              --convergence_limit {params.convergence_limit} \
+                              --gaussian_sigma {params.gaussian_sigma} \
+                              --derivative_filter {params.derivative_filter}
+
+
         """

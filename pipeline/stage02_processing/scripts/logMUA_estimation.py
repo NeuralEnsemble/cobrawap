@@ -7,7 +7,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
+<<<<<<< HEAD
 from utils import load_neo, write_neo, none_or_float, none_or_str, none_or_int, time_slice, save_plot
+=======
+from utils import load_neo, write_neo, none_or_float, none_or_str, none_or_int,\
+                  time_slice, save_plot
+>>>>>>> bb57d4634aa315c0897eedb7466de2f19228e7a2
 
 
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
@@ -118,7 +123,7 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--output_img", nargs='+', type=lambda v: v.split(','), default=None,
+    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','), default=None,
                      help="path of output image files")
     CLI.add_argument("--highpass_freq", nargs='?', type=float, default=200,
                      help="lower bound of frequency band in Hz")
@@ -153,12 +158,17 @@ if __name__ == '__main__':
                              psd_overlap=args.psd_overlap,
                              fft_slice=fft_slice)
 
+<<<<<<< HEAD
     if args.channels[0] is not None:
 # WARNING! TypeError: 'NoneType' object is not subscriptable if it is None
 # (the condition args.channel[0] cannot be evaluated)
+=======
+    print(args.channels, args.output_img)
+    if args.channels is not None:
+>>>>>>> bb57d4634aa315c0897eedb7466de2f19228e7a2
         if not len(args.output_img) == len(args.channels):
             raise InputError("The number of plotting channels must "\
-                           + "correspond to the number of image output pahts!")
+                           + "correspond to the number of image output paths!")
         for output_img, channel in zip(args.output_img, args.channels):
             [output_img] = output_img
             # otherwise... "TypeError: expected str, bytes or os.PathLike object, not list"

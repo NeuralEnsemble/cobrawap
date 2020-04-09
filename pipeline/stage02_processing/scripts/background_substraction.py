@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
-from utils import determine_spatial_scale, load_neo, write_neo, save_plot,
+from utils import determine_spatial_scale, load_neo, write_neo, save_plot, \
                   none_or_str
 
 
@@ -17,9 +17,9 @@ def substract_background(asig, background):
 def shape_frame(value_array, coords):
     dim_x = np.max(coords[:,0]) + 1
     dim_y = np.max(coords[:,1]) + 1
-    frame = np.empty(dim_x, dim_y) * np.nan
+    frame = np.empty((dim_x, dim_y)) * np.nan
     for pixel, xy in zip(value_array, coords):
-        frame[int(xy[0])][int(xy[1])] = pixel
+        frame[int(xy[0]), int(xy[1])] = pixel
     return frame
 
 def plot_frame(frame):

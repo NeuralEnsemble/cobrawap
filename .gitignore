@@ -1,4 +1,3 @@
-
 # workflow folder
 */.snakemake
 pipeline/.snakemake
@@ -112,3 +111,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# MacOS
+.DS_Store

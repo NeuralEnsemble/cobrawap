@@ -26,7 +26,10 @@ PLOT_FORMAT: 'png'
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'spatial_smooting', 'roi_selection', 'logMUA_estimation', 'phase_transform',
 # 'zscore'
-BLOCK_ORDER: ['frequency_filter']
+# Default: empty list [] -> it skips any processing blocks and returns the same
+# as input but, different from plot obtained from stage01, here the values on
+# the y-scale are correclty reported
+BLOCK_ORDER: []
 
 # BLOCK - background_substraction
 #################################

@@ -163,7 +163,7 @@ if __name__ == '__main__':
             raise InputError("The number of plotting channels must "\
                            + "correspond to the number of image output paths!")
         for output_img, channel in zip(args.output_img, args.channels):
-            [output_img] = output_img
+            #[output_img] = output_img
             # otherwise... "TypeError: expected str, bytes or os.PathLike object, not list"
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
                                    logMUA_asig=asig,

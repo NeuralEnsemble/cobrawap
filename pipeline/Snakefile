@@ -50,38 +50,45 @@ def overwrite_configs(stages):
                       update_dict=config)
     return None
 
+def get_stage(num):
+    if num < len(STAGES):
+        return STAGES[num]
+    else:
+        # temporary solution
+        return ''
+
 set_subworkflow_inputs(STAGES)
 overwrite_configs(STAGES)
 
 subworkflow stage01:
     workdir:
-        os.path.join(working_dir, STAGES[0])
+        os.path.join(working_dir, get_stage(0))
     configfile:
-        os.path.join(working_dir, STAGES[0], "temp_config.yaml")
+        os.path.join(working_dir, get_stage(0), "temp_config.yaml")
 
 subworkflow stage02:
     workdir:
-        os.path.join(working_dir, STAGES[1])
+        os.path.join(working_dir, get_stage(1))
     configfile:
-        os.path.join(working_dir, STAGES[1], "temp_config.yaml")
+        os.path.join(working_dir, get_stage(1), "temp_config.yaml")
 
 subworkflow stage03:
     workdir:
-        os.path.join(working_dir, STAGES[2])
+        os.path.join(working_dir, get_stage(2))
     configfile:
-        os.path.join(working_dir, STAGES[2], "temp_config.yaml")
+        os.path.join(working_dir, get_stage(2), "temp_config.yaml")
 
 subworkflow stage04:
     workdir:
-        os.path.join(working_dir, STAGES[3])
+        os.path.join(working_dir, get_stage(3))
     configfile:
-        os.path.join(working_dir, STAGES[3], "temp_config.yaml")
+        os.path.join(working_dir, get_stage(3), "temp_config.yaml")
 
 subworkflow stage05:
     workdir:
-        os.path.join(working_dir, STAGES[4])
+        os.path.join(working_dir, get_stage(4))
     configfile:
-        os.path.join(working_dir, STAGES[4], "temp_config.yaml")
+        os.path.join(working_dir, get_stage(4), "temp_config.yaml")
 
 def stage_input(wildcards):
         stage_num = [i for i, stage in enumerate(STAGES)
@@ -92,15 +99,15 @@ def stage_input(wildcards):
             return []
 
 def stage_output(wildcards):
-    if wildcards.stage == STAGES[0]:
+    if wildcards.stage == get_stage(0):
         return stage01(read_stage_output(wildcards.stage))
-    elif wildcards.stage == STAGES[1]:
+    elif wildcards.stage == get_stage(1):
         return stage02(read_stage_output(wildcards.stage))
-    elif wildcards.stage == STAGES[2]:
+    elif wildcards.stage == get_stage(2):
         return stage03(read_stage_output(wildcards.stage))
-    elif wildcards.stage == STAGES[3]:
+    elif wildcards.stage == get_stage(3):
         return stage04(read_stage_output(wildcards.stage))
-    elif wildcards.stage == STAGES[4]:
+    elif wildcards.stage == get_stage(4):
         return stage05(read_stage_output(wildcards.stage))
     else:
         raise InputError(f"Don't recognize stage {wildcards.stage}!")

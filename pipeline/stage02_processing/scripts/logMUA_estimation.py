@@ -10,7 +10,6 @@ import os
 from utils import load_neo, write_neo, none_or_float, none_or_str, none_or_int,\
                   time_slice, save_plot
 
-
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                       psd_overlap, fft_slice):
     time_steps, channel_num = asig.shape
@@ -154,12 +153,18 @@ if __name__ == '__main__':
                              psd_overlap=args.psd_overlap,
                              fft_slice=fft_slice)
 
+#    if args.channels[0] is not None:
+# WARNING! TypeError: 'NoneType' object is not subscriptable if it is None
+# (the condition args.channel[0] cannot be evaluated)
+
     print(args.channels, args.output_img)
     if args.channels is not None:
         if not len(args.output_img) == len(args.channels):
             raise InputError("The number of plotting channels must "\
                            + "correspond to the number of image output paths!")
         for output_img, channel in zip(args.output_img, args.channels):
+            #[output_img] = output_img
+            # otherwise... "TypeError: expected str, bytes or os.PathLike object, not list"
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
                                    logMUA_asig=asig,
                                    highpass_freq=args.highpass_freq*pq.Hz,

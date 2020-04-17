@@ -22,6 +22,9 @@ if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
     STAGE_INPUT = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
+# N.B. the current version of config_template.yaml doesn't contain STAGE_INPUT,
+# thus the parameter is fixed at 'data.nix', meaning that this value has to be
+# set (and fixed) at 'data.nix' in stage01_data_entry/config_template.yaml
 
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]

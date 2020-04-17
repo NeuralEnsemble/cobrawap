@@ -9,14 +9,16 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake >= 5.9.1
+  - snakemake >= 5.13.0
   - pip:
     # - elephant >= 0.6.3
     - git+git://github.com/NeuralEnsemble/elephant.git #(pip install from git repo branch)
     # - neo >= 0.8.0
-    - git+https://github.com/G-Node/python-neo.git@fix/nixio-read-channel-names #(pip install from git repo branch)
+    - git+https://github.com/NeuralEnsemble/python-neo.git #(pip install from git repo branch)
     - nixio >= 1.5.0b4
     - pillow >= 6.2.1
+    - pandas >= 0.25.3
+    - scikit-learn>=0.21.3
     - matplotlib
     - seaborn
     - networkx

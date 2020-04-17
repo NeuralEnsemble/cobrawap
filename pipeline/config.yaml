@@ -2,9 +2,9 @@
 STAGES:
     - 'stage01_data_entry'
     - 'stage02_processing'
-    - 'stage03_trigger_detection'
-    - 'stage04_wavefront_detection'
-    - 'stage05_wave_characterization'
+    # - 'stage03_trigger_detection'
+    # - 'stage04_wavefront_detection'
+    # - 'stage05_wave_characterization'
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'

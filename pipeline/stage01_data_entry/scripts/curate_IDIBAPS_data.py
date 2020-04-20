@@ -123,4 +123,5 @@ if __name__ == '__main__':
     # chidx.analogsignals.append(asig)
     block.channel_indexes = []
 
+    print(asig.annotations)
     write_neo(args.output, block)

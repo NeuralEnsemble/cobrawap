@@ -20,14 +20,14 @@ def calc_displacement(times, locations):
 def calc_directions(evts):
     spatial_scale = evts.annotations['spatial_scale']
 
-    wave_ids = [label.decode('UTF-8') for label in np.unique(evts.labels)]
+    wave_ids = np.unique(evts.labels)
 
     directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
 
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
         # Fit wave displacement
-        idx = np.where(evts.labels == wave_i.encode('UTF-8'))[0]
+        idx = np.where(evts.labels == wave_i)[0]
         dx, dx_err = calc_displacement(evts.times[idx].magnitude,
                                    evts.array_annotations['x_coords'][idx]
                                  * spatial_scale.magnitude)

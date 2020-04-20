@@ -2,9 +2,9 @@
 STAGES:
     - 'stage01_data_entry'
     - 'stage02_processing'
-    # - 'stage03_trigger_detection'
-    # - 'stage04_wavefront_detection'
-    # - 'stage05_wave_characterization'
+    - 'stage03_trigger_detection'
+    - 'stage04_wavefront_detection'
+    - 'stage05_wave_characterization'
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'
@@ -17,5 +17,6 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: 1  # int or None. default 'None' -> randomly selected
+# Plot channels: list or scalar of int or None. 'None' is replaced by randomly selected channels. However, when None is used creating reports will not work
+PLOT_CHANNELS: [1, 2, 4, 5]  
 PLOT_FORMAT: 'png'

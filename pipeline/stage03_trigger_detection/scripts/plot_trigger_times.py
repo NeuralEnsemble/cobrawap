@@ -18,11 +18,11 @@ def plot_trigger_times(asig, event, channel):
     labels = [label for i, label in enumerate(event.labels)
              if event.array_annotations['channels'][i]==channel]
 
-    if 'DOWN'.encode('UTF-8') in labels:
+    if 'DOWN'.encode('UTF-8') in labels or 'DOWN' in labels:
         # plot up states
         plot_states(times, labels, ax,
                     t_start=asig.t_start, t_stop=asig.t_stop, label='UP states')
-    elif 'UP'.encode('UTF-8') in labels:
+    elif 'UP'.encode('UTF-8') in labels or 'UP' in labels:
         # plot only up transitions
         for i, trans_time in enumerate(times):
             ax.axvline(trans_time, c='k',
@@ -40,15 +40,16 @@ def plot_trigger_times(asig, event, channel):
 
 
 def plot_states(times, labels, ax, t_start, t_stop, label=''):
-    if labels[0].decode('UTF-8') == 'DOWN':
+    if labels[0] == 'DOWN'.encode('UTF-8') or labels[0] == 'DOWN':
         ax.axvspan(t_start, times[0], alpha=0.5, color='red')
-    if labels[-1].decode('UTF-8') == 'UP':
+    if labels[-1] == 'UP'.encode('UTF-8') or labels[-1] == 'UP':
         ax.axvspan(times[-1], t_stop, alpha=0.5, color='red')
 
     for i, (time, label) in enumerate(zip(times, labels)):
-        if label.decode('UTF-8') == 'UP' and i < len(times)-1:
+        if (label == 'UP'.encode('UTF-8') or label == 'UP') \
+            and i < len(times)-1:
             ax.axvspan(time, times[i+1], alpha=0.5, color='red',
-                       label=label.decode('UTF-8') if not i else '')
+                       label='UP' if not i else '')
     return None
 
 

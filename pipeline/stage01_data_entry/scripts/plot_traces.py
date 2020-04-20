@@ -59,6 +59,7 @@ if __name__ == '__main__':
     asig = time_slice(asig, t_start=args.t_start, t_stop=args.t_stop,
                       lazy=True, channel_indexes=channels)
 
+    print(asig.annotations)
     fig = plot_traces(asig, channels)
 
     save_plot(args.output)

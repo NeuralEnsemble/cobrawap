@@ -157,7 +157,6 @@ if __name__ == '__main__':
 # WARNING! TypeError: 'NoneType' object is not subscriptable if it is None
 # (the condition args.channel[0] cannot be evaluated)
 
-    print(args.channels, args.output_img)
     if args.channels is not None:
         if not len(args.output_img) == len(args.channels):
             raise InputError("The number of plotting channels must "\

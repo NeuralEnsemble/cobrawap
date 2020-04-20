@@ -16,7 +16,7 @@ def calc_planar_velocities(evts):
     spatial_scale = evts.annotations['spatial_scale']
     v_unit = (spatial_scale.units/evts.times.units).dimensionality.string
 
-    wave_ids = [label.decode('UTF-8') for label in np.unique(evts.labels)]
+    wave_ids = np.unique(evts.labels)
 
     velocities = np.zeros((len(wave_ids), 2))
 
@@ -28,7 +28,7 @@ def calc_planar_velocities(evts):
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
         # Fit wave displacement
-        idx = np.where(evts.labels == wave_i.encode('UTF-8'))[0]
+        idx = np.where(evts.labels == wave_i)[0]
         vx, vx_err, dx = linregress(evts.times[idx].magnitude,
                                    evts.array_annotations['x_coords'][idx]
                                    * spatial_scale.magnitude)

@@ -29,7 +29,7 @@ if __name__ == '__main__':
     ax.scatter(evts.times,
                evts.array_annotations['x_coords'],
                evts.array_annotations['y_coords'],
-               c=evts.labels,
+               c=[int(c) for c in evts.labels],
                cmap=cmap, s=2)
 
     ax.set_xlabel('time [{}]'.format(evts.times.units.dimensionality.string))

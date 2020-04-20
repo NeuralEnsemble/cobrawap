@@ -7,13 +7,14 @@ from utils import load_neo, write_neo
 
 
 def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
-    up_idx = np.where(evts.labels == 'UP'.encode('UTF-8'))[0]
+    up_idx = np.where(event.labels == 'UP'.encode('UTF-8')
+                      or event.labels == 'UP')[0]
 
     # build 3D array of trigger times
     triggers = np.zeros((len(up_idx), 3))
-    triggers[:,0] = evts.array_annotations['x_coords'][up_idx]
-    triggers[:,1] = evts.array_annotations['y_coords'][up_idx]
-    triggers[:,2] = evts.times[up_idx] * args.time_dim
+    triggers[:,0] = event.array_annotations['x_coords'][up_idx]
+    triggers[:,1] = event.array_annotations['y_coords'][up_idx]
+    triggers[:,2] = event.times[up_idx] * args.time_dim
     #
     # for i, channel in enumerate(evts.array_annotations['channels'][up_idx]):
     #     triggers[i][0] = asig.array_annotations['x_coords'][int(channel)]
@@ -31,17 +32,17 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
     cluster_idx = np.where(clustering.labels_ != -1)[0]
     wave_idx = up_idx[cluster_idx]
 
-    return neo.Event(times=evts.times[wave_idx],
+    return neo.Event(times=event.times[wave_idx],
                      labels=clustering.labels_[cluster_idx],
                      name='Wavefronts',
-                     array_annotations={'channels':evts.array_annotations['channels'][wave_idx],
+                     array_annotations={'channels':event.array_annotations['channels'][wave_idx],
                                         'x_coords':triggers[:,0][cluster_idx],
                                         'y_coords':triggers[:,1][cluster_idx]},
                      description='Transitions from down to up states. '\
                                 +'Labels are ids of wavefronts. '
                                 +'Annotated with the channel id ("channels") and '\
                                 +'its position ("x_coords", "y_coords").',
-                     spatial_scale=evts.annotations['spatial_scale'],
+                     spatial_scale=event.annotations['spatial_scale'],
                      cluster_algorithm='sklearn.cluster.DBSCAN',
                      cluster_eps=args.neighbour_distance,
                      cluster_metric=args.metric,
@@ -72,7 +73,7 @@ if __name__ == '__main__':
     else:
         raise InputError("The input file does not contain any 'Transitions' events!")
 
-    wave_evt = cluster_triggers(evts,
+    wave_evt = cluster_triggers(event=evts,
                                 metric=args.metric,
                                 neighbour_distance=args.neighbour_distance,
                                 min_samples=args.min_samples,

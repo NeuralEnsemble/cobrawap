@@ -47,6 +47,9 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
     except OptimizeWarning:
         print('Could not perform second fit. Using std to determine spread of downstate signal amplitudes.')
         s0 = np.std(peakhist)
+    except RuntimeError:
+        print('Could not perform second fit. Using std to determine spread of downstate signal amplitudes.')
+        s0 = np.std(peakhist)
 
     ## PLOTTING ##
     if plot_channel:
@@ -106,7 +109,7 @@ if __name__ == '__main__':
                                                          args.bin_num,
                                                          plot_channel)
         if plot_channel:
-            fig_idx = np.where(channel == args.plot_channels)[0]
+            fig_idx = np.where(channel == args.plot_channels)[0][0]
             save_plot(args.output_img[fig_idx])
 
     np.save(args.output, thresholds)

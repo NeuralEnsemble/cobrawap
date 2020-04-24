@@ -64,11 +64,11 @@ def get_stage(num):
         return ''
 
 ## Building the temp_config.yaml files
-# create_temp_configs(STAGES)
+create_temp_configs(STAGES)
 # # overwrite stage configs with pipeline config parameters
-# set_global_configs(STAGES)
+set_global_configs(STAGES)
 # # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
-# set_stage_inputs(STAGES)
+set_stage_inputs(STAGES)
 
 subworkflow stage01:
     workdir:

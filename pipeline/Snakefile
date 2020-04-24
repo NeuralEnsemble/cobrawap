@@ -13,8 +13,7 @@ working_dir = ''
 
 STAGES = config["STAGES"]
 
-def read_stage_output(stage):
-    output_namespace = "STAGE_OUTPUT"
+def read_stage_output(stage, output_namespace="STAGE_OUTPUT"):
     with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
         config_dict = yaml.safe_load(f)
     if output_namespace in config_dict.keys():
@@ -23,31 +22,38 @@ def read_stage_output(stage):
         raise ValueError(f"config file of stage {stage} "
                        + f"does not define {output_namespace}!")
 
-def add_to_config(config_path, update_dict, new_config_path=None):
-    with open(config_path, 'r') as f:
-        config_dict = yaml.safe_load(f)
-    if new_config_path is None:
-        new_config_path = os.path.join(os.path.dirname(config_path),
-                                       'temp_config.yaml')
-    config_dict.update(**update_dict)
-    with open(new_config_path, 'w') as f:
-        f.write(yaml.dump(config_dict, default_flow_style=False))
-    return new_config_path
-
-def set_subworkflow_inputs(stages, config_name='config.yaml'):
-    intput_namespace = "STAGE_INPUT"
-    update_dict = {}
+def create_temp_configs(stages, file_name='temp_config.yaml'):
     for i, stage in enumerate(stages):
-        if i:
-            update_dict[intput_namespace] = read_stage_output(stages[i-1])
-            add_to_config(config_path=os.path.join(working_dir, stage, config_name),
+        config_path = os.path.join(working_dir, stage, 'config.yaml')
+        new_config_path = os.path.join(working_dir, stage, file_name)
+        with open(config_path, 'r') as f:
+            config_dict = yaml.safe_load(f)
+        with open(new_config_path, 'w') as f:
+            f.write(yaml.dump(config_dict, default_flow_style=False))
+    return None
+
+def update_configfile(config_path, update_dict):
+    # Careful! This function overwrites the config file.
+    # Comments in the file are lost.
+    with open(config_path, 'r+') as f:
+        config_dict = yaml.safe_load(f)
+        config_dict.update(**update_dict)
+        f.write(yaml.dump(config_dict, default_flow_style=False))
+    return None
+
+def set_stage_inputs(stages, config_file='temp_config.yaml',
+                     intput_namespace="STAGE_INPUT"):
+    update_dict = {}
+    for i, stage in enumerate(stages[:-1]):
+        update_dict[intput_namespace] = read_stage_output(stage)
+        update_configfile(config_path=os.path.join(working_dir, stages[i+1], config_file),
                           update_dict=update_dict)
     return None
 
-def overwrite_configs(stages, config_name='temp_config.yaml'):
+def set_global_configs(stages, config_file='temp_config.yaml'):
     for stage in stages:
-        add_to_config(config_path=os.path.join(working_dir, stage, config_name),
-                      update_dict=config)
+        update_configfile(config_path=os.path.join(working_dir, stage, config_file),
+                          update_dict=config)
     return None
 
 def get_stage(num):
@@ -57,8 +63,12 @@ def get_stage(num):
         # temporary solution
         return ''
 
-set_subworkflow_inputs(STAGES, 'config.yaml')
-overwrite_configs(STAGES, 'temp_config.yaml')
+## Building the temp_config.yaml files
+# create_temp_configs(STAGES)
+# # overwrite stage configs with pipeline config parameters
+# set_global_configs(STAGES)
+# # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
+# set_stage_inputs(STAGES)
 
 subworkflow stage01:
     workdir:

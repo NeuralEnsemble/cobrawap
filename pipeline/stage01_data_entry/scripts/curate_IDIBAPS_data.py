@@ -18,7 +18,6 @@ def merge_analogsingals(asigs):
             + 'into one AnalogSignal object.')
 
     if len(np.unique([asig.sampling_rate for asig in asigs])) > 1:
-        print([asig.sampling_rate for asig in asigs])
         raise ValueError('The AnalogSignal objects have different '\
                        + 'sampling rates!')
 
@@ -123,5 +122,4 @@ if __name__ == '__main__':
     # chidx.analogsignals.append(asig)
     block.channel_indexes = []
 
-    print(asig.annotations)
     write_neo(args.output, block)

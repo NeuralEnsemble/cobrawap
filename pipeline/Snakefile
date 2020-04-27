@@ -142,7 +142,7 @@ rule execute_stage:
         temp(os.path.join(output_path, '{stage}.done'))
     shell:
         """
-        touch {output}
+        touch "{output}"
         """
 
 rule create_report:
@@ -154,7 +154,7 @@ rule create_report:
         """
         cd {wildcards.subworkflow_name}
         snakemake --configfile temp_config.yaml \
-                  --report {output.report} || \
+                  --report "{output.report}" || \
         echo "Creation of report for {wildcards.subworkflow_name} failed."
         """
 

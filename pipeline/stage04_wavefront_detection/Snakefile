@@ -118,6 +118,20 @@ rule optical_flow:
                               --convergence_limit {params.convergence_limit} \
                               --gaussian_sigma {params.gaussian_sigma} \
                               --derivative_filter {params.derivative_filter}
+        """
 
-
+rule critical_points:
+    input:
+        data = rules.optical_flow.output.data,
+        script = 'scripts/critical_points.py'
+    params:
+        p = 1
+    output:
+        data = os.path.join(OUTPUT_DIR, 'critical_points', STAGE_OUTPUT),
+        img = os.path.join(OUTPUT_DIR, 'critical_points', 'critical_points.'+PLOT_FORMAT)
+    shell:
+        """
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
         """

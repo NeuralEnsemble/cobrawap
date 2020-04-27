@@ -17,6 +17,6 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-# Plot channels: list or scalar of int or None. 'None' is replaced by randomly selected channels. However, when None is used creating reports will not work
-PLOT_CHANNELS: [1, 2, 4, 5]  
+# Plot channels: list or scalar of int or None. 'None' is replaced by randomly selected channels. However, when None is used creating reports will not work.
+PLOT_CHANNELS: [1, 2, 4, 5]
 PLOT_FORMAT: 'png'

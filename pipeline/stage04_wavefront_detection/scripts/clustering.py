@@ -7,8 +7,7 @@ from utils import load_neo, write_neo
 
 
 def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
-    up_idx = np.where(event.labels == 'UP'.encode('UTF-8')
-                      or event.labels == 'UP')[0]
+    up_idx = np.where(event.labels == 'UP')[0]
 
     # build 3D array of trigger times
     triggers = np.zeros((len(up_idx), 3))

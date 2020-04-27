@@ -51,31 +51,43 @@ rule all:
     input:
         data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
-        plot_script = 'scripts/plot_trigger_times.py',
+        img = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+                     f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT)
         configfile = 'config.yaml'
     params:
-        tstart = PLOT_TSTART,
-        tstop = PLOT_TSTOP,
-        channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
-                        f'transitions_channel{channel}.'+PLOT_FORMAT)
-                        for channel in PLOT_CHANNELS]),
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
         data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
+    shell:
+        """
+        {params.command} "{input.data}" "{output.data}"
+        """
+
+
+rule plot_trigger_times:
+    input:
+        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+                            'transitions.'+NEO_FORMAT),
+        plot_script = 'scripts/plot_trigger_times.py'
+    params:
+        tstart = PLOT_TSTART,
+        tstop = PLOT_TSTOP,
+        plot_channels = PLOT_CHANNELS,
+        img = ','.join([os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+                        f'transitions_channel{channel}.'+PLOT_FORMAT)
+                        for channel in PLOT_CHANNELS]),
+    output:
         img = report(os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                      f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}
-        {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{input.data}" \
                                    --output "{params.img}" \
                                    --t_start {params.tstart} \
                                    --t_stop {params.tstop} \
                                    --channels {params.channels} \
         """
-
 
 rule threshold:
     input:

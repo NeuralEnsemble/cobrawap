@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from utils import load_neo, write_neo, none_or_str, save_plot, \
                   ImageSequence2AnalogSignal, AnalogSignal2ImageSequence
 
+# ToDo: enable phase velocity fields
+# xydiff = np.mod(x - y + np.pi, 2*np.pi) - np.pi
 
 def get_derviation_kernels(name='Simple'):
     if name=='Simple' or name is None:

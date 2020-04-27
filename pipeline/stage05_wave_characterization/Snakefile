@@ -52,7 +52,7 @@ rule all:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {input.data} \
+        python {input.script} --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}"
         """

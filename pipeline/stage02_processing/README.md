@@ -1,5 +1,5 @@
 # Stage 2 - Processing
-This stage prepares the data for analysis. The user can select the required pre-processing steps depending on the data and analysis objectives.
+This stage prepares the data for analysis. The user can select the required processing steps depending on the data and analysis objectives.
 
 [config template](config_template.yaml)
 <!-- |
@@ -9,9 +9,9 @@ This stage prepares the data for analysis. The user can select the required pre-
 Simultaneous neural activity recordings from spatially arranged (on a grid) electrodes/pixels
 
 * A neo.Block object containing
-an AnalogSignal with all channel signals (additional AnalogSignal objects are ignored) with
-    * array_annotations `x_coords` and `y_coords` specifying the integer position on the electrode/pixel grid of the channels
-    * annotation `spatial_scale` specifying the distance between electrodes/pixels as quantities.Quantity object
+an AnalogSignal with all signal channels (additional AnalogSignal objects are ignored) with
+    * array_annotations: _'x_coords'_ and _'y_coords'_ specifying the integer position on the electrode/pixel grid of the channels
+    * annotation: _'spatial_scale'_ specifying the distance between electrodes/pixels as quantities.Quantity object
 
 #### Output
 Activity signals, cleaned and pre-processed to user specifications

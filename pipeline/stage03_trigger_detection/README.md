@@ -17,9 +17,6 @@ Input signals + the Up (and Down) trigger times in for each channel as an Event 
     * annotations: information about the detection methods, copy of AnalogSignal.annotations
     * array_annotations: _'channels'_, AnalogSignal.array_annotations of the respective channel
 
-__Plots__
-...
-
 ## Usage
 In this stage offers alternative trigger detection methods, from which one can be selected via the `DETECTION_BLOCK` parameter.
 

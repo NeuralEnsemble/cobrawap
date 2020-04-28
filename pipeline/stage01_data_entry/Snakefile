@@ -5,7 +5,7 @@ report: "report.rst"
 
 import os
 import sys
-utils_path = '../'
+utils_path = '../scripts/'
 sys.path.append(utils_path)
 
 from settings import output_path

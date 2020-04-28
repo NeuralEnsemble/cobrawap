@@ -5,7 +5,7 @@ report: "report.rst"
 
 import os
 import sys
-utils_path = '../'
+utils_path = '../scripts/'
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -52,7 +52,7 @@ rule all:
         data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
         img = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
-                     f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT)
+                     f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT),
         configfile = 'config.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -86,7 +86,7 @@ rule plot_trigger_times:
                                    --output "{params.img}" \
                                    --t_start {params.tstart} \
                                    --t_stop {params.tstop} \
-                                   --channels {params.channels} \
+                                   --channels {params.plot_channels} \
         """
 
 rule threshold:

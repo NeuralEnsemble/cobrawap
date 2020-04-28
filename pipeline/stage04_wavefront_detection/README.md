@@ -23,10 +23,6 @@ Input signals and transition event + wavefronts as collections of transitions ti
     * labels: wavefront id
     * annotations: parameters of clustering algorithm, copy of transitions event annotations
     * array_annotations: _'channels'_, _'x_coords'_, _'y_coords'_
-* intermediate results for each block
-* figures, illustrating the output of each block
-* a report, summarizing the execution of the stage
-(manually create with `snakemake --report /path/to/report.html`)
 
 ## Usage
 ..

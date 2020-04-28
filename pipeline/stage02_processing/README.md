@@ -17,10 +17,6 @@ an AnalogSignal with all signal channels (additional AnalogSignal objects are ig
 Activity signals, cleaned and pre-processed to user specifications
 
 * Format and shape is identical to the input. AnalogSignal.description contains a summary of the preformed processing steps
-* intermediate results for each block
-* figures, illustrating the output of each block
-* a report, summarizing the execution of the stage
-(manually create with `snakemake --report /path/to/report.html`)
 
 ## Usage
 In this stage all blocks can be selected and arranged in arbitrary order. The execution order is specified by the config parameter `BLOCK_ORDER`.

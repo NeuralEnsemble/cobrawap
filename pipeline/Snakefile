@@ -3,58 +3,16 @@ report: "report.rst"
 
 import os
 import sys
-import yaml
 import numpy as np
 sys.path.append('../')
 from settings import output_path
+from scripts.snakefile_utils import create_temp_configs, set_global_configs,\
+                                    set_stage_inputs, read_stage_output
 
 # the working directory is by default the directory of the Snakefile
 working_dir = ''
 
 STAGES = config["STAGES"]
-
-def read_stage_output(stage, output_namespace="STAGE_OUTPUT"):
-    with open(os.path.join(working_dir, stage, 'config.yaml'), 'r') as f:
-        config_dict = yaml.safe_load(f)
-    if output_namespace in config_dict.keys():
-        return os.path.join(output_path, stage, config_dict[output_namespace])
-    else:
-        raise ValueError(f"config file of stage {stage} "
-                       + f"does not define {output_namespace}!")
-
-def create_temp_configs(stages, file_name='temp_config.yaml'):
-    for i, stage in enumerate(stages):
-        config_path = os.path.join(working_dir, stage, 'config.yaml')
-        new_config_path = os.path.join(working_dir, stage, file_name)
-        with open(config_path, 'r') as f:
-            config_dict = yaml.safe_load(f)
-        with open(new_config_path, 'w') as f:
-            f.write(yaml.dump(config_dict, default_flow_style=False))
-    return None
-
-def update_configfile(config_path, update_dict):
-    # Careful! This function overwrites the config file.
-    # Comments in the file are lost.
-    with open(config_path, 'r+') as f:
-        config_dict = yaml.safe_load(f)
-        config_dict.update(**update_dict)
-        f.write(yaml.dump(config_dict, default_flow_style=False))
-    return None
-
-def set_stage_inputs(stages, config_file='temp_config.yaml',
-                     intput_namespace="STAGE_INPUT"):
-    update_dict = {}
-    for i, stage in enumerate(stages[:-1]):
-        update_dict[intput_namespace] = read_stage_output(stage)
-        update_configfile(config_path=os.path.join(working_dir, stages[i+1], config_file),
-                          update_dict=update_dict)
-    return None
-
-def set_global_configs(stages, config_file='temp_config.yaml'):
-    for stage in stages:
-        update_configfile(config_path=os.path.join(working_dir, stage, config_file),
-                          update_dict=config)
-    return None
 
 def get_stage(num):
     if num < len(STAGES):
@@ -64,11 +22,11 @@ def get_stage(num):
         return ''
 
 ## Building the temp_config.yaml files
-create_temp_configs(STAGES)
+create_temp_configs(STAGES, working_dir=working_dir)
 # # overwrite stage configs with pipeline config parameters
-set_global_configs(STAGES)
+set_global_configs(STAGES, working_dir=working_dir, config_dict=config)
 # # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
-set_stage_inputs(STAGES)
+set_stage_inputs(STAGES, working_dir=working_dir, output_path=output_path)
 
 subworkflow stage01:
     workdir:
@@ -109,18 +67,15 @@ def stage_input(wildcards):
             return []
 
 def stage_output(wildcards):
-    if wildcards.stage == get_stage(0):
-        return stage01(read_stage_output(wildcards.stage))
-    elif wildcards.stage == get_stage(1):
-        return stage02(read_stage_output(wildcards.stage))
-    elif wildcards.stage == get_stage(2):
-        return stage03(read_stage_output(wildcards.stage))
-    elif wildcards.stage == get_stage(3):
-        return stage04(read_stage_output(wildcards.stage))
-    elif wildcards.stage == get_stage(4):
-        return stage05(read_stage_output(wildcards.stage))
-    else:
+    # setup for maximal 5 stages
+    subworkflows=[stage01, stage02, stage03, stage04, stage05]
+    if wildcards.stage not in STAGES:
         raise InputError(f"Don't recognize stage {wildcards.stage}!")
+    for i, subworkflow in enumerate(subworkflows):
+        if wildcards.stage == get_stage(i):
+            output_name = read_stage_output(wildcards.stage,
+                                            working_dir=working_dir)
+            return subworkflow(os.path.join(output_path, wildcards.stage, output_name))
 
 rule all:
     input:
@@ -142,6 +97,8 @@ rule execute_stage:
         temp(os.path.join(output_path, '{stage}.done'))
     shell:
         """
+        echo {input.stage_input}
+        echo {input.stage_output}
         touch "{output}"
         """
 

@@ -3,6 +3,9 @@
 # Name of stage, must be identical with folder name
 STAGE_NAME: 'stage05_wave_characterization'
 
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'IDIBAPS'
+
 # Name of the output file
 STAGE_OUTPUT: 'measures.csv'
 
@@ -13,5 +16,5 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-# 'velocity_planar', 'velocity_gradient', 'direction'
-MEASURES: ['velocity_planar', 'velocity_gradient', 'direction']
+# 'velocity_planar', 'direction'
+MEASURES: ['velocity_planar', 'direction']

@@ -3,8 +3,10 @@
 # Name of stage, must be identical with folder name
 STAGE_NAME: 'stage01_data_entry'
 
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'IDIBAPS'
+
 # Name of stage output file.
-# Its path is relative to settings.output_path + stage_name
 STAGE_OUTPUT: "IDIBAPS_data.nix"
 
 # File format in which all intermediate neo objects are stored
@@ -20,7 +22,6 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Name_of_dataset: /path/to/data/files/
 DATA_SETS:
     IDIBAPS_161101_rec07_RH: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/TestData-for-SWAP_WT/161101_rec07_Spontaneous_RH.smr'
-    # IDIBAPS_1807013_KetaMEdeto_Rec03: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/1807013BrainStates_KetaMedeto_Rec03_24Omar.smr'
 
 CURATION_SCRIPT: 'curate_IDIBAPS_data.py'
 

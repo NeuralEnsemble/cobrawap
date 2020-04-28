@@ -1,0 +1,73 @@
+# Config file for Stage 3 - Trigger Detection
+
+# Name of stage, must be identical with folder name
+STAGE_NAME: 'stage03_trigger_detection'
+
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'IDIBAPS'
+
+# Name of the stage output file
+STAGE_OUTPUT: 'trigger_times.nix'
+
+# File format in which all intermediate neo objects are stored
+NEO_FORMAT: 'nix'
+
+# If True (default), the output file of a stage is created as symbolic link
+# to the last block output. If False, a duplicate is created (e.g. for cloud
+# application, where sym-links are not supported).
+USE_LINK_AS_STAGE_OUTPUT: True
+
+# Plotting parameters
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
+PLOT_FORMAT: 'png'
+
+# DETECTION BLOCK
+#################
+# Available Blocks: 'threshold', 'hilbert_phase', 'minima'
+DETECTION_BLOCK: 'threshold'
+
+# BLOCK - Threshold
+###################
+# Thresholding method: 'fixed', 'fitted', 'moment'
+THRESHOLD_METHOD: 'fitted'
+
+# Fitting Parameters
+# available fit functions: 'Gaussian'
+FIT_FUNCTION: 'Gaussian'
+BIN_NUM: 100
+# Factor to multiply with the standard deviation
+# to determine threshold
+SIGMA_FACTOR: 2
+
+# Fixed Parameters
+FIXED_THRESHOLD: 0
+
+# Moment Parameters
+MOMENT_ORDER: 2
+MOMENT_FACTOR: 3
+
+# BLOCK - Hilbert_phase
+#######################
+# Phase at which to define the upward transition [-pi, 0]
+TRANSITION_PHASE: -1.570796
+
+# BLOCK - Minima
+################
+# Number of neighbouring points which should be compared to define a local minimum.
+MINIMA_ORDER: 3
+
+
+# VIDEO SETTINGS
+################
+QUALITY: 5 # 0(good) - 31(bad)
+SCALE_X: 720
+SCALE_Y: 720
+FPS: 10
+BITRATE: 20M
+# displayed sampling rate, the data will be stretched or compressed to.
+# If None, the inherent sampling rate is used.
+FRAME_RATE: None
+# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
+COLORMAP: 'viridis'

@@ -3,9 +3,10 @@
 # Name of stage, must be identical with folder name
 STAGE_NAME: 'stage01_data_entry'
 
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'LENS'
+
 # Name of stage output file.
-# It will be created in directory
-# <output_path(in setting.py)>/stage01_data_curation/
 STAGE_OUTPUT: "LENS_data.nix"
 
 # File format in which all intermediate neo objects are stored

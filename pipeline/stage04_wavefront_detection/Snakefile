@@ -1,11 +1,12 @@
 # Stage 04 Wavefront Detection
 
-configfile: "config.yaml"
+configfile: "configs/config_template.yaml"
 report: "report.rst"
 
 import os
 import sys
 utils_path = '../scripts/'
+sys.path.append('../')
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -13,10 +14,11 @@ from utils import parse_plot_channels
 
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]
+PROFILE = config["PROFILE"]
 NEO_FORMAT = config["NEO_FORMAT"]
 USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, STAGE_NAME)
+OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
@@ -51,7 +53,8 @@ def clustering_input(wildcards):
 rule all:
     input:
         data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
-        plot_script = 'scripts/plot_clustering.py'
+        plot_script = 'scripts/plot_clustering.py',
+        configfile = f'configs/config_{PROFILE}.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:

@@ -57,17 +57,3 @@ TRANSITION_PHASE: -1.570796
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
 MINIMA_ORDER: 3
-
-
-# VIDEO SETTINGS
-################
-QUALITY: 5 # 0(good) - 31(bad)
-SCALE_X: 720
-SCALE_Y: 720
-FPS: 10
-BITRATE: 20M
-# displayed sampling rate, the data will be stretched or compressed to.
-# If None, the inherent sampling rate is used.
-FRAME_RATE: None
-# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
-COLORMAP: 'twilight'

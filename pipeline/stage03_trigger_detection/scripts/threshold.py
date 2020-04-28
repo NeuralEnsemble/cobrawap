@@ -1,7 +1,7 @@
 import neo
 import numpy as np
 import argparse
-from utils import load_neo, write_neo
+from utils import load_neo, write_neo, remove_annotations
 
 
 def threshold(asig, threshold_array):
@@ -36,7 +36,6 @@ def threshold(asig, threshold_array):
                     name='Transitions',
                     array_annotations={'channels':all_channels[sort_idx]},
                     threshold=threshold_array,
-                    spatial_scale=asig.annotations['spatial_scale'],
                     description='Transitions between down and up states with '\
                             +'labels "UP" and "DOWN". '\
                             +'Annotated with the channel id ("channels").')
@@ -45,6 +44,8 @@ def threshold(asig, threshold_array):
         evt_ann = {key : asig.array_annotations[key][all_channels[sort_idx]]}
         evt.array_annotations.update(evt_ann)
 
+    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
+    evt.annotations.update(asig.annotations)
     return evt
 
 

@@ -3,7 +3,7 @@ import numpy as np
 import quantities as pq
 from scipy.signal import argrelmin
 import argparse
-from utils import load_neo, write_neo
+from utils import load_neo, write_neo, remove_annotations
 
 
 def detect_minima(asig, order):
@@ -15,7 +15,6 @@ def detect_minima(asig, order):
     evt = neo.Event(times=asig.times[t_idx[sort_idx]],
                      labels=['UP'] * len(t_idx),
                      name='Transitions',
-                     spatial_scale=asig.annotations['spatial_scale'],
                      minima_order=order,
                      array_annotations={'channels':channel_idx[sort_idx]})
 
@@ -23,6 +22,8 @@ def detect_minima(asig, order):
         evt_ann = {key : asig.array_annotations[key][channel_idx[sort_idx]]}
         evt.array_annotations.update(evt_ann)
 
+    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
+    evt.annotations.update(asig.annotations)
     return evt
 
 if __name__ == '__main__':

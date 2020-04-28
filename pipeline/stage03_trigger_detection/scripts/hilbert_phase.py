@@ -5,7 +5,8 @@ from scipy.signal import hilbert
 from scipy.stats import zscore
 import argparse
 import matplotlib.pyplot as plt
-from utils import load_neo, write_neo, time_slice, none_or_int
+from utils import load_neo, write_neo, time_slice, none_or_int,\
+                  remove_annotations
 
 def detect_transitions(asig, transition_phase):
     # ToDo: replace with elephant function
@@ -61,12 +62,14 @@ def detect_transitions(asig, transition_phase):
                      name='Transitions',
                      array_annotations={'channels':channels[sort_idx]},
                      hilbert_transition_phase=transition_phase,
-                     spatial_scale=asig.annotations['spatial_scale'],
                      description='Transitions from down to up states. '\
                                 +'annotated with the channel id ("channels").')
     for key in asig.array_annotations.keys():
         evt_ann = {key : asig.array_annotations[key][channels[sort_idx]]}
         evt.array_annotations.update(evt_ann)
+
+    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
+    evt.annotations.update(asig.annotations)
     return evt
 
 

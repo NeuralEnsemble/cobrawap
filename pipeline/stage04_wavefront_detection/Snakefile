@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, 'stage03_trigger_detection',
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage03_trigger_detection',
                                'trigger_times.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -82,8 +82,8 @@ rule clustering:
         neighbour_distance = NEIGHBOUR_DISTANCE,
         min_samples = MIN_SAMPLES_PER_WAVE
     output:
-        data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
-        img = report(os.path.join(OUTPUT_DIR, 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
+        data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
+        img = report(os.path.join('{dir}', 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
@@ -108,8 +108,8 @@ rule optical_flow:
         gaussian_sigma = GAUSSIAN_SIGMA,
         derivative_filter = DERIVATIVE_FILTER
     output:
-        data = os.path.join(OUTPUT_DIR, 'optical_flow', STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
+        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
+        img = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
     shell:
         """
         {ADD_UTILS}
@@ -130,8 +130,8 @@ rule critical_points:
     params:
         p = 1
     output:
-        data = os.path.join(OUTPUT_DIR, 'critical_points', STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'critical_points', 'critical_points.'+PLOT_FORMAT)
+        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT),
+        img = os.path.join('{dir}', 'critical_points', 'critical_points.'+PLOT_FORMAT)
     shell:
         """
         python {input.script} --data "{input.data}" \

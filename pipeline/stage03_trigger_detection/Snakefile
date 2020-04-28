@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, 'stage02_processing',
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage02_processing',
                                'processed_data.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -68,18 +68,18 @@ rule all:
 
 rule plot_trigger_times:
     input:
-        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+        data = os.path.join('{dir}', DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
         plot_script = 'scripts/plot_trigger_times.py'
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
         plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+        img = ','.join([os.path.join('{dir}', DETECTION_BLOCK,
                         f'transitions_channel{channel}.'+PLOT_FORMAT)
                         for channel in PLOT_CHANNELS]),
     output:
-        img = report(os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+        img = report(os.path.join('{dir}', DETECTION_BLOCK,
                      f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT))
     shell:
         """
@@ -94,11 +94,11 @@ rule plot_trigger_times:
 rule threshold:
     input:
         data = STAGE_INPUT,
-        thresholds = os.path.join(OUTPUT_DIR, 'threshold',
+        thresholds = os.path.join('{dir}', 'threshold',
                                   f'{THRESHOLD_METHOD}_thresholds.npy'),
         script = 'scripts/threshold.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'threshold', 'transitions.'+NEO_FORMAT)
+        data = os.path.join('{dir}', 'threshold', 'transitions.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}
@@ -115,7 +115,7 @@ rule calc_tresholds_fixed:
     params:
         threshold = FIXED_THRESHOLD
     output:
-        array = os.path.join(OUTPUT_DIR, 'threshold', 'fixed_thresholds.npy')
+        array = os.path.join('{dir}', 'threshold', 'fixed_thresholds.npy')
     shell:
         """
         {ADD_UTILS}
@@ -133,12 +133,12 @@ rule calc_tresholds_fitted:
         fit_function = FIT_FUNCTION,
         bin_num = BIN_NUM,
         plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join(OUTPUT_DIR, 'threshold',
+        img = ','.join([os.path.join('{dir}', 'threshold',
                         f'amplitudes_channel{channel}.{PLOT_FORMAT}')
                         for channel in PLOT_CHANNELS])
     output:
-        array = os.path.join(OUTPUT_DIR, 'threshold', 'fitted_thresholds.npy'),
-        img = report(os.path.join(OUTPUT_DIR, 'threshold',
+        array = os.path.join('{dir}', 'threshold', 'fitted_thresholds.npy'),
+        img = report(os.path.join('{dir}', 'threshold',
                         f'amplitudes_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
@@ -161,12 +161,12 @@ rule hilbert_phase:
         plot_channels = PLOT_CHANNELS,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        img = ','.join([os.path.join(OUTPUT_DIR, 'hilbert_phase',
+        img = ','.join([os.path.join('{dir}', 'hilbert_phase',
                         f'transitions_channel{channel}.'+PLOT_FORMAT)
                         for channel in PLOT_CHANNELS])
     output:
-        data = os.path.join(OUTPUT_DIR, 'hilbert_phase', 'transitions.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, 'hilbert_phase',
+        data = os.path.join('{dir}', 'hilbert_phase', 'transitions.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', 'hilbert_phase',
                      f'transitions_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
@@ -187,7 +187,7 @@ rule minima:
     params:
         order = MINIMA_ORDER
     output:
-        data = os.path.join(OUTPUT_DIR, 'minima', 'transitions.'+NEO_FORMAT)
+        data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}

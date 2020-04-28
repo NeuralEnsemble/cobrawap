@@ -20,7 +20,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: None  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # The block order determines which processing steps (blocks) will be applied

@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, 'stage04_wavefront_detection',
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage04_wavefront_detection',
                                'waves.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -66,8 +66,8 @@ rule velocity_planar:
         data = input,
         script = 'scripts/velocity_planar.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'velocity_planar', 'velocity_planar.csv'),
-        img = report(os.path.join(OUTPUT_DIR, 'velocity_planar',
+        data = os.path.join('{dir}', 'velocity_planar', 'velocity_planar.csv'),
+        img = report(os.path.join('{dir}', 'velocity_planar',
                                   'velocity_planar.'+PLOT_FORMAT))
     shell:
         """
@@ -82,9 +82,9 @@ rule velocity_gradient:
         data = input,
         script = 'scripts/velocity_gradient.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'velocity_gradient',
+        data = os.path.join('{dir}', 'velocity_gradient',
                                          'velocity_gradient.csv'),
-        img = report(os.path.join(OUTPUT_DIR, 'velocity_gradient',
+        img = report(os.path.join('{dir}', 'velocity_gradient',
                                   'velocity_gradient.'+PLOT_FORMAT))
     shell:
         """
@@ -100,8 +100,8 @@ rule direction:
         data = input,
         script = 'scripts/direction.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'direction', 'direction.csv'),
-        img = report(os.path.join(OUTPUT_DIR, 'direction',
+        data = os.path.join('{dir}', 'direction', 'direction.csv'),
+        img = report(os.path.join('{dir}', 'direction',
                                   'direction.'+PLOT_FORMAT))
     shell:
         """

@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, 'stage01_data_entry', 'data.nix')
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage01_data_entry', 'data.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
@@ -46,6 +46,8 @@ logMUA_RATE = config["logMUA_RATE"]
 FFT_SLICE = config["FFT_SLICE"]
 
 #### Housekeeping ####
+wildcard_constraints:
+    rule_name = '\w+'
 
 def locate(str_list, string):
     if string in str_list:
@@ -102,9 +104,9 @@ rule plot_processed_traces:
 
 rule clear:
     output:
-        temp(os.path.join(OUTPUT_DIR, 'clear.done'))
+        temp(os.path.join('{path}', 'clear.done'))
     params:
-        block_folder = ['"'+os.path.join(OUTPUT_DIR, block)+'"'
+        block_folder = ['"'+os.path.join('{path}', block)+'"'
                         for block in BLOCK_ORDER]
     shell:
         """
@@ -116,15 +118,15 @@ rule clear:
 
 rule background_substraction:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/background_substraction.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'background_substraction',
+        data = os.path.join('{dir}', 'background_substraction',
                             '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+        img = report(os.path.join('{dir}', '{rule_name}',
                                   'background.'+PLOT_FORMAT)),
-        array = os.path.join(OUTPUT_DIR, '{rule_name}',
+        array = os.path.join('{dir}', '{rule_name}',
                              'background.npy')
     shell:
         """
@@ -137,13 +139,13 @@ rule background_substraction:
 
 rule normalization:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/normalization.py'
     params:
         normalize_by = NORMALIZE_BY
     output:
-        data = os.path.join(OUTPUT_DIR, 'normalization',
+        data = os.path.join('{dir}', 'normalization',
                             '{rule_name}.'+NEO_FORMAT)
     shell:
         """
@@ -155,13 +157,13 @@ rule normalization:
 
 rule detrending:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/detrending.py'
     params:
         order = DETRENDING_ORDER
     output:
-        data = os.path.join(OUTPUT_DIR, 'detrending',
+        data = os.path.join('{dir}', 'detrending',
                             '{rule_name}.'+NEO_FORMAT)
     shell:
         """
@@ -173,9 +175,9 @@ rule detrending:
 
 rule frequency_filter:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        img = os.path.join(OUTPUT_DIR,
+        img = os.path.join('{dir}',
                            f'frequency_filter_power_spectrum.{PLOT_FORMAT}'),
         script = 'scripts/frequency_filter.py',
     params:
@@ -207,7 +209,7 @@ rule plot_power_spectrum:
         psd_freq_res = PSD_FREQ_RES,
         psd_overlap = PSD_OVERLAP
     output:
-        img = report(os.path.join(OUTPUT_DIR, '{rule_name}_'\
+        img = report(os.path.join('{dir}', '{rule_name}_'\
                                   +f'power_spectrum.{PLOT_FORMAT}'))
     shell:
         """
@@ -222,15 +224,15 @@ rule plot_power_spectrum:
 
 rule roi_selection:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/roi_selection.py'
     params:
         intensity_threshold = INTENSITY_THRESHOLD
     output:
-        data = os.path.join(OUTPUT_DIR, 'roi_selection',
+        data = os.path.join('{dir}', 'roi_selection',
                             '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, 'roi_selection',
+        img = report(os.path.join('{dir}', 'roi_selection',
                                     '{rule_name}.'+PLOT_FORMAT))
     shell:
         """
@@ -243,7 +245,7 @@ rule roi_selection:
 
 rule logMUA_estimation:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/logMUA_estimation.py'
     params:
@@ -255,14 +257,14 @@ rule logMUA_estimation:
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
         plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join(OUTPUT_DIR, 'logMUA_estimation',
+        img = ','.join([os.path.join('{dir}', 'logMUA_estimation',
                                      f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
                                     +f'_channel{channel}.{PLOT_FORMAT}')
                                      for channel in PLOT_CHANNELS]),
     output:
-        data = os.path.join(OUTPUT_DIR, 'logMUA_estimation',
+        data = os.path.join('{dir}', 'logMUA_estimation',
                             '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, '{rule_name}',
+        img = report(os.path.join('{dir}', '{rule_name}',
                                   f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
                                  +f'_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
@@ -283,11 +285,11 @@ rule logMUA_estimation:
 
 rule phase_transform:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/phase_transform.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'phase_transform',
+        data = os.path.join('{dir}', 'phase_transform',
                             '{rule_name}.'+NEO_FORMAT)
     shell:
         """
@@ -298,11 +300,11 @@ rule phase_transform:
 
 rule zscore:
     input:
-        clear = os.path.join(OUTPUT_DIR, 'clear.done'),
+        clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/z_score.py'
     output:
-        data = os.path.join(OUTPUT_DIR, 'zscore',
+        data = os.path.join('{dir}', 'zscore',
                             '{rule_name}.'+NEO_FORMAT)
     shell:
         """

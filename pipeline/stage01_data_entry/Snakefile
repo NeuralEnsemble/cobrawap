@@ -12,6 +12,9 @@ sys.path.append(utils_path)
 from settings import output_path
 from utils import ordereddict_to_dict
 
+if not bool(config):
+    raise KeyError("Please specify a config file with '--configfile=...'")
+
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]
 PROFILE = config["PROFILE"]
@@ -60,9 +63,9 @@ rule all:
 rule check_input:
     # ToDo!
     input:
-        data = os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT)
+        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT)
     output:
-        temp(os.path.join(OUTPUT_DIR, '{data_name}.check'))
+        temp(os.path.join('{dir}', '{data_name}.check'))
     shell:
         """
         touch "{output}"
@@ -74,8 +77,8 @@ rule enter_data:
         script = os.path.join('scripts/', CURATION_SCRIPT),
         plot_script = 'scripts/plot_traces.py'
     output:
-        data = os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT),
-        img = report(os.path.join(OUTPUT_DIR, 'trace_{data_name}.'+PLOT_FORMAT))
+        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', 'trace_{data_name}.'+PLOT_FORMAT))
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,

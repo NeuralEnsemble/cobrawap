@@ -1,21 +1,67 @@
-### Interfaces
-__Pipeline input__:
+### Configuration
+All config files are given as templates. So, in order to get started you need to copy (and edit to your needs)
+_config_template.yaml_ to _config.yaml_ in the _pipeline/_ folder.
+Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the containing `output_path` set fit your local system.
 
+To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
+
+### Execution
+__Full Pipeline__:
+Navigate to the _pipeline/_ folder. The _config.yaml_ file defines the global parameters.
+Most importantly here, the `STAGES` parameter defines which stages are executed and the `PROFILE` parameter.
+The other parameters are in this global config file also reappear in the stage configs. When executing the full pipeline the global parameters overwrite the stage parameters, so this is a way to easily set parameters for all stages, e.g. plotting parameters.
+Once the configurations are handled the execution is a simple snakemake call:
+
+`snakemake --cores=1`
+
+Optionally, parameters can also be directly overwritten via the command line (e.g to quickly change profiles):
+
+`snakemake --config PROFILE=LENS --cores=1`
+
+__Single Stage__:
+Navigate to the stage folder. As each stage is a subworkflow it can be executed with the same snakemake calls as the full pipline. Only the config file needs to be explicitly specified:
+
+`snakemake --configfile='configs/config_LENS.yaml' --cores=1`
+
+In case the `STAGE_INPUT` file is not found, it needs to be set manually either by adding the full path to the config file or via the command line:
+
+`snakemake --configfile='configs/config_LENS.yaml' --config STAGE_INPUT=/path/to/input/file --cores=1`
+
+__Single Blocks__:
+Each block is represented by a snakemake rule. To run a specific rule you can request its output file (for multiple output files any one will do):
+
+`snakemake --configfile='configs/config_LENS.yaml' --cores=1 /path/to/specific/file`
+
+However, keep in mind that snakemake keeps track of the timestamps of scripts, in- and output files. So, a rule will only be run again if any of its inputs has changed, and if the something in the creation of the input changed as well this might trigger also other rules to be re-executed.
+
+
+_See the [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional more snakemake command line arguments_
+
+### Interfaces
 __Stage inputs__:
-The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the whole pipeline (calling `snakemake` form the `pipeline/` folder) the stage inputs are automatically set to the outputs of the previous stage, respectively.
+The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs of the previous stage, respectively.
+Details on the input requirements for each stage are specified in the corresponding Readme.
 
 __Stage outputs__:
-The stage output file is stored as `output_path/PROFILE/STAGE_NAME/STAGE_OUTPUT`, with `PROFILE`, `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from *settings.py*.
-
-When the whole pipeline is executed a summary report is created in `output_path/PROFILE/STAGE_NAME/report.html`. For individual stage execution it can be created with `snakemake --report /path/to/report.html`.
+The stage output file is stored as _output_path/PROFILE/STAGE_NAME/STAGE_OUTPUT_, with `PROFILE`, `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from *settings.py*.
+Details on the output content and format for each stage are specified in the corresponding Readme.
 
 __Block input__:
-Inputs to specific blocks are handled by the corresponding rule in the *Snakefile* dependent on the mechanics of the respective stage.
+Input dependencies to blocks are handled by the corresponding rule in the *Snakefile* and are arranged according on the mechanics of the respective stage.
 
 __Block outputs__:
-All output from blocks (data and figures) is stored hierarchically in `output_path/PROFILE/STAGE_NAME/<block name>/`.
+All output from blocks (data and figures) is stored hierarchically in _output_path/PROFILE/STAGE_NAME/<block name>/_.
+
+### Reports
+Reports are summaries (html page) about the execution of a Snakefile containing the rule execution order, run-time statistics, parameter configurations, and all plotting outputs tagged with `report()` in the Snakefile.
+
+When the whole pipeline is executed, the reports for each stage are automatically created in _output_path/PROFILE/STAGE_NAME/report.html_.
+To create a report for an individual stage, you can use the `report` flag.
+`snakemake --configfile='configs/config_XY.yaml' --report /path/to/report.html`
+
+Note that when using the option of setting `PLOT_CHANNELS` to `None` to plot a random channel, the report function might request a different plot than was previously created and will thus fail.
 
 ### Global Parameters
 [see config](config_template.yaml)
 
-PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT, USE_LINK_AS_STAGE_OUTPUT, NEO_FORMAT, PROFILE
+`STAGES, PROFILE, PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT, USE_LINK_AS_STAGE_OUTPUT, NEO_FORMAT`

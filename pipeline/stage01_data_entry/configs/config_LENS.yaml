@@ -32,9 +32,8 @@ SAMPLING_RATE: 25  # Hz
 
 # time slice in s
 # if None, the entire recording is used
-T_START: 'None'
-T_STOP: 'None'
-
+T_START: 0
+T_STOP: 10
 
 # Metadata
 ANNOTATIONS:
@@ -47,5 +46,5 @@ KWARGS: 'None'
 # Plot settings
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [1,2,3,4,5]  # int, list of ints, or 'None' (default) -> picks channel by random
+PLOT_CHANNELS: [4040, 5050, 6060]  # int, list of ints, or 'None' (default) -> picks channel by random
 PLOT_FORMAT: 'png'

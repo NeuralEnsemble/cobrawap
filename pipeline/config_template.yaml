@@ -7,7 +7,7 @@ STAGES:
     - 'stage05_wave_characterization'
 
 # A profile collects the parameter configuration for a specific dataset. The stages are executed using the config_<PROFILE>.yaml file, and results are stored in output_path/<PROFILE>/
-PROFILE: 'dataset_key'
+PROFILE: 'IDIBAPS'
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'

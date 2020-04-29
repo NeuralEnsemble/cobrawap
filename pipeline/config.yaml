@@ -6,8 +6,8 @@ STAGES:
     - 'stage04_wavefront_detection'
     - 'stage05_wave_characterization'
 
-# A profile collects the parameter settings for a specific dataset. The stages are executed using the config_<PROFILE>.yaml file, and results are stored in output_path/<PROFILE>/
-PROFILE: 'IDIBAPS'
+# A profile collects the parameter configuration for a specific dataset. The stages are executed using the config_<PROFILE>.yaml file, and results are stored in output_path/<PROFILE>/
+PROFILE: 'LENS'
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'
@@ -20,6 +20,18 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-# Plot channels: list or scalar of int or None. 'None' is replaced by randomly selected channels. However, when None is used creating reports will not work.
-PLOT_CHANNELS: [1, 2, 4, 5]
+PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
+
+# VIDEO SETTINGS
+################
+QUALITY: 5 # 0(good) - 31(bad)
+SCALE_X: 720
+SCALE_Y: 720
+FPS: 10
+BITRATE: 20M
+# displayed sampling rate, the data will be stretched or compressed to.
+# If None, the inherent sampling rate is used.
+FRAME_RATE: None
+# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
+COLORMAP: 'twilight'

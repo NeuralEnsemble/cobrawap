@@ -9,7 +9,7 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake >= 5.13.0
+  - snakemake >= 5.15.0
   - pip:
     # - elephant >= 0.6.3
     - git+git://github.com/NeuralEnsemble/elephant.git #(pip install from git repo branch)
@@ -19,6 +19,7 @@ dependencies:
     - pillow >= 7.0.0
     - pandas >= 1.0.1
     - scikit-learn >= 0.22.1
+    - scikit-image >= 0.16.2
     - matplotlib
     - seaborn
     - networkx

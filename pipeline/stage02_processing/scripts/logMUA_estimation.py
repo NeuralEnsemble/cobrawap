@@ -17,14 +17,14 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
     if fft_slice is None:
         fft_slice = (1/highpass_freq).rescale('s')
     elif fft_slice < 1/highpass_freq:
-        raise InputError("Too few fft samples to estimate the frequency "\
+        raise ValueError("Too few fft samples to estimate the frequency "\
                        + "content in the range [{} {}]Hz."\
                          . format(highpass_freq, lowpass_freq))
     # logMUA_rate can only be an int fraction of the orginal sampling_rate
     if logMUA_rate is None:
         logMUA_rate = highpass_freq
     if logMUA_rate > fs:
-        raise InputError("The requested logMUA rate can not be larger than "\
+        raise ValueError("The requested logMUA rate can not be larger than "\
                        + "the inital sampling rate!")
     subsample_order = int(fs/logMUA_rate)
     eff_logMUA_rate = fs/subsample_order
@@ -98,7 +98,7 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
 
     ax.plot(filt_asig.times,
             zscore(filt_asig.as_array()[:,channel]) + 10,
-            label=f'signal [{highpass_freq}-{lowpass_freq}Hz]',
+            label=f'signal [{highpass_freq}-{lowpass_freq}]',
             alpha=0.5)
 
     ax.plot(logMUA_asig.times,
@@ -107,6 +107,7 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
 
     ax.set_title('Channel {}'.format(channel))
     ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
+    ax.set_yticklabels([])
     plt.legend()
     return ax
 

@@ -4,7 +4,7 @@
 STAGE_NAME: 'stage02_processing'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'IDIBAPS'
+PROFILE: 'LENS'
 
 # Name of the output file
 STAGE_OUTPUT: "processed_data.nix"
@@ -20,7 +20,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # The block order determines which processing steps (blocks) will be applied
@@ -28,7 +28,7 @@ PLOT_FORMAT: 'png'
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'roi_selection', 'logMUA_estimation', 'phase_transform', 'zscore'
-BLOCK_ORDER: ['background_substraction', 'normalization', 'logMUA_estimation']
+BLOCK_ORDER: ['roi_selection', 'background_substraction', 'normalization', 'frequency_filter']
 
 # BLOCK - background_substraction
 #################################

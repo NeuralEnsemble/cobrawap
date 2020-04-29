@@ -154,12 +154,12 @@ rule hilbert_phase:
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
         img = ','.join([os.path.join('{dir}', 'hilbert_phase',
-                        f'transitions_channel{channel}.'+PLOT_FORMAT)
+                        f'hilbert_phase_channel{channel}.'+PLOT_FORMAT)
                         for channel in PLOT_CHANNELS])
     output:
         data = os.path.join('{dir}', 'hilbert_phase', 'transitions.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', 'hilbert_phase',
-                     f'transitions_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
+                     f'hilbert_phase_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}

@@ -5,8 +5,9 @@ from scipy.signal import hilbert
 from scipy.stats import zscore
 import argparse
 import matplotlib.pyplot as plt
+import seaborn as sns
 from utils import load_neo, write_neo, time_slice, none_or_int,\
-                  remove_annotations
+                  remove_annotations, save_plot
 
 def detect_transitions(asig, transition_phase):
     # ToDo: replace with elephant function
@@ -37,7 +38,7 @@ def detect_transitions(asig, transition_phase):
     peaks = _detect_phase_crossings(0)
     transitions = _detect_phase_crossings(transition_phase)
     up_transitions = np.array([])
-    channels = np.array([])
+    channels = np.array([], dtype=int)
 
     for channel_id, (channel_peaks, channel_transitions) in enumerate(zip(peaks, transitions)):
         channel_up_transitions = np.array([])
@@ -52,7 +53,7 @@ def detect_transitions(asig, transition_phase):
         channel_up_transitions = np.unique(channel_up_transitions)
         up_transitions = np.append(up_transitions, channel_up_transitions)
         channels = np.append(channels,
-                             np.ones_like(channel_up_transitions)*channel_id)
+                             np.ones_like(channel_up_transitions, dtype=int)*channel_id)
 
     # save transitions as Event labels:'UP', array_annotations: channels
     sort_idx = np.argsort(up_transitions)
@@ -64,6 +65,7 @@ def detect_transitions(asig, transition_phase):
                      hilbert_transition_phase=transition_phase,
                      description='Transitions from down to up states. '\
                                 +'annotated with the channel id ("channels").')
+
     for key in asig.array_annotations.keys():
         evt_ann = {key : asig.array_annotations[key][channels[sort_idx]]}
         evt.array_annotations.update(evt_ann)
@@ -73,26 +75,26 @@ def detect_transitions(asig, transition_phase):
     return evt
 
 
-    def plot_hilbert_phase(asig, event, channel):
-        signal = asig.as_array()[:channel]
+def plot_hilbert_phase(asig, event, channel):
+    signal = asig.as_array()[:,channel]
 
-        hilbert_signal = hilbert(signal, axis=0)
-        hilbert_phase = np.angle(hilbert_signal)
+    hilbert_signal = hilbert(signal, axis=0)
+    hilbert_phase = np.angle(hilbert_signal)
 
-        sns.set(style='ticks', palette="deep", context="notebook")
-        fig, ax = plt.subplots()
+    sns.set(style='ticks', palette="deep", context="notebook")
+    fig, ax = plt.subplots()
 
-        ax.plot(asig.times, zscore(singal), label='signal')
-        ax.plot(asig.times, hilbert_phase, label='hilbert phase')
+    ax.plot(asig.times.rescale('s'), zscore(signal), label='signal')
+    ax.plot(asig.times.rescale('s'), hilbert_phase, label='hilbert phase')
 
-        for t, c in zip(event.times, event.array_annotations['channels']):
-            if c == channel:
-                ax.axvline(t, color='k')
+    for t, c in zip(event.times, event.array_annotations['channels']):
+        if c == channel:
+            ax.axvline(t.rescale('s'), color='k')
 
-        ax.set_title('Channel {}'.format(channel))
-        ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
-        plt.legend()
-        return ax
+    ax.set_title('Channel {}'.format(channel))
+    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
+    ax.legend()
+    return ax
 
 
 if __name__ == '__main__':
@@ -104,13 +106,13 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
                      default='None', help="path(s) of output figure(s)")
-    CLI.add_argument("--transition_phase", nargs='?', type=float,
-                     default=-1.570796, help="phase to use as threshold for the upward transition")
-    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=None,
+    CLI.add_argument("--transition_phase", nargs='?', type=float, default=-1.570796,
+                     help="phase to use as threshold for the upward transition")
+    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
-    CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+    CLI.add_argument("--plot_tstart", nargs='?', type=float, default=0,
                      help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+    CLI.add_argument("--plot_tstop",  nargs='?', type=float, default=10,
                      help="stop time in seconds")
     args = CLI.parse_args()
 
@@ -124,12 +126,13 @@ if __name__ == '__main__':
 
     write_neo(args.output, block)
 
-    if args.channels[0] is not None:
-        if not len(args.output_img) == len(args.channels):
+    if args.plot_channels[0] is not None:
+        if not len(args.output_img) == len(args.plot_channels):
             raise InputError("The number of plotting channels must "\
                            + "correspond to the number of image output paths!")
-        for output, channel in zip(args.output_img, args.channels):
-            plot_hilbert_phase(asig=time_slice(asig, args.t_start, args.t_stop),
-                               event=time_slice(transition_event, args.t_start, args.t_stop),
+
+        for output, channel in zip(args.output_img, args.plot_channels):
+            plot_hilbert_phase(asig=time_slice(asig, args.plot_tstart, args.plot_tstop),
+                               event=time_slice(transition_event, args.plot_tstart, args.plot_tstop),
                                channel=int(channel))
             save_plot(output)

@@ -4,7 +4,7 @@
 STAGE_NAME: 'stage03_trigger_detection'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'IDIBAPS'
+PROFILE: 'LENS'
 
 # Name of the stage output file
 STAGE_OUTPUT: 'trigger_times.nix'
@@ -20,13 +20,13 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
-DETECTION_BLOCK: 'threshold'
+DETECTION_BLOCK: 'hilbert_phase'
 
 # BLOCK - Threshold
 ###################

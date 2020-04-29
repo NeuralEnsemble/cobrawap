@@ -186,7 +186,7 @@ rule frequency_filter:
         order = FILTER_ORDER,
         filter_function = FILTER_FUNCTION,
     output:
-        data = os.path.join(OUTPUT_DIR, 'frequency_filter',
+        data = os.path.join('{dir}', 'frequency_filter',
                             '{rule_name}.'+NEO_FORMAT)
     shell:
         """

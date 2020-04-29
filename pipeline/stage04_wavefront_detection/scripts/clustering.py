@@ -29,6 +29,9 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
 
     # remove unclassified trigger points (label == -1)
     cluster_idx = np.where(clustering.labels_ != -1)[0]
+    if not len(cluster_idx):
+        raise ValueError("Clusters couldn't be classified, please adapt the parameters!")
+        
     wave_idx = up_idx[cluster_idx]
 
     evt = neo.Event(times=event.times[wave_idx],

@@ -1,11 +1,17 @@
-### Configuration
+# Slow Wave Analysis Pipeline
+The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
+The individual processing and analysis steps, __Blocks__, are organized in sequential __Stages__. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
+
+## Configuration
 All config files are given as templates. So, in order to get started you need to copy (and edit to your needs)
 _config_template.yaml_ to _config.yaml_ in the _pipeline/_ folder.
 Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the containing `output_path` set fit your local system.
 
 To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
 
-### Execution
+[see pipeline config](config_template.yaml)
+
+## Execution
 __Full Pipeline__:
 Navigate to the _pipeline/_ folder. The _config.yaml_ file defines the global parameters.
 Most importantly here, the `STAGES` parameter defines which stages are executed and the `PROFILE` parameter.
@@ -37,7 +43,7 @@ However, keep in mind that snakemake keeps track of the timestamps of scripts, i
 
 _See the [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional more snakemake command line arguments_
 
-### Interfaces
+## Interfaces
 __Stage inputs__:
 The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs of the previous stage, respectively.
 Details on the input requirements for each stage are specified in the corresponding Readme.
@@ -50,9 +56,9 @@ __Block input__:
 Input dependencies to blocks are handled by the corresponding rule in the *Snakefile* and are arranged according on the mechanics of the respective stage.
 
 __Block outputs__:
-All output from blocks (data and figures) is stored hierarchically in _output_path/PROFILE/STAGE_NAME/<block name>/_.
+All output from blocks (data and figures) is stored hierarchically in _output_path/PROFILE/STAGE_NAME/\<block name\>/_.
 
-### Reports
+## Reports
 Reports are summaries (html page) about the execution of a Snakefile containing the rule execution order, run-time statistics, parameter configurations, and all plotting outputs tagged with `report()` in the Snakefile.
 
 When the whole pipeline is executed, the reports for each stage are automatically created in _output_path/PROFILE/STAGE_NAME/report.html_.
@@ -60,8 +66,3 @@ To create a report for an individual stage, you can use the `report` flag.
 `snakemake --configfile='configs/config_XY.yaml' --report /path/to/report.html`
 
 Note that when using the option of setting `PLOT_CHANNELS` to `None` to plot a random channel, the report function might request a different plot than was previously created and will thus fail.
-
-### Global Parameters
-[see config](config_template.yaml)
-
-`STAGES, PROFILE, PLOT_TSTART, PLOT_TSTOP, PLOT_CHANNEL, PLOT_FORMAT, USE_LINK_AS_STAGE_OUTPUT, NEO_FORMAT`

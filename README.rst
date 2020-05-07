@@ -53,10 +53,10 @@ The Electrophysiology Analysis Toolkit, Elephant_, is an open-source Python libr
 
 HBP Deliverables
 ----------------
-_Releases planned by 2020-03-31 (HBP-SGA2-M24)_
+*Releases planned by 2020-03-31 (HBP-SGA2-M24)*
 
-* _Component C2051_ (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analysis Pipeline Component capable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analysis. See RelatedRepositories.rst
-* _Component C2053_ (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modular slow wave analysis pipeline that can be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recordings (ECoG) in mouse.
+* *Component C2051* (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analysis Pipeline Component capable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analysis. See RelatedRepositories.rst
+* *Component C2053* (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modular slow wave analysis pipeline that can be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recordings (ECoG) in mouse.
 
 Showcase notebooks
 ==================
@@ -83,19 +83,19 @@ Repositories
 
 Involved members
 ================
-- __Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:__ Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca.
+- **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca.
 
-- __Forschungszentrum Jülich, Germany:__ Michael Denker, Robin Gutzen, Alper Yegenoglu.
+- **Forschungszentrum Jülich, Germany:** Michael Denker, Robin Gutzen, Alper Yegenoglu.
 
-- __Istituto Superiore di Sanità (ISS), Roma, Italy:__ Maurizio Mattia, Antonio Pazienti.
+- **Istituto Superiore di Sanità (ISS), Roma, Italy:** Maurizio Mattia, Antonio Pazienti.
 
-- __Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain:__ Miguel Dasilva, Maria V. Sanchez-Vives.
+- **Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain:** Miguel Dasilva, Maria V. Sanchez-Vives.
 
-- __European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy:__ Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
+- **European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy:** Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
 
-- __University of Milano (UniMi), Italy:__ Andrea Pigorini, Thierry Nieus, Marcello Massimini
+- **University of Milano (UniMi), Italy:** Andrea Pigorini, Thierry Nieus, Marcello Massimini
 
-- __Unité de Neurosciences, Neuroinformatics Group, CNRS, France:__ Andrew Davison
+- **Unité de Neurosciences, Neuroinformatics Group, CNRS, France:** Andrew Davison
 
 Citation
 ========

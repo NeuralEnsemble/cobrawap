@@ -9,11 +9,11 @@ The repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and
 
 Concept
 =======
-For researchers to be able to effectively reproduce results and build on each others progress, it is important not only make results openly accessible and to facilitate data sharing but also to build the analysis workflows, to get the former from the latter, in a shareable and reusable manner.
+For researchers to be able to effectively reproduce results and build on each other's progress, it is important to not only make results openly accessible and to facilitate data sharing but also to build the analysis workflows, to get the former from the latter, in a shareable and reusable manner.
 
-Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows in a manner that they general and flexible enough so that they can actually be reused in further research. Within the rich diversity of analyses there is no one-size-fit-all for this. However, there are a lot of existing work that can help with the challenges of developing a general, adaptable, reusable analysis pipeline.
+Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows in a manner that they are general and flexible enough so that they can actually be reused in further research. Within the rich diversity of analyses there is no one-size-fit-all solution for this. However, there is a lot of existing work that can help with the challenges of developing a general, adaptable, reusable analysis pipeline.
 
-Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting slow-wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate the fair comparison between datasets, model validation, and method benchmarking.
+Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting slow-wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
 
 The current prototype includes
 ------------------------------
@@ -48,8 +48,8 @@ The goal of Neo_ is to improve interoperability between Python tools for analyzi
 
 The Electrophysiology Analysis Toolkit, Elephant_, is an open-source Python library for analysis methods. It focuses on providing fast and reliable implementations for generic analysis functions for spike train data and time series recordings from electrodes. As community centered project Elephant aims to serve as a common platform for analysis codes from different laboratories, and a consistent and homogeneous analysis framework.
 
-.. _Neo: https://neo.readthedocs.io/en/stable/
-.. _Elephant: https://elephant.readthedocs.io/en/latest/
+.. _Neo: https://github.com/NeuralEnsemble/python-neo
+.. _Elephant: https://github.com/NeuralEnsemble/elephant
 
 HBP Deliverables
 ----------------

@@ -1,12 +1,12 @@
 # Stage 05 Wave Characterization
+import os
 
-configfile: "configs/config_template.yaml"
+configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
-import os
 import sys
-utils_path = '../scripts/'
-sys.path.append('../')
+utils_path = os.path.join('..', 'scripts')
+sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -43,8 +43,8 @@ def measures_output(wildcards):
 rule all:
     input:
         data = measures_output,
-        script = 'scripts/merge_dataframes.py',
-        configfile = f'configs/config_{PROFILE}.yaml'
+        script = os.path.join('scripts', 'merge_dataframes.py'),
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data]
@@ -64,7 +64,7 @@ rule all:
 rule velocity_planar:
     input:
         data = input,
-        script = 'scripts/velocity_planar.py'
+        script = os.path.join('scripts', 'velocity_planar.py')
     output:
         data = os.path.join('{dir}', 'velocity_planar', 'velocity_planar.csv'),
         img = report(os.path.join('{dir}', 'velocity_planar',
@@ -80,7 +80,7 @@ rule velocity_planar:
 rule velocity_gradient:
     input:
         data = input,
-        script = 'scripts/velocity_gradient.py'
+        script = os.path.join('scripts', 'velocity_gradient.py')
     output:
         data = os.path.join('{dir}', 'velocity_gradient',
                                          'velocity_gradient.csv'),
@@ -98,7 +98,7 @@ rule velocity_gradient:
 rule direction:
     input:
         data = input,
-        script = 'scripts/direction.py'
+        script = os.path.join('scripts', 'direction.py')
     output:
         data = os.path.join('{dir}', 'direction', 'direction.csv'),
         img = report(os.path.join('{dir}', 'direction',

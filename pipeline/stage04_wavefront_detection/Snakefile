@@ -1,12 +1,12 @@
 # Stage 04 Wavefront Detection
+import os
 
-configfile: "configs/config_template.yaml"
+configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
-import os
 import sys
-utils_path = '../scripts/'
-sys.path.append('../')
+utils_path = os.path.join('..', 'scripts')
+sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -53,8 +53,8 @@ def clustering_input(wildcards):
 rule all:
     input:
         data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
-        plot_script = 'scripts/plot_clustering.py',
-        configfile = f'configs/config_{PROFILE}.yaml'
+        plot_script = os.path.join('scripts', 'plot_clustering.py'),
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -74,8 +74,8 @@ rule all:
 rule clustering:
     input:
         data = clustering_input,
-        script = 'scripts/clustering.py',
-        plot_script = 'scripts/plot_clustering.py'
+        script = os.path.join('scripts', 'clustering.py'),
+        plot_script = os.path.join('scripts', 'plot_clustering.py')
     params:
         metric = METRIC,
         time_dim = TIME_DIM,
@@ -100,7 +100,7 @@ rule clustering:
 rule optical_flow:
     input:
         data = clustering_input,
-        script = 'scripts/horn_schunck.py'
+        script = os.path.join('scripts', 'horn_schunck.py')
     params:
         alpha = ALPHA,
         max_Niter = MAX_NITER,
@@ -126,7 +126,7 @@ rule optical_flow:
 rule critical_points:
     input:
         data = rules.optical_flow.output.data,
-        script = 'scripts/critical_points.py'
+        script = os.path.join('scripts', 'critical_points.py')
     params:
         p = 1
     output:

@@ -4,7 +4,7 @@ report: "report.rst"
 import os
 import sys
 import numpy as np
-sys.path.append('../')
+sys.path.append(os.getcwd())
 from settings import output_path
 from scripts.snakefile_utils import create_temp_configs, set_global_configs,\
                                     set_stage_inputs, read_stage_output
@@ -14,7 +14,7 @@ working_dir = ''
 temp_config = 'temp_config.yaml'
 
 # Setting the profile
-config_profile = f'configs/config_{config["PROFILE"]}.yaml'
+config_profile = os.path.join('configs', f'config_{config["PROFILE"]}.yaml')
 output_path = os.path.join(output_path, config["PROFILE"])
 
 STAGES = config["STAGES"]
@@ -99,9 +99,11 @@ rule all:
         reports = expand(os.path.join(output_path, '{subworkflow_name}',
                                       'report.html'),
                          subworkflow_name=STAGES)
+    params:
+        temp_config_path = os.path.join('*', temp_config)
     shell:
         """
-        rm */{temp_config}
+        rm {params.temp_config_path}
         """
 
 rule execute_stage:
@@ -132,9 +134,11 @@ rule create_report:
 rule clear_report:
     output:
         temp(os.path.join('{path}', 'report.clear'))
+    params:
+        report_path = os.path.join('{path}', 'report.html')
     shell:
         """
-        rm -f "{wildcards.path}/report.html"
+        rm -f "{params.report_path}"
         touch "{output}"
         """
 
@@ -149,13 +153,13 @@ BITRATE = config["BITRATE"]
 COLORMAP = config["COLORMAP"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 NEO_FORMAT = config["NEO_FORMAT"]
-utils_path = './scripts/'
+utils_path = os.path.join(os.getcwd(), 'scripts')
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 
 rule time_slice:
     input:
         data = '{file_path}.{neo_format}',
-        script = 'scripts/time_slice.py'
+        script = os.path.join('scripts', 'time_slice.py')
     output:
         data = '{file_path}_{t_start, [0-9]+}-{t_stop, [0-9]+}s.{neo_format}'
     shell:
@@ -170,7 +174,7 @@ rule time_slice:
 rule plot_movie_frames:
     input:
         data = os.path.join('{path}', '{file}.'+NEO_FORMAT),
-        script = "scripts/plot_movie_frames.py",
+        script = os.path.join('scripts', 'plot_movie_frames.py')
     params:
         frame_name = 'frame',
         frame_format = PLOT_FORMAT,

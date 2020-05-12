@@ -5,8 +5,8 @@ report: "report.rst"
 
 import os
 import sys
-utils_path = '../scripts/'
-sys.path.append('../')
+utils_path = os.path.join('..', 'scripts')
+sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -50,7 +50,7 @@ rule all:
                data_name = DATA_SETS.keys()),
         check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
                data_name = DATA_SETS.keys()),
-        configfile = f'configs/config_{PROFILE}.yaml'
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -74,8 +74,8 @@ rule check_input:
 rule enter_data:
     input:
         data = input_file,
-        script = os.path.join('scripts/', CURATION_SCRIPT),
-        plot_script = 'scripts/plot_traces.py'
+        script = os.path.join('scripts', CURATION_SCRIPT),
+        plot_script = os.path.join('scripts', 'plot_traces.py')
     output:
         data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', 'trace_{data_name}.'+PLOT_FORMAT))

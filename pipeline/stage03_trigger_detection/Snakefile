@@ -1,12 +1,12 @@
 # Stage 03 Trigger Detection
+import os
 
-configfile: "configs/config_template.yaml"
+configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
-import os
 import sys
-utils_path = '../scripts/'
-sys.path.append('../')
+utils_path = os.path.join('..', 'scripts')
+sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
 
 from settings import output_path
@@ -47,7 +47,7 @@ rule all:
                             'transitions.'+NEO_FORMAT),
         img = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                      f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT),
-        configfile = f'configs/config_{PROFILE}.yaml'
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -62,7 +62,7 @@ rule plot_trigger_times:
     input:
         data = os.path.join('{dir}', DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
-        plot_script = 'scripts/plot_trigger_times.py'
+        plot_script = os.path.join('scripts', 'plot_trigger_times.py')
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
@@ -88,7 +88,7 @@ rule threshold:
         data = STAGE_INPUT,
         thresholds = os.path.join('{dir}', 'threshold',
                                   f'{THRESHOLD_METHOD}_thresholds.npy'),
-        script = 'scripts/threshold.py'
+        script = os.path.join('scripts', 'threshold.py')
     output:
         data = os.path.join('{dir}', 'threshold', 'transitions.'+NEO_FORMAT)
     shell:
@@ -103,7 +103,7 @@ rule threshold:
 rule calc_tresholds_fixed:
     input:
         data = STAGE_INPUT,
-        script = 'scripts/calc_thresholds_fixed.py'
+        script = os.path.join('scripts', 'calc_thresholds_fixed.py')
     params:
         threshold = FIXED_THRESHOLD
     output:
@@ -119,7 +119,7 @@ rule calc_tresholds_fixed:
 rule calc_tresholds_fitted:
     input:
         data = STAGE_INPUT,
-        script = 'scripts/calc_thresholds_fitted.py'
+        script = os.path.join('scripts', 'calc_thresholds_fitted.py')
     params:
         sigma_factor = SIGMA_FACTOR,
         fit_function = FIT_FUNCTION,
@@ -147,7 +147,7 @@ rule calc_tresholds_fitted:
 rule hilbert_phase:
     input:
         data = STAGE_INPUT,
-        script = 'scripts/hilbert_phase.py'
+        script = os.path.join('scripts', 'hilbert_phase.py')
     params:
         transition_phase = TRANSITION_PHASE,
         plot_channels = PLOT_CHANNELS,
@@ -175,7 +175,7 @@ rule hilbert_phase:
 rule minima:
     input:
         data = STAGE_INPUT,
-        script = 'scripts/minima.py'
+        script = os.path.join('scripts', 'minima.py')
     params:
         order = MINIMA_ORDER
     output:

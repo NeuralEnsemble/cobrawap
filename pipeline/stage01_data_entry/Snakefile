@@ -47,9 +47,9 @@ def input_file(wildcards):
 rule all:
     input:
         data = expand(os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT),
-               data_name = DATA_SETS.keys()),
+                      data_name = DATA_SETS.keys()),
         check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
-               data_name = DATA_SETS.keys()),
+                       data_name = DATA_SETS.keys()),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -61,13 +61,15 @@ rule all:
         """
 
 rule check_input:
-    # ToDo!
     input:
-        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT)
+        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT),
+        script = os.path.join('scripts', 'check_input.py')
     output:
         temp(os.path.join('{dir}', '{data_name}.check'))
     shell:
         """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
         touch "{output}"
         """
 

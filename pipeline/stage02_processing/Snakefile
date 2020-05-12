@@ -65,10 +65,11 @@ def input_file(wildcards):
     elif len(BLOCK_ORDER):
         return os.path.join(OUTPUT_DIR, BLOCK_ORDER[-1],
                             BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
-    return os.path.join(OUTPUT_DIR, STAGE_INPUT)
+    return os.path.join(STAGE_INPUT)
 
 rule all:
     input:
+        check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = input_file,
         img = [os.path.join(OUTPUT_DIR,
                f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}.{PLOT_FORMAT}')
@@ -82,6 +83,21 @@ rule all:
         """
         {params.command} "{input.data}" "{output.data}"
         """
+
+
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
+        """
+
 
 rule plot_processed_traces:
     input:

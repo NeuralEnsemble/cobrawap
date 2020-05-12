@@ -1,4 +1,4 @@
-# Stage 03 - Wave Characterization
+# Stage 05 - Wave Characterization
 This stage evaluates the detected waves by deriving characteristic measures from their dynamics.
 
 [config template](config_template.yaml)
@@ -7,7 +7,9 @@ This stage evaluates the detected waves by deriving characteristic measures from
 Collection of waves in form of groups of trigger times.
 <!-- and/or ii) a vector field signal with identified critical points -->
 
-i) neo.Event object named _'Wavefronts'_
+<!-- i) -->
+neo.Event object named _'Wavefronts'_
+
     * labels: wavefront id
     * annotations: _'spatial_scale'_
     * array_annotations: _'x_coords'_, _'y_coords'_

@@ -42,6 +42,7 @@ def measures_output(wildcards):
 
 rule all:
     input:
+        check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = measures_output,
         script = os.path.join('scripts', 'merge_dataframes.py'),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
@@ -57,6 +58,20 @@ rule all:
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}"
+        """
+
+
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
         """
 
 # ToDo: combine rules with {metric} wildcard?

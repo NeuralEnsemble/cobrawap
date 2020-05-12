@@ -31,7 +31,7 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
     cluster_idx = np.where(clustering.labels_ != -1)[0]
     if not len(cluster_idx):
         raise ValueError("Clusters couldn't be classified, please adapt the parameters!")
-        
+
     wave_idx = up_idx[cluster_idx]
 
     evt = neo.Event(times=event.times[wave_idx],
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     block = load_neo(args.data)
 
     evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions']
-    if evts:
+    if len(evts):
         evts = evts[0]
     else:
         raise InputError("The input file does not contain any 'Transitions' events!")

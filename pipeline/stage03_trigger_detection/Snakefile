@@ -43,6 +43,7 @@ MINIMA_ORDER = config["MINIMA_ORDER"]
 
 rule all:
     input:
+        check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
                             'transitions.'+NEO_FORMAT),
         img = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
@@ -55,6 +56,20 @@ rule all:
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
+        """
+
+
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
         """
 
 
@@ -82,6 +97,7 @@ rule plot_trigger_times:
                                    --t_stop {params.tstop} \
                                    --channels {params.plot_channels} \
         """
+
 
 rule threshold:
     input:

@@ -52,6 +52,7 @@ def clustering_input(wildcards):
 
 rule all:
     input:
+        check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
         plot_script = os.path.join('scripts', 'plot_clustering.py'),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
@@ -66,6 +67,20 @@ rule all:
         {params.command} "{input.data}" "{output.data}"
         python {input.plot_script} --data "{output.data}" \
                                    --output "{output.img}" \
+        """
+
+
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
         """
 
 #### Blocks

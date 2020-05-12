@@ -8,6 +8,7 @@ import neo
 from utils import load_neo, write_neo, none_or_float, none_or_str, time_slice,\
                   parse_string2dict
 
+
 def merge_analogsingals(asigs):
     min_length = np.min([len(asig.times) for asig in asigs])
     max_length = np.max([len(asig.times) for asig in asigs])
@@ -27,13 +28,14 @@ def merge_analogsingals(asigs):
         asig_array[:, channel_number] = np.squeeze(asig.as_array()[:min_length])
 
     merged_asig = neo.AnalogSignal(asig_array*asigs[0].units,
-                                sampling_rate=asigs[0].sampling_rate,
-                                t_start=asigs[0].t_start)
+                                   sampling_rate=asigs[0].sampling_rate,
+                                   t_start=asigs[0].t_start)
     for key in asigs[0].annotations.keys():
         try:
-            merged_asig.array_annotations[key] = np.array([a.annotations[key] for a in asigs])
+            merged_asig.array_annotations[key] = np.array([a.annotations[key]
+                                                           for a in asigs])
         except:
-            print('can not merge annotation ', key)
+            print('Can not merge annotation ', key)
     return merged_asig
 
 
@@ -66,7 +68,7 @@ if __name__ == '__main__':
         block = load_neo(args.data, try_signal_grouping=True)
     except Exception as e:
         print(e)
-        block = load_neo(args.data, try_signal_grouping=True)
+        block = load_neo(args.data, try_signal_grouping=False)
 
     asigs = block.segments[0].analogsignals
 

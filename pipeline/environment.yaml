@@ -11,10 +11,10 @@ dependencies:
   - pygraphviz >= 1.5
   - snakemake >= 5.15.0
   - pip:
-    # - elephant >= 0.6.3
-    - git+git://github.com/NeuralEnsemble/elephant.git #(pip install from git repo branch)
-    # - neo >= 0.8.0
-    - git+https://github.com/NeuralEnsemble/python-neo.git #(pip install from git repo branch)
+    # - elephant >= 0.7.0
+    - git+https://github.com/NeuralEnsemble/elephant.git
+    # - neo >= 0.9.0
+    - git+https://github.com/NeuralEnsemble/python-neo.git
     - nixio >= 1.5.0b4
     - pillow >= 7.0.0
     - pandas >= 1.0.1

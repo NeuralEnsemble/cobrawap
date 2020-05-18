@@ -28,6 +28,11 @@ PLOT_FORMAT: 'png'
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
 DETECTION_BLOCK: 'threshold'
 
+# TRIGGER FILTER
+#################
+# Available Blocks: 'remove_short_states'
+TRIGGER_FILTER: ['remove_short_states']
+
 # BLOCK - Threshold
 ###################
 # Thresholding method: 'fixed', 'fitted', 'moment'
@@ -57,3 +62,15 @@ TRANSITION_PHASE: -1.570796
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
 MINIMA_ORDER: 3
+
+# BLOCK - Remove Short States
+#############################
+# minimum duration of UP and DOWN states (in s)
+# If there are no DOWN transitions, UP transitions are removed closer than
+# the sum of UP and DOWN durations.
+MIN_UP_DURATION: 0.005
+MIN_DOWN_DURATION: 0.2
+# If true, short down states are removed first, merging the neighbouring up states.
+# Only then the remaining short up states are removed.
+# Applies only when down transitions are detected.
+REMOVE_DOWN_FIRST: True

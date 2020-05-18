@@ -19,6 +19,7 @@ Input signals + the Up (and Down) trigger times in for each channel as an Event 
 
 ## Usage
 In this stage offers alternative trigger detection methods, from which one can be selected via the `DETECTION_BLOCK` parameter.
+There are additional filter blocks to post-process the detected triggers, they can be selected via the `TRIGGER_FILTER` parameter.
 
 ## Blocks
 |Name | Description | Parameters |
@@ -28,3 +29,4 @@ In this stage offers alternative trigger detection methods, from which one can b
 |__calc_threshold_fitted__|calculates values for threshold block|`FIT_FUNCTION`, `BIN_NUM`, `SIGMA_FACTOR`|
 |__minima__|detects UP transitions as local minima|`MINIMA_ORDER`|
 |__hilbert_phase__|detects UP transitions as phase transitions|`TRANSITION_PHASE`|
+|__remove_short_states__|removes short UP and/or DOWN states|`MIN_UP_DURATION`, `MIN_DOWN_DURATION`, `REMOVE_DOWN_FIRST`|

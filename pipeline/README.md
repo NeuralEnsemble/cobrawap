@@ -29,6 +29,13 @@ conda env create --file environment.yaml
 conda activate wavescalephant_env
 ```
 
+Make sure that neo and elephant were installed as their Github development version, and if necessary add them manually to the environment.
+
+```
+pip install git+https://github.com/NeuralEnsemble/elephant.git
+pip install git+https://github.com/NeuralEnsemble/python-neo.git
+```
+
 #### Full Pipeline
 Navigate to the _pipeline/_ folder. The _config.yaml_ file defines the global parameters.
 Most importantly here, the `STAGES` parameter defines which stages are executed and the `PROFILE` parameter.

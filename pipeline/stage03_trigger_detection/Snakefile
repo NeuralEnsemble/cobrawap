@@ -32,6 +32,8 @@ PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 DETECTION_BLOCK = config["DETECTION_BLOCK"]
+TRIGGER_FILTER = config["TRIGGER_FILTER"]
+
 THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
 FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
 FIT_FUNCTION = config["FIT_FUNCTION"]
@@ -39,23 +41,78 @@ BIN_NUM = config["BIN_NUM"]
 SIGMA_FACTOR = config["SIGMA_FACTOR"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
+MIN_UP_DURATION = config["MIN_UP_DURATION"]
+MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
+REMOVE_DOWN_FIRST = config["REMOVE_DOWN_FIRST"]
 
+#### Housekeeping ####
+def locate(str_list, string):
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError("Can't find rule '{}'! Please check the spelling \
+                          and the config file.".format(string))
+
+def filtered_triggers(wildcards):
+    rule_list = TRIGGER_FILTER
+    default_input = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
+                                 'transitions.'+NEO_FORMAT),
+    if hasattr(wildcards, 'rule_name'):
+        idx = locate(rule_list, wildcards.rule_name)
+        if idx:
+            return os.path.join(OUTPUT_DIR, rule_list[idx-1],
+                                rule_list[idx-1]+'.'+NEO_FORMAT)
+    elif len(rule_list):
+        return os.path.join(OUTPUT_DIR, rule_list[-1],
+                            rule_list[-1]+'.'+NEO_FORMAT)
+    return default_input
+
+wildcard_constraints:
+    file_name = '\w+',
+    rule_name = '\w+'
 
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        data = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
-                            'transitions.'+NEO_FORMAT),
-        img = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
-                     f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT),
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
+        img = os.path.join(OUTPUT_DIR, os.path.splitext(STAGE_OUTPUT)[0] \
+                                       + f'_channel{PLOT_CHANNELS[0]}.'\
+                                       + PLOT_FORMAT),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+
+rule get_stage_output:
+    input:
+        data = filtered_triggers
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
+        """
+
+#### Blocks ####
+
+rule remove_short_states:
+    input:
+        data = filtered_triggers,
+        script = os.path.join('scripts', 'remove_short_states.py')
+    params:
+        min_up_duration = MIN_UP_DURATION,
+        min_down_duration = MIN_DOWN_DURATION,
+        remove_down_first = REMOVE_DOWN_FIRST
+    output:
+        data = os.path.join('{dir}', '{rule_name}',
+                            'remove_short_states.'+NEO_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --min_up_duration {params.min_up_duration} \
+                              --min_down_duration {params.min_down_duration} \
+                              --remove_down_first {params.remove_down_first} \
         """
 
 
@@ -72,22 +129,20 @@ rule check_input:
         touch "{output}"
         """
 
-
 rule plot_trigger_times:
     input:
-        data = os.path.join('{dir}', DETECTION_BLOCK,
-                            'transitions.'+NEO_FORMAT),
+        data = os.path.join('{dir}', '{file_name}.'+NEO_FORMAT),
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
         plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join('{dir}', DETECTION_BLOCK,
-                        f'transitions_channel{channel}.'+PLOT_FORMAT)
+        img = ','.join([os.path.join('{dir}',
+                        '{file_name}'+f'_channel{channel}.'+PLOT_FORMAT)
                         for channel in PLOT_CHANNELS]),
     output:
-        img = report(os.path.join('{dir}', DETECTION_BLOCK,
-                     f'transitions_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT))
+        img = report(os.path.join('{dir}',
+                     '{file_name}'+f'_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}

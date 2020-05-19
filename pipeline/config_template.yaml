@@ -21,6 +21,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
+# Note that when using the None option, the automatic creation of reports will fail
 PLOT_FORMAT: 'png'
 
 # VIDEO SETTINGS

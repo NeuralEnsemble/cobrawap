@@ -23,19 +23,11 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
-# Tigger Filter
-###############
-TRIGGER_FILTER: [] # ToDo
-
-# Wavefront Filter
-##################
-WAVEFRONT_FILTER: [] # ToDo
-
 # Wavefront Clustering
 ######################
 # Using sklearn.cluster.DBSCAN
 METRIC: 'euclidean'
-# eps, maximum distance between points to be neigbours
+# eps, maximum distance between points to be neighbours
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
 # Transformation factor from time dimension to space dimension (in the units the data is presented).
@@ -56,3 +48,14 @@ GAUSSIAN_SIGMA: [0,3,3]
 # Kernel filter to use to calucualte the spatial derivatives.
 # "Simple", "Prewitt", "Sobel", or "Roberts"
 DERIVATIVE_FILTER: 'Simple'
+
+# Critical Point Detection
+##########################
+
+
+# Critical Point Clustering
+###########################
+
+# Label Planar
+##############
+ALIGNMENT_THRESHOLD: 0.85

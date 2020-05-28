@@ -302,6 +302,9 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
 
 
 def write_neo(filename, block, *args, **kwargs):
+    # muting saving imagesequences for now, since they do not yet
+    # support array_annotations
+    block.segments[0].imagesequences = []
     try:
         io = neo.io.get_io(filename, *args, **kwargs)
         io.write(block)

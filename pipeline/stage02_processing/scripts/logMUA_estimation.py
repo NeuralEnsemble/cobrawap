@@ -18,7 +18,7 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
         fft_slice = (1/highpass_freq).rescale('s')
     elif fft_slice < 1/highpass_freq:
         raise ValueError("Too few fft samples to estimate the frequency "\
-                       + "content in the range [{} {}]Hz."\
+                       + "content in the range [{} {}]."\
                          . format(highpass_freq, lowpass_freq))
     # logMUA_rate can only be an int fraction of the orginal sampling_rate
     if logMUA_rate is None:
@@ -28,7 +28,7 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                        + "the inital sampling rate!")
     subsample_order = int(fs/logMUA_rate)
     eff_logMUA_rate = fs/subsample_order
-    print("effective logMUA rate = {} Hz".format(eff_logMUA_rate))
+    print("effective logMUA rate = {}".format(eff_logMUA_rate))
 
     if 1/eff_logMUA_rate > fft_slice:
         raise ValueError("The given logMUA_rate is too low to capture "\
@@ -65,7 +65,7 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
         high_idx = (np.abs(freqs - lowpass_freq)).argmin()
         if not i:
             print("logMUA signal estimated in frequency range "\
-                + "{:.2f} - {:.2f} Hz.".format(freqs[1], freqs[high_idx]))
+                + "{:.2f} - {:.2f}.".format(freqs[1], freqs[high_idx]))
 
         avg_power = np.mean(psd, axis=-1)
         avg_power_in_freq_band = np.mean(psd[:,1:high_idx], axis=-1)

@@ -31,8 +31,6 @@ PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
-TRIGGER_FILTER = config["TRIGGER_FILTER"]
-WAVEFRONT_FILTER = config["WAVEFRONT_FILTER"]
 METRIC = config["METRIC"]
 TIME_DIM = config["TIME_DIM"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
@@ -44,29 +42,21 @@ CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
 GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
 
-def clustering_input(wildcards):
-    if len(TRIGGER_FILTER):
-        return os.path.join(OUTPUT_DIR, TRIGGER_FILTER[-1], 'trigger_times.nix')
-    else:
-        return STAGE_INPUT
+#### Housekeeping ####
 
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
-        plot_script = os.path.join('scripts', 'plot_clustering.py'),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
-        img = report(os.path.join(OUTPUT_DIR, f'cluster.{PLOT_FORMAT}'))
+        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
     shell:
         """
         {ADD_UTILS}
         {params.command} "{input.data}" "{output.data}"
-        python {input.plot_script} --data "{output.data}" \
-                                   --output "{output.img}" \
         """
 
 
@@ -83,12 +73,11 @@ rule check_input:
         touch "{output}"
         """
 
-#### Blocks
-# ToDo: rule remove_short_states
+#### Blocks ####
 
 rule clustering:
     input:
-        data = clustering_input,
+        data = STAGE_INPUT,
         script = os.path.join('scripts', 'clustering.py'),
         plot_script = os.path.join('scripts', 'plot_clustering.py')
     params:
@@ -112,9 +101,10 @@ rule clustering:
                                    --output "{output.img}"
         """
 
+
 rule optical_flow:
     input:
-        data = clustering_input,
+        data = STAGE_INPUT,
         script = os.path.join('scripts', 'horn_schunck.py')
     params:
         alpha = ALPHA,
@@ -141,15 +131,49 @@ rule optical_flow:
 rule critical_points:
     input:
         data = rules.optical_flow.output.data,
-        script = os.path.join('scripts', 'critical_points.py')
+        script = os.path.join('scripts', 'critical_points.py'),
+        plot_script = os.path.join('scripts', 'plot_critical_points.py')
     params:
-        p = 1
+        plot_frame = 0,
+        skip_step = 3
     output:
         data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT),
         img = os.path.join('{dir}', 'critical_points', 'critical_points.'+PLOT_FORMAT)
     shell:
         """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
+                              --output "{output.data}"
+        python {input.plot_script} --data "{output.data}" \
+                                   --output "{output.img}" \
+                                   --frame_id {params.plot_frame} \
+                                   --skip_step {params.skip_step}
         """
+
+
+rule critical_points_clustering:
+    # ToDo
+    input:
+        data = rules.critical_points.data
+    output:
+        data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT)
+    shell:
+        """
+        {ADD_UTILS}
+        cp {input.data} {output.data}
+        """
+
+# 
+# rule merge_wave_definitions:
+#     input:
+#         trigger_data = rules.clustering.output.data,
+#         node_data = rules.critical_points_clustering.output.data,
+#         script = os.path.join('scripts', 'merge_wave_definitions.py')
+#     output:
+#         data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
+#     shell:
+#         """
+#         {ADD_UTILS}
+#         python {input.script} --data "{input.data}" \
+#                               --output "{output.data}"
+#         """

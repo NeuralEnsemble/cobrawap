@@ -5,7 +5,7 @@ This repository aims at developing reusable and modular pipelines for a multi-sc
 
 The repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
 
-`Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_ | `Link to pipeline README <https://github.com/INM-6/wavescalephant/tree/master/pipeline>`_
+`Link to introductive video <https://www.youtube.com/watch?v=uuAiY6HScM0>` | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_ | `Link to pipeline README <https://github.com/INM-6/wavescalephant/tree/master/pipeline>`_
 
 Concept
 =======

@@ -18,3 +18,7 @@ PLOT_FORMAT: 'png'
 # Measures to compute
 # 'velocity_planar', 'direction'
 MEASURES: ['velocity_planar', 'direction']
+
+# Label Planar
+##############
+ALIGNMENT_THRESHOLD: 0.85

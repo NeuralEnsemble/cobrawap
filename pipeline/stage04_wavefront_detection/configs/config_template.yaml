@@ -55,7 +55,3 @@ DERIVATIVE_FILTER: 'Simple'
 
 # Critical Point Clustering
 ###########################
-
-# Label Planar
-##############
-ALIGNMENT_THRESHOLD: 0.85

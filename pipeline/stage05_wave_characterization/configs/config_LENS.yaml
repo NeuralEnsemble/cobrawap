@@ -4,7 +4,7 @@
 STAGE_NAME: 'stage05_wave_characterization'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'IDIBAPS'
+PROFILE: 'LENS'
 
 # Name of the output file
 STAGE_OUTPUT: 'measures.csv'
@@ -18,3 +18,7 @@ PLOT_FORMAT: 'png'
 # Measures to compute
 # 'velocity_planar', 'direction'
 MEASURES: ['velocity_planar', 'direction']
+
+# Label Planar
+##############
+ALIGNMENT_THRESHOLD: 0.85

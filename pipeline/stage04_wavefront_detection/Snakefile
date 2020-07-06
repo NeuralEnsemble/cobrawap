@@ -47,7 +47,7 @@ DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        data = os.path.join(OUTPUT_DIR, 'clustering', STAGE_OUTPUT),
+        data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -73,7 +73,7 @@ rule check_input:
         touch "{output}"
         """
 
-#### Blocks ####
+#### Wave Definitions ####
 
 rule clustering:
     input:
@@ -130,7 +130,7 @@ rule optical_flow:
 
 rule critical_points:
     input:
-        data = rules.optical_flow.output.data,
+        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
         script = os.path.join('scripts', 'critical_points.py'),
         plot_script = os.path.join('scripts', 'plot_critical_points.py')
     params:
@@ -154,7 +154,7 @@ rule critical_points:
 rule critical_points_clustering:
     # ToDo
     input:
-        data = rules.critical_points.data
+        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT)
     output:
         data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT)
     shell:
@@ -163,17 +163,17 @@ rule critical_points_clustering:
         cp {input.data} {output.data}
         """
 
-# 
-# rule merge_wave_definitions:
-#     input:
-#         trigger_data = rules.clustering.output.data,
-#         node_data = rules.critical_points_clustering.output.data,
-#         script = os.path.join('scripts', 'merge_wave_definitions.py')
-#     output:
-#         data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
-#     shell:
-#         """
-#         {ADD_UTILS}
-#         python {input.script} --data "{input.data}" \
-#                               --output "{output.data}"
-#         """
+rule merge_wave_definitions:
+    input:
+        trigger_data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
+        node_data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT),
+        script = os.path.join('scripts', 'merge_wave_definitions.py')
+    output:
+        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --trigger_data "{input.trigger_data}" \
+                              --node_data "{input.node_data}" \
+                              --output "{output.data}"
+        """

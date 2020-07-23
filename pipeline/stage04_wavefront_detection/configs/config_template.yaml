@@ -30,8 +30,8 @@ METRIC: 'euclidean'
 # eps, maximum distance between points to be neighbours
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
-# Transformation factor from time dimension to space dimension (in the units the data is presented).
-TIME_DIM: 250
+# Factor from time dimension to space dimension in sampling_rate*spatial_scale
+TIME_SPACE_RATIO: 1
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############
@@ -51,7 +51,7 @@ DERIVATIVE_FILTER: 'Simple'
 
 # Critical Point Detection
 ##########################
-
+DETECT_CRITICAL_POINTS: False
 
 # Critical Point Clustering
 ###########################

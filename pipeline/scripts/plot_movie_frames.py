@@ -4,7 +4,8 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
-from utils import AnalogSignal2ImageSequence, none_or_float, load_neo, save_plot
+from utils import AnalogSignal2ImageSequence, load_neo, save_plot
+from utils import none_or_str, none_or_float
 
 def get_events(events, frame_times, event_name='Transitions'):
     trans_events = [ev for ev in events if ev.name == event_name]
@@ -13,8 +14,8 @@ def get_events(events, frame_times, event_name='Transitions'):
         ups = np.array([(t,
                          event.array_annotations['x_coords'][i],
                          event.array_annotations['y_coords'][i])
-                         for i, t in enumerate(event)
-                         if event.labels[i].decode('UTF-8') == 'UP'],
+                         for i, t in enumerate(event)],
+                         # if event.labels[i] == 'UP'],
                        dtype=[('time', 'float'),
                               ('x_coords', 'int'),
                               ('y_coords', 'int')])
@@ -70,7 +71,8 @@ def plot_transitions(up_coords, markersize=1, ax=None):
         if ax is None:
             ax = plt.gca()
         ax.plot(up_coords[:,1], up_coords[:,0],
-                marker='D', color='b', markersize=markersize, linestyle='None')
+                marker='D', color='k', markersize=markersize,
+                linestyle='None', alpha=0.6)
         # if len(pixels[0]) > 0.005*pixel_num:
         #     slope, intercept, _, _, stderr = scipy.stats.linregress(pixels[1], pixels[0])
         #     if stderr < 0.18:
@@ -90,12 +92,13 @@ def plot_vectorfield(frame, skip_step=3, ax=None):
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data",          nargs='?', type=str)
-    CLI.add_argument("--frame_folder",  nargs='?', type=str)
-    CLI.add_argument("--frame_name",    nargs='?', type=str)
-    CLI.add_argument("--frame_format",  nargs='?', type=str)
-    CLI.add_argument("--frame_rate",    nargs='?', type=none_or_float)
-    CLI.add_argument("--colormap",      nargs='?', type=str)
+    CLI.add_argument("--data",        nargs='?', type=str)
+    CLI.add_argument("--frame_folder",nargs='?', type=str)
+    CLI.add_argument("--frame_name",  nargs='?', type=str)
+    CLI.add_argument("--frame_format",nargs='?', type=str)
+    CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
+    CLI.add_argument("--colormap",    nargs='?', type=str)
+    CLI.add_argument("--event",       nargs='?', type=none_or_str, default=None)
 
     args = CLI.parse_args()
 
@@ -109,10 +112,13 @@ if __name__ == '__main__':
     t_stop = blk.segments[0].analogsignals[0].t_stop  # to be replaced
     dim_t, dim_x, dim_y = imgseq.shape
     indices = np.where(np.isfinite(imgseq[0]))
-    up_coords = get_events(blk.segments[0].events,
-                           frame_times=times,
-                           event_name='Transitions')
+
     optical_flow = get_opticalflow(blk.segments[0].imagesequences)
+
+    if args.event is not None:
+        up_coords = get_events(blk.segments[0].events,
+                               frame_times=times,
+                               event_name=args.event)
 
     # prepare plotting
     frame_idx = stretch_to_framerate(t_start=t_start,
@@ -128,20 +134,19 @@ if __name__ == '__main__':
     frames = imgseq.as_array()
     vmin = np.nanmin(frames)
     vmax = np.nanmax(frames)
-    markersize = 100 / max([dim_x, dim_y])
+    markersize = 50 / max([dim_x, dim_y])
+    skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
     # plot frames
     for i, frame_num in enumerate(frame_idx):
         ax = plot_frame(frames[frame_num], cmap=cmap, vmin=vmin, vmax=vmax)
 
-        # if up_coords is not None:
-        #     plot_transitions(up_coords[frame_num], markersize)
         if optical_flow is not None:
-            plot_vectorfield(optical_flow[frame_num], skip_step=3)
-
-        ax.set_ylabel('pixel size: {} '.format(imgseq.spatial_scale) \
-                    + imgseq.spatial_scale.units.dimensionality.string)
-        ax.set_xlabel('{:.3f} s'.format(times[frame_num].rescale('s')))
+            plot_vectorfield(optical_flow[frame_num], skip_step=skip_step)
+        if up_coords is not None:
+            plot_transitions(up_coords[frame_num], markersize)
+        ax.set_ylabel('pixel size: {} '.format(imgseq.spatial_scale))
+        ax.set_xlabel('{:.3f}'.format(times[frame_num].rescale('s')))
 
         save_plot(os.path.join(args.frame_folder,
                                args.frame_name + '_{}.{}'.format(str(i).zfill(5),

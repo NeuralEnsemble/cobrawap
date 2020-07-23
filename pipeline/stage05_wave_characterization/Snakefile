@@ -141,25 +141,12 @@ rule label_planar:
     params:
         alignment_threshold = ALIGNMENT_THRESHOLD
     output:
-        data = os.path.join('{dir}', 'classification', 'label_planar.csv')
+        data = os.path.join('{dir}', 'label_planar', 'label_planar.csv'),
+        img = report(os.path.join('{dir}', 'label_planar', 'wave_0.png'))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --alignment_threshold {params.alignment_threshold}
-        """
-
-rule merge_classifications:
-    input:
-        labels = ','.join([os.path.join('{dir}', 'classification', f'label_{wave_class}.csv')
-                           for wave_class in ['planar']]),  # ToDo: synchrnous, ....
-        script = os.path.join('scripts', 'merge_classifications.py')
-    output:
-        data = os.path.join('{dir}', 'classification', 'classification.csv')
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --labels "{input.labels}" \
-                              --output "{output.data}"
         """

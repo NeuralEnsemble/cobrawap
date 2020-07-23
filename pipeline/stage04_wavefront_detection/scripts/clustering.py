@@ -6,18 +6,15 @@ from sklearn.cluster import DBSCAN
 from utils import load_neo, write_neo, remove_annotations
 
 
-def cluster_triggers(event, metric, neighbour_distance, min_samples, time_dim):
+def cluster_triggers(event, metric, neighbour_distance, min_samples,
+                     time_space_ratio, sampling_rate):
     up_idx = np.where(event.labels == 'UP')[0]
-
     # build 3D array of trigger times
     triggers = np.zeros((len(up_idx), 3))
     triggers[:,0] = event.array_annotations['x_coords'][up_idx]
     triggers[:,1] = event.array_annotations['y_coords'][up_idx]
-    triggers[:,2] = event.times[up_idx] * args.time_dim
-    #
-    # for i, channel in enumerate(evts.array_annotations['channels'][up_idx]):
-    #     triggers[i][0] = asig.array_annotations['x_coords'][int(channel)]
-    #     triggers[i][1] = asig.array_annotations['y_coords'][int(channel)]
+    triggers[:,2] = event.times[up_idx].rescale('s') \
+                    * sampling_rate.rescale('Hz') * args.time_space_ratio
 
     clustering = DBSCAN(eps=args.neighbour_distance,
                         min_samples=args.min_samples,
@@ -62,7 +59,7 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--metric", nargs='?', type=str, default='euclidean',
                      help="parameter for sklearn.cluster.DBSCAN")
-    CLI.add_argument("--time_dim", nargs='?', type=float, default=250,
+    CLI.add_argument("--time_space_ratio", nargs='?', type=float, default=1,
                      help="factor to apply to time values")
     CLI.add_argument("--neighbour_distance", nargs='?', type=float, default=30,
                      help="eps parameter in sklearn.cluster.DBSCAN")
@@ -71,6 +68,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     block = load_neo(args.data)
+    asig = block.segments[0].analogsignals[0]
 
     evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions']
     if len(evts):
@@ -82,7 +80,8 @@ if __name__ == '__main__':
                                 metric=args.metric,
                                 neighbour_distance=args.neighbour_distance,
                                 min_samples=args.min_samples,
-                                time_dim=args.time_dim)
+                                time_space_ratio=args.time_space_ratio,
+                                sampling_rate=asig.sampling_rate)
 
     block.segments[0].events.append(wave_evt)
 

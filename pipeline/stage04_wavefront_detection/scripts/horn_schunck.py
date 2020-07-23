@@ -195,6 +195,7 @@ if __name__ == '__main__':
 
     block = AnalogSignal2ImageSequence(block)
     imgseq = block.segments[0].imagesequences[-1]
+    asig = block.segments[0].analogsignals[-1]
 
     frames = imgseq.as_array()
     # frames /= np.nanmax(np.abs(frames))
@@ -232,7 +233,7 @@ if __name__ == '__main__':
         ax = plot_opticalflow(frames[0], vector_frames[0], skip_step=3)
         ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} '\
                     + imgseq.spatial_scale.units.dimensionality.string)
-        ax.set_xlabel('{:.3f} s'.format(imgseq.times[0].rescale('s')))
+        ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s')))
         save_plot(args.output_img)
 
     block.segments[0].imagesequences = [vec_imgseq]

@@ -32,7 +32,7 @@ PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 METRIC = config["METRIC"]
-TIME_DIM = config["TIME_DIM"]
+TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
 MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
 
@@ -41,6 +41,7 @@ MAX_NITER = config["MAX_NITER"]
 CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
 GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
+DETECT_CRITICAL_POINTS = config["DETECT_CRITICAL_POINTS"]
 
 #### Housekeeping ####
 
@@ -82,7 +83,7 @@ rule clustering:
         plot_script = os.path.join('scripts', 'plot_clustering.py')
     params:
         metric = METRIC,
-        time_dim = TIME_DIM,
+        time_space_ratio = TIME_SPACE_RATIO,
         neighbour_distance = NEIGHBOUR_DISTANCE,
         min_samples = MIN_SAMPLES_PER_WAVE
     output:
@@ -94,7 +95,7 @@ rule clustering:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --metric {params.metric} \
-                              --time_dim {params.time_dim} \
+                              --time_space_ratio {params.time_space_ratio} \
                               --neighbour_distance {params.neighbour_distance} \
                               --min_samples {params.min_samples}
         python {input.plot_script} --data "{output.data}" \
@@ -163,10 +164,16 @@ rule critical_points_clustering:
         cp {input.data} {output.data}
         """
 
+def vector_field_data(wildcards):
+    if DETECT_CRITICAL_POINTS:
+        return os.path.join(wildcards.dir, 'critical_points_clustering', STAGE_OUTPUT)
+    else:
+        return os.path.join(wildcards.dir, 'optical_flow', STAGE_OUTPUT)
+
 rule merge_wave_definitions:
     input:
         trigger_data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
-        node_data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT),
+        node_data = vector_field_data,
         script = os.path.join('scripts', 'merge_wave_definitions.py')
     output:
         data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)

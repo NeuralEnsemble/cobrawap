@@ -44,8 +44,8 @@ NORMALIZE_BY: 'max'
 ##########################
 # parameters to be passed to the butterworth frequency filter
 # function by elephant
-HIGHPASS_FREQ: 0  # in Hz
-LOWPASS_FREQ: 5  # in Hz
+HIGHPASS_FREQ: 200  # in Hz
+LOWPASS_FREQ: 1500  # in Hz
 FILTER_ORDER: 2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’

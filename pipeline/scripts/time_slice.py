@@ -1,4 +1,5 @@
 import argparse
+import quantities as pq
 from utils import load_neo, write_neo, time_slice
 
 
@@ -17,13 +18,15 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    for i, asig in enumerate(blk.segments[0].analogsignals):
-        blk.segments[0].analogsignals[i] = time_slice(asig, t_start=t_start,
-                                                      t_stop=t_stop)
+    for i, asig in enumerate(block.segments[0].analogsignals):
+        block.segments[0].analogsignals[i] = time_slice(asig,
+                                                        t_start=args.t_start,
+                                                        t_stop=args.t_stop)
 
-    for i, evt in enumerate(blk.segments[0].events):
-        blk.segments[0].events[i] = time_slice(evt, t_start=t_start,
-                                               t_stop=t_stop)
+    for i, evt in enumerate(block.segments[0].events):
+        block.segments[0].events[i] = time_slice(evt,
+                                                 t_start=args.t_start,
+                                                 t_stop=args.t_stop)
 
 
     write_neo(args.output, block)

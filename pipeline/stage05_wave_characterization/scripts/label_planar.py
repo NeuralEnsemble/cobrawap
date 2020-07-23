@@ -117,5 +117,6 @@ if __name__ == '__main__':
                        wave_id=i,
                        ax=ax)
         plt.savefig(os.path.join(os.path.dirname(args.output), f'wave_{wave_id}.png'))
+        plt.close()
 
     planar_labels.to_csv(args.output)

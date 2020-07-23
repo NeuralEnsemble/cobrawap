@@ -7,28 +7,22 @@ from utils import load_neo, write_neo, none_or_str, save_plot, \
 
 
 def plot_frame(frame, ax=None, skip_step=3):
-    indices = np.where(np.isfinite(frame))
     dim_x, dim_y = frame.shape
 
-    # plot_frame = frame[indices]
-    # pad_plot_frame = np.pad(plot_frame, (0, skip_step - plot_frame.size%skip_step),
-    #                         mode='constant', constant_values=np.NaN)
-    # avg_plot_frame = np.nanmean(pad_plot_frame.reshape(-1, skip_step), axis=1)
 
     if ax is None:
         fig, ax = plt.subplots()
 
-    ax.quiver(np.arange(dim_y)[::skip_step],
-              np.arange(dim_x)[::skip_step],
-              np.real(frame[::skip_step,::skip_step]),
-              -np.imag(frame[::skip_step,::skip_step]))
+    ax.quiver(np.arange(dim_x)[::skip_step],
+              np.arange(dim_y)[::skip_step],
+              np.real(frame[::skip_step,::skip_step]).T,
+              -np.imag(frame[::skip_step,::skip_step]).T)
 
-    X, Y = np.meshgrid(np.arange(dim_x), np.arange(dim_y))
+    X, Y = np.meshgrid(np.arange(dim_x), np.arange(dim_y), indexing='ij')
     ZR = np.real(frame)
     ZI = np.imag(frame)
     contourR = ax.contour(X,Y, ZR, levels=[0], color='b', label='x = 0')
     contourI = ax.contour(X,Y, ZI, levels=[0], color='g', label='y = 0')
-    plt.legend()
     return ax
 
 

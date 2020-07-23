@@ -1,10 +1,4 @@
-import neo
-import numpy as np
-import quantities as pq
-import matplotlib.pyplot as plt
-import os
 import argparse
-import scipy
 import pandas as pd
 from copy import deepcopy
 

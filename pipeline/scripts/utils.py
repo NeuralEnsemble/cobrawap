@@ -118,7 +118,7 @@ def parse_plot_channels(channels, input_file):
     return channels
 
 
-def time_slice(neo_obj, t_start=None, t_stop=None, unit='s',
+def time_slice(neo_obj, t_start=None, t_stop=None,
                lazy=False, channel_indexes=None):
     """
     Robustly time-slices neo.AnalogSignal, neo.IrregularSampledSignal, neo.ImageSequence, or neo.Event,
@@ -128,17 +128,28 @@ def time_slice(neo_obj, t_start=None, t_stop=None, unit='s',
         raise TypeError(f"{neo_obj} has no function 'time_slice'!")
     if t_start is None and t_stop is None:
         return neo_obj
-    if hasattr(neo_obj, 't_start'):
-        t_start = neo_obj.t_start.rescale('s').magnitude if t_start is None\
-                  else max([t_start, neo_obj.t_start.rescale('s').magnitude])
-    if hasattr(neo_obj, 't_stop'):
-        t_stop = neo_obj.t_stop.rescale('s').magnitude if t_stop is None\
-                 else min([t_stop, neo_obj.t_stop.rescale('s').magnitude])
+
+    def robust_t(neo_obj, t_value=None, t_name='t_start', unit=pq.s):
+        if t_value is None:
+            if hasattr(neo_obj, t_name):
+                t_value = getattr(neo_obj, t_name).rescale('s').magnitude
+            else:
+                raise Warning("t_start is not defined by the input or the object!")
+        else:
+            if isinstance(t_value, pq.Quantity):
+                t_value = t_value.rescale('s').magnitude
+            if hasattr(neo_obj, t_name):
+                t_value = max([t_value, getattr(neo_obj, t_name).rescale('s').magnitude])
+        return t_value*unit
+
+    t_start = robust_t(neo_obj, t_start, t_name='t_start')
+    t_stop = robust_t(neo_obj, t_stop, t_name='t_stop')
+
     if lazy and hasattr(neo_obj, 'load'):
-        return neo_obj.load(time_slice=(t_start*pq.s, t_stop*pq.s),
+        return neo_obj.load(time_slice=(t_start, t_stop),
                             channel_indexes=channel_indexes)
     else:
-        return neo_obj.time_slice(t_start*pq.s, t_stop*pq.s)
+        return neo_obj.time_slice(t_start, t_stop)
 
 
 def none_or_X(value, type):

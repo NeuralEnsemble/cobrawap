@@ -20,7 +20,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [1,2,3,10,15,20,25,30]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # DETECTION BLOCK
@@ -66,8 +66,8 @@ MINIMA_ORDER: 3
 # BLOCK - Remove Short States
 #############################
 # minimum duration of UP and DOWN states (in s)
-# If there are no DOWN transitions, UP transitions are removed closer than
-# the sum of UP and DOWN durations.
+# If there are no DOWN transitions, UP transitions are removed that are closer
+# than the sum of UP and DOWN durations.
 MIN_UP_DURATION: 0.005
 MIN_DOWN_DURATION: 0.2
 # If true, short down states are removed first, merging the neighbouring up states.

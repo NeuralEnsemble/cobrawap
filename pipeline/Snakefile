@@ -151,6 +151,7 @@ SCALE_Y = config["SCALE_Y"]
 FPS = config["FPS"]
 BITRATE = config["BITRATE"]
 COLORMAP = config["COLORMAP"]
+PLOT_EVENT = config["PLOT_EVENT"]
 PLOT_FORMAT = config["PLOT_FORMAT"]
 NEO_FORMAT = config["NEO_FORMAT"]
 utils_path = os.path.join(os.getcwd(), 'scripts')
@@ -158,10 +159,10 @@ ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 
 rule time_slice:
     input:
-        data = '{file_path}.{neo_format}',
+        data = '{file_path}.' + NEO_FORMAT,
         script = os.path.join('scripts', 'time_slice.py')
     output:
-        data = '{file_path}_{t_start, [0-9]+}-{t_stop, [0-9]+}s.{neo_format}'
+        data = '{file_path}_{t_start, [0-9]+}-{t_stop, [0-9]+}s.' + NEO_FORMAT
     shell:
         """
         {ADD_UTILS}
@@ -179,7 +180,8 @@ rule plot_movie_frames:
         frame_name = 'frame',
         frame_format = PLOT_FORMAT,
         colormap = COLORMAP,
-        frame_rate = FRAME_RATE
+        frame_rate = FRAME_RATE,
+        event = PLOT_EVENT
     output:
         frame_folder = directory(os.path.join('{path}', '{file}_frames')),
     shell:
@@ -190,7 +192,8 @@ rule plot_movie_frames:
                               --frame_format {params.frame_format} \
                               --frame_name {params.frame_name} \
                               --frame_rate {params.frame_rate} \
-                              --colormap {params.colormap}
+                              --colormap {params.colormap} \
+                              --event {params.event}
         """
 
 rule plot_movie:

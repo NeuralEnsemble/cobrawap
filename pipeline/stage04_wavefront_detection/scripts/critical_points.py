@@ -26,7 +26,7 @@ def detect_critical_points(imgseq, times):
 
     for i in range(dim_t):
         # ToDo: parallelize
-        X, Y = np.meshgrid(np.arange(dim_x), np.arange(dim_y), indexing='ij')
+        X, Y = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='xy')
         ZR = np.real(frames[i])
         ZI = np.imag(frames[i])
         contourR = plt.contour(X, Y, ZR, levels=[0])

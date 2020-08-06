@@ -2,7 +2,9 @@ import os
 import sys
 import argparse
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
+import random
 import scipy
 from utils import AnalogSignal2ImageSequence, load_neo, save_plot
 from utils import none_or_str, none_or_float
@@ -47,16 +49,16 @@ def stretch_to_framerate(t_start, t_stop, num_frames, frame_rate=None):
     if args.frame_rate is None:
         return np.arange(num_frames, dtype=int)
     else:
-        new_num_frames = (imgseq.t_stop.rescale('s').magnitude
-                        - imgseq.t_start.rescale('s').magnitude) \
+        new_num_frames = (t_stop.rescale('s').magnitude
+                        - t_start.rescale('s').magnitude) \
                         * args.frame_rate
-        return np.linspace(0, num_frames-1, new_num_frames).astype(int)
+        return np.linspace(0, num_frames-1, int(new_num_frames), dtype=int)
 
 def plot_frame(frame, up_coords=None, cmap=plt.cm.gray, vmin=None, vmax=None,
                markersize=1):
     fig, ax = plt.subplots()
     img = ax.imshow(frame, interpolation='nearest',
-                    cmap=cmap, vmin=vmin, vmax=vmax)
+                    cmap=cmap, vmin=vmin, vmax=vmax, origin='lower')
     plt.colorbar(img, ax=ax)
 
     ax.axis('image')
@@ -70,6 +72,7 @@ def plot_transitions(up_coords, markersize=1, ax=None):
     if up_coords.size:
         if ax is None:
             ax = plt.gca()
+
         ax.plot(up_coords[:,1], up_coords[:,0],
                 marker='D', color='k', markersize=markersize,
                 linestyle='None', alpha=0.6)
@@ -84,10 +87,11 @@ def plot_vectorfield(frame, skip_step=3, ax=None):
     if ax is None:
         ax = plt.gca()
     dim_x, dim_y = frame.shape
-    ax.quiver(np.arange(dim_y)[::skip_step],
-              np.arange(dim_x)[::skip_step],
+    x_idx, y_idx = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='xy')
+    ax.quiver(x_idx[::skip_step,::skip_step],
+              y_idx[::skip_step,::skip_step],
               np.real(frame[::skip_step,::skip_step]),
-              -np.imag(frame[::skip_step,::skip_step]))
+              np.imag(frame[::skip_step,::skip_step]))
     return ax
 
 if __name__ == '__main__':
@@ -111,7 +115,6 @@ if __name__ == '__main__':
     t_start = blk.segments[0].analogsignals[0].t_start  # to be replaced
     t_stop = blk.segments[0].analogsignals[0].t_stop  # to be replaced
     dim_t, dim_x, dim_y = imgseq.shape
-    indices = np.where(np.isfinite(imgseq[0]))
 
     optical_flow = get_opticalflow(blk.segments[0].imagesequences)
 
@@ -143,7 +146,7 @@ if __name__ == '__main__':
 
         if optical_flow is not None:
             plot_vectorfield(optical_flow[frame_num], skip_step=skip_step)
-        if up_coords is not None:
+        if args.event is not None and up_coords is not None:
             plot_transitions(up_coords[frame_num], markersize)
         ax.set_ylabel('pixel size: {} '.format(imgseq.spatial_scale))
         ax.set_xlabel('{:.3f}'.format(times[frame_num].rescale('s')))

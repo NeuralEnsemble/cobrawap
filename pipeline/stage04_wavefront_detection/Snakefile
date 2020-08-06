@@ -85,7 +85,8 @@ rule clustering:
         metric = METRIC,
         time_space_ratio = TIME_SPACE_RATIO,
         neighbour_distance = NEIGHBOUR_DISTANCE,
-        min_samples = MIN_SAMPLES_PER_WAVE
+        min_samples = MIN_SAMPLES_PER_WAVE,
+        plot_time_slice = 10
     output:
         data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
         img = report(os.path.join('{dir}', 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
@@ -99,7 +100,8 @@ rule clustering:
                               --neighbour_distance {params.neighbour_distance} \
                               --min_samples {params.min_samples}
         python {input.plot_script} --data "{output.data}" \
-                                   --output "{output.img}"
+                                   --output "{output.img}" \
+                                   --time_slice {params.plot_time_slice}
         """
 
 

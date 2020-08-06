@@ -151,13 +151,15 @@ def smooth_frames(frames, sigma):
     return frames
 
 
-def plot_opticalflow(frame, vec_frame, skip_step=3):
+def plot_opticalflow(frame, vec_frame, skip_step=None):
     # Every <skip_step> point in each direction.
     fig, ax = plt.subplots()
     dim_x, dim_y = vec_frame.shape
     img = ax.imshow(frame, interpolation='nearest',
                     cmap=plt.get_cmap('viridis'))
     plt.colorbar(img, ax=ax)
+    if skip_step is None:
+        skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
     ax.quiver(np.arange(dim_y)[::skip_step],
               np.arange(dim_x)[::skip_step],

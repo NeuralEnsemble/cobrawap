@@ -224,11 +224,22 @@ rule plot_movie:
 rule mp4_to_webm:
     input:
         '{path}.mp4'
+    params:
+        quality = QUALITY,
+        scale_x = SCALE_X,
+        scale_y = SCALE_Y,
+        bitrate = BITRATE
     output:
         '{path}.webm'
     shell:
         """
-        ffmpeg -i "{input}" -vcodec libvpx -acodec libvorbis "{output}"
+        ffmpeg -i "{input}" \
+               -vcodec libvpx \
+               -acodec libvorbis \
+               -crf {params.quality} \
+               -vb {params.bitrate} \
+               -vf scale={params.scale_x}:{params.scale_y} \
+               "{output}"
         """
 
 rule mp4_to_gif:

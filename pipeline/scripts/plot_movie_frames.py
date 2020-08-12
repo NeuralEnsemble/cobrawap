@@ -22,7 +22,7 @@ def get_events(events, frame_times, event_name='Transitions'):
                               ('x_coords', 'int'),
                               ('y_coords', 'int')])
         ups = np.sort(ups, order=['time', 'x_coords', 'y_coords'])
-
+        breakpoint()
         up_coords = []
         for frame_count, frame_time in enumerate(frame_times):
             # select indexes of up events during this frame

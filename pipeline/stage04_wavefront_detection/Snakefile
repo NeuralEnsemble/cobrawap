@@ -186,3 +186,21 @@ rule merge_wave_definitions:
                               --node_data "{input.node_data}" \
                               --output "{output.data}"
         """
+
+rule plot_waves:
+    input:
+        data = os.path.join('{dir}', '{filename}.'+NEO_FORMAT),
+        script = os.path.join('scripts', 'plot_waves.py')
+    params:
+        time_window = 0.4,  # in s
+        colormap='viridis',
+    output:
+        img = os.path.join('{dir}', 'wave_plots', '{filename}_id0.'+PLOT_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data {input.data} \
+                              --output {output.img} \
+                              --time_window {params.time_window} \
+                              --colormap {params.colormap}
+        """

@@ -75,7 +75,7 @@ MUA_HIGHPASS_FREQ: 200  # in Hz
 MUA_LOWPASS_FREQ: 1500  # in Hz
 # Rate of the logMUA signal. Must be <= the original sampling rate
 # in Hz (default: 'None', takes highpass_freq)
-logMUA_RATE: 100
+logMUA_RATE: 25
 # Length of time slice (in s) to estimate the local power spectrum
 # default 'None', takes minimum number of samples determined
 # by the lower bound of the frequency band

@@ -139,7 +139,11 @@ def time_slice(neo_obj, t_start=None, t_stop=None,
             if isinstance(t_value, pq.Quantity):
                 t_value = t_value.rescale('s').magnitude
             if hasattr(neo_obj, t_name):
-                t_value = max([t_value, getattr(neo_obj, t_name).rescale('s').magnitude])
+                obj_t = getattr(neo_obj, t_name).rescale('s').magnitude
+                if t_name == 't_start':
+                    t_value = max([t_value, obj_t])
+                else:
+                    t_value = min([t_value, obj_t])
         return t_value*unit
 
     t_start = robust_t(neo_obj, t_start, t_name='t_start')

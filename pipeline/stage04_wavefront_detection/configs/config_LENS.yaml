@@ -44,7 +44,7 @@ TIME_SPACE_RATIO: 8  # i.e. distance between 2 frames corresponds to X pixel
 # Optical Flow (Horn-Schunck algorithm)
 ##############
 # weight of the smoothness constraint over the brightness constancy constraint
-ALPHA: 0.1
+ALPHA: 1.5
 # maximum number of iterations optimizing the vector field
 MAX_NITER: 100
 # the optimization end either after MAX_NITER iteration or when the

@@ -68,7 +68,7 @@ MINIMA_ORDER: 3
 # minimum duration of UP and DOWN states (in s)
 # If there are no DOWN transitions, UP transitions are removed that are closer
 # than the sum of UP and DOWN durations.
-MIN_UP_DURATION: 0.005
+MIN_UP_DURATION: 0.05
 MIN_DOWN_DURATION: 0.2
 # If true, short down states are removed first, merging the neighbouring up states.
 # Only then the remaining short up states are removed.

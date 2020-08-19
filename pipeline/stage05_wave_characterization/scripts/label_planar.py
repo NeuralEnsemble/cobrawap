@@ -4,6 +4,7 @@ import numpy as np
 import neo
 import pandas as pd
 import matplotlib.pyplot as plt
+import copy
 import seaborn as sns
 from utils import load_neo, AnalogSignal2ImageSequence
 
@@ -47,10 +48,15 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
     norm = np.array([np.linalg.norm(w) for w in wave_directions])
     wave_directions /= norm
 
+    palette = sns.husl_palette(len(np.unique(t_idx)), h=0.3, l=0.35)
+
     if ax is None:
         fig, ax = plt.subplots()
 
-    palette = sns.color_palette('Set2', len(np.unique(t_idx)))
+    area = copy.copy(np.real(vector_field[0]))
+    area[np.where(np.isfinite(area))] = 0
+    ax.imshow(area, interpolation='nearest', origin='lower',
+              vmin=-1, vmax=1, cmap='RdBu')
 
     for i, frame_t in enumerate(np.unique(t_idx)):
         frame_i = np.where(frame_t == t_idx)[0].astype(int)
@@ -58,12 +64,12 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
         yi = y[frame_i]
         ti = t_idx[frame_i]
         frame = vector_field[ti, xi.astype(int), yi.astype(int)].magnitude
-        ax.quiver(xi, yi, -np.real(frame), -np.imag(frame),
-                  color=palette[i], alpha=0.5, label=f'{asig.times[frame_t]}')
+        ax.quiver(yi, xi, np.real(frame), np.imag(frame),
+                  color=palette[i], alpha=0.8, label='{:.3f}'.format(asig.times[frame_t]))
 
     dim_t, dim_x, dim_y = vector_field.as_array().shape
-    ax.set_xlim((0, dim_x))
-    ax.set_ylim((0, dim_y))
+    ax.set_xlim((0, dim_y))
+    ax.set_ylim((0, dim_x))
     ax.set_xlabel(f'x scale {vector_field.spatial_scale}')
     ax.set_ylabel(f'y scale {vector_field.spatial_scale}')
     ax.set_title('planarity {:.3f}'.format(np.linalg.norm(np.mean(wave_directions))))

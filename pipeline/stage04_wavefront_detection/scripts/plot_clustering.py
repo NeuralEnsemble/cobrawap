@@ -29,14 +29,14 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     N = len(np.unique(evts.labels))
-    cmap = sns.husl_palette(N, h=.5, l=.6)
-    cmap = random.sample([c for c in cmap], N)
+    cmap = sns.husl_palette(N-1, h=.5, l=.6)
+    cmap = random.sample([c for c in cmap], N-1)
     cmap = ListedColormap(cmap)
 
     ax.scatter(evts.times,
                evts.array_annotations['x_coords'],
                evts.array_annotations['y_coords'],
-               c=[int(c) for c in evts.labels],
+               c=['k' if c==-1 else int(c) for c in evts.labels],
                cmap=cmap, s=2)
 
     ax.set_xlabel('time [{}]'.format(evts.times.dimensionality.string))

@@ -21,4 +21,4 @@ MEASURES: ['label_planar', 'velocity_planar', 'direction']
 
 # Label Planar
 ##############
-ALIGNMENT_THRESHOLD: 0.85
+ALIGNMENT_THRESHOLD: 0.9

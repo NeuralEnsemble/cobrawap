@@ -323,8 +323,8 @@ def write_neo(filename, block, *args, **kwargs):
     try:
         io = neo.io.get_io(filename, *args, **kwargs)
         io.write(block)
-    except Exception:
-        print(Exception)
+    except Exception as e:
+        print(e)
     finally:
         io.close()
     return True

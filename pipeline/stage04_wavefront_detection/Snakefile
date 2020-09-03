@@ -195,7 +195,8 @@ rule plot_waves:
         time_window = 0.4,  # in s
         colormap='viridis',
     output:
-        img = os.path.join('{dir}', 'wave_plots', '{filename}_id0.'+PLOT_FORMAT)
+        # creates additional files for each wave
+        img = report(os.path.join('{dir}', 'wave_plots', '{filename}_id0.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}

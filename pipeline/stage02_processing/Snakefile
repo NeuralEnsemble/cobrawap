@@ -134,7 +134,7 @@ rule clear:
 
 rule background_substraction:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/background_substraction.py'
     output:
@@ -155,7 +155,7 @@ rule background_substraction:
 
 rule normalization:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/normalization.py'
     params:
@@ -173,7 +173,7 @@ rule normalization:
 
 rule detrending:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/detrending.py'
     params:
@@ -191,7 +191,7 @@ rule detrending:
 
 rule frequency_filter:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         img = os.path.join('{dir}',
                            f'frequency_filter_power_spectrum.{PLOT_FORMAT}'),
@@ -240,7 +240,7 @@ rule plot_power_spectrum:
 
 rule roi_selection:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/roi_selection.py'
     params:
@@ -261,7 +261,7 @@ rule roi_selection:
 
 rule logMUA_estimation:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/logMUA_estimation.py'
     params:
@@ -301,7 +301,7 @@ rule logMUA_estimation:
 
 rule phase_transform:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/phase_transform.py'
     output:
@@ -316,7 +316,7 @@ rule phase_transform:
 
 rule zscore:
     input:
-        clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = 'scripts/z_score.py'
     output:

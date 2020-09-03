@@ -78,6 +78,7 @@ def calc_directions(evts):
                       columns=['direction', 'direction_std'],
                       index=wave_ids)
     df.index.name = 'wave_id'
+
     return df
 
 

@@ -27,11 +27,14 @@ def label_planar(waves_event, vector_field, times, threshold):
 
         planarity[i] = np.linalg.norm(np.mean(wave_directions))
 
-    planar = planarity > threshold
+    is_planar = planarity > threshold
 
-    return pd.DataFrame(data=np.stack((labels, planarity, planar), axis=1),
-                        index=labels,
-                        columns=['wave_id', 'planarity', 'is_planar'])
+    df =  pd.DataFrame(data=np.stack((planarity, is_planar), axis=1),
+                       index=labels,
+                       columns=['planarity', 'is_planar'])
+    df['is_planar'] = df['is_planar'].astype(bool)
+    df.index.name = 'wave_id'
+    return df
 
 
 def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=None):

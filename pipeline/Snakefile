@@ -120,7 +120,7 @@ rule execute_stage:
 
 rule create_report:
     input:
-        clear = os.path.join(output_path, '{subworkflow_name}', 'report.clear'),
+        os.path.join(output_path, '{subworkflow_name}', 'report.clear'),
     output:
         report = os.path.join(output_path, '{subworkflow_name}', 'report.html')
     shell:

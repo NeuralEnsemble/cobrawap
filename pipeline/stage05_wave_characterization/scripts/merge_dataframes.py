@@ -18,6 +18,8 @@ if __name__ == '__main__':
             full_df = deepcopy(df)
         del df
 
+    # checking and transforming inf and nan values?
+
     full_df.to_html(args.output_img)
 
     full_df.to_csv(args.output)

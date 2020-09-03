@@ -39,7 +39,7 @@ METRIC: 'euclidean'
 NEIGHBOUR_DISTANCE: 2
 MIN_SAMPLES_PER_WAVE: 8
 # Factor from time dimension to space dimension in sampling_rate*spatial_scale
-TIME_SPACE_RATIO: 0.72727272
+TIME_SPACE_RATIO: 0.7272727272
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############

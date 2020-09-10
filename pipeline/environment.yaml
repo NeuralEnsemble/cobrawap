@@ -9,7 +9,7 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake >= 5.15.0
+  - snakemake == 5.15.0
   - pip:
     - git+https://github.com/NeuralEnsemble/elephant.git#egg=elephant
     - git+https://github.com/NeuralEnsemble/python-neo.git#egg=neo

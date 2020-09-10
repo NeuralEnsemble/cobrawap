@@ -13,12 +13,6 @@ from scripts.snakefile_utils import create_temp_configs, set_global_configs,\
 working_dir = ''
 temp_config = 'temp_config.yaml'
 
-# Setting the profile
-config_profile = os.path.join('configs', f'config_{config["PROFILE"]}.yaml')
-output_path = os.path.join(output_path, config["PROFILE"])
-
-STAGES = config["STAGES"]
-
 def get_stage(num):
     if num < len(STAGES):
         return STAGES[num]
@@ -26,21 +20,28 @@ def get_stage(num):
         # temporary solution
         return ''
 
-## Building the temp_config.yaml files
-create_temp_configs(STAGES,
-                    working_dir=working_dir,
-                    config_name=config_profile,
-                    temp_name=temp_config)
-# # overwrite stage configs with pipeline config parameters
-set_global_configs(STAGES,
-                   working_dir=working_dir,
-                   config_dict=config,
-                   config_file=temp_config)
-# # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
-set_stage_inputs(STAGES,
-                 working_dir=working_dir,
-                 output_path=output_path,
-                 config_file=temp_config)
+# Setting the profile
+config_profile = os.path.join('configs', f'config_{config["PROFILE"]}.yaml')
+output_path = os.path.join(output_path, config["PROFILE"])
+
+STAGES = config["STAGES"]
+
+onstart:
+    ## Building the temp_config.yaml files
+    create_temp_configs(STAGES,
+                        working_dir=working_dir,
+                        config_name=config_profile,
+                        temp_name=temp_config)
+    # # overwrite stage configs with pipeline config parameters
+    set_global_configs(STAGES,
+                       working_dir=working_dir,
+                       config_dict=config,
+                       config_file=temp_config)
+    # # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
+    set_stage_inputs(STAGES,
+                     working_dir=working_dir,
+                     output_path=output_path,
+                     config_file=temp_config)
 
 subworkflow stage01:
     workdir:

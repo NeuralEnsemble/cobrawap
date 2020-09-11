@@ -18,7 +18,7 @@ dependencies:
     - pandas >= 1.0.1
     - scikit-learn >= 0.22.1
     - scikit-image >= 0.16.2
-    - matplotlib
+    - matplotlib == 3.1.1
     - seaborn
     - networkx
     - shapely >= 1.6.4.post2

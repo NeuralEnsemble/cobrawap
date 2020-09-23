@@ -41,6 +41,9 @@ BIN_NUM = config["BIN_NUM"]
 SIGMA_FACTOR = config["SIGMA_FACTOR"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
+INTERPOLATION_POINT = config["INTERPOLATION_POINT"]
+SAMPLING_TIME = config["SAMPLING_TIME"]
+        
 MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
 REMOVE_DOWN_FIRST = config["REMOVE_DOWN_FIRST"]
@@ -248,7 +251,10 @@ rule minima:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'minima.py')
     params:
-        order = MINIMA_ORDER
+        order = MINIMA_ORDER,
+        interpolation_points = INTERPOLATION_POINT,
+        sampling_time = SAMPLING_TIME
+
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
     shell:

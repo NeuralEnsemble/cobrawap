@@ -28,7 +28,7 @@ else:
 
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
+#PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MEASURES = config["MEASURES"]
@@ -76,6 +76,22 @@ rule check_input:
         """
 
 
+rule velocity_point:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'velocity_point.py')
+    output:
+        data = os.path.join('{dir}', 'velocity_point', 'velocity_point.csv'),
+	img = report(os.path.join('{dir}', 'velocity_point',
+                                  'velocity_point.'+PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
+	"""
+
 rule velocity_planar:
     input:
         data = input,
@@ -91,6 +107,7 @@ rule velocity_planar:
                               --output "{output.data}" \
                               --output_img "{output.img}"
         """
+
 
 rule velocity_gradient:
     input:
@@ -150,3 +167,4 @@ rule label_planar:
                               --output "{output.data}" \
                               --alignment_threshold {params.alignment_threshold}
         """
+

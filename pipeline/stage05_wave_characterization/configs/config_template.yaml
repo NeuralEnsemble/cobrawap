@@ -16,8 +16,8 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-# 'label_planar', 'velocity_planar', 'direction'
-MEASURES: ['label_planar', 'velocity_planar', 'direction']
+# 'label_planar', 'velocity_planar', 'direction', 'velocity_point'
+MEASURES: ['label_planar', 'velocity_planar', 'direction', 'velocity_point']
 
 # Label Planar
 ##############

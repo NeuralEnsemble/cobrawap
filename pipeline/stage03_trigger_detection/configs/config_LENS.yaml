@@ -20,13 +20,13 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [2020, 2025, 2020]   # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
-DETECTION_BLOCK: 'hilbert_phase'
+DETECTION_BLOCK: minima #hilbert_phase
 
 # TRIGGER FILTER
 #################
@@ -62,6 +62,9 @@ TRANSITION_PHASE: -1.570796
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
 MINIMA_ORDER: 3
+# Number of neighbouring points which should be compared to define a local minimum.
+INTERPOLATION_POINT: 5 # number of points to be used in the parabolic interpolation
+SAMPLING_TIME: 25. #Hz
 
 # BLOCK - Remove Short States
 #############################

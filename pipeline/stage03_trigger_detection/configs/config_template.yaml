@@ -62,6 +62,9 @@ TRANSITION_PHASE: -1.570796
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
 MINIMA_ORDER: 3
+# Number of neighbouring points which should be compared to define a local minimum.
+INTERPOLATION_POINT: 5 # number of points to be used in the parabolic interpolation
+SAMPLING_TIME: 25. #Hz
 
 # BLOCK - Remove Short States
 #############################

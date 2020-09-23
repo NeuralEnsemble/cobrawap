@@ -25,3 +25,4 @@ Select which characterization measures should be calculated via the `MEASURES` p
 |:----|:------------|:-----------|
 |__direction__|interpolates directions of planar waves||
 |__velocity_planar__|interpolates planer propagation velocity||
+|__velocity_point__|evaluates local propagation veloctity||

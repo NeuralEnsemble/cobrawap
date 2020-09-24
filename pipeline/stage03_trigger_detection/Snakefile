@@ -92,6 +92,18 @@ rule get_stage_output:
         {params.command} "{input.data}" "{output.data}"
         """
 
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
+        """
 #### Blocks ####
 
 rule remove_short_states:
@@ -116,18 +128,6 @@ rule remove_short_states:
         """
 
 
-rule check_input:
-    input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        temp(os.path.join('{dir}', 'input.check'))
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}"
-        touch "{output}"
-        """
 
 rule plot_trigger_times:
     input:

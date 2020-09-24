@@ -1,9 +1,9 @@
 # Stage 01 Data Entry
+import os
 
-# configfile: "configs/config_template.yaml"
+# configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
-import os
 import sys
 utils_path = os.path.join('..', 'scripts')
 sys.path.append(os.path.join(os.getcwd(), '..'))
@@ -44,9 +44,12 @@ wildcard_constraints:
 def input_file(wildcards):
     return DATA_SETS[wildcards.data_name]
 
+print(OUTPUT_DIR)
+
 rule all:
     input:
-        data = expand(os.path.join(OUTPUT_DIR, '{data_name}.'+NEO_FORMAT),
+        data = expand(os.path.join(OUTPUT_DIR, '{data_name}',
+                                   '{data_name}.'+NEO_FORMAT),
                       data_name = DATA_SETS.keys()),
         check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
                        data_name = DATA_SETS.keys()),
@@ -62,7 +65,7 @@ rule all:
 
 rule check_input:
     input:
-        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT),
+        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
         script = os.path.join('scripts', 'check_input.py')
     output:
         temp(os.path.join('{dir}', '{data_name}.check'))
@@ -79,8 +82,8 @@ rule enter_data:
         script = os.path.join('scripts', CURATION_SCRIPT),
         plot_script = os.path.join('scripts', 'plot_traces.py')
     output:
-        data = os.path.join('{dir}', '{data_name}.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', 'trace_{data_name}.'+PLOT_FORMAT))
+        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{data_name}',  'trace_{data_name}.'+PLOT_FORMAT))
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,

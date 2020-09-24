@@ -50,8 +50,8 @@ def calc_directions(evts):
             col = i % ncols
             cax = ax[row][col]
 
-        cax.plot([0,np.real(d[0])], [0,np.imag(d[0])], color='r', alpha=0.8)
-        ellipsis = patches.Ellipse(xy=(np.real(d[0]), np.imag(d[0])),
+        cax.plot([0,np.imag(d[0])], [0,np.real(d[0])], color='r', alpha=0.8)
+        ellipsis = patches.Ellipse(xy=(np.imag(d[0]), np.real(d[0])),
                                    width=2*np.real(d[1]), height=2*np.imag(d[1]),
                                    alpha=0.5)
         cax.add_artist(ellipsis)

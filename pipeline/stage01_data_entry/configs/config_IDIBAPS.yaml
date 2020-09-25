@@ -7,7 +7,7 @@ STAGE_NAME: 'stage01_data_entry'
 PROFILE: 'IDIBAPS'
 
 # Name of stage output file.
-STAGE_OUTPUT: "IDIBAPS_data.nix"
+STAGE_OUTPUT: "data.nix"
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'

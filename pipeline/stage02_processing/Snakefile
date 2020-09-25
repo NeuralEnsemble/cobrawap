@@ -71,9 +71,7 @@ rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = input_file,
-        img = [os.path.join(OUTPUT_DIR,
-               f'processed_trace_{PLOT_TSTART}-{PLOT_TSTOP}s_channel{channel}.{PLOT_FORMAT}')
-               for channel in PLOT_CHANNELS],
+        img = os.path.join(OUTPUT_DIR, f'processed_traces_{PLOT_TSTART}-{PLOT_TSTOP}s'),
         configfile = f'configs/config_{PROFILE}.yaml'
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -99,23 +97,28 @@ rule check_input:
         """
 
 
-rule plot_processed_traces:
+checkpoint plot_processed_traces:
     input:
         stage_input = STAGE_INPUT,
         stage_output = input_file,
         script = 'scripts/plot_processed_trace.py'
+    params:
+        img_name = 'processed_trace_{t_start}-{t_stop}s_channel0'+PLOT_FORMAT,
+        channels = PLOT_CHANNELS
     output:
-        img = report(os.path.join(OUTPUT_DIR,
-                                  'processed_trace_{t_start}-{t_stop}s_channel{channel}.'+PLOT_FORMAT))
+        img_dir = report(directory(os.path.join(OUTPUT_DIR,
+                                  'processed_traces_{t_start}-{t_stop}s')),
+                         patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
         python {input.script} --original_data "{input.stage_input}" \
                               --processed_data "{input.stage_output}" \
-                              --output "{output.img}" \
+                              --img_dir "{output.img_dir}" \
+                              --img_name {params.img_name} \
                               --t_start {wildcards.t_start} \
                               --t_stop {wildcards.t_stop} \
-                              --channel {wildcards.channel}
+                              --channels {params.channels}
         """
 
 rule clear:

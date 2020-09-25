@@ -58,7 +58,6 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    # CLI.add_argument("--output", nargs='?', type=lambda v: v.split(','),
     CLI.add_argument("--output_dir", nargs='?', type=str,
                      required=True, help="path of output directory")
     CLI.add_argument("--filename", nargs='?', type=str,

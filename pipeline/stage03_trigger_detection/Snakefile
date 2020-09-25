@@ -71,6 +71,8 @@ wildcard_constraints:
     file_name = '\w+',
     rule_name = '\w+'
 
+localrules: all, check_input
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),

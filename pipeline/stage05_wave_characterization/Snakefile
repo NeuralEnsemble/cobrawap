@@ -41,6 +41,8 @@ def measures_output(wildcards):
     return [os.path.join(OUTPUT_DIR, measure, measure+'.csv')
             for measure in MEASURES]
 
+localrules: all, check_input
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),

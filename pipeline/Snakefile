@@ -12,7 +12,7 @@ from scripts.snakefile_utils import set_stage_inputs, read_stage_output
 
 # the working directory is by default the directory of the Snakefile
 working_dir = ''
-temp_config = 'temp_config.yaml'
+temp_config = 'working_config.yaml'
 
 def get_stage(num):
     if num < len(STAGES):
@@ -109,7 +109,6 @@ rule all:
         """
         touch {output}
         """
-        # rm {params.temp_config_path}
 
 rule execute_stage:
     input:

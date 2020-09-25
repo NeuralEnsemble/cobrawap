@@ -49,6 +49,8 @@ FFT_SLICE = config["FFT_SLICE"]
 wildcard_constraints:
     rule_name = '\w+'
 
+localrules: all, check_input
+
 def locate(str_list, string):
     if string in str_list:
         return [i for i, el in enumerate(str_list) if el == string][0]

@@ -41,6 +41,8 @@ KWARGS = ordereddict_to_dict(config["KWARGS"])
 wildcard_constraints:
     data_name = '\w+'
 
+localrules: all, check_input
+
 def input_file(wildcards):
     return DATA_SETS[wildcards.data_name]
 
@@ -103,8 +105,6 @@ rule enter_data:
     input:
         data = input_file,
         script = os.path.join('scripts', CURATION_SCRIPT),
-    output:
-        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,
@@ -113,6 +113,8 @@ rule enter_data:
         annotations = ANNOTATIONS,
         array_annotations = ARRAY_ANNOTATIONS,
         kwargs = KWARGS
+    output:
+        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}

@@ -43,6 +43,8 @@ GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
 DETECT_CRITICAL_POINTS = config["DETECT_CRITICAL_POINTS"]
 
+localrules: all, check_input
+
 #### Housekeeping ####
 
 rule all:

@@ -51,6 +51,9 @@ rule all:
         data = expand(os.path.join(OUTPUT_DIR, '{data_name}',
                                    '{data_name}.'+NEO_FORMAT),
                       data_name = DATA_SETS.keys()),
+        img = expand(os.path.join(OUTPUT_DIR, '{data_name}',
+                                   'trace_{data_name}.'+PLOT_FORMAT),
+                      data_name = DATA_SETS.keys()),
         check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
                        data_name = DATA_SETS.keys()),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
@@ -76,14 +79,32 @@ rule check_input:
         touch "{output}"
         """
 
+rule plot_traces:
+    input:
+        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
+        script = os.path.join('scripts', 'plot_traces.py')
+    params:
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
+        plot_channels = PLOT_CHANNELS
+    output:
+        img = report(os.path.join('{dir}', '{data_name}', 'trace_{data_name}.'+PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.img}" \
+                              --t_start {params.plot_tstart} \
+                              --t_stop {params.plot_tstop} \
+                              --channels {params.plot_channels}
+        """
+
 rule enter_data:
     input:
         data = input_file,
         script = os.path.join('scripts', CURATION_SCRIPT),
-        plot_script = os.path.join('scripts', 'plot_traces.py')
     output:
         data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', '{data_name}',  'trace_{data_name}.'+PLOT_FORMAT))
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,
@@ -91,10 +112,7 @@ rule enter_data:
         t_stop = T_STOP,
         annotations = ANNOTATIONS,
         array_annotations = ARRAY_ANNOTATIONS,
-        kwargs = KWARGS,
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        plot_channels = PLOT_CHANNELS
+        kwargs = KWARGS
     shell:
         """
         {ADD_UTILS}
@@ -108,9 +126,4 @@ rule enter_data:
                               --annotations {params.annotations} \
                               --array_annotations {params.array_annotations} \
                               --kwargs {params.kwargs}
-        python {input.plot_script} --data "{output.data}" \
-                                   --output "{output.img}" \
-                                   --t_start {params.plot_tstart} \
-                                   --t_stop {params.plot_tstop} \
-                                   --channels {params.plot_channels} \
         """

@@ -1,9 +1,10 @@
+import os
+import argparse
 import neo
 import numpy as np
 import quantities as pq
 from scipy.signal import hilbert
 from scipy.stats import zscore
-import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
 from utils import load_neo, write_neo, time_slice, none_or_int
@@ -108,8 +109,11 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
-                     default='None', help="path(s) of output figure(s)")
+    CLI.add_argument("--img_dir", nargs='?', type=str,
+                     default='None', help="path of figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str,
+                     default='hilbert_phase_channel0.png',
+                     help='example image filename for channel 0')
     CLI.add_argument("--transition_phase", nargs='?', type=float, default=-1.570796,
                      help="phase to use as threshold for the upward transition")
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
@@ -131,12 +135,10 @@ if __name__ == '__main__':
     write_neo(args.output, block)
 
     if args.plot_channels[0] is not None:
-        if not len(args.output_img) == len(args.plot_channels):
-            raise InputError("The number of plotting channels must "\
-                           + "correspond to the number of image output paths!")
-
-        for output, channel in zip(args.output_img, args.plot_channels):
+        for channel in args.plot_channels:
             plot_hilbert_phase(asig=time_slice(asig, args.plot_tstart, args.plot_tstop),
                                event=time_slice(transition_event, args.plot_tstart, args.plot_tstop),
                                channel=int(channel))
-            save_plot(output)
+            output_path = os.path.join(args.img_dir,
+                                       args.img_name.replace('_channel0', f'_channel{channel}'))
+            save_plot(output_path)

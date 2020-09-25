@@ -335,4 +335,5 @@ def save_plot(filename):
     if not os.path.exists(dirname):
         os.makedirs(dirname)
     plt.savefig(fname=filename, bbox_inches='tight')
+    plt.close()
     return None

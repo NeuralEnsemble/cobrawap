@@ -74,7 +74,7 @@ rule all:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = input_file,
         img = os.path.join(OUTPUT_DIR, f'processed_traces_{PLOT_TSTART}-{PLOT_TSTOP}s'),
-        configfile = f'configs/config_{PROFILE}.yaml'
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -103,7 +103,7 @@ checkpoint plot_processed_traces:
     input:
         stage_input = STAGE_INPUT,
         stage_output = input_file,
-        script = 'scripts/plot_processed_trace.py'
+        script = os.path.join('scripts', 'plot_processed_trace.py')
     params:
         img_name = 'processed_trace_{t_start}-{t_stop}s_channel0'+PLOT_FORMAT,
         channels = PLOT_CHANNELS
@@ -141,7 +141,7 @@ rule background_substraction:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/background_substraction.py'
+        script = os.path.join('scripts','background_substraction.py')
     output:
         data = os.path.join('{dir}', 'background_substraction',
                             '{rule_name}.'+NEO_FORMAT),
@@ -162,7 +162,7 @@ rule normalization:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/normalization.py'
+        script = os.path.join('scripts', 'normalization.py')
     params:
         normalize_by = NORMALIZE_BY
     output:
@@ -180,7 +180,7 @@ rule detrending:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/detrending.py'
+        script = os.path.join('scripts', 'detrending.py')
     params:
         order = DETRENDING_ORDER
     output:
@@ -198,9 +198,8 @@ rule frequency_filter:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        img = os.path.join('{dir}',
-                           f'frequency_filter_power_spectrum.{PLOT_FORMAT}'),
-        script = 'scripts/frequency_filter.py',
+        img = os.path.join('{dir}', '{rule_name}', f'power_spectrum.{PLOT_FORMAT}'),
+        script = os.path.join('scripts', 'frequency_filter.py')
     params:
         highpass_freq = HIGHPASS_FREQ,
         lowpass_freq = LOWPASS_FREQ,
@@ -223,7 +222,7 @@ rule frequency_filter:
 rule plot_power_spectrum:
     input:
         data = input_file,
-        script = 'scripts/plot_power_spectrum.py'
+        script = os.path.join('scripts','plot_power_spectrum.py')
     params:
         highpass_freq = HIGHPASS_FREQ,
         lowpass_freq = LOWPASS_FREQ,
@@ -247,7 +246,7 @@ rule roi_selection:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/roi_selection.py'
+        script = os.path.join('scripts','roi_selection.py')
     params:
         intensity_threshold = INTENSITY_THRESHOLD
     output:
@@ -268,7 +267,7 @@ rule logMUA_estimation:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/logMUA_estimation.py'
+        script = os.path.join('scripts','logMUA_estimation.py')
     params:
         highpass_freq = MUA_HIGHPASS_FREQ,
         lowpass_freq = MUA_LOWPASS_FREQ,
@@ -308,7 +307,7 @@ rule phase_transform:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/phase_transform.py'
+        script = os.path.join('scripts','phase_transform.py')
     output:
         data = os.path.join('{dir}', 'phase_transform',
                             '{rule_name}.'+NEO_FORMAT)
@@ -323,7 +322,7 @@ rule zscore:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/z_score.py'
+        script = os.path.join('scripts','z_score.py')
     output:
         data = os.path.join('{dir}', 'zscore',
                             '{rule_name}.'+NEO_FORMAT)

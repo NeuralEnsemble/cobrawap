@@ -70,7 +70,6 @@ def velocity(wave_times, DIM_X, DIM_Y):
 
         if count != 0:
             mean_velocity.append(np.mean(velocity))
-            print(mean_velocity)
     plt.figure()
     plt.hist(mean_velocity)
     plt.xlabel('velocity [mm/s]')
@@ -110,12 +109,10 @@ if __name__ == '__main__':
     
     evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
     
-    print('Spatial', evts.annotations)
     SpatialScale = evts.annotations['spatial_scale']
 
-    #print('ops', evts.annotations['spatial_scale'])
+    print('ops', evts.annotations['spatial_scale'])
     velocities_df = velocity(evts, DIM_X, DIM_Y)
-    print('velocities')
     
     if args.output_img is not None:
         save_plot(args.output_img)

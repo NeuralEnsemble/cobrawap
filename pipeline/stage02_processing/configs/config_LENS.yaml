@@ -20,7 +20,8 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [2020, 2025, 2020]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [900, 30, 800]  # int or None. default 'None' -> randomly selected
+
 PLOT_FORMAT: 'png'
 
 # The block order determines which processing steps (blocks) will be applied
@@ -28,7 +29,8 @@ PLOT_FORMAT: 'png'
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'roi_selection', 'logMUA_estimation', 'phase_transform', 'zscore'
-BLOCK_ORDER: ['roi_selection', 'background_substraction', 'spatial_smoothing', 'normalization', 'frequency_filter']
+#BLOCK_ORDER: ['roi_selection', 'background_substraction', 'spatial_downsampling', 'normalization', 'frequency_filter']
+BLOCK_ORDER: ['roi_selection', 'background_substraction', 'spatial_downsampling', 'normalization', 'frequency_filter']
 
 # BLOCK - background_substraction
 #################################
@@ -52,10 +54,10 @@ NORMALIZE_BY: 'max'
 # function by elephant
 HIGHPASS_FREQ: 0  # in Hz
 LOWPASS_FREQ: 5  # in Hz
-FILTER_ORDER: 2
+FILTER_ORDER: 6 #2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
-FILTER_FUNCTION: 'filtfilt'
+FILTER_FUNCTION: 'lfilter' #'filtfilt'
 # Plotting parameters for the power spectrum
 PSD_FREQ_RES: 5  # in Hz
 PSD_OVERLAP: 0.5
@@ -73,7 +75,7 @@ DETRENDING_ORDER: 2
 ###########################
 # Threshold below which the pixels are discarded (set to nan).
 # Given in percent of the range between minimum and maximum intensity.
-INTENSITY_THRESHOLD: 0.5
+INTENSITY_THRESHOLD: 0.5 #0.197 #0.5
 
 # BLOCK - logMUA_estimation
 ########################

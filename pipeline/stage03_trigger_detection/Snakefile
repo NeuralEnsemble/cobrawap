@@ -48,6 +48,8 @@ MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
 REMOVE_DOWN_FIRST = config["REMOVE_DOWN_FIRST"]
 
+INTERPOLATION = config["INTERPOLATION"]
+
 #### Housekeeping ####
 def locate(str_list, string):
     if string in str_list:
@@ -252,6 +254,7 @@ rule minima:
         script = os.path.join('scripts', 'minima.py')
     params:
         order = MINIMA_ORDER,
+	interpolation = INTERPOLATION,
         interpolation_points = INTERPOLATION_POINT,
         sampling_time = SAMPLING_TIME
 

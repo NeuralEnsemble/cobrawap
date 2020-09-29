@@ -61,7 +61,8 @@ TRANSITION_PHASE: -1.570796
 # BLOCK - Minima
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
-MINIMA_ORDER: 3
+INTERPOLATION: 1 # 0 if minima are detected through parabolic interpolation
+MINIMA_ORDER: 1 #3
 # Number of neighbouring points which should be compared to define a local minimum.
 INTERPOLATION_POINT: 5 # number of points to be used in the parabolic interpolation
 SAMPLING_TIME: 25. #Hz

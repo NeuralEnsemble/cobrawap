@@ -55,6 +55,7 @@ if __name__ == '__main__':
 
     crit_point_evt = [evt for evt in block.segments[0].events
                       if evt.name == "Critical Points"]
+    
     if crit_point_evt:
         crit_point_evt = crit_point_evt[0]
     else:

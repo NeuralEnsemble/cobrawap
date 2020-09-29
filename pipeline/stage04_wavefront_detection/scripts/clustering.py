@@ -75,14 +75,13 @@ if __name__ == '__main__':
         evts = evts[0]
     else:
         raise InputError("The input file does not contain any 'Transitions' events!")
-
+    
     wave_evt = cluster_triggers(event=evts,
                                 metric=args.metric,
                                 neighbour_distance=args.neighbour_distance,
                                 min_samples=args.min_samples,
                                 time_space_ratio=args.time_space_ratio,
                                 sampling_rate=asig.sampling_rate)
-
     block.segments[0].events.append(wave_evt)
 
     write_neo(args.output, block)

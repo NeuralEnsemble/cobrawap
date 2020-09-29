@@ -187,6 +187,7 @@ if __name__ == '__main__':
 
     imgseq = [im for im in block.segments[0].imagesequences
                         if im.name == "Optical Flow"]
+    
     if imgseq:
         imgseq = imgseq[0]
     else:
@@ -196,7 +197,6 @@ if __name__ == '__main__':
 
     crit_point_evt = detect_critical_points(imgseq,
                                     block.segments[0].analogsignals[0].times)
-
+    
     block.segments[0].events.append(crit_point_evt)
-
     write_neo(args.output, block)

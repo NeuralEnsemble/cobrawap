@@ -20,12 +20,16 @@ if __name__ == '__main__':
     block = load_neo(args.data)
 
     evts = [ev for ev in block.segments[0].events if ev.name== 'Wavefronts'][0]
-
+    
     if args.time_slice is not None:
         asig = block.segments[0].analogsignals[0]
         t_stop = asig.t_start.rescale('s') + args.time_slice*pq.s
         evts = time_slice(evts, t_start=asig.t_start, t_stop=t_stop)
-
+    x = [1,2,3]
+    y = [3,4,5]
+    plt.figure()
+    plt.plot(x,y)
+    '''
         
 
     fig = plt.figure()
@@ -45,6 +49,6 @@ if __name__ == '__main__':
     ax.set_ylabel('x-pixel')
     ax.set_zlabel('y-pixel')
     ax.view_init(45, -75)
-
+    '''
     save_plot(args.output)
 

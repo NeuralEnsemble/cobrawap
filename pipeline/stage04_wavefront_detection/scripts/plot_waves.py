@@ -76,12 +76,13 @@ if __name__ == '__main__':
 
     waves_event = [ev for ev in block.segments[0].events
                              if ev.name== 'Wavefronts'][0]
-
+    
     asig = block.segments[0].analogsignals[0]
     frames = block.segments[0].imagesequences[0].as_array()
     vec_frames = [imgseq for imgseq in block.segments[0].imagesequences
                                     if imgseq.name== 'Optical Flow'][0].as_array()
 
+    
     cmap = plt.get_cmap(args.colormap)
 
     for wave_id in np.unique(waves_event.labels):

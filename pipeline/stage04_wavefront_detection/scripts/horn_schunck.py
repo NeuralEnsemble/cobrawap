@@ -104,6 +104,7 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
     vector_frames = np.zeros(frames.shape, dtype=complex)
 
     for i, frame in enumerate(frames[:-1]):
+        
         next_frame = frames[i+1]
 
         vector_frames[i] = horn_schunck_step(frame,
@@ -193,21 +194,24 @@ if __name__ == '__main__':
                      help='Filter kernel to use for calculating spatial derivatives')
 
     args = CLI.parse_args()
+    print('args')
     block = load_neo(args.data)
-
+    print('block')
     block = AnalogSignal2ImageSequence(block)
+    print('block2')
     imgseq = block.segments[0].imagesequences[-1]
+    print('img')
     asig = block.segments[0].analogsignals[-1]
-
+    print('asig')
     frames = imgseq.as_array()
     # frames /= np.nanmax(np.abs(frames))
-
+    print('frames')
     kernelHS = np.array([[1, 2, 1],
                          [2, 0, 2],
                          [1, 2, 1]], dtype=np.float) * 1/12
     kernelT = np.ones((2, 2), dtype=np.float) * .25
     kernelX, kernelY = get_derviation_kernels(args.derivative_filter)
-
+    print('kernel')
     vector_frames = horn_schunck(frames=frames,
                                  alpha=args.alpha,
                                  max_Niter=args.max_Niter,
@@ -216,7 +220,7 @@ if __name__ == '__main__':
                                  kernelY=kernelY,
                                  kernelT=kernelT,
                                  kernelHS=kernelHS)
-
+    print('frames')
     if np.sum(args.gaussian_sigma):
         vector_frames = smooth_frames(vector_frames, sigma=args.gaussian_sigma)
 
@@ -230,14 +234,12 @@ if __name__ == '__main__':
                                    description='Horn-Schunck estimation of optical flow',
                                    file_origin=imgseq.file_origin,
                                    **imgseq.annotations)
-
     if args.output_img is not None:
         ax = plot_opticalflow(frames[0], vector_frames[0], skip_step=3)
         ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} '\
                     + imgseq.spatial_scale.units.dimensionality.string)
         ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s')))
         save_plot(args.output_img)
-
     block.segments[0].imagesequences = [vec_imgseq]
     block = ImageSequence2AnalogSignal(block)
     write_neo(args.output, block)

@@ -41,8 +41,6 @@ BLOCK_ORDER: []
 # BLOCK - spatial_smoothig
 #################################
 MACRO_PIXEL_DIM: 2
-DIM_X: 100
-DIM_Y: 100
 
 
 # BLOCK - normalization

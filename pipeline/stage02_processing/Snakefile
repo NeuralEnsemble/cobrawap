@@ -31,8 +31,6 @@ PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
-DIM_X = config["DIM_X"]
-DIM_Y = config["DIM_Y"]
 
 BLOCK_ORDER = config["BLOCK_ORDER"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
@@ -170,9 +168,7 @@ rule spatial_downsampling:
         array = os.path.join('{dir}', '{rule_name}',
                              'spatial_downsampling.npy')
     params:
-        macro_pixel_dim = MACRO_PIXEL_DIM,
-        dim_X = DIM_X,
-        dim_Y = DIM_Y
+        macro_pixel_dim = MACRO_PIXEL_DIM
 
     shell:
         """

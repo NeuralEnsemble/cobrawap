@@ -36,8 +36,8 @@ def calc_directions(evts):
                                  * spatial_scale.magnitude)
         directions[i] = np.array([dx + 1j*dy, dx_err + 1j*dy_err])
 
-    ncols = int(np.round(np.sqrt(len(wave_ids))))
-    nrows = int(np.ceil((len(wave_ids))/ncols))
+    ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
+    nrows = int(np.ceil((len(wave_ids)+1)/ncols))
     fig, ax = plt.subplots(nrows=nrows, ncols=ncols,
                            figsize=(3*nrows, 3*ncols))
 
@@ -61,17 +61,23 @@ def calc_directions(evts):
             cax.set_xlim((-rmax,rmax))
         cax.axhline(0, c='k')
         cax.axvline(0, c='k')
-        cax.axes.get_xaxis().set_visible(False)
-        cax.axes.get_yaxis().set_visible(False)
+        # cax.axes.get_xaxis().set_visible(False)
+        # cax.axes.get_yaxis().set_visible(False)
         cax.set_xticks([])
         cax.set_yticks([])
-        if not i:
-            if 'orientation_right' in evts.annotations:
-                cax.set_xlabel(evts.annotations['orientation_right'])
-            if 'orientation_top' in evts.annotations:
-                cax.set_ylabel(evts.annotations['orientation_top'])
-        sns.despine(left=True, bottom=True)
 
+    ax[-1][-1].axhline(0, c='k')
+    ax[-1][-1].axvline(0, c='k')
+    ax[-1][-1].set_xlim((-2,2))
+    ax[-1][-1].set_ylim((-2,2))
+    if 'orientation_top' in evts.annotations:
+        ax[-1][-1].text(0, 1, evts.annotations['orientation_top'], rotation='vertical',
+                        verticalalignment='center', horizontalalignment='right')
+    if 'orientation_right' in evts.annotations:
+        ax[-1][-1].text(1, 0, evts.annotations['orientation_right'],
+                        verticalalignment='top', horizontalalignment='center')
+
+    sns.despine(left=True, bottom=True)
 
     for i in range(len(directions), nrows*ncols):
         row = int(i/ncols)

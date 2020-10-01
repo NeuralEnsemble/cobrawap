@@ -2,11 +2,13 @@ import numpy as np
 import argparse
 import neo
 import quantities as pq
+import matplotlib.pyplot as plt
 import json
 import os
 import sys
-from utils import parse_string2dict, ImageSequence2AnalogSignal, \
-                  none_or_float, none_or_str, write_neo, time_slice
+from utils import parse_string2dict, ImageSequence2AnalogSignal
+from utils import none_or_float, none_or_str, write_neo, time_slice
+from utils import flip_image, rotate_image
 
 
 if __name__ == '__main__':
@@ -32,6 +34,10 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
                      help="stop time in seconds")
+    CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
+                     help="upward orientation of the recorded cortical region")
+    CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
+                     help="right-facing orientation of the recorded cortical region")
     args = CLI.parse_args()
 
     # Load optical data
@@ -39,8 +45,15 @@ if __name__ == '__main__':
                               sampling_rate=args.sampling_rate*pq.Hz,
                               spatial_scale=args.spatial_scale*pq.mm,
                               units='dimensionless')
+    # loading the data flips the images vertically!
 
     block = io.read_block()
+
+    # change data orientation to be top=ventral, right=lateral
+    imgseq = block.segments[0].imagesequences[0]
+    imgseq = flip_image(imgseq, axis=-2)
+    imgseq = rotate_image(imgseq, rotation=-90)
+    block.segments[0].imagesequences[0] = imgseq
 
     # Transform into analogsignals
     block.segments[0].analogsignals = []
@@ -52,6 +65,9 @@ if __name__ == '__main__':
     if args.annotations is not None:
         block.segments[0].analogsignals[0].annotations.\
                                     update(parse_string2dict(args.annotations))
+
+    block.segments[0].analogsignals[0].annotations.update(orientation_top=args.orientation_top)
+    block.segments[0].analogsignals[0].annotations.update(orientation_right=args.orientation_right)
 
     # ToDo: add metadata
     block.name = args.data_name

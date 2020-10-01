@@ -65,6 +65,11 @@ def calc_directions(evts):
         cax.axes.get_yaxis().set_visible(False)
         cax.set_xticks([])
         cax.set_yticks([])
+        if not i:
+            if 'orientation_right' in evts.annotations:
+                cax.set_xlabel(evts.annotations['orientation_right'])
+            if 'orientation_top' in evts.annotations:
+            cax.set_ylabel(evts.annotations['orientation_top'])
         sns.despine(left=True, bottom=True)
 
 

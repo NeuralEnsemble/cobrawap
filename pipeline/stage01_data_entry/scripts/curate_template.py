@@ -4,8 +4,9 @@ ToDo: write docstring
 
 import argparse
 import quantities as pq
-from utils import parse_string2dict, ImageSequence2AnalogSignal, none_or_float,\
-                  none_or_int, load_neo, write_neo, time_slice
+from utils import parse_string2dict, ImageSequence2AnalogSignal,
+from utils import none_or_float, none_or_int, load_neo, write_neo, time_slice
+from utils import flip_image, rotate_image
 
 
 if __name__ == '__main__':
@@ -15,16 +16,20 @@ if __name__ == '__main__':
                      help="path to input data")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
+    CLI.add_argument("--data_name", nargs='?', type=str, default='None',
+                     help="chosen name of the dataset")
     CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float,
                      default=None, help="sampling rate in Hz")
     CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
                      help="distance between electrodes or pixels in mm")
-    CLI.add_argument("--data_name", nargs='?', type=str, default='None',
-                     help="chosen name of the dataset")
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float, required=None,
+    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
                      help="start time, in s, delimits the interval of recordings to be analysed")
-    CLI.add_argument("--t_stop", nargs='?', type=none_or_float, required=None,
+    CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=None,
                      help="stop time, in s, delimits the interval of recordings to be analysed")
+    CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
+                     help="upward orientation of the recorded cortical region")
+    CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
+                     help="right-facing orientation of the recorded cortical region")
     CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
                      help="metadata of the dataset")
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
@@ -51,6 +56,8 @@ if __name__ == '__main__':
     # Add metadata from ANNOTIATION dict
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
+    asog.annotations.update(orientation_top=args.orientation_top)
+    asog.annotations.update(orientation_right=args.orientation_right)
 
     # Add metadata from ARRAY_ANNOTIATION dict
     asig.array_annotations.update(parse_string2dict(args.array_annotations))

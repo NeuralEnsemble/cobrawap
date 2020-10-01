@@ -30,6 +30,40 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
                 del objects[i].annotations[k]
     return None
 
+def flip_image(imgseq, axis=-1):
+    # spatial axis 0 (~ 1) -> vertical
+    # spatial axis 1 (~ 2)-> horizontal
+    if len(imgseq.shape)==3 and axis==0:
+        warnings.warn("Can not flip along time axis!"
+                      "Interpreting axis=0 as first spatial axis (i.e. axis=1).")
+        axis=1
+
+    flipped = np.flip(imgseq.as_array(), axis=axis)
+
+    return imgseq.duplicate_with_new_data(flipped)
+
+def rotate_image(imgseq, rotation=0):
+    # rotating clockwise
+    if np.abs(rotation) <= 2*np.pi:
+        # interpret as rad
+        rotation = int(np.round(rotation/np.pi * 180, decimals=0))
+    else:
+        # interpret as deg
+        pass
+
+    nbr_of_rot90 = np.divide(rotation, 90)
+
+    if np.mod(nbr_of_rot90, 1):
+        nbr_of_rot90 = np.round(nbr_of_rot90, decimals=0)
+        warnings.warn("Images can only be rotated in steps of 90 degrees. "
+                       f"Rounding {rotation} deg to {nbr_of_rot90*90} deg.")
+
+    rotated = np.rot90(imgseq.as_array(),
+                       k=nbr_of_rot90,
+                       axes=(-2,-1))
+
+    return imgseq.duplicate_with_new_data(rotated)
+
 
 def guess_type(string):
     try:
@@ -208,7 +242,6 @@ def ImageSequence2AnalogSignal(block):
                                     name=imgseq.name,
                                     array_annotations={'x_coords': coords[:,0],
                                                        'y_coords': coords[:,1]},
-                                    # grid_size=(dim_x, dim_y),
                                     spatial_scale=imgseq.spatial_scale,
                                     **imgseq.annotations)
 

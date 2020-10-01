@@ -36,6 +36,11 @@ SAMPLING_RATE: 25  # Hz
 T_START: None
 T_STOP: None
 
+# recommend top: ventral
+ORIENTATION_TOP: 'ventral'
+# recommended right: 'lateral' for right hemisphere, 'medial' for left hemisphere
+ORIENTATION_RIGHT: 'lateral'
+
 # Metadata
 ANNOTATIONS:
     experimental_lab: 'Pavone lab - Florence'

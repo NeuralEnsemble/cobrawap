@@ -16,9 +16,29 @@ from utils import determine_spatial_scale, load_neo, write_neo, save_plot, \
 def spatial_smoothing(images, MACRO_PIXEL_DIM):
 
     # Now we need to reduce the noise from the images by performing a spatial smoothing
-    images = measure.block_reduce(images, (1, MACRO_PIXEL_DIM, MACRO_PIXEL_DIM), np.mean, cval = np.median(images))
+    images_reduced = measure.block_reduce(images, (1, MACRO_PIXEL_DIM, MACRO_PIXEL_DIM), np.mean, cval = np.median(images))
 
-    return images
+    if args.output_img is not None:
+        plt.figure()
+        plt.imshow(images_reduced[0], interpolation='nearest', cmap='viridis', origin='lower')
+        save_plot(args.output_img)
+
+
+    dim_t, dim_x, dim_y = images_reduced.shape
+    imgseq_reduced = neo.ImageSequence(images_reduced,
+                                   units=images.units,
+                                   spatial_scale=images.spatial_scale * MACRO_PIXEL_DIM,
+                                   sampling_rate=images.sampling_rate,
+                                   name='Reduced Images',
+                                   description='Spatial downsampling',
+                                   file_origin=images.file_origin,
+                                   **imgseq.annotations)
+
+    imgseq_reduced.name += " "
+    imgseq_reduced.annotations.update(macro_pixel_dim=MACRO_PIXEL_DIM)
+    imgseq_reduced.description += "spatially downsampled ({})." .format(os.path.basename(__file__))
+
+    return imgseq_reduced
 
 
 
@@ -31,45 +51,24 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
                      help="path of output image", default=None)
-    CLI.add_argument("--output_array",  nargs='?', type=none_or_str,
-                      help="path of output numpy array", default=None)
 
     CLI.add_argument("--macro_pixel_dim",  nargs='?', type=int,
-                      help="smoothing factor", default=2)
+                      help="smoothing factor", default=4)
 
     
     args = CLI.parse_args()
 
     block = load_neo(args.data)
     block = AnalogSignal2ImageSequence(block)
-    imgseq = block.segments[0].imagesequences[-1]
+    imgseq = block.segments[0].imagesequences[0]
     
-    MACRO_PIXEL_DIM = args.macro_pixel_dim    
-    img_reduced = spatial_smoothing(imgseq, MACRO_PIXEL_DIM)
-
-    if args.output_array is not None:
-        np.save(args.output_array, img_reduced[0])
-    if args.output_img is not None:
-        plt.figure()
-        plt.imshow(img_reduced[0])
-        save_plot(args.output_img)
-
-    dim_t = len(img_reduced[:,0,0])
-    dim_x = len(img_reduced[0,:,0])
-    dim_y = len(img_reduced[0,0,:])
-
-    imgseq_reduced = neo.ImageSequence(img_reduced,
-                                   units='dimensionless',
-                                   spatial_scale=imgseq.spatial_scale * MACRO_PIXEL_DIM,
-                                   sampling_rate=imgseq.sampling_rate,
-                                   name='Reduced Images',
-                                   description='Spatial downsampling',
-                                   file_origin=imgseq.file_origin,
-                                   **imgseq.annotations)
+    MACRO_PIXEL_DIM = args.macro_pixel_dim
+    print('Macro', MACRO_PIXEL_DIM)
+    imgseq_reduced = spatial_smoothing(imgseq, MACRO_PIXEL_DIM)
+ 
 
     block.segments[0].imagesequences = [imgseq_reduced]
+    block.segments[0].analogsignals.clear()
     block = ImageSequence2AnalogSignal(block)
-
-    asig = block.segments[0].analogsignals[-1]
 
     write_neo(args.output, block)

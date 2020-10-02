@@ -173,8 +173,8 @@ rule spatial_downsampling:
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --output_img "{output.img}”\
-				--macro_pixel_dim {params. macro_pixel_dim}
+                              --output_img "{output.img}" \
+				--macro_pixel_dim {params.macro_pixel_dim}
  
         """
     
@@ -354,3 +354,4 @@ rule zscore:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """
+

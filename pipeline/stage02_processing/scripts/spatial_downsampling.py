@@ -53,7 +53,7 @@ if __name__ == '__main__':
                      help="path of output image", default=None)
 
     CLI.add_argument("--macro_pixel_dim",  nargs='?', type=int,
-                      help="smoothing factor", default=4)
+                      help="smoothing factor", default=2)
 
     
     args = CLI.parse_args()
@@ -63,7 +63,6 @@ if __name__ == '__main__':
     imgseq = block.segments[0].imagesequences[0]
     
     MACRO_PIXEL_DIM = args.macro_pixel_dim
-    print('Macro', MACRO_PIXEL_DIM)
     imgseq_reduced = spatial_smoothing(imgseq, MACRO_PIXEL_DIM)
  
 

@@ -161,13 +161,11 @@ rule spatial_downsampling:
         data = input_file,
         script = 'scripts/spatial_downsampling.py'
     output:
-        data = os.path.join('{dir}', 'spatial_downsampling',
-                            '{rule_name}.'+NEO_FORMAT),
+        data = os.path.join('{dir}', '{rule_name}', 		'spatial_downsampling.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', '{rule_name}',
                                   'spatial_downsampling.'+PLOT_FORMAT))
     params:
         macro_pixel_dim = MACRO_PIXEL_DIM
-
     shell:
         """
         {ADD_UTILS}

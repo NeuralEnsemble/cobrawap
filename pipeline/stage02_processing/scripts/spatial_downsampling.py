@@ -28,8 +28,6 @@ def spatial_smoothing(images, macro_pixel_dim):
                                    units=images.units,
                                    spatial_scale=images.spatial_scale * macro_pixel_dim,
                                    sampling_rate=images.sampling_rate,
-                                   name='Reduced Images',
-                                   description='Spatial downsampling',
                                    file_origin=images.file_origin,
                                    **imgseq.annotations)
 

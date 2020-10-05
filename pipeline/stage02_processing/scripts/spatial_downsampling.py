@@ -57,7 +57,7 @@ if __name__ == '__main__':
     imgseq_reduced = spatial_smoothing(imgseq, args.macro_pixel_dim)
 
     if args.output_img is not None:
-        plot_downsampled_image(images_reduced.as_array()[0], args.output_img)
+        plot_downsampled_image(imgseq_reduced.as_array()[0], args.output_img)
 
     block.segments[0].imagesequences = [imgseq_reduced]
     block.segments[0].analogsignals.clear()

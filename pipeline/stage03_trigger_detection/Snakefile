@@ -41,9 +41,13 @@ BIN_NUM = config["BIN_NUM"]
 SIGMA_FACTOR = config["SIGMA_FACTOR"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
 MINIMA_ORDER = config["MINIMA_ORDER"]
+INTERPOLATION_POINT = config["INTERPOLATION_POINT"]
+        
 MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
 REMOVE_DOWN_FIRST = config["REMOVE_DOWN_FIRST"]
+
+INTERPOLATION = config["INTERPOLATION"]
 
 #### Housekeeping ####
 def locate(str_list, string):
@@ -75,7 +79,9 @@ rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'plot_trigger_times'),
+        img = os.path.join(OUTPUT_DIR, os.path.splitext(STAGE_OUTPUT)[0] \
+                                       + f'_channel{PLOT_CHANNELS[0]}.'\
+                                       + PLOT_FORMAT),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
 
 rule get_stage_output:
@@ -90,18 +96,6 @@ rule get_stage_output:
         {params.command} "{input.data}" "{output.data}"
         """
 
-rule check_input:
-    input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        temp(os.path.join('{dir}', 'input.check'))
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}"
-        touch "{output}"
-        """
 #### Blocks ####
 
 rule remove_short_states:
@@ -125,7 +119,21 @@ rule remove_short_states:
                               --remove_down_first {params.remove_down_first} \
         """
 
-checkpoint plot_trigger_times:
+
+rule check_input:
+    input:
+        data = STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
+        """
+
+rule plot_trigger_times:
     input:
         data = os.path.join('{dir}', '{file_name}.'+NEO_FORMAT),
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')
@@ -133,15 +141,17 @@ checkpoint plot_trigger_times:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
         plot_channels = PLOT_CHANNELS,
-        filename = '{file_name}_channel0'+PLOT_FORMAT
+        img = ','.join([os.path.join('{dir}',
+                        '{file_name}'+f'_channel{channel}.'+PLOT_FORMAT)
+                        for channel in PLOT_CHANNELS]),
     output:
-        img_dir = report(directory(os.path.join('{dir}', 'plot_{file_name}')), patterns=['{img_name}.'+PLOT_FORMAT])
+        img = report(os.path.join('{dir}',
+                     '{file_name}'+f'_channel{PLOT_CHANNELS[0]}.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}
         python {input.plot_script} --data "{input.data}" \
-                                   --output_dir "{output.img_dir}" \
-                                   --filename {params.filename} \
+                                   --output "{params.img}" \
                                    --t_start {params.tstart} \
                                    --t_stop {params.tstop} \
                                    --channels {params.plot_channels} \
@@ -218,19 +228,19 @@ rule hilbert_phase:
         plot_channels = PLOT_CHANNELS,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        img_name = 'hilbert_phase_channel0.'+PLOT_FORMAT
+        img = ','.join([os.path.join('{dir}', 'hilbert_phase',
+                        f'hilbert_phase_channel{channel}.'+PLOT_FORMAT)
+                        for channel in PLOT_CHANNELS])
     output:
         data = os.path.join('{dir}', 'hilbert_phase', 'transitions.'+NEO_FORMAT),
-        img_dir = report(directory(os.path.join('{dir}', 'hilbert_phase',
-                                                'hilbert_phase_plots')),
-                        patterns=['{img_name}.'+PLOT_FORMAT])
+        img = report(os.path.join('{dir}', 'hilbert_phase',
+                     f'hilbert_phase_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --img_dir "{output.img_dir}" \
-                              --img_name {params.img_name} \
+                              --output_img "{params.img}" \
                               --transition_phase {params.transition_phase} \
                               --plot_channels {params.plot_channels} \
                               --plot_tstart {params.plot_tstart} \
@@ -242,7 +252,9 @@ rule minima:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'minima.py')
     params:
-        order = MINIMA_ORDER
+        order = MINIMA_ORDER,
+	interpolation = INTERPOLATION,
+        interpolation_points = INTERPOLATION_POINT
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
     shell:
@@ -250,5 +262,8 @@ rule minima:
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --order {params.order}
+                              --order {params.order} \
+                              --interpolation {params.interpolation} \
+                              --interpolation_points {params.interpolation_points}
+
         """

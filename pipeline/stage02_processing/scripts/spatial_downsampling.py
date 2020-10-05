@@ -17,12 +17,6 @@ def spatial_smoothing(images, macro_pixel_dim):
     # Now we need to reduce the noise from the images by performing a spatial smoothing
     images_reduced = measure.block_reduce(images, (1, macro_pixel_dim, macro_pixel_dim), np.nanmean, cval = np.nanmedian(images))
 
-    if args.output_img is not None:
-        plt.figure()
-        plt.imshow(images_reduced[0], interpolation='nearest', cmap='viridis', origin='lower')
-        save_plot(args.output_img)
-
-
     dim_t, dim_x, dim_y = images_reduced.shape
     imgseq_reduced = neo.ImageSequence(images_reduced,
                                    units=images.units,
@@ -31,11 +25,16 @@ def spatial_smoothing(images, macro_pixel_dim):
                                    file_origin=images.file_origin,
                                    **imgseq.annotations)
 
-    imgseq_reduced.name += " "
+    imgseq_reduced.name = images.name + " "
     imgseq_reduced.annotations.update(macro_pixel_dim=macro_pixel_dim)
-    imgseq_reduced.description += "spatially downsampled ({})." .format(os.path.basename(__file__))
+    imgseq_reduced.description = images.name +  "spatially downsampled ({})." .format(os.path.basename(__file__))
 
     return imgseq_reduced
+
+def plot_downsampled_image(images_reduced):
+    plt.figure()
+    plt.imshow(np.array(images_reduced[0]), interpolation='nearest', cmap='viridis', origin='lower')
+    save_plot(args.output_img)
 
 
 
@@ -58,10 +57,15 @@ if __name__ == '__main__':
     imgseq = block.segments[0].imagesequences[0]
     
     imgseq_reduced = spatial_smoothing(imgseq, args.macro_pixel_dim)
- 
+
+    if args.output_img is not None:
+         plot_downsampled_image(imgseq_reduced)
+
 
     block.segments[0].imagesequences = [imgseq_reduced]
     block.segments[0].analogsignals.clear()
     block = ImageSequence2AnalogSignal(block)
 
     write_neo(args.output, block)
+
+

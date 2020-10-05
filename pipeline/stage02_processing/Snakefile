@@ -173,7 +173,7 @@ rule spatial_downsampling:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
-			       --macro_pixel_dim {params.macro_pixel_dim}
+			      --macro_pixel_dim {params.macro_pixel_dim}
  
         """
     

@@ -27,16 +27,14 @@ def spatial_smoothing(images, macro_pixel_dim):
 
     imgseq_reduced.name = images.name + " "
     imgseq_reduced.annotations.update(macro_pixel_dim=macro_pixel_dim)
-    imgseq_reduced.description = images.name +  "spatially downsampled ({})." .format(os.path.basename(__file__))
+    imgseq_reduced.description = images.description +  "spatially downsampled ({})." .format(os.path.basename(__file__))
 
     return imgseq_reduced
 
-def plot_downsampled_image(images_reduced):
+def plot_downsampled_image(image, output_path):
     plt.figure()
-    plt.imshow(np.array(images_reduced[0]), interpolation='nearest', cmap='viridis', origin='lower')
-    save_plot(args.output_img)
-
-
+    plt.imshow(image, interpolation='nearest', cmap='viridis', origin='lower')
+    save_plot(output_path)
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -59,13 +57,10 @@ if __name__ == '__main__':
     imgseq_reduced = spatial_smoothing(imgseq, args.macro_pixel_dim)
 
     if args.output_img is not None:
-         plot_downsampled_image(imgseq_reduced)
-
+        plot_downsampled_image(images_reduced.as_array()[0], args.output_img)
 
     block.segments[0].imagesequences = [imgseq_reduced]
     block.segments[0].analogsignals.clear()
     block = ImageSequence2AnalogSignal(block)
 
     write_neo(args.output, block)
-
-

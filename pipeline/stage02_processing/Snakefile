@@ -30,6 +30,8 @@ PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
+MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
+
 BLOCK_ORDER = config["BLOCK_ORDER"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
 HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
@@ -157,6 +159,28 @@ rule background_substraction:
                               --output_img "{output.img}" \
                               --output_array "{output.array}"
         """
+        
+rule spatial_downsampling:
+    input:
+        is_clear = os.path.join('{dir}', 'clear.done'),
+        data = input_file,
+        script = 'scripts/spatial_downsampling.py'
+    output:
+        data = os.path.join('{dir}', '{rule_name}', 		'spatial_downsampling.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{rule_name}',
+                                  'spatial_downsampling.'+PLOT_FORMAT))
+    params:
+        macro_pixel_dim = MACRO_PIXEL_DIM
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+				--macro_pixel_dim {params.macro_pixel_dim}
+ 
+        """
+    
 
 rule normalization:
     input:
@@ -332,3 +356,4 @@ rule zscore:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """
+

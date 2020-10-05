@@ -40,7 +40,6 @@ BLOCK_ORDER: ['roi_selection', 'background_substraction', 'spatial_downsampling'
 #################################
 MACRO_PIXEL_DIM: 2
 
-
 # BLOCK - normalization
 #######################
 # Normalize the data (devide channels-wise) by either:
@@ -53,10 +52,10 @@ NORMALIZE_BY: 'max'
 # function by elephant
 HIGHPASS_FREQ: 0  # in Hz
 LOWPASS_FREQ: 5  # in Hz
-FILTER_ORDER: 2
+FILTER_ORDER: 6 #2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
-FILTER_FUNCTION: 'filtfilt'
+FILTER_FUNCTION: 'lfilter' #'filtfilt'
 # Plotting parameters for the power spectrum
 PSD_FREQ_RES: 5  # in Hz
 PSD_OVERLAP: 0.5

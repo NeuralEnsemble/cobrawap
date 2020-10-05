@@ -85,14 +85,13 @@ if __name__ == '__main__':
     cmap = plt.get_cmap(args.colormap)
 
     for wave_id in np.unique(waves_event.labels):
+        if int(wave_id) != -1:  # collection of not-clustered triggers
+            ax = plot_wave(wave_id=wave_id,
+                           waves_event=waves_event,
+                           asig=asig,
+                           frames=frames,
+                           vec_frames=vec_frames,
+                           time_window=args.time_window*pq.s,
+                           cmap=cmap)
 
-        ax = plot_wave(wave_id=wave_id,
-                       waves_event=waves_event,
-                       asig=asig,
-                       frames=frames,
-                       vec_frames=vec_frames,
-                       time_window=args.time_window*pq.s,
-                       cmap=cmap)
-
-        save_plot(args.output.replace('id0', f'id{wave_id}'))
-        plt.close()
+            save_plot(args.output.replace('id0', f'id{wave_id}'))

@@ -154,7 +154,7 @@ rule background_substraction:
                               --output_img "{output.img}" \
                               --output_array "{output.array}"
         """
-
+        	
 rule spatial_downsampling:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
@@ -172,8 +172,9 @@ rule spatial_downsampling:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
-				--macro_pixel_dim {params.macro_pixel_dim} 
-        """
+				--macro_pixel_dim {params.macro_pixel_dim}	
+	
+	"""
     
 
 rule normalization:

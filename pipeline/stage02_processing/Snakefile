@@ -154,7 +154,7 @@ rule background_substraction:
                               --output_img "{output.img}" \
                               --output_array "{output.array}"
         """
-
+        
 rule spatial_downsampling:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),

@@ -34,6 +34,8 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 MEASURES = config["MEASURES"]
 ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
 
+#### Housekeeping ####
+
 def input(wildcards):
     return STAGE_INPUT
 
@@ -42,6 +44,8 @@ def measures_output(wildcards):
             for measure in MEASURES]
 
 localrules: all, check_input
+
+#### UTILITY BLOCKS ####
 
 rule all:
     input:
@@ -77,6 +81,7 @@ rule check_input:
         touch "{output}"
         """
 
+#### CHARACTERIZATION BLOCKS ####
 
 rule velocity_planar:
     input:
@@ -111,7 +116,6 @@ rule velocity_gradient:
                               --output_img "{output.img}"
         """
 
-
 rule direction:
     input:
         data = input,
@@ -132,9 +136,6 @@ rule direction:
     # slice signal for each wave
 
 # rule inter_wave_distance:
-
-
-#### Wave Clasification ####
 
 rule label_planar:
     input:

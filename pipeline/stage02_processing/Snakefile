@@ -71,6 +71,8 @@ def input_file(wildcards):
                             BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
     return os.path.join(STAGE_INPUT)
 
+#### UTILITY BLOCKS ####
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
@@ -86,7 +88,6 @@ rule all:
         {params.command} "{input.data}" "{output.data}"
         """
 
-
 rule check_input:
     input:
         data = STAGE_INPUT,
@@ -100,6 +101,17 @@ rule check_input:
         touch "{output}"
         """
 
+rule clear:
+    output:
+        temp(os.path.join('{path}', 'clear.done'))
+    params:
+        block_folder = ['"'+os.path.join('{path}', block)+'"'
+                        for block in BLOCK_ORDER]
+    shell:
+        """
+        rm -rf {params.block_folder}
+        touch "{output}"
+        """
 
 checkpoint plot_processed_traces:
     input:
@@ -125,19 +137,29 @@ checkpoint plot_processed_traces:
                               --channels {params.channels}
         """
 
-rule clear:
-    output:
-        temp(os.path.join('{path}', 'clear.done'))
+rule plot_power_spectrum:
+    input:
+        data = input_file,
+        script = os.path.join('scripts','plot_power_spectrum.py')
     params:
-        block_folder = ['"'+os.path.join('{path}', block)+'"'
-                        for block in BLOCK_ORDER]
+        highpass_freq = HIGHPASS_FREQ,
+        lowpass_freq = LOWPASS_FREQ,
+        psd_freq_res = PSD_FREQ_RES,
+        psd_overlap = PSD_OVERLAP
+    output:
+        img = report(os.path.join('{dir}', '{rule_name}', 'power_spectrum.'+PLOT_FORMAT))
     shell:
         """
-        rm -rf {params.block_folder}
-        touch "{output}"
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.img}" \
+                              --highpass_freq {params.highpass_freq} \
+                              --lowpass_freq {params.lowpass_freq} \
+                              --psd_freq_res {params.psd_freq_res} \
+                              --psd_overlap {params.psd_overlap} \
         """
 
-#### Blocks ####
+#### PROCESSING BLOCKS (choose any)####
 
 rule background_substraction:
     input:
@@ -159,14 +181,15 @@ rule background_substraction:
                               --output_img "{output.img}" \
                               --output_array "{output.array}"
         """
-        
+
 rule spatial_downsampling:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = 'scripts/spatial_downsampling.py'
+        script = os.path.join('scripts', 'spatial_downsampling.py')
     output:
-        data = os.path.join('{dir}', '{rule_name}', 		'spatial_downsampling.'+NEO_FORMAT),
+        data = os.path.join('{dir}', '{rule_name}',
+                            'spatial_downsampling.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', '{rule_name}',
                                   'spatial_downsampling.'+PLOT_FORMAT))
     params:
@@ -177,10 +200,10 @@ rule spatial_downsampling:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
-				--macro_pixel_dim {params.macro_pixel_dim}
- 
+				              --macro_pixel_dim {params.macro_pixel_dim}
+
         """
-    
+
 
 rule normalization:
     input:
@@ -243,27 +266,6 @@ rule frequency_filter:
                               --filter_function {params.filter_function}
         """
 
-rule plot_power_spectrum:
-    input:
-        data = input_file,
-        script = os.path.join('scripts','plot_power_spectrum.py')
-    params:
-        highpass_freq = HIGHPASS_FREQ,
-        lowpass_freq = LOWPASS_FREQ,
-        psd_freq_res = PSD_FREQ_RES,
-        psd_overlap = PSD_OVERLAP
-    output:
-        img = report(os.path.join('{dir}', '{rule_name}', 'power_spectrum.'+PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.img}" \
-                              --highpass_freq {params.highpass_freq} \
-                              --lowpass_freq {params.lowpass_freq} \
-                              --psd_freq_res {params.psd_freq_res} \
-                              --psd_overlap {params.psd_overlap} \
-        """
 
 rule roi_selection:
     input:
@@ -355,4 +357,3 @@ rule zscore:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """
-

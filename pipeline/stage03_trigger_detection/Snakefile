@@ -73,6 +73,8 @@ wildcard_constraints:
 
 localrules: all, check_input
 
+#### UTILTY BLOCKS ####
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
@@ -104,28 +106,6 @@ rule check_input:
         python {input.script} --data "{input.data}"
         touch "{output}"
         """
-#### Blocks ####
-
-rule remove_short_states:
-    input:
-        data = filtered_triggers,
-        script = os.path.join('scripts', 'remove_short_states.py')
-    params:
-        min_up_duration = MIN_UP_DURATION,
-        min_down_duration = MIN_DOWN_DURATION,
-        remove_down_first = REMOVE_DOWN_FIRST
-    output:
-        data = os.path.join('{dir}', '{rule_name}',
-                            'remove_short_states.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --min_up_duration {params.min_up_duration} \
-                              --min_down_duration {params.min_down_duration} \
-                              --remove_down_first {params.remove_down_first} \
-        """
 
 checkpoint plot_trigger_times:
     input:
@@ -149,6 +129,7 @@ checkpoint plot_trigger_times:
                                    --channels {params.plot_channels} \
         """
 
+#### DETECTION BLOCKS (choose one) ####
 
 rule threshold:
     input:
@@ -165,7 +146,6 @@ rule threshold:
                               --output "{output.data}" \
                               --thresholds "{input.thresholds}"
         """
-
 
 rule calc_tresholds_fixed:
     input:
@@ -253,4 +233,27 @@ rule minima:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --order {params.order}
+        """
+
+#### FILTER BLOCKS (choose any) ####
+
+rule remove_short_states:
+    input:
+        data = filtered_triggers,
+        script = os.path.join('scripts', 'remove_short_states.py')
+    params:
+        min_up_duration = MIN_UP_DURATION,
+        min_down_duration = MIN_DOWN_DURATION,
+        remove_down_first = REMOVE_DOWN_FIRST
+    output:
+        data = os.path.join('{dir}', '{rule_name}',
+                            'remove_short_states.'+NEO_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --min_up_duration {params.min_up_duration} \
+                              --min_down_duration {params.min_down_duration} \
+                              --remove_down_first {params.remove_down_first} \
         """

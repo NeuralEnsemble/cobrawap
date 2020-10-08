@@ -1,4 +1,4 @@
-# Stage 04 Wavefront Detection
+# Stage 04 Wave Identification
 import os
 
 configfile: os.path.join('configs', 'config_template.yaml')
@@ -196,9 +196,11 @@ rule plot_waves:
     params:
         time_window = 0.4,  # in s
         colormap='viridis',
+        img_name = 'wave_plot_id0'+PLOT_FORMAT
     output:
         # creates additional files for each wave
-        img = report(os.path.join('{dir}', 'wave_plots', '{filename}_id0.'+PLOT_FORMAT))
+        img = report(directory(os.path.join('{dir}', '{filename}_wave_plots')),
+                    patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}

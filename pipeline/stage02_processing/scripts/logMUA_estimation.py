@@ -41,7 +41,9 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                                 asig.t_stop.rescale('s'),
                                 1/eff_logMUA_rate) * asig.t_start.units
 
-    logMUA_signal = np.zeros((len(subsample_times), channel_num))
+    non_nan_channels = [i for i in range(asig.shape[-1]) if np.isfinite(asig[:,i]).all()]
+    asig_channels = asig[:, non_nan_channels]
+    logMUA_signal = np.zeros((len(subsample_times), len(non_nan_channels)))
 
     for i, t in enumerate(subsample_times):
         if t < asig.t_start.rescale('s') + fft_slice/2:
@@ -54,8 +56,9 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
         t_stop = np.min([t_start + fft_slice,
                          asig.t_stop.rescale('s')]) *pq.s
 
-        freqs, psd = welch_psd(asig.time_slice(t_start=t_start,
-                                               t_stop=t_stop),
+        asig_slice = asig_channels.time_slice(t_start=t_start, t_stop=t_stop)
+
+        freqs, psd = welch_psd(asig_slice,
                                freq_res=highpass_freq,
                                overlap=psd_overlap,
                                window='hanning',
@@ -69,10 +72,13 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
 
         avg_power = np.mean(psd, axis=-1)
         avg_power_in_freq_band = np.mean(psd[:,1:high_idx], axis=-1)
-        logMUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/
-                                          avg_power))
+        logMUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/avg_power))
 
-    logMUA_asig = asig.duplicate_with_new_data(logMUA_signal)
+    new_signals = np.empty((len(subsample_times), channel_num))
+    new_signals.fill(np.nan)
+    new_signals[:, non_nan_channels] = logMUA_signal
+
+    logMUA_asig = asig.duplicate_with_new_data(new_signals)
     logMUA_asig.array_annotations = asig.array_annotations
     logMUA_asig.sampling_rate = eff_logMUA_rate
     logMUA_asig.annotate(freq_band = [highpass_freq, lowpass_freq],

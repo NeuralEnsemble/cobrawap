@@ -48,6 +48,7 @@ logMUA_RATE = config["logMUA_RATE"]
 FFT_SLICE = config["FFT_SLICE"]
 
 #### Housekeeping ####
+
 wildcard_constraints:
     rule_name = '\w+'
 
@@ -119,7 +120,7 @@ checkpoint plot_processed_traces:
         stage_output = input_file,
         script = os.path.join('scripts', 'plot_processed_trace.py')
     params:
-        img_name = 'processed_trace_{t_start}-{t_stop}s_channel0'+PLOT_FORMAT,
+        img_name = 'processed_trace_{t_start}-{t_stop}s_channel0.'+PLOT_FORMAT,
         channels = PLOT_CHANNELS
     output:
         img_dir = report(directory(os.path.join(OUTPUT_DIR,

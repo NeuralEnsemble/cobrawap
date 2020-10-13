@@ -79,8 +79,10 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output thresholds (numpy array)")
-    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
-                     default=None, help="path(s) of output figure(s)")
+    CLI.add_argument("--img_dir", nargs='?', type=str, default=None,
+                     help="path of output figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str, default=None,
+                     help="example name of output figure for channel 0")
     CLI.add_argument("--fit_function", nargs='?', type=str, default='Gaussian',
                      help="function to fit the amplitude distribution")
     CLI.add_argument("--sigma_factor", nargs='?', type=float, default=3,
@@ -92,13 +94,14 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     asig = load_neo(args.data, 'analogsignal')
-
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape
+    non_nan_channels = [i for i in range(dim_channels) if np.isfinite(signal[:,i]).all()]
 
-    thresholds = np.zeros(dim_channels)
+    thresholds = np.empty(dim_channels)
+    thresholds.fill(np.nan)
 
-    for channel in np.arange(dim_channels):
+    for channel in non_nan_channels:
         if channel in args.plot_channels:
             plot_channel = channel
         else:
@@ -109,7 +112,8 @@ if __name__ == '__main__':
                                                          args.bin_num,
                                                          plot_channel)
         if plot_channel:
-            fig_idx = np.where(channel == args.plot_channels)[0][0]
-            save_plot(args.output_img[fig_idx])
+            output_path = os.path.join(args.img_dir,
+                                       args.img_name.replace('_channel0', f'_channel{channel}'))
+            save_plot(output_path)
 
     np.save(args.output, thresholds)

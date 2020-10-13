@@ -34,6 +34,10 @@ BLOCK_ORDER: ['background_substraction', 'normalization', 'logMUA_estimation']
 #################################
 # No parameters needed
 
+# BLOCK - spatial_smoothig
+#################################
+MACRO_PIXEL_DIM: 2
+
 # BLOCK - normalization
 #######################
 # Normalize the data (devide channels-wise) by either:

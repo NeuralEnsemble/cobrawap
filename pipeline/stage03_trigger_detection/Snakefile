@@ -172,19 +172,19 @@ rule calc_tresholds_fitted:
         fit_function = FIT_FUNCTION,
         bin_num = BIN_NUM,
         plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join('{dir}', 'threshold',
-                        f'amplitudes_channel{channel}.{PLOT_FORMAT}')
-                        for channel in PLOT_CHANNELS])
+        img_name = 'amplitudes_channel0.'+PLOT_FORMAT
     output:
         array = os.path.join('{dir}', 'threshold', 'fitted_thresholds.npy'),
-        img = report(os.path.join('{dir}', 'threshold',
-                        f'amplitudes_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
+        img_dir = report(directory(os.path.join('{dir}', 'threshold',
+                                                'fitted_thresholds')),
+                        patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.array}" \
-                              --output_img "{params.img}" \
+                              --img_dir "{output.img_dir}" \
+                              --img_name {params.img_name} \
                               --sigma_factor {params.sigma_factor} \
                               --fit_function {params.fit_function} \
                               --bin_num {params.bin_num} \

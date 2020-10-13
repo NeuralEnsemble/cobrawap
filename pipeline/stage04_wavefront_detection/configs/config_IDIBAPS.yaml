@@ -23,14 +23,6 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
-# Tigger Filter
-###############
-TRIGGER_FILTER: [] # ToDo
-
-# Wavefront Filter
-##################
-WAVEFRONT_FILTER: [] # ToDo
-
 # Wavefront Clustering
 ######################
 # Using sklearn.cluster.DBSCAN

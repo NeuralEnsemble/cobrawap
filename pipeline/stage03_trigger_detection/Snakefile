@@ -76,6 +76,8 @@ wildcard_constraints:
 
 localrules: all, check_input
 
+#### UTILTY BLOCKS ####
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),

@@ -6,41 +6,43 @@ import argparse
 from utils import load_neo, write_neo, remove_annotations
 
 
-def detect_minima(asig, order, interpolation_points, sampling_time, interpolation):
+def detect_minima(asig, order, interpolation_points, interpolation):
     signal = asig.as_array()
-    
+    sampling_time = asig.times[1] - asig.times[0]
+
     t_idx, channel_idx = argrelmin(signal, order=order, axis=0)
 
     if int(interpolation) == 0:
-        fitted_idx = []
-        fitted_idx_times = []
 
-        for i in range(0,len(t_idx)):
+        fitted_idx_times = np.zeros([len(t_idx)])
         
-            if t_idx[i] - int((interpolation_points-1)/2) >= 0 and t_idx[i] + int((interpolation_points-1)/2)+1 <= len(signal[:,0]):
-                start = t_idx[i] - int((interpolation_points-1)/2)
-                end =  t_idx[i] + int((interpolation_points-1)/2)+1
-
-                X = list(range(start, end))
-                params = np.polyfit(X, signal[start:end, channel_idx[i]], 2)
-                minimum = -(1.*params[1])/(2.*params[0])
-                if minimum > 0:
-                    fitted_idx.append(minimum)
-                    fitted_idx_times.append(minimum*sampling_time)
+        start_arr = np.array(t_idx) - int(interpolation_points/2)
+        start_arr = np.where(start_arr > 0, start_arr, 0)
+        stop_arr = start_arr + int(interpolation_points)
+        stop_arr = np.where(stop_arr < len(signal), stop_arr, len(signal))
+        
+        for start, stop, channel_i, i in zip(start_arr, stop_arr, channel_idx, range(len(start_arr))):
+            X = list(range(start, stop))
+            params = np.polyfit(X, signal[start:stop, channel_i], 2)
+            minimum = -(1.*params[1])/(2.*params[0])
+            fitted_idx_times[i] = minimum*sampling_time
             
-        fitted_idx_times = np.asarray(fitted_idx_times)
+        fitted_idx_times = np.where(fitted_idx_times > 0, fitted_idx_times, 0)
         sort_idx = np.argsort(fitted_idx_times)
-        
+
     else:
-        fitted_idx_times = np.asarray(np.float64(t_idx)*sampling_time)
+        fitted_idx_times = np.asarray(asig.times[t_idx]*sampling_time)
         sort_idx = np.argsort(fitted_idx_times)
         
     
-    evt = neo.Event(times=fitted_idx_times[sort_idx]*pq.s,
+    evt = neo.Event(times=fitted_idx_times[sort_idx]*asig.times.units,
                     labels=['UP'] * len(fitted_idx_times),
                     name='Transitions',
                     minima_order=order,
-                    array_annotations={'channels':channel_idx[sort_idx]})
+                    use_quadtratic_interpolation=interpolation,
+                    num_interpolation_points=interpolation_points,
+                    array_annotations={'channels':channel_idx[sort_idx]},
+                    )
 
     for key in asig.array_annotations.keys():
         evt_ann = {key : asig.array_annotations[key][channel_idx[sort_idx]]}
@@ -60,16 +62,15 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--order", nargs='?', type=int, default=3,
                      help="number of neighbouring points to compare")
-    CLI.add_argument("--interpolation_points", nargs='?', type=int, default=5,
+    CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=5,
                      help="number of neighbouring points to interpolate")
-    CLI.add_argument("--interpolation", nargs='?', type=int, default=0,
+    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=bool, default=0,
                      help="wether use interpolation or not")
 
     args = CLI.parse_args()
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
-    sampling_time = asig.times[1] - asig.times[0]
-    transition_event = detect_minima(asig, args.order, args.interpolation_points, sampling_time, args.interpolation)
+    transition_event = detect_minima(asig, args.order, args.num_interpolation_points, args.use_quadtratic_interpolation)
     block.segments[0].events.append(transition_event)
     write_neo(args.output, block)
 

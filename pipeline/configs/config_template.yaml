@@ -37,3 +37,4 @@ FRAME_RATE: None
 # 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
 COLORMAP: 'twilight'
 PLOT_EVENT: 'Transitions' # name of neo event to plot, default is None
+MARKER_COLOR: 'r'

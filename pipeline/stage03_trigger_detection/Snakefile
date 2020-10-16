@@ -78,12 +78,8 @@ localrules: all, check_input
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'plot_trigger_times'),
-        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
-
-rule get_stage_output:
-    input:
+        img = os.path.join(OUTPUT_DIR, os.path.splitext('plot_'+STAGE_OUTPUT)[0]),
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = filtered_triggers
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -107,7 +103,7 @@ rule check_input:
         touch "{output}"
         """
 
-checkpoint plot_trigger_times:
+rule plot_trigger_times:
     input:
         data = os.path.join('{dir}', '{file_name}.'+NEO_FORMAT),
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')
@@ -117,7 +113,8 @@ checkpoint plot_trigger_times:
         plot_channels = PLOT_CHANNELS,
         filename = '{file_name}_channel0'+PLOT_FORMAT
     output:
-        img_dir = report(directory(os.path.join('{dir}', 'plot_{file_name}')), patterns=['{img_name}.'+PLOT_FORMAT])
+        img_dir = report(directory(os.path.join('{dir}', 'plot_{file_name}')),
+                         patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}

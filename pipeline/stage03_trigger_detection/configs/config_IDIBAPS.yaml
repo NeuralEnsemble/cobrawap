@@ -61,7 +61,10 @@ TRANSITION_PHASE: -1.570796
 # BLOCK - Minima
 ################
 # Number of neighbouring points which should be compared to define a local minimum.
-MINIMA_ORDER: 3
+USE_QUADRATIC_INTERPOLATION: 1 # 0 if minima are detected through parabolic interpolation
+MINIMA_ORDER: 1 #3
+# Number of neighbouring points which should be compared to define a local minimum.
+NUM_INTERPOLATION_POINTS: 5 # number of points to be used in the parabolic interpolation
 
 # BLOCK - Remove Short States
 #############################
@@ -74,3 +77,4 @@ MIN_DOWN_DURATION: 0.2
 # Only then the remaining short up states are removed.
 # Applies only when down transitions are detected.
 REMOVE_DOWN_FIRST: True
+

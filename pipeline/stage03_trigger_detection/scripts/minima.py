@@ -11,32 +11,50 @@ def detect_minima(asig, order, interpolation_points, interpolation):
     sampling_time = asig.times[1] - asig.times[0]
 
     t_idx, channel_idx = argrelmin(signal, order=order, axis=0)
-
-    if int(interpolation) == 0:
+    
+    if interpolation:
 
         fitted_idx_times = np.zeros([len(t_idx)])
         
-        start_arr = np.array(t_idx) - int(interpolation_points/2)
+        start_arr = t_idx - int(interpolation_points/2)
         start_arr = np.where(start_arr > 0, start_arr, 0)
         stop_arr = start_arr + int(interpolation_points)
         stop_arr = np.where(stop_arr < len(signal), stop_arr, len(signal))
         
-        for start, stop, channel_i, i in zip(start_arr, stop_arr, channel_idx, range(len(start_arr))):
-            X = list(range(start, stop))
-            params = np.polyfit(X, signal[start:stop, channel_i], 2)
-            minimum = -(1.*params[1])/(2.*params[0])
-            fitted_idx_times[i] = minimum*sampling_time
-            
-        fitted_idx_times = np.where(fitted_idx_times > 0, fitted_idx_times, 0)
-        sort_idx = np.argsort(fitted_idx_times)
-
-    else:
-        fitted_idx_times = np.asarray(asig.times[t_idx]*sampling_time)
-        sort_idx = np.argsort(fitted_idx_times)
+        signal_arr = np.empty((interpolation_points,len(start_arr)))
+        signal_arr[:] = np.nan
         
+        for i, (start, stop, channel_i) in enumerate(zip(start_arr, stop_arr, channel_idx)):
+            signal_arr[0:stop-start,i] = signal[start:stop, channel_i]
+
+        X_temp = range(0, interpolation_points)
+        params = np.polyfit(X_temp, signal_arr, 2)
+        # parabola translation
+        params[1,:] = params[1,:] - 2.*params[0,:]*start_arr
+        params[2,:] = params[2,:] -  params[0,:]*start_arr*start_arr - params[1,:]*start_arr
+        fitted_idx_times = -(1.*params[1,:])/(2.*params[0,:])*sampling_time
+        
+        # borders
+        idx = np.where(np.isnan(fitted_idx_times))[0]
+        print(idx)
+        while len(idx) > 0:
+            X_temp = range(0, interpolation_points - 1)
+            params = np.polyfit(X_temp, signal_arr[0:interpolation_points - 1, idx], 2)
+            params[1,:] = params[1,:] - 2.*params[0,:]*start_arr[idx]
+            params[2,:] = params[2,:] -  params[0,:]*start_arr[idx]*start_arr[idx] - params[1,:]*start_arr[idx]
+            fitted_idx_times[idx] = -(1.*params[1,:])/(2.*params[0,:])*sampling_time
+            idx = np.where(np.isnan(fitted_idx_times))[0]
     
-    evt = neo.Event(times=fitted_idx_times[sort_idx]*asig.times.units,
-                    labels=['UP'] * len(fitted_idx_times),
+    
+        minimum_times = np.where(fitted_idx_times > 0, fitted_idx_times, 0)*asig.times.units
+        
+    else:
+        minimum_times = asig.times[t_idx]
+        
+    sort_idx = np.argsort(minimum_times)
+
+    evt = neo.Event(times=minimum_times[sort_idx],
+                    labels=['UP'] * len(minimum_times),
                     name='Transitions',
                     minima_order=order,
                     use_quadtratic_interpolation=interpolation,
@@ -64,7 +82,7 @@ if __name__ == '__main__':
                      help="number of neighbouring points to compare")
     CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=5,
                      help="number of neighbouring points to interpolate")
-    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=bool, default=0,
+    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=bool, default=True,
                      help="wether use interpolation or not")
 
     args = CLI.parse_args()
@@ -73,4 +91,6 @@ if __name__ == '__main__':
     transition_event = detect_minima(asig, args.order, args.num_interpolation_points, args.use_quadtratic_interpolation)
     block.segments[0].events.append(transition_event)
     write_neo(args.output, block)
+
+
 

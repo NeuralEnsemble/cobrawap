@@ -78,9 +78,9 @@ localrules: all, check_input
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        img = os.path.join(OUTPUT_DIR, os.path.splitext('plot_'+STAGE_OUTPUT)[0]),
         configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
-        data = filtered_triggers
+        data = filtered_triggers,
+        img = os.path.join(OUTPUT_DIR, os.path.splitext('plot_'+STAGE_OUTPUT)[0])
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -103,7 +103,7 @@ rule check_input:
         touch "{output}"
         """
 
-rule plot_trigger_times:
+checkpoint plot_trigger_times:
     input:
         data = os.path.join('{dir}', '{file_name}.'+NEO_FORMAT),
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')

@@ -39,12 +39,14 @@ TRIGGER_FILTER: ['remove_short_states']
 THRESHOLD_METHOD: 'fixed'
 
 # Fitting Parameters
-# available fit functions: 'Gaussian'
-FIT_FUNCTION: 'Gaussian'
+# available fit functions: 'HalfGaussian', 'DoubleGaussian'
+# FirstGaussian: detects main peak (DOWN), fits Gaussian to left half, set threshold to mean + sigma*SIGMA_FACTOR
+# DoubleGaussian: Fits two Gaussians, threshold = central minima, or if no second peak mean1 + sigma1*SIGMA_FACTOR
+FIT_FUNCTION: 'DoubleGaussian'
 BIN_NUM: 100
 # Factor to multiply with the standard deviation
 # to determine threshold
-SIGMA_FACTOR: 2.5
+SIGMA_FACTOR: 2
 
 # Fixed Parameters
 FIXED_THRESHOLD: 0

@@ -83,5 +83,5 @@ logMUA_RATE: 25
 # Length of time slice (in s) to estimate the local power spectrum
 # default 'None', takes minimum number of samples determined
 # by the lower bound of the frequency band
-FFT_SLICE: 0.1
+FFT_SLICE: 0.3
 # PSD_OVERLAP: determined by setting in block frequency_filter

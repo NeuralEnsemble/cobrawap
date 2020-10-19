@@ -5,14 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
-from utils import determine_spatial_scale, load_neo, write_neo, save_plot, \
-                  none_or_str
-
-
-def substract_background(asig, background):
-    for num, frame in enumerate(asig):
-        asig[num] = frame - background
-    return asig
+from utils import load_neo, write_neo, save_plot, none_or_str
 
 def shape_frame(value_array, coords):
     dim_x = np.max(coords[:,0]) + 1
@@ -24,7 +17,7 @@ def shape_frame(value_array, coords):
 
 def plot_frame(frame):
     fig, ax = plt.subplots()
-    ax.imshow(frame, interpolation='nearest', cmap=plt.cm.gray)
+    ax.imshow(frame, interpolation='nearest', cmap=plt.cm.gray, origin='lower')
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -45,10 +38,9 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
-
-    background = np.mean(asig, axis=0)
-
-    asig = substract_background(asig, background)
+    signal = asig.as_array()
+    background = np.nanmean(signal, axis=0)
+    signal -= background
 
     if args.output_img or args.output_array is not None:
         coords = np.array([(x,y) for x,y in
@@ -62,6 +54,7 @@ if __name__ == '__main__':
             plot_frame(frame)
             save_plot(args.output_img)
 
+    asig = asig.duplicate_with_new_data(signal)
     asig.name += ""
     asig.description += "The mean of each channel was substracted ({})."\
                         .format(os.path.basename(__file__))

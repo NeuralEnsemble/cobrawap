@@ -103,8 +103,6 @@ rule all:
                          subworkflow_name=STAGES)
     output:
         os.path.join(output_path, 'pipeline.done')
-    params:
-        temp_config_path = os.path.join('*', temp_config)
     shell:
         """
         touch {output}

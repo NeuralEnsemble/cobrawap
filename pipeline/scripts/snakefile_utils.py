@@ -6,7 +6,6 @@ def safe_open_w(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     return open(path, 'w')
 
-
 def read_stage_output(stage, config_dir, config_name, output_namespace="STAGE_OUTPUT"):
     with open(os.path.join(config_dir, stage, config_name), 'r') as f:
         config_dict = yaml.safe_load(f)
@@ -27,7 +26,7 @@ def get_config(dir, config_name):
             config_path = os.path.join(dir, config_name)
             with open(config_path, 'r') as f:
                 config_dict = yaml.safe_load(f)
-        except IOError:
+        except FileNotFoundError:
             parent_config_name = "_".join(config_name.split('_')[:-1]) + ext
             print(f"{config_name} not found, trying {parent_config_name}")
             config_name = parent_config_name

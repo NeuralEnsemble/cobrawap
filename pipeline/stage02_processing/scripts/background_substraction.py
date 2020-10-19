@@ -54,7 +54,6 @@ if __name__ == '__main__':
             plot_frame(frame)
             save_plot(args.output_img)
 
-
     new_asig = asig.duplicate_with_new_data(signal)
     new_asig.array_annotations = asig.array_annotations
     new_asig.name += ""
@@ -62,5 +61,4 @@ if __name__ == '__main__':
                         .format(os.path.basename(__file__))
     block.segments[0].analogsignals[0] = new_asig
 
-    breakpoint()
     write_neo(args.output, block)

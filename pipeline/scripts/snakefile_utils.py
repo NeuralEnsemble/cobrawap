@@ -19,13 +19,24 @@ def read_stage_output(stage, config_dir, config_name, output_namespace="STAGE_OU
         raise ValueError(f"config file of stage {stage} "
                        + f"does not define {output_namespace}!")
 
+def get_config(dir, config_name):
+    ext = os.path.splitext(config_name)[-1]
+    config_dict = {}
+    while not config_dict:
+        try:
+            config_path = os.path.join(dir, config_name)
+            with open(config_path, 'r') as f:
+                config_dict = yaml.safe_load(f)
+        except IOError:
+            parent_config_name = "_".join(config_name.split('_')[:-1]) + ext
+            print(f"{config_name} not found, trying {parent_config_name}")
+            config_name = parent_config_name
+    return config_dict
 
 def create_temp_configs(stages, working_dir, config_name, output_dir, temp_name='temp_config.yaml'):
     for i, stage in enumerate(stages):
-        config_path = os.path.join(working_dir, stage, config_name)
+        config_dict = get_config(os.path.join(working_dir, stage), config_name)
         new_config_path = os.path.join(output_dir, stage, temp_name)
-        with open(config_path, 'r') as f:
-            config_dict = yaml.safe_load(f)
         with safe_open_w(new_config_path) as f:
             f.write(yaml.dump(config_dict, default_flow_style=False))
     return None

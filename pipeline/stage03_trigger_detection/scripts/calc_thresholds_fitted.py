@@ -32,7 +32,7 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
     hist, edges = np.histogram(signal, bins=bins, density=True)
     xvalues = edges[:-1] + np.diff(edges)[0] / 2.
 
-    if fit_function == 'Gaussian':
+    if fit_function == 'HalfGaussian':
         # First fit -> determine peak location m0
         try:
             (m0, _), _ = sc.optimize.curve_fit(gaussian, xvalues, hist, p0=(0, 1))
@@ -95,7 +95,6 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
         else:
             threshold = mu1 + sigma_factor*sig1
 
-        print(plot_channel, optimize_result.x)
         if plot_channel:
             fig, ax = plt.subplots(figsize=(7, 7))
             ax.bar(xvalues, hist, width=np.diff(xvalues)[0], color='r')

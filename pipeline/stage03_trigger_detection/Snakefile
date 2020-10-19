@@ -78,9 +78,9 @@ localrules: all, check_input
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = filtered_triggers,
-        img = os.path.join(OUTPUT_DIR, os.path.splitext('plot_'+STAGE_OUTPUT)[0])
+        img = os.path.join(OUTPUT_DIR, 'plot_trigger_times')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -105,15 +105,15 @@ rule check_input:
 
 checkpoint plot_trigger_times:
     input:
-        data = os.path.join('{dir}', '{file_name}.'+NEO_FORMAT),
+        data = filtered_triggers,
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')
     params:
         tstart = PLOT_TSTART,
         tstop = PLOT_TSTOP,
         plot_channels = PLOT_CHANNELS,
-        filename = '{file_name}_channel0'+PLOT_FORMAT
+        filename = 'trigger_times_channel0'+PLOT_FORMAT
     output:
-        img_dir = report(directory(os.path.join('{dir}', 'plot_{file_name}')),
+        img_dir = report(directory(os.path.join(OUTPUT_DIR, 'plot_trigger_times')),
                          patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
@@ -145,6 +145,7 @@ rule threshold:
         """
 
 rule calc_tresholds_fixed:
+# sub-rule of threshold
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'calc_thresholds_fixed.py')
@@ -161,6 +162,7 @@ rule calc_tresholds_fixed:
         """
 
 rule calc_tresholds_fitted:
+# sub-rule of threshold
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'calc_thresholds_fitted.py')

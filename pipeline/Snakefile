@@ -114,7 +114,8 @@ rule execute_stage:
     input:
         stage_input = stage_input,
         stage_output = stage_output,
-        config = os.path.join(working_dir, '{stage}', config_profile)
+        # config = os.path.join(working_dir, '{stage}', config_profile)
+        config = os.path.join(output_path, '{stage}', temp_config)
     output:
         temp(os.path.join(output_path, '{stage}.done'))
     shell:

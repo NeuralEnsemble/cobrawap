@@ -19,38 +19,26 @@ def detect_minima(asig, order, interpolation_points, interpolation):
         start_arr = t_idx - int(interpolation_points/2)
         start_arr = np.where(start_arr > 0, start_arr, 0)
         stop_arr = start_arr + int(interpolation_points)
-        stop_arr = np.where(stop_arr < len(signal), stop_arr, len(signal))
+        start_arr = np.where(stop_arr < len(signal), start_arr, len(signal)-interpolation_points-1)
+        stop_arr = np.where(stop_arr < len(signal), stop_arr, len(signal)-1)
         
         signal_arr = np.empty((interpolation_points,len(start_arr)))
         signal_arr[:] = np.nan
         
         for i, (start, stop, channel_i) in enumerate(zip(start_arr, stop_arr, channel_idx)):
-            signal_arr[0:stop-start,i] = signal[start:stop, channel_i]
+            signal_arr[:,i] = signal[start:stop, channel_i]
 
         X_temp = range(0, interpolation_points)
         params = np.polyfit(X_temp, signal_arr, 2)
-        # parabola translation
-        params[1,:] = params[1,:] - 2.*params[0,:]*start_arr
-        params[2,:] = params[2,:] -  params[0,:]*start_arr*start_arr - params[1,:]*start_arr
-        fitted_idx_times = -(1.*params[1,:])/(2.*params[0,:])*sampling_time
         
-        # borders
-        idx = np.where(np.isnan(fitted_idx_times))[0]
-        print(idx)
-        while len(idx) > 0:
-            X_temp = range(0, interpolation_points - 1)
-            params = np.polyfit(X_temp, signal_arr[0:interpolation_points - 1, idx], 2)
-            params[1,:] = params[1,:] - 2.*params[0,:]*start_arr[idx]
-            params[2,:] = params[2,:] -  params[0,:]*start_arr[idx]*start_arr[idx] - params[1,:]*start_arr[idx]
-            fitted_idx_times[idx] = -(1.*params[1,:])/(2.*params[0,:])*sampling_time
-            idx = np.where(np.isnan(fitted_idx_times))[0]
-    
-    
-        minimum_times = np.where(fitted_idx_times > 0, fitted_idx_times, 0)*asig.times.units
+        min_pos = -params[1,:] / (2*params[0,:]) + start_arr
+        min_pos = np.where(min_pos > 0, min_pos, 0)
+        minimum_times = min_pos * sampling_time
+
         
     else:
         minimum_times = asig.times[t_idx]
-        
+    
     sort_idx = np.argsort(minimum_times)
 
     evt = neo.Event(times=minimum_times[sort_idx],
@@ -91,6 +79,4 @@ if __name__ == '__main__':
     transition_event = detect_minima(asig, args.order, args.num_interpolation_points, args.use_quadtratic_interpolation)
     block.segments[0].events.append(transition_event)
     write_neo(args.output, block)
-
-
 

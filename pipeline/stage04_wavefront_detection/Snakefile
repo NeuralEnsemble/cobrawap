@@ -50,8 +50,9 @@ localrules: all, check_input
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        img = os.path.join(OUTPUT_DIR, 'waves_plots')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -61,7 +62,6 @@ rule all:
         {ADD_UTILS}
         {params.command} "{input.data}" "{output.data}"
         """
-
 
 rule check_input:
     input:
@@ -191,15 +191,14 @@ rule merge_wave_definitions:
 
 rule plot_waves:
     input:
-        data = os.path.join('{dir}', '{filename}.'+NEO_FORMAT),
+        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT),
         script = os.path.join('scripts', 'plot_waves.py')
     params:
         time_window = 0.4,  # in s
         colormap='viridis',
         img_name = 'wave_plot_id0'+PLOT_FORMAT
     output:
-        # creates additional files for each wave
-        img = report(directory(os.path.join('{dir}', '{filename}_wave_plots')),
+        img = report(directory(os.path.join('{dir}', 'wave_plots')),
                     patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """

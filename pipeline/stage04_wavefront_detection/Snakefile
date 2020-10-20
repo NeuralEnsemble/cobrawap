@@ -52,7 +52,7 @@ rule all:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'waves_plots')
+        img = os.path.join(OUTPUT_DIR, 'wave_plots') #, 'wave_plot_id0'+PLOT_FORMAT)
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -189,22 +189,23 @@ rule merge_wave_definitions:
                               --output "{output.data}"
         """
 
-rule plot_waves:
+checkpoint plot_waves:
     input:
         data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT),
         script = os.path.join('scripts', 'plot_waves.py')
     params:
         time_window = 0.4,  # in s
         colormap='viridis',
-        img_name = 'wave_plot_id0'+PLOT_FORMAT
+        img_name = 'wave_plot_id0.'+PLOT_FORMAT
     output:
         img = report(directory(os.path.join('{dir}', 'wave_plots')),
                     patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {input.data} \
-                              --output {output.img} \
+        python {input.script} --data "{input.data}" \
+                              --output_dir "{output.img}" \
+                              --img_name {params.img_name} \
                               --time_window {params.time_window} \
                               --colormap {params.colormap}
         """

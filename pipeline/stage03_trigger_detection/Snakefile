@@ -220,14 +220,15 @@ rule hilbert_phase:
                               --plot_tstart {params.plot_tstart} \
                               --plot_tstart {params.plot_tstart}
         """
+        
 rule minima:
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'minima.py')
     params:
         order = MINIMA_ORDER,
-	use_quadtratic_interpolation = USE_QUADRATIC_INTERPOLATION,
-	num_interpolation_points = NUM_INTERPOLATION_POINTS
+	    use_quadtratic_interpolation = USE_QUADRATIC_INTERPOLATION,
+	    num_interpolation_points = NUM_INTERPOLATION_POINTS
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
     shell:

@@ -28,6 +28,9 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
 
     fig, axes = plt.subplots(nrows=2, ncols=len(time_steps),
                              figsize=(2*len(time_steps), 5), sharey='row')
+    if len(time_steps) < 2:
+        axes = [[axes[0]], [axes[1]]]
+        
     axes[0][0].set_ylabel(f"Wave {wave_id}", fontsize=20)
 
     for i, ax in enumerate(axes[0]):

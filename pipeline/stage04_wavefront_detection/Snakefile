@@ -35,7 +35,7 @@ if config["DETECTION_BLOCK"] == "WaveHunt_Clustering":
 
 elif config["DETECTION_BLOCK"] == "WaveHunt_Time":
     #BLOCK_ORDER = ["UpTrans_Detector", "Optimal_MAX_ABS_TIMELAG", "MAX_IWI_Search", "WaveHuntTimes_UnicityPrinciple", "WaveHuntTimes_Globality"]
-    BLOCK_ORDER = ["UpTrans_Detector", "Optimal_MAX_ABS_TIMELAG", "MAX_IWI_Search", "WaveHuntTimes_UnicityPrinciple", "WaveHuntTimes_Globality"]
+    BLOCK_ORDER = ["UpTrans_Detector"]
 
 METRIC = config["METRIC"]
 TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]

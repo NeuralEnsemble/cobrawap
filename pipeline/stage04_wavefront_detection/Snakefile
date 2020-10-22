@@ -1,5 +1,3 @@
-# Stage 04 Wave Identification
-import os
 
 configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
@@ -31,6 +29,14 @@ PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
+
+if config["DETECTION_BLOCK"] == "WaveHunt_Clustering":
+    BLOCK_ORDER = ["clustering", "optical_flow", "critical_points", "critical_points_clustering", "merge_wave_definitions"]
+
+elif config["DETECTION_BLOCK"] == "WaveHunt_Time":
+    #BLOCK_ORDER = ["UpTrans_Detector", "Optimal_MAX_ABS_TIMELAG", "MAX_IWI_Search", "WaveHuntTimes_UnicityPrinciple", "WaveHuntTimes_Globality"]
+    BLOCK_ORDER = ["UpTrans_Detector", "Optimal_MAX_ABS_TIMELAG", "MAX_IWI_Search", "WaveHuntTimes_UnicityPrinciple", "WaveHuntTimes_Globality"]
+
 METRIC = config["METRIC"]
 TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
@@ -43,16 +49,45 @@ GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
 DETECT_CRITICAL_POINTS = config["DETECT_CRITICAL_POINTS"]
 
-localrules: all, check_input
+
+
+MAX_ABS_TIMELAG = config["MAX_ABS_TIMELAG"]
+ACCEPTABLE_REJECTION_RATE = config["ACCEPTABLE_REJECTION_RATE"]
+MIN_CH_NUM = config["MIN_CH_NUM"]
 
 #### Housekeeping ####
+
+#### Housekeeping ####
+
+wildcard_constraints:
+    rule_name = '\w+'
+
+def locate(str_list, string):
+    print(str_list)
+    print(string)
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError("Can't find rule '{}'! Please check the spelling \
+                          and the config file.".format(string))
+
+def input_file(wildcards):
+    if hasattr(wildcards, 'rule_name'):
+        idx = locate(BLOCK_ORDER, wildcards.rule_name)
+        if idx:
+            return os.path.join(OUTPUT_DIR, BLOCK_ORDER[idx-1],
+                                BLOCK_ORDER[idx-1]+'.'+NEO_FORMAT)
+    elif len(BLOCK_ORDER):
+        return os.path.join(OUTPUT_DIR, BLOCK_ORDER[-1],
+                            BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
+    return os.path.join(STAGE_INPUT)
+
 
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
-        data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'wave_plots')
+        data = input_file,
+        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -78,9 +113,102 @@ rule check_input:
 
 #### Wave Definitions ####
 
+rule UpTrans_Detector:
+    input:
+        data = input_file,
+        script = os.path.join('scripts', 'UpTrans_Detector.py'),
+    output:
+        data = os.path.join('{dir}', 'UpTrans_Detector',
+                            '{rule_name}.'+NEO_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
+
+rule Optimal_MAX_ABS_TIMELAG:
+    input:
+        data = input_file,
+        script = os.path.join('scripts', 'Optimal_MAX_ABS_TIMELAG.py'),
+    params:
+        Max_Abs_Timelag = MAX_ABS_TIMELAG
+    output:
+        data = os.path.join('{dir}', 'Optimal_MAX_ABS_TIMELAG',
+                            '{rule_name}.'+NEO_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --Max_Abs_Timelag {params.Max_Abs_Timelag}
+        """
+
+
+rule MAX_IWI_Search:
+    input:
+        data = input_file,
+        script = os.path.join('scripts', 'MAX_IWI_Search.py'),
+    params:
+        UpTransition = os.path.join('{dir}', 'UpTrans_Detector',
+                            'UpTrans_Detector.'+NEO_FORMAT),
+        Acceptable_rejection_rate = ACCEPTABLE_REJECTION_RATE,
+    output:
+        data = os.path.join('{dir}', 'MAX_IWI_Search',
+                            '{rule_name}.'+NEO_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --UpTransition {params.UpTransition} \
+                              --Acceptable_rejection_rate {params.Acceptable_rejection_rate}
+        """
+
+rule WaveHuntTimes_UnicityPrinciple:
+    input:
+        data = input_file,
+        script = os.path.join('scripts', 'WaveHuntTimes_UnicityPrinciple.py'),
+    params:
+        UpTransition = os.path.join('{dir}', 'UpTrans_Detector',
+                            'UpTrans_Detector.'+NEO_FORMAT),
+    output:
+        data = os.path.join('{dir}', 'WaveHuntTimes_UnicityPrinciple',
+                            '{rule_name}.'+NEO_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --UpTransition {params.UpTransition}
+        """
+
+rule WaveHuntTimes_Globality:
+    input:
+        data = input_file,
+        script = os.path.join('scripts', 'WaveHuntTimes_Globality.py'),
+    params:
+        UpTransition = os.path.join('{dir}', 'UpTrans_Detector',
+                            'UpTrans_Detector.'+NEO_FORMAT),
+        min_ch_num = MIN_CH_NUM,
+    output:
+        data = os.path.join('{dir}', 'WaveHuntTimes_Globality',
+                            '{rule_name}.'+NEO_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --UpTransition {params.UpTransition} \
+                              --min_ch_num {params.min_ch_num}
+
+        """
+
+
+
 rule clustering:
     input:
-        data = STAGE_INPUT,
+        data =     input_file,
         script = os.path.join('scripts', 'clustering.py'),
         plot_script = os.path.join('scripts', 'plot_clustering.py')
     params:
@@ -90,8 +218,10 @@ rule clustering:
         min_samples = MIN_SAMPLES_PER_WAVE,
         plot_time_slice = 10
     output:
-        data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
-        img = report(os.path.join('{dir}', 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
+        data = os.path.join('{dir}', 'clustering',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{rule_name}',
+                                  'wave_clustering.'+PLOT_FORMAT)),
     shell:
         """
         {ADD_UTILS}
@@ -118,8 +248,10 @@ rule optical_flow:
         gaussian_sigma = GAUSSIAN_SIGMA,
         derivative_filter = DERIVATIVE_FILTER
     output:
-        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
-        img = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
+        data = os.path.join('{dir}', 'optical_flow',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{rule_name}',
+                                  'optical_flow.'+PLOT_FORMAT)),
     shell:
         """
         {ADD_UTILS}
@@ -133,17 +265,23 @@ rule optical_flow:
                               --derivative_filter {params.derivative_filter}
         """
 
+
 rule critical_points:
     input:
-        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
+        data = input_file,
         script = os.path.join('scripts', 'critical_points.py'),
         plot_script = os.path.join('scripts', 'plot_critical_points.py')
     params:
         plot_frame = 0,
         skip_step = 3
+
+
+
     output:
-        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT),
-        img = os.path.join('{dir}', 'critical_points', 'critical_points.'+PLOT_FORMAT)
+        data = os.path.join('{dir}', 'critical_points',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{rule_name}',
+                                  'critical_points.'+PLOT_FORMAT)),
     shell:
         """
         {ADD_UTILS}
@@ -159,28 +297,35 @@ rule critical_points:
 rule critical_points_clustering:
     # ToDo
     input:
-        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT)
+        data = input_file,
     output:
-        data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT)
+        data = os.path.join('{dir}', 'critical_points_clustering',
+                            '{rule_name}.'+NEO_FORMAT),
     shell:
         """
         {ADD_UTILS}
         cp {input.data} {output.data}
         """
 
+
+
+
 def vector_field_data(wildcards):
     if DETECT_CRITICAL_POINTS:
-        return os.path.join(wildcards.dir, 'critical_points_clustering', STAGE_OUTPUT)
+        return  os.path.join('{dir}', 'critical_points_clustering',
+                            '{rule_name}.'+NEO_FORMAT),
     else:
-        return os.path.join(wildcards.dir, 'optical_flow', STAGE_OUTPUT)
+        return  os.path.join('{dir}', 'optical_flow',
+                            '{rule_name}.'+NEO_FORMAT),
 
 rule merge_wave_definitions:
     input:
-        trigger_data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
+        trigger_data =  os.path.join('{dir}', 'clustering',
+                            '{rule_name}.'+NEO_FORMAT),
         node_data = vector_field_data,
         script = os.path.join('scripts', 'merge_wave_definitions.py')
     output:
-        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
+        data = os.path.join('{dir}', 'merge_wave_definitions', '{rule_name}.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}
@@ -189,23 +334,10 @@ rule merge_wave_definitions:
                               --output "{output.data}"
         """
 
-checkpoint plot_waves:
-    input:
-        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT),
-        script = os.path.join('scripts', 'plot_waves.py')
-    params:
-        time_window = 0.4,  # in s
-        colormap='viridis',
-        img_name = 'wave_plot_id0.'+PLOT_FORMAT
-    output:
-        img = report(directory(os.path.join('{dir}', 'wave_plots')),
-                    patterns=["{img_name}."+PLOT_FORMAT])
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output_dir "{output.img}" \
-                              --img_name {params.img_name} \
-                              --time_window {params.time_window} \
-                              --colormap {params.colormap}
-        """
+
+
+
+
+
+
+

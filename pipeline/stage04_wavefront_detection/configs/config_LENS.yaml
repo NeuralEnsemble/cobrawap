@@ -42,7 +42,7 @@ WAVEFRONT_FILTER: [] # ToDo
 METRIC: 'euclidean'
 # eps, maximum distance between points to be neigbours
 NEIGHBOUR_DISTANCE: 10
-MIN_SAMPLES_PER_WAVE: 250 #100
+MIN_SAMPLES_PER_WAVE: 100
 # Factor from time dimension to space dimension in sampling_rate*spatial_scale
 TIME_SPACE_RATIO: 8  # i.e. distance between 2 frames corresponds to X pixel
 

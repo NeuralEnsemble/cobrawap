@@ -52,7 +52,7 @@ rule all:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        img = os.path.join(OUTPUT_DIR, 'wave_plots') #, 'wave_plot_id0'+PLOT_FORMAT)
+        img = os.path.join(OUTPUT_DIR, 'wave_plots')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:

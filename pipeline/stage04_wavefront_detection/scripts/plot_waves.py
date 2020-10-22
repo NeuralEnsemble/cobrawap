@@ -30,7 +30,7 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
                              figsize=(2*len(time_steps), 5), sharey='row')
     if len(time_steps) < 2:
         axes = [[axes[0]], [axes[1]]]
-        
+
     axes[0][0].set_ylabel(f"Wave {wave_id}", fontsize=20)
 
     for i, ax in enumerate(axes[0]):
@@ -101,3 +101,4 @@ if __name__ == '__main__':
             output_path = os.path.join(args.output_dir,
                                 args.img_name.replace('id0', f'id{wave_id}'))
             save_plot(output_path)
+            plt.close()

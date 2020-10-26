@@ -33,6 +33,7 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MEASURES = config["MEASURES"]
 ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
+DIRECTION_METHOD = config["DIRECTION_METHOD"]
 
 #### Housekeeping ####
 
@@ -115,20 +116,23 @@ rule velocity_gradient:
                               --output_img "{output.img}"
         """
 
-rule direction:
+rule direction_planar:
     input:
         data = input,
-        script = os.path.join('scripts', 'direction.py')
+        script = os.path.join('scripts', 'direction_planar.py')
+    params:
+        direction_method = DIRECTION_METHOD
     output:
-        data = os.path.join('{dir}', 'direction', 'direction.csv'),
-        img = report(os.path.join('{dir}', 'direction',
-                                  'direction.'+PLOT_FORMAT))
+        data = os.path.join('{dir}', 'direction_planar', 'direction_planar.csv'),
+        img = report(os.path.join('{dir}', 'direction_planar',
+                                  'direction_planar.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --output_img "{output.img}"
+                              --output_img "{output.img}" \
+                              --method {params.direction_method}
         """
 
 # rule gradient_direction:

@@ -23,13 +23,15 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
-# Tigger Filter
-###############
-TRIGGER_FILTER: [] # ToDo
-
-# Wavefront Filter
+# DETECTIION BLOCK
 ##################
-WAVEFRONT_FILTER: [] # ToDo
+# Available Blocks: 'trigger_clustering'
+DETECTION_BLOCK: 'trigger_clustering'
+
+# ADDITIONAL PROPERTIES
+#######################
+# Available Blocks: 'optical_flow', 'critical_points'
+ADDITIONAL_PROPERTIES: ['optical_flow', 'critical_points']
 
 # Wavefront Clustering
 ######################
@@ -56,10 +58,6 @@ GAUSSIAN_SIGMA: [0,5,5]
 # Kernel filter to use to calucualte the spatial derivatives.
 # "Simple", "Prewitt", "Sobel", or "Roberts"
 DERIVATIVE_FILTER: 'Simple'
-
-# Critical Point Detection
-##########################
-DETECT_CRITICAL_POINTS: True
 
 # Critical Point Clustering
 ###########################

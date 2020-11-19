@@ -71,13 +71,13 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
                   # units='width', scale=max(frame.shape)/(10*skip_step),
                   # width=0.15/max(frame.shape),
                   color=palette[i], alpha=0.8,
-                  label='{:.3f} s'.format(asig.times[frame_t].rescale('s').magnitude))
+                  label='{:.3f} s'.format(times[frame_t].rescale('s').magnitude))
 
     dim_t, dim_x, dim_y = vector_field.as_array().shape
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_ylabel(f'pixel size {vector_field.spatial_scale} {vector_field.spatial_scale.dimensionality}')
+    ax.set_ylabel(f'pixel size {vector_field.spatial_scale}')
     start_t = np.min(waves_event.times[idx]).rescale('s').magnitude
     stop_t = np.max(waves_event.times[idx]).rescale('s').magnitude
     ax.set_xlabel('{:.3f} - {:.3f} s'.format(start_t, stop_t))

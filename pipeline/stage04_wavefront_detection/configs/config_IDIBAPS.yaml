@@ -23,6 +23,16 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
+# DETECTIION BLOCK
+##################
+# Available Blocks: 'trigger_clustering'
+DETECTION_BLOCK: 'trigger_clustering'
+
+# ADDITIONAL PROPERTIES
+#######################
+# Available Blocks: 'optical_flow', 'critical_points'
+ADDITIONAL_PROPERTIES: ['optical_flow']
+
 # Wavefront Clustering
 ######################
 # Using sklearn.cluster.DBSCAN
@@ -48,10 +58,6 @@ GAUSSIAN_SIGMA: [1,1,1]
 # Kernel filter to use to calucualte the spatial derivatives.
 # "Simple", "Prewitt", "Sobel", or "Roberts"
 DERIVATIVE_FILTER: 'Simple'
-
-# Critical Point Detection
-##########################
-DETECT_CRITICAL_POINTS: False
 
 # Critical Point Clustering
 ###########################

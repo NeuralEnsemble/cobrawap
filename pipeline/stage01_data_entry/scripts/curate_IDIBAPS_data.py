@@ -108,6 +108,7 @@ if __name__ == '__main__':
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
     asig.annotations.update(orientation_top=args.orientation_top)
     asig.annotations.update(orientation_right=args.orientation_right)
+    asig.file_origin = args.data
 
     if asig.description is None:
         asig.description = ''
@@ -134,8 +135,6 @@ if __name__ == '__main__':
     block.segments[0].name = 'Segment 1'
     block.segments[0].description = 'Loaded with neo.Spike2IO (neo version {})'\
                                     .format(neo.__version__)
-
-
 
     # block.channel_indexes.append(chidx)
     # block.segments[0].analogsignals[0].channel_index = chidx

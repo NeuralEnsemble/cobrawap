@@ -7,27 +7,33 @@ from utils import load_neo, write_neo, AnalogSignal2ImageSequence
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--trigger_data", nargs='?', type=str, required=True,
+    CLI.add_argument("--waves", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--node_data", nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
+    CLI.add_argument("--properties", nargs='?', type=lambda v: v.split(','), default=None,
+                     help="paths to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
 
     args = CLI.parse_args()
-    trigger_block = load_neo(args.trigger_data)
-    node_block = load_neo(args.node_data)
+    waves_block = load_neo(args.waves)
 
-    block = AnalogSignal2ImageSequence(node_block)
+    asig_names = [asig.name for asig in waves_block.segments[0].analogsignals]
+    event_names = [event.name for event in waves_block.segments[0].events]
 
-    wavefront_evt = [evt for evt in trigger_block.segments[0].events
-                     if evt.name == "Wavefronts"]
-    if wavefront_evt:
-        wavefront_evt = wavefront_evt[0]
-    else:
-        raise ValueError("Input does not contain an event with name " \
-                       + "'Wavefronts'!")
+    if args.properties is None:
+        args.properties = []
 
-    block.segments[0].events.append(wavefront_evt)
+    for property in args.properties:
+        block = load_neo(property)
 
-    write_neo(args.output, block)
+        for asig in block.segments[0].analogsignals:
+            if asig.name not in asig_names:
+                waves_block.segments[0].analogsignals.append(asig)
+
+        for event in block.segments[0].events:
+            if event.name not in event_names:
+                waves_block.segments[0].events.append(event)
+
+        del block
+
+    write_neo(args.output, waves_block)

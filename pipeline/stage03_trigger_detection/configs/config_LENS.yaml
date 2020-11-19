@@ -26,7 +26,7 @@ PLOT_FORMAT: 'png'
 # DETECTION BLOCK
 #################
 # Available Blocks: 'threshold', 'hilbert_phase', 'minima'
-DETECTION_BLOCK: minima
+DETECTION_BLOCK: hilbert_phase
 
 # TRIGGER FILTER
 #################

@@ -26,4 +26,4 @@ ALIGNMENT_THRESHOLD: 0.9
 # Direction Planar
 ##################
 # tigger_interolation, optical_flow
-DIRECTION_METHOD: 'trigger_interpolation'
+DIRECTION_METHOD: 'optical_flow'

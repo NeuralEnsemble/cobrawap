@@ -37,12 +37,8 @@ def trigger_interpolation(evts):
                                      * spatial_scale.magnitude)
             directions[i] = np.array([dx + 1j*dy, dx_err + 1j*dy_err])
 
-    # transfrom to DataFrame
-    df = pd.DataFrame(directions,
-                      columns=['direction', 'direction_std'],
-                      index=wave_ids)
-    df.index.name = 'wave_id'
-    return df
+    return directions
+
 
 def times2ids(time_array, times_selection):
     return np.array([np.argmax(time_array>=t) for t in times_selection])
@@ -64,11 +60,7 @@ def calc_flow_direction(evts, asig):
             y_std = np.std(np.imag(signals[t_idx, channels]))
             directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
 
-    df = pd.DataFrame(directions,
-                      columns=['direction', 'direction_std'],
-                      index=wave_ids)
-    df.index.name = 'wave_id'
-    return df
+    return directions
 
 def plot_directions(dataframe, orientation_top=None, orientation_right=None):
     wave_ids = dataframe.index
@@ -142,18 +134,23 @@ if __name__ == '__main__':
     evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
 
     if args.method == 'trigger_interpolation':
-        directions_df = trigger_interpolation(evts)
+        directions = trigger_interpolation(evts)
     elif args.method == 'optical_flow':
         # block = AnalogSignal2ImageSequence(block)
         asig = [im for im in block.segments[0].analogsignals if im.name == 'Optical Flow'][0]
-        directions_df = calc_flow_direction(evts, asig)
+        directions = calc_flow_direction(evts, asig)
     else:
         raise NameError(f'Method name {args.method} is not recognized!')
+
+    df = pd.DataFrame(directions,
+                      columns=['direction', 'direction_std'],
+                      index=np.unique(evts.labels))
+    df.index.name = 'wave_id'
 
     if args.output_img is not None:
         orientation_top = evts.annotations['orientation_top']
         orientation_right = evts.annotations['orientation_right']
-        plot_directions(directions_df, orientation_top, orientation_right)
+        plot_directions(df, orientation_top, orientation_right)
         save_plot(args.output_img)
 
-    directions_df.to_csv(args.output)
+    df.to_csv(args.output)

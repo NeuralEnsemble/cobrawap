@@ -281,8 +281,8 @@ def CleanWave(UpTrans,ChLabel, neighbors,  FullWave):
                 
                 # wave is "cleaned"; store the updated wave
                 ndx = FullWave[nw]['ndx']
-                NewFullWave = {'ndx': ndx, 'times': UpTrans[ndx], 'ch': ChLabel[ndx],
-                               'WaveUnique': 1, 'WaveSize': len(ndx), 'WaveTime':np.mean(UpTrans[ndx])};
+                NewFullWave = [{'ndx': ndx, 'times': UpTrans[ndx], 'ch': ChLabel[ndx],
+                               'WaveUnique': 1, 'WaveSize': len(ndx), 'WaveTime':np.mean(UpTrans[ndx])}];
                 
             # --- REPLACE CurrentWave with NewWave(s)
             # [its segments or its 'cleaned' version]

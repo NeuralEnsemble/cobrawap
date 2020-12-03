@@ -45,6 +45,7 @@ TIME_SPACE_RATIO: 1
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############
+USE_PHASES: True
 # weight of the smoothness constraint over the brightness constancy constraint
 ALPHA: 0.1
 # maximum number of iterations optimizing the vector field
@@ -56,7 +57,7 @@ CONVERGENCE_LIMIT: 0.0001
 # [t_std, x_std, y_std]. [0,0,0] for no filter
 GAUSSIAN_SIGMA: [0,3,3]
 # Kernel filter to use to calucualte the spatial derivatives.
-# "Simple", "Prewitt", "Sobel", or "Roberts"
+# "Simple", "Simple2x2", "Prewitt", "Sobel", or "Sobel2"
 DERIVATIVE_FILTER: 'Simple'
 
 # Critical Point Clustering

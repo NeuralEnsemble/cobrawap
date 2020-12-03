@@ -39,6 +39,7 @@ TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
 MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
 
+USE_PHASES = config["USE_PHASES"]
 ALPHA = config["ALPHA"]
 MAX_NITER = config["MAX_NITER"]
 CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
@@ -143,7 +144,8 @@ rule optical_flow:
         max_Niter = MAX_NITER,
         convergence_limit = CONVERGENCE_LIMIT,
         gaussian_sigma = GAUSSIAN_SIGMA,
-        derivative_filter = DERIVATIVE_FILTER
+        derivative_filter = DERIVATIVE_FILTER,
+        use_phases = USE_PHASES
     output:
         data = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+NEO_FORMAT),
         img = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
@@ -157,7 +159,8 @@ rule optical_flow:
                               --max_Niter {params.max_Niter} \
                               --convergence_limit {params.convergence_limit} \
                               --gaussian_sigma {params.gaussian_sigma} \
-                              --derivative_filter {params.derivative_filter}
+                              --derivative_filter {params.derivative_filter} \
+                              --use_phases {params.use_phases}
         """
 
 rule critical_points:

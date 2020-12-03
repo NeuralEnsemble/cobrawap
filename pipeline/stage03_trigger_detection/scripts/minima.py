@@ -3,6 +3,7 @@ import numpy as np
 import quantities as pq
 from scipy.signal import argrelmin
 import argparse
+form dateutils.util import strtobool
 from utils import load_neo, write_neo, remove_annotations
 
 
@@ -39,7 +40,7 @@ def detect_minima(asig, order, interpolation_points, interpolation):
         minimum_times = asig.times[t_idx]
 
     sort_idx = np.argsort(minimum_times)
-    
+
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
                     name='Transitions',
@@ -68,7 +69,7 @@ if __name__ == '__main__':
                      help="number of neighbouring points to compare")
     CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=5,
                      help="number of neighbouring points to interpolate")
-    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=bool, default=False,
+    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=strtobool, default=False,
                      help="wether use interpolation or not")
 
     args = CLI.parse_args()

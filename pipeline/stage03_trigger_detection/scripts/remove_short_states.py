@@ -5,6 +5,7 @@ import numpy as np
 import neo
 import argparse
 import quantities as pq
+from dateutils.util import strtobool
 from utils import load_neo, write_neo
 
 
@@ -62,7 +63,7 @@ if __name__ == '__main__':
                      help="minimum duration of UP states in seconds")
     CLI.add_argument("--min_down_duration", nargs='?', type=float, default=0.005,
                      help="minimum duration of DOWN states in seconds")
-    CLI.add_argument("--remove_down_first", nargs='?', type=bool, default=True,
+    CLI.add_argument("--remove_down_first", nargs='?', type=strtobool, default=True,
                      help="If True, remove short down states first")
 
     args = CLI.parse_args()

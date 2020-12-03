@@ -1,10 +1,14 @@
 import argparse
-from scipy.ndimage.filters import convolve as conv
+# from scipy.ndimage.filters import convolve as conv
+import itertools
+from scipy.ndimage import convolve as conv
 from scipy.ndimage import gaussian_filter
+from scipy.signal import hilbert
 import neo
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
+from distutils.util import strtobool
 from utils import load_neo, write_neo, none_or_str, save_plot, \
                   ImageSequence2AnalogSignal, AnalogSignal2ImageSequence
 
@@ -12,11 +16,18 @@ from utils import load_neo, write_neo, none_or_str, save_plot, \
 # xydiff = np.mod(x - y + np.pi, 2*np.pi) - np.pi
 
 def get_derviation_kernels(name='Simple'):
-    if name=='Simple' or name is None:
+    if name=='Simple':
+        kernelX = np.array([[ 0, 0],
+                            [-1, 1]], dtype=np.float)
+        kernelY = np.array([[ 0,-1],
+                            [ 0, 1]], dtype=np.float)
+        center = (1,1)
+    elif name=='Simple2x2':
         kernelX = np.array([[-1, 1],
                             [-1, 1]], dtype=np.float) * .25
         kernelY = np.array([[-1, -1],
                             [ 1,  1]], dtype=np.float) * .25
+        center = (1,1)
     elif name=='Prewitt':
         kernelX = np.array([[-1, 0, 1],
                             [-1, 0, 1],
@@ -24,6 +35,7 @@ def get_derviation_kernels(name='Simple'):
         kernelY = np.array([[-1, -1, -1],
                             [ 0,  0,  0],
                             [ 1,  1,  1]], dtype=np.float) * 1/6
+        center = (1,1)
     elif name=='Sobel':
         kernelX = np.array([[-1, 0, 1],
                             [-2, 0, 2],
@@ -31,22 +43,27 @@ def get_derviation_kernels(name='Simple'):
         kernelY = np.array([[-1, -2, -1],
                             [ 0,  0,  0],
                             [ 1,  2,  1]], dtype=np.float) * 1/8
-    elif name=='Roberts':
-        kernelX = np.array([[ 0, 1],
-                            [-1, 0]], dtype=np.float) * 0.5
-        kernelY = np.array([[-1, 0],
-                            [ 0, 1]], dtype=np.float) * 0.5
+        center = (1,1)
+    elif name=='Sobel2':
+        kernelX = np.array([[-1, 0, 1],
+                            [-4, 0, 4],
+                            [-1, 0, 1]], dtype=np.float) *1/12
+        kernelX = np.array([[-1, -4, -1],
+                            [ 0,  0,  0],
+                            [ 1,  4,  1]], dtype=np.float) *1/12
+        center = (1,1)
     else:
         print('Deriviative name {name} is not implemented, '\
             + 'using simple filter instead. \n Available filters: "Simple", '\
             + '"Prewitt", "Sobel", "Roberts".')
         return get_derviation_kernels()
 
-    return kernelX, kernelY
+    return kernelX, kernelY, center
 
 
 def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
-                      kernelHS, kernelT, kernelX, kernelY):
+                      kernelHS, kernelT, kernelX, kernelY,
+                      are_phases=False, kernel_center=None):
     """
     Parameters
     ----------
@@ -69,7 +86,9 @@ def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
     [fx, fy, ft] = compute_derivatives(frame, next_frame,
                                        kernelX=kernelX,
                                        kernelY=kernelY,
-                                       kernelT=kernelT)
+                                       kernelT=kernelT,
+                                       are_phases=are_phases,
+                                       kernel_center=kernel_center)
     # Iteration to reduce error
     for i in range(max_Niter):
         # Compute local averages of the flow vectors (smoothness constraint)
@@ -88,17 +107,56 @@ def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
             break
     return vx + vy*1j
 
+norm_angle = lambda p: -np.mod(p + np.pi, 2*np.pi) + np.pi
 
-def compute_derivatives(frame, next_frame, kernelX, kernelY, kernelT):
-    fx = conv(frame, kernelX) + conv(next_frame, kernelX)
-    fy = conv(frame, kernelY) + conv(next_frame, kernelY)
-    ft = conv(frame, kernelT) + conv(next_frame, -kernelT)
+def phase_conv2D(frame, kernel, kernel_center):
+    dx, dy = kernel.shape
+    dimx, dimy = frame.shape
+    dframe = np.zeros_like(frame)
+    # inverse kernel to mimic behavior or regular convolution algorithm
+    k = kernel[::-1, ::-1]
+    ci = dx - 1 - kernel_center[0]
+    cj = dy - 1 - kernel_center[1]
+    # loop over kernel window for each frame site
+    for i,j in zip(*np.where(np.isfinite(frame))):
+        phase = frame[i,j]
+        dphase = np.zeros((dx,dy), dtype=np.float)
+        for di,dj in itertools.product(range(dx), range(dy)):
+            # kernelsite != 0, framesite within borders and != nan
+            if k[di,dj] and i+di-ci < dimx and j+dj-cj < dimy \
+            and np.isfinite(frame[i+di-ci,j+dj-cj]):
+                sign = -1*np.sign(k[di,dj])
+                # pos = clockwise from phase to frame[..]
+                dphase[di,dj] = sign*norm_angle(phase - frame[i+di-ci,j+dj-cj])
+        if dphase.any():
+            dframe[i,j] = np.average(dphase, weights=abs(k))
+    return dframe
+
+def compute_derivatives(frame, next_frame, kernelX, kernelY, kernelT,
+                        are_phases=False, kernel_center=None):
+    if are_phases:
+        fx = phase_conv2D(frame, kernelX, kernel_center) \
+           + phase_conv2D(next_frame, kernelX, kernel_center)
+        fy = phase_conv2D(frame, kernelY, kernel_center) \
+           + phase_conv2D(next_frame, kernelY, kernel_center)
+        ft = norm_angle(frame - next_frame)
+    else:
+        fx = conv(frame, kernelX) + conv(next_frame, kernelX)
+        fy = conv(frame, kernelY) + conv(next_frame, kernelY)
+        # ft = conv(frame, kernelT) + conv(next_frame, -kernelT)
+        ft = frame - next_frame
     return fx, fy, ft
 
-
 def horn_schunck(frames, alpha, max_Niter, convergence_limit,
-                 kernelHS, kernelT, kernelX, kernelY):
+                 kernelHS, kernelT, kernelX, kernelY,
+                 are_phases=False, kernel_center=None):
     nan_channels = np.where(np.bitwise_not(np.isfinite(frames[0])))
+
+    if are_phases:
+        nan_substitute = 0
+    else:
+        nan_substitute = np.nanmedian(frames)
+
     frames[:,nan_channels[0],nan_channels[1]] = np.nanmedian(frames)
 
     vector_frames = np.zeros(frames.shape, dtype=complex)
@@ -114,7 +172,9 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
                                              kernelHS=kernelHS,
                                              kernelT=kernelT,
                                              kernelX=kernelX,
-                                             kernelY=kernelY)
+                                             kernelY=kernelY,
+                                             are_phases=are_phases,
+                                             kernel_center=kernel_center)
         vector_frames[i][nan_channels] = np.nan + np.nan*1j
 
     frames[:,nan_channels[0],nan_channels[1]] = np.nan
@@ -151,12 +211,16 @@ def smooth_frames(frames, sigma):
     return frames
 
 
-def plot_opticalflow(frame, vec_frame, skip_step=None):
+def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
     # Every <skip_step> point in each direction.
     fig, ax = plt.subplots()
     dim_x, dim_y = vec_frame.shape
+    if are_phases:
+        cmap = 'twilight'
+    else:
+        cmap = 'viridis'
     img = ax.imshow(frame, interpolation='nearest',
-                    cmap=plt.get_cmap('viridis'))
+                    cmap=plt.get_cmap(cmap), origin='lower')
     plt.colorbar(img, ax=ax)
     if skip_step is None:
         skip_step = int(min([dim_x, dim_y]) / 50) + 1
@@ -191,6 +255,8 @@ if __name__ == '__main__':
                      help='sigma of gaussian filter in each dimension')
     CLI.add_argument("--derivative_filter", nargs='?', type=str, default='Simple',
                      help='Filter kernel to use for calculating spatial derivatives')
+    CLI.add_argument("--use_phases", nargs='?', type=strtobool, default=False,
+                     help='whether to use signal phase instead of amplitude')
 
     args = CLI.parse_args()
     block = load_neo(args.data)
@@ -202,11 +268,16 @@ if __name__ == '__main__':
     frames = imgseq.as_array()
     # frames /= np.nanmax(np.abs(frames))
 
+    if args.use_phases:
+        analytic_frames = hilbert(frames, axis=0)
+        frames = np.angle(analytic_frames)
+
     kernelHS = np.array([[1, 2, 1],
                          [2, 0, 2],
                          [1, 2, 1]], dtype=np.float) * 1/12
-    kernelT = np.ones((2, 2), dtype=np.float) * .25
-    kernelX, kernelY = get_derviation_kernels(args.derivative_filter)
+    kernelX, kernelY, center = get_derviation_kernels(args.derivative_filter)
+    kernelT = np.ones_like(kernelX, dtype=np.float)
+    kernelT /= np.sum(kernelT)
 
     vector_frames = horn_schunck(frames=frames,
                                  alpha=args.alpha,
@@ -215,7 +286,9 @@ if __name__ == '__main__':
                                  kernelX=kernelX,
                                  kernelY=kernelY,
                                  kernelT=kernelT,
-                                 kernelHS=kernelHS)
+                                 kernelHS=kernelHS,
+                                 are_phases=args.use_phases,
+                                 kernel_center=center)
 
     if np.sum(args.gaussian_sigma):
         vector_frames = smooth_frames(vector_frames, sigma=args.gaussian_sigma)
@@ -232,7 +305,8 @@ if __name__ == '__main__':
                                    **imgseq.annotations)
 
     if args.output_img is not None:
-        ax = plot_opticalflow(frames[0], vector_frames[0], skip_step=3)
+        ax = plot_opticalflow(frames[0], vector_frames[0],
+                              skip_step=3, are_phases=args.use_phases)
         ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} '\
                     + imgseq.spatial_scale.units.dimensionality.string)
         ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s')))

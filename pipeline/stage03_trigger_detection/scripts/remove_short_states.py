@@ -5,7 +5,7 @@ import numpy as np
 import neo
 import argparse
 import quantities as pq
-from dateutils.util import strtobool
+from distutils.util import strtobool
 from utils import load_neo, write_neo
 
 

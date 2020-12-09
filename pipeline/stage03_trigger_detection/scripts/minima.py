@@ -3,7 +3,7 @@ import numpy as np
 import quantities as pq
 from scipy.signal import argrelmin
 import argparse
-form dateutils.util import strtobool
+from distutils.util import strtobool
 from utils import load_neo, write_neo, remove_annotations
 
 

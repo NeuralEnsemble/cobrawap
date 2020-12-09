@@ -48,7 +48,7 @@ def get_derviation_kernels(name='Simple'):
         kernelX = np.array([[-1, 0, 1],
                             [-4, 0, 4],
                             [-1, 0, 1]], dtype=np.float) *1/12
-        kernelX = np.array([[-1, -4, -1],
+        kernelY = np.array([[-1, -4, -1],
                             [ 0,  0,  0],
                             [ 1,  4,  1]], dtype=np.float) *1/12
         center = (1,1)
@@ -127,9 +127,9 @@ def phase_conv2D(frame, kernel, kernel_center):
             and np.isfinite(frame[i+di-ci,j+dj-cj]):
                 sign = -1*np.sign(k[di,dj])
                 # pos = clockwise from phase to frame[..]
-                dphase[di,dj] = sign*norm_angle(phase - frame[i+di-ci,j+dj-cj])
+                dphase[di,dj] = sign*norm_angle(phase-frame[i+di-ci,j+dj-cj])
         if dphase.any():
-            dframe[i,j] = np.average(dphase, weights=abs(k))
+            dframe[i,j] = np.average(dphase, weights=abs(k)) / np.pi
     return dframe
 
 def compute_derivatives(frame, next_frame, kernelX, kernelY, kernelT,
@@ -307,9 +307,8 @@ if __name__ == '__main__':
     if args.output_img is not None:
         ax = plot_opticalflow(frames[0], vector_frames[0],
                               skip_step=3, are_phases=args.use_phases)
-        ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} '\
-                    + imgseq.spatial_scale.units.dimensionality.string)
-        ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s')))
+        ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} ')
+        ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s').magnitude))
         save_plot(args.output_img)
 
     block.segments[0].imagesequences = [vec_imgseq]

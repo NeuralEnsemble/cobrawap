@@ -75,7 +75,7 @@ def calc_planar_velocities(evts):
 
     # transform to DataFrame
     df = pd.DataFrame(velocities,
-                      columns=['velocity', 'velocity_std'],
+                      columns=['velocity_planar', 'velocity_planar_std'],
                       index=wave_ids)
     df['velocity_unit'] = [v_unit]*len(wave_ids)
     df.index.name = 'wave_id'

@@ -116,6 +116,24 @@ rule velocity_gradient:
                               --output_img "{output.img}"
         """
 
+
+rule velocity_flow:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'velocity_flow.py')
+    output:
+        data = os.path.join('{dir}', 'velocity_flow', 'velocity_flow.csv'),
+        # img = report(os.path.join('{dir}', 'velocity_flow',
+                                  # 'velocity_flow.'+PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+        """
+        #                       --output_img "{output.img}"
+        # """
+
 rule direction_planar:
     input:
         data = input,
@@ -138,7 +156,18 @@ rule direction_planar:
 # rule gradient_direction:
     # slice signal for each wave
 
-# rule inter_wave_distance:
+rule inter_wave_interval:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'inter_wave_interval.py')
+    output:
+        data = os.path.join('{dir}', 'inter_wave_interval', 'inter_wave_interval.csv')
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
 
 rule label_planar:
     input:

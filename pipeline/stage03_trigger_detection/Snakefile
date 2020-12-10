@@ -94,6 +94,7 @@ rule all:
         """
 
 rule check_input:
+    priority: 10
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
@@ -220,7 +221,7 @@ rule hilbert_phase:
                               --plot_tstart {params.plot_tstart} \
                               --plot_tstart {params.plot_tstart}
         """
-        
+
 rule minima:
     input:
         data = STAGE_INPUT,

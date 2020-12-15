@@ -31,7 +31,7 @@ DETECTION_BLOCK: 'trigger_clustering'
 # ADDITIONAL PROPERTIES
 #######################
 # Available Blocks: 'optical_flow', 'critical_points'
-ADDITIONAL_PROPERTIES: ['optical_flow', 'critical_points']
+ADDITIONAL_PROPERTIES: ['optical_flow'] #, 'critical_points']
 
 # Wavefront Clustering
 ######################

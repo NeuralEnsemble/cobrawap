@@ -49,7 +49,7 @@ if __name__ == '__main__':
             np.save(save_path+'.npy', dxy)
 
             fig, ax = plt.subplots()
-            sns.distplot(dxy, hist=True, rug=True, norm_hist=False, ax=ax)
+            sns.histplot(dxy, kde=True, ax=ax)
             ax.set_title(f'wave {wave_id}')
             ax.set_xlabel(f'instantanous velocities [{v_unit}]')
             ax.set_ylabel('')

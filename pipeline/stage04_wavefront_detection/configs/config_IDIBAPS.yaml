@@ -45,6 +45,7 @@ TIME_SPACE_RATIO: 1 # i.e. distance between 2 frames corresponds to X pixel
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############
+USE_PHASES: True
 # weight of the smoothness constraint over the brightness constancy constraint
 ALPHA: 1.5
 # maximum number of iterations optimizing the vector field

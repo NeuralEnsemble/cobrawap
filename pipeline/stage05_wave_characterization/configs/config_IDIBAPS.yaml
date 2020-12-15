@@ -17,7 +17,7 @@ PLOT_FORMAT: 'png'
 
 # Measures to compute
 # 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval'
-MEASURES: ['inter_wave_interval', 'velocity_flow', 'label_planar', 'velocity_planar']
+MEASURES: ['inter_wave_interval', 'label_planar', 'velocity_planar', 'direction_planar']
 
 # Label Planar
 ##############

@@ -61,8 +61,7 @@ if __name__ == '__main__':
                              np.nanmax(inter_wave_intervals)+bin_width/2, bin_width)
         else:
             bins = None
-        sns.distplot(inter_wave_intervals, hist=True, rug=True, kde=False,
-                     norm_hist=False, ax=ax, bins=bins)
+        sns.histplot(inter_wave_intervals, kde=False, ax=ax, bins=bins)
         ax.set_title(f'wave {wave_id}; {num_intervals}/{num_nonnan_channels} channels')
         ax.set_xlabel(f'time until next wave (UP transition) [{t_unit}]')
         ax.set_ylabel('')

@@ -12,9 +12,6 @@ from distutils.util import strtobool
 from utils import load_neo, write_neo, none_or_str, save_plot, \
                   ImageSequence2AnalogSignal, AnalogSignal2ImageSequence
 
-# ToDo: enable phase velocity fields
-# xydiff = np.mod(x - y + np.pi, 2*np.pi) - np.pi
-
 def get_derviation_kernels(name='Simple'):
     if name=='Simple':
         kernelX = np.array([[ 0, 0],
@@ -107,6 +104,7 @@ def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
             break
     return vx + vy*1j
 
+
 norm_angle = lambda p: -np.mod(p + np.pi, 2*np.pi) + np.pi
 
 def phase_conv2D(frame, kernel, kernel_center):
@@ -131,6 +129,7 @@ def phase_conv2D(frame, kernel, kernel_center):
         if dphase.any():
             dframe[i,j] = np.average(dphase, weights=abs(k)) / np.pi
     return dframe
+
 
 def compute_derivatives(frame, next_frame, kernelX, kernelY, kernelT,
                         are_phases=False, kernel_center=None):

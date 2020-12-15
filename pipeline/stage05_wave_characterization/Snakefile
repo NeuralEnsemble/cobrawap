@@ -154,9 +154,6 @@ rule direction_planar:
                               --method {params.direction_method}
         """
 
-# rule gradient_direction:
-    # slice signal for each wave
-
 rule inter_wave_interval:
     input:
         data = input,

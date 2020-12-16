@@ -19,7 +19,7 @@ Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the con
 
 To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
 
-[see pipeline config](config_template.yaml)
+[see pipeline config](configs/config_template.yaml)
 
 ## Execution
 The required Python packages are defined in the _environment.yaml_ file. We suggest to use [conda](https://docs.conda.io/en/latest/) for the environment management.

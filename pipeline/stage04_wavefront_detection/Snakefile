@@ -97,7 +97,6 @@ rule merge_wave_definitions:
     shell:
         """
         {ADD_UTILS}
-        echo {params.properties}
         python {input.script} --waves "{input.waves}" \
                               --properties {params.properties} \
                               --output "{output.data}"

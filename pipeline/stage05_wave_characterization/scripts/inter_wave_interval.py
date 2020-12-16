@@ -60,7 +60,7 @@ if __name__ == '__main__':
             bins = np.arange(np.nanmin(inter_wave_intervals)-bin_width/2,
                              np.nanmax(inter_wave_intervals)+bin_width/2, bin_width)
         else:
-            bins = None
+            bins = 'auto'
         sns.histplot(inter_wave_intervals, kde=False, ax=ax, bins=bins)
         ax.set_title(f'wave {wave_id}; {num_intervals}/{num_nonnan_channels} channels')
         ax.set_xlabel(f'time until next wave (UP transition) [{t_unit}]')

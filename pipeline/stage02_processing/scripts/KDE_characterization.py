@@ -1,5 +1,6 @@
 """
-Deconvolutes the given signal by applying a digital filter with a given kernel function.
+Estimates the signal pdf based on Kernel Density Estimation with Gaussian kernels and Silverman bandwidth selection.
+Makes a Gaussian fit on the pre-first peak region.
 """
 import argparse
 import quantities as pq

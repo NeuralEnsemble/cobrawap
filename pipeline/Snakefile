@@ -98,9 +98,9 @@ def stage_output(wildcards):
 rule all:
     input:
         last_stage = os.path.join(output_path, f'{STAGES[-1]}.done'),
-        reports = expand(os.path.join(output_path, '{subworkflow_name}',
-                                      'report.html'),
-                         subworkflow_name=STAGES)
+        # reports = expand(os.path.join(output_path, '{subworkflow_name}',
+        #                               'report.html'),
+        #                  subworkflow_name=STAGES)
     output:
         os.path.join(output_path, 'pipeline.done')
     shell:

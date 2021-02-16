@@ -21,7 +21,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
 DATA_SETS:
-    IDIBAPS_161101_rec07_RH: '/home/rgutzen/Sciebo/own/Data/WaveScalES/IDIBAPS/TestData-for-SWAP_WT/161101_rec07_Spontaneous_RH.smr'
+    IDIBAPS_161101_rec07_RH: '/home/rgutzen/Sciebo/Slow_Wave_Analysis_Pipeline/Data/IDIBAPS/TestData-for-SWAP_WT/161101_rec07_Spontaneous_RH.smr'
 
 CURATION_SCRIPT: 'curate_IDIBAPS_data.py'
 

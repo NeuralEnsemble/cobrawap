@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
 
 from settings import output_path
-from utils import ordereddict_to_dict
+from utils import ordereddict_to_dict, get_param
 
 if not bool(config):
     raise KeyError("Please specify a config file with '--configfile=...'")
@@ -39,6 +39,7 @@ ORIENTATION_RIGHT = config["ORIENTATION_RIGHT"]
 ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
 ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
 KWARGS = ordereddict_to_dict(config["KWARGS"])
+TRIAL = get_param("TRIAL")
 
 wildcard_constraints:
     data_name = '\w+'
@@ -60,7 +61,7 @@ rule all:
                       data_name = DATA_SETS.keys()),
         check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
                        data_name = DATA_SETS.keys()),
-        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -117,7 +118,8 @@ rule enter_data:
         orientation_right = ORIENTATION_RIGHT,
         annotations = ANNOTATIONS,
         array_annotations = ARRAY_ANNOTATIONS,
-        kwargs = KWARGS
+        kwargs = KWARGS,
+        trial = TRIAL
     output:
         data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT)
     shell:
@@ -134,5 +136,6 @@ rule enter_data:
                               --orientation_right {params.orientation_right} \
                               --annotations {params.annotations} \
                               --array_annotations {params.array_annotations} \
-                              --kwargs {params.kwargs}
+                              --kwargs {params.kwargs} \
+                              --trial {params.trial}
         """

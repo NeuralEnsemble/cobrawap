@@ -123,7 +123,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict[nested_dict_name] = str2dict(nested_dict)
         kwargs = kwargs.replace(match, '')
     # match entries with word value, list value, or tuple value
-    pattern = re.compile("[\w\s]+:(?:[\w\.\s-]+|\[[^\]]+\]|\([^\)]+\))")
+    pattern = re.compile("[\w\s]+:(?:[\w\.\s\/\-]+|\[[^\]]+\]|\([^\)]+\))")
     for match in pattern.findall(kwargs):
         my_dict.update(str2dict(match))
     return my_dict
@@ -173,11 +173,8 @@ def time_slice(neo_obj, t_start=None, t_stop=None,
             if isinstance(t_value, pq.Quantity):
                 t_value = t_value.rescale('s').magnitude
             if hasattr(neo_obj, t_name):
-                obj_t = getattr(neo_obj, t_name).rescale('s').magnitude
-                if t_name == 't_start':
-                    t_value = max([t_value, obj_t])
-                else:
-                    t_value = min([t_value, obj_t])
+                if not (neo_obj.t_start <= t_value <= neo_obj.t_stop):
+                    t_value = getattr(neo_obj, t_name).rescale('s').magnitude
         return t_value*unit
 
     t_start = robust_t(neo_obj, t_start, t_name='t_start')
@@ -203,6 +200,7 @@ none_or_float = lambda v: none_or_X(v, float)
 none_or_str = lambda v: none_or_X(v, str)
 str_list = lambda v: s.split(',')
 
+get_param = lambda name: config[name] if name in config else None
 
 def determine_spatial_scale(coords):
     coords = np.array(coords)
@@ -308,7 +306,7 @@ def AnalogSignal2ImageSequence(block):
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,
                                        dtype=asig.dtype,
-                                       # t_start=asig.t_start, # NotImplementedError
+                                       t_start=asig.t_start, # NotImplementedError
                                        sampling_rate=asig.sampling_rate,
                                        name=asig.name,
                                        description=asig.description,

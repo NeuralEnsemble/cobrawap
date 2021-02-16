@@ -21,8 +21,8 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
 DATA_SETS:
-    LENS_170110_mouse2_t1: '/home/rgutzen/Sciebo/own/Data/WaveScalES/LENS/170110_mouse2_deep/t1'
-    # LENS_GCMaP6f_KetamineII_t2: '/home/rgutzen/Sciebo/own/Data/WaveScalES/LENS/hbp-d000032_m-SWA-WF-wide-regions_pub/m-SWA-WF-wide-regions/GCMaP6f_Ketamine_II/t2'
+    LENS_170110_mouse2_t1: '/home/rgutzen/Sciebo/Slow_Wave_Analysis_Pipeline/Data/LENS/170110_mouse2_deep/t1'
+    # LENS_GCMaP6f_KetamineII_t2: '/home/rgutzen/Sciebo/Slow_Wave_Analysis_Pipeline/Data/LENS/hbp-d000032_m-SWA-WF-wide-regions_pub/m-SWA-WF-wide-regions/GCMaP6f_Ketamine_II/t2'
 
 CURATION_SCRIPT: 'curate_LENS_data.py'
 

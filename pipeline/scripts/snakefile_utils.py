@@ -30,6 +30,8 @@ def get_config(dir, config_name):
             parent_config_name = "_".join(config_name.split('_')[:-1]) + ext
             print(f"{config_name} not found, trying {parent_config_name}")
             config_name = parent_config_name
+            if config_name == '.yaml':
+                raise FileNotFoundError("No corresponding config file found!")
     return config_dict
 
 def create_temp_configs(stages, working_dir, config_name, output_dir, temp_name='temp_config.yaml'):

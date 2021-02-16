@@ -60,11 +60,11 @@ In case the `STAGE_INPUT` file is not found, it needs to be set manually either 
 #### Single Blocks
 Each block is represented by a snakemake rule. To run a specific rule you can request its output file (for multiple output files any one will do):
 
-`snakemake --configfile='configs/config_LENS.yaml' --cores=1 /path/to/specific/file`
+`snakemake /path/to/specific/file --configfile='configs/config_LENS.yaml' --cores=1`
 
 However, keep in mind that snakemake keeps track of the timestamps of scripts, in- and output files. So, a rule will only be run again if any of its inputs has changed, and if the something in the creation of the input changed as well this might trigger also other rules to be re-executed.
 
-_See the [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional more snakemake command line arguments_
+_See the snakemake [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional command line arguments_
 
 ## Interfaces
 #### Stage inputs

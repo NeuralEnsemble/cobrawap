@@ -67,7 +67,7 @@ if __name__ == '__main__':
                      default=None, help="channel-wise metadata")
     CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
                      help="additional optional arguments")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     try:
         block = load_neo(args.data, try_signal_grouping=True)

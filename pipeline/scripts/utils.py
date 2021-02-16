@@ -200,7 +200,11 @@ none_or_float = lambda v: none_or_X(v, float)
 none_or_str = lambda v: none_or_X(v, str)
 str_list = lambda v: s.split(',')
 
-get_param = lambda name: config[name] if name in config else None
+def get_param(config, param_name):
+    if param_name in config:
+        return config[param_name]
+    else:
+        return None
 
 def determine_spatial_scale(coords):
     coords = np.array(coords)

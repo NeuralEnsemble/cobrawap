@@ -34,12 +34,12 @@ SPATIAL_SCALE = config['SPATIAL_SCALE']
 SAMPLING_RATE = config["SAMPLING_RATE"]
 T_START = config["T_START"]
 T_STOP = config["T_STOP"]
-ORIENTATION_TOP = config["ORIENTATION_TOP"]
-ORIENTATION_RIGHT = config["ORIENTATION_RIGHT"]
+ORIENTATION_TOP = get_param(config, "ORIENTATION_TOP")
+ORIENTATION_RIGHT = get_param(config, "ORIENTATION_RIGHT")
 ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
 ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
 KWARGS = ordereddict_to_dict(config["KWARGS"])
-TRIAL = get_param("TRIAL")
+TRIAL = get_param(config, "TRIAL")
 
 wildcard_constraints:
     data_name = '\w+'

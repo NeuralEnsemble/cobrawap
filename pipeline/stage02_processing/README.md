@@ -27,7 +27,7 @@ Other as in other stages, in this stage, all blocks are re-executed with every s
 |Name | Description | Parameters |
 |:----|:------------|:-----------|
 |__frequency_filter__|low/high/bandpass filters signal|`HIGHPASS_FREQ`, `LOWPASS_FREQ`, `FILTER_ORDER`, `FILTER_FUNCTION`, _`PSD_FREQ_RES`_, _`PSD_OVERLAP`_|
-|__background_substraction__|substracts average of each channel| |
+|__background_subtraction__|subtracts average of each channel| |
 |__spatial_downsampling__|spatial smoothing by factor|`MACRO_PIXEL_DIM`|
 |__normalization__|divides signals by factor|`NORMALIZE_BY`|
 |__roi_selection__|masks area of low signal intensity|`INTENSITY_THRESHOLD`|

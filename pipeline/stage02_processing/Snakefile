@@ -163,13 +163,13 @@ rule plot_power_spectrum:
 
 #### PROCESSING BLOCKS (choose any)####
 
-rule background_substraction:
+rule background_subtraction:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = os.path.join('scripts','background_substraction.py')
+        script = os.path.join('scripts','background_subtraction.py')
     output:
-        data = os.path.join('{dir}', 'background_substraction',
+        data = os.path.join('{dir}', 'background_subtraction',
                             '{rule_name}.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', '{rule_name}',
                                   'background.'+PLOT_FORMAT)),

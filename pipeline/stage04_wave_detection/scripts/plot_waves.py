@@ -34,7 +34,7 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
     axes[0][0].set_ylabel(f"Wave {wave_id}", fontsize=20)
 
     for i, ax in enumerate(axes[0]):
-        ax.set_title('{:.3f} '.format(time_steps[i]) + f'{t.dimensionality}')
+        ax.set_title('{:.3f} '.format(time_steps[i].magnitude) + f'{time_steps[i].dimensionality}')
 
     for i in idx:
         x = waves_event.array_annotations['x_coords'][i]

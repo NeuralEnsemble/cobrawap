@@ -1,4 +1,4 @@
-# Stage 04 Wave Identification
+# Stage 04 Wave Detection
 import os
 
 configfile: os.path.join('configs', 'config_template.yaml')

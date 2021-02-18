@@ -1,7 +1,7 @@
-# Config file for Stage 4 - Wavefront Detection
+# Config file for Stage 4 - Wave Detection
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage04_wavefront_detection'
+STAGE_NAME: 'stage04_wave_detection'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
 PROFILE: 'dataset_key'
@@ -23,15 +23,16 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
+
 # DETECTIION BLOCK
 ##################
-# Available Blocks: 'trigger_detection'
-DETECTION_BLOCK: 'trigger_detection'
+# Available Blocks: 'trigger_clustering'
+DETECTION_BLOCK: 'trigger_clustering'
 
 # ADDITIONAL PROPERTIES
 #######################
 # Available Blocks: 'optical_flow', 'critical_points'
-ADDITIONAL_PROPERTIES: ['optical_flow']
+ADDITIONAL_PROPERTIES: ['optical_flow'] #, 'critical_points']
 
 # Wavefront Clustering
 ######################
@@ -41,7 +42,7 @@ METRIC: 'euclidean'
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
 # Factor from time dimension to space dimension in sampling_rate*spatial_scale
-TIME_SPACE_RATIO: 1
+TIME_SPACE_RATIO: 1 # i.e. distance between 2 frames corresponds to X pixel
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############

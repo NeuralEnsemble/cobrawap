@@ -3,7 +3,7 @@ STAGES:
     - 'stage01_data_entry'
     - 'stage02_processing'
     - 'stage03_trigger_detection'
-    - 'stage04_wavefront_detection'
+    - 'stage04_wave_detection'
     - 'stage05_wave_characterization'
 
 # A profile collects the parameter configuration for a specific dataset. The stages are executed using the config_<PROFILE>.yaml file, and results are stored in output_path/<PROFILE>/

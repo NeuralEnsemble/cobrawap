@@ -234,6 +234,22 @@ def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
     ax.set_yticks([])
     return ax
 
+def is_phase_signal(signal, use_phases):
+    vmin = np.nanmin(signal)
+    vmax = np.nanmax(signal)
+    in_range = np.isclose(np.array([vmin,   vmax]),
+                          np.array([-np.pi, np.pi]), atol=0.05)
+    if in_range.all():
+        print('The signal values seem to be phase values [-pi, pi]!')
+        print(f'The setting "use_phases" is {bool(use_phases)}.')
+        if use_phases:
+            print('Thus, the phase transformation is skipped.')
+        else:
+            print('Anyhow, the signal is treated as phase signal in the following. If this is not desired please review the preprocessing.')
+        return True
+    else:
+        return False
+
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -267,7 +283,9 @@ if __name__ == '__main__':
     frames = imgseq.as_array()
     # frames /= np.nanmax(np.abs(frames))
 
-    if args.use_phases:
+    if is_phase_signal(frames, args.use_phases):
+        args.use_phases = True
+    elif args.use_phases:
         analytic_frames = hilbert(frames, axis=0)
         frames = np.angle(analytic_frames)
 
@@ -295,6 +313,7 @@ if __name__ == '__main__':
     vec_imgseq = neo.ImageSequence(vector_frames,
                                    units='dimensionless',
                                    dtype=complex,
+                                   t_start=asig.t_start,
                                    # t_start=imgseq.t_start,
                                    spatial_scale=imgseq.spatial_scale,
                                    sampling_rate=imgseq.sampling_rate,

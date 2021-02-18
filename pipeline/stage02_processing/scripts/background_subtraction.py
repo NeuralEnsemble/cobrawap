@@ -1,5 +1,5 @@
 """
-Substract the background of a given dataset by substracting the mean of each channel.
+Subtract the background of a given dataset by subtracting the mean of each channel.
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     new_asig = asig.duplicate_with_new_data(signal)
     new_asig.array_annotations = asig.array_annotations
     new_asig.name += ""
-    new_asig.description += "The mean of each channel was substracted ({})."\
+    new_asig.description += "The mean of each channel was subtracted ({})."\
                         .format(os.path.basename(__file__))
     block.segments[0].analogsignals[0] = new_asig
 

@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage04_wavefront_detection',
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage04_wave_detection',
                                'waves.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]

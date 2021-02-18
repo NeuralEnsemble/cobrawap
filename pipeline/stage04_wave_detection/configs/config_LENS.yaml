@@ -1,7 +1,7 @@
-# Config file for Stage 4 - Wavefront Detection
+# Config file for Stage 4 - Wave Detection
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage04_wavefront_detection'
+STAGE_NAME: 'stage04_wave_detection'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
 PROFILE: 'LENS'

@@ -4,6 +4,7 @@ import quantities as pq
 import matplotlib.pyplot as plt
 from matplotlib import patches
 import os
+import warnings
 import argparse
 import scipy
 import pandas as pd
@@ -47,6 +48,7 @@ def calc_flow_direction(evts, asig):
     wave_ids = np.unique(evts.labels)
     directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
     signals = asig.as_array()
+
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
         if not int(wave_i) == -1:
@@ -54,10 +56,12 @@ def calc_flow_direction(evts, asig):
             t_idx = times2ids(asig.times, evts.times[idx])
             channels = evts.array_annotations['channels'][idx]
             # ToDo: Normalize vectors?
-            x_avg = np.mean(np.real(signals[t_idx, channels]))
-            x_std = np.std(np.real(signals[t_idx, channels]))
-            y_avg = np.mean(np.imag(signals[t_idx, channels]))
-            y_std = np.std(np.imag(signals[t_idx, channels]))
+            if np.isnan(signals[t_idx, channels]).any():
+                warnings.warn("Signals at trigger points contain nans!")
+            x_avg = np.nanmean(np.real(signals[t_idx, channels]))
+            x_std = np.nanstd(np.real(signals[t_idx, channels]))
+            y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
+            y_std = np.nanstd(np.imag(signals[t_idx, channels]))
             directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
 
     return directions

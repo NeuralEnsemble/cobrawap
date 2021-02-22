@@ -72,8 +72,7 @@ Papers
 Datasets
 --------
 * `Resta, F., Allegra Mascaro, A. L., & Pavone, F. (2020) "Study of Slow Waves (SWs) propagation through wide-field calcium imaging of the right cortical hemisphere of GCaMP6f mice" EBRAINS <https://doi.org/10.25493/3E6Y-E8G>`_
-* `Resta, F., Allegra Mascaro, A. L., & Pavone, F. (2020) "Wide-field calcium imaging of the right cortical hemisphere of GCaMP6f mice at different anesthesia levels" EBRAINS <https://doi.org/10.25493/XJR8-QCA]
-[DOI: 10.25493/XJR8-QCA]: https://doi.org/10.25493%2FXJR8-QCA>`_
+* `Resta, F., Allegra Mascaro, A. L., & Pavone, F. (2020) "Wide-field calcium imaging of the right cortical hemisphere of GCaMP6f mice at different anesthesia levels" EBRAINS <https://doi.org/10.25493/XJR8-QCA>`_
 * `Sanchez-Vives, M. (2020) "Propagation modes of slow waves in mouse cortex" EBRAINS <https://doi.org/10.25493/WKA8-Q4T>`_
 * `Sanchez-Vives, M. (2019) "Cortical activity features in transgenic mouse models of cognitive deficits (Fragile X Syndrome)" EBRAINS <https://doi.org/10.25493/ANF9-EG3>`_
 * `Sanchez-Vives, M. (2019) "Cortical activity features in transgenic mouse models of cognitive deficits (Williams Beuren Syndrome)" EBRAINS <https://doi.org/10.25493%2FDZWT-1T8>`_

@@ -4,7 +4,7 @@
 STAGE_NAME: 'stage01_data_entry'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'LENS'
+PROFILE: 'MF_LENS'
 
 # Name of stage output file.
 STAGE_OUTPUT: "data.nix"
@@ -21,15 +21,17 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
 DATA_SETS:
-    LENS_170110_mouse2_t1: '/Users/chiaradeluca/Desktop/wavescalephant-APE/Dataset/Ketamine/ketamine_25Hz/170110/mouse2/deep/t1'
-    # LENS_GCMaP6f_KetamineII_t2: '/home/rgutzen/Sciebo/Slow_Wave_Analysis_Pipeline/Data/LENS/hbp-d000032_m-SWA-WF-wide-regions_pub/m-SWA-WF-wide-regions/GCMaP6f_Ketamine_II/t2'
+    MF_Simulation_mouse2_t1: '/Users/chiaradeluca/Desktop/wavescalephant-APE/Dataset/MF_Simulation_Convoluted/DAMP_PERIOD_GridSearch_5/NuE_SIM_lognormal_t2_t3_1_1_DeltaAmp_Period_2.mat'
 
-CURATION_SCRIPT: 'curate_LENS_data.py'
+CURATION_SCRIPT: 'curate_MF_data.py'
 
 # pixel size
-SPATIAL_SCALE: 0.05  # mm
+SPATIAL_SCALE: 0.1  # mm
 
 SAMPLING_RATE: 25  # Hz
+
+DIM_X: 50 #pixel
+DIM_Y: 50 #pixel
 
 # time slice in s
 # if None, the entire recording is used
@@ -43,7 +45,7 @@ ORIENTATION_RIGHT: 'lateral'
 
 # Metadata
 ANNOTATIONS:
-    experimental_lab: 'Pavone lab - Florence'
+    experimental_lab: 'Cristiano’s code'
 
 ARRAY_ANNOTATIONS: 'None'
 
@@ -52,5 +54,5 @@ KWARGS: 'None'
 # Plot settings
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [4040, 5050, 6060]  # int, list of ints, or 'None' (default) -> picks channel by random
+PLOT_CHANNELS: [140, 150, 160]  # int, list of ints, or 'None' (default) -> picks channel by random
 PLOT_FORMAT: 'png'

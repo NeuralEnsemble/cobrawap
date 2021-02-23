@@ -28,6 +28,7 @@ PLOT_FORMAT: 'png'
 # The available blocks are:
 # 'background_substraction', 'frequency_filter', 'normalization', 'detrending',
 # 'roi_selection', 'logMUA_estimation', 'phase_transform', 'zscore'
+# 'deconvolution', 'KDE_characterization'
 BLOCK_ORDER: ['roi_selection', 'background_substraction', 'normalization', 'frequency_filter']
 
 # BLOCK - background_substraction
@@ -62,6 +63,23 @@ PSD_OVERLAP: 0.5
 #             3 - quadratic detrending.
 #             4 - cubic detrending.
 DETRENDING_ORDER: 2
+
+# BLOCK - KDE_characterization
+###########################
+# Bandwidth of the kernels and fit quantile outliers
+# Allowed bandwidths are: 'silverman', 'scott'
+BANDWIDTH: 'silverman'
+QUANTILE: 0.05
+
+# BLOCK - deconvolution
+###########################
+# Choose the kernel function used in Fourier deconvolution..
+# Allowed functions are: 'lognormal','combination_exp','alpha'.
+KERNEL: lognormal
+#Parameter list for the chosen kernel:
+#alpha : 1:n, 2:tau - combination_exp : 1:trise, 2:tdecay, lognormal : 1:mu, 2:sigma
+#ToDo: Put None if you want to search automatically for an optimum parameter, es. None None, or 0.27 None
+PARAMETERS: 2.2 0.91
 
 # BLOCK - img_roi_selection
 ###########################

@@ -39,6 +39,10 @@ FILTER_FUNCTION = config["FILTER_FUNCTION"]
 PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
+BANDWIDTH = config["BANDWIDTH"]
+QUANTILE = config["QUANTILE"]
+KERNEL = config["KERNEL"]
+PARAMETERS = config["PARAMETERS"]
 INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
 MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
 MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
@@ -236,6 +240,50 @@ rule plot_power_spectrum:
                               --lowpass_freq {params.lowpass_freq} \
                               --psd_freq_res {params.psd_freq_res} \
                               --psd_overlap {params.psd_overlap} \
+        """
+
+rule KDE_characterization:
+    input:
+        is_clear = os.path.join('{dir}', 'clear.done'),
+        data = input_file,
+        script = 'scripts/KDE_characterization.py'
+    params:
+        bandwidth = BANDWIDTH,
+        quantile = QUANTILE
+    output:
+        data = os.path.join('{dir}', 'KDE_characterization',
+                            '{rule_name}.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', 'KDE_characterization',
+                                    '{rule_name}.'+PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --bandwidth {params.bandwidth} \
+                              --quantile {params.quantile}
+
+        """
+
+rule deconvolution:
+    input:
+        is_clear = os.path.join('{dir}', 'clear.done'),
+        data = input_file,
+        script = 'scripts/deconvolution.py'
+    params:
+        kernel = KERNEL,
+        parameters = PARAMETERS
+    output:
+        data = os.path.join('{dir}', 'deconvolution',
+                            '{rule_name}.'+NEO_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --kernel {params.kernel} \
+                              --parameters {params.parameters}
         """
 
 rule roi_selection:

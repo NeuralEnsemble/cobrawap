@@ -58,8 +58,11 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=lambda v: v.split(','),
-                     required=True, help="path of output figure(s)")
+    CLI.add_argument("--output_dir", nargs='?', type=str,
+                     required=True, help="path of output directory")
+    CLI.add_argument("--filename", nargs='?', type=str,
+                     default='trigger_times_channel0.png',
+                     help='example filename for channel 0')
     CLI.add_argument("--t_start", nargs='?', type=float, default=0,
                      help="start time in seconds")
     CLI.add_argument("--t_stop", nargs='?', type=float, default=10,
@@ -78,8 +81,10 @@ if __name__ == '__main__':
     event = [evt for evt in block.segments[0].events if evt.name=='Transitions'][0]
     event = event.time_slice(args.t_start*pq.s, args.t_stop*pq.s)
 
-    for output, channel in zip(args.output, args.channels):
+    for channel in args.channels:
         plot_trigger_times(asig=asig,
                            event=event,
                            channel=channel)
-        save_plot(output)
+        output_path = os.path.join(args.output_dir,
+                                   args.filename.replace('_channel0', f'_channel{channel}'))
+        save_plot(output_path)

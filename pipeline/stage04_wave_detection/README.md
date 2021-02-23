@@ -1,4 +1,4 @@
-# Stage 04 - Wavefront Detection
+# Stage 04 - Wave Detection
 This stage detects individual propagating waves based on either the detected transition times (or the input signals directly).
 
 [config template](config_template.yaml)

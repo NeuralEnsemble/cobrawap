@@ -5,11 +5,12 @@ import re
 import os
 import sys
 import neo
-from utils import load_neo, write_neo, none_or_float, none_or_str, time_slice,\
-                  parse_string2dict
-
+from utils import load_neo, write_neo, time_slice, flip_image, rotate_image
+from utils import AnalogSignal2ImageSequence, ImageSequence2AnalogSignal
+from utils import parse_string2dict, none_or_float, none_or_str
 
 def merge_analogsingals(asigs):
+    # ToDo: to be replaced by neo utils functions
     min_length = np.min([len(asig.times) for asig in asigs])
     max_length = np.max([len(asig.times) for asig in asigs])
     if min_length != max_length:
@@ -56,13 +57,17 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=None,
                      help="stop time in seconds")
+    CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
+                     help="upward orientation of the recorded cortical region")
+    CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
+                     help="right-facing orientation of the recorded cortical region")
     CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
                      help="metadata of the dataset")
     CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
                      default=None, help="channel-wise metadata")
     CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
                      help="additional optional arguments")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     try:
         block = load_neo(args.data, try_signal_grouping=True)
@@ -101,6 +106,13 @@ if __name__ == '__main__':
 
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
+    asig.annotations.update(orientation_top=args.orientation_top)
+    asig.annotations.update(orientation_right=args.orientation_right)
+    asig.file_origin = args.data
+
+    if asig.description is None:
+        asig.description = ''
+    asig.description += 'ECoG signal. '
 
     # dim_t, channel_num = asig.as_array().shape
     # chidx = neo.ChannelIndex(name=asig.name,
@@ -109,15 +121,20 @@ if __name__ == '__main__':
     #                          coordinates=coords*args.spatial_scale*pq.mm)
     # chidx.annotations.update(asig.array_annotations)
 
+    block.segments[0].analogsignals = [asig]
+
+    # change data orientation to be top=ventral, right=lateral
+    block = AnalogSignal2ImageSequence(block)
+    imgseq = block.segments[0].imagesequences[0]
+    imgseq = flip_image(imgseq, axis=-2)
+    block.segments[0].imagesequences[0] = imgseq
+    block.segments[0].analogsignals.clear()
+    block = ImageSequence2AnalogSignal(block)
+
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
     block.segments[0].description = 'Loaded with neo.Spike2IO (neo version {})'\
                                     .format(neo.__version__)
-    if asig.description is None:
-        asig.description = ''
-    asig.description += 'ECoG signal. '
-
-    block.segments[0].analogsignals = [asig]
 
     # block.channel_indexes.append(chidx)
     # block.segments[0].analogsignals[0].channel_index = chidx

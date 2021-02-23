@@ -51,7 +51,7 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
     norm = np.array([np.linalg.norm(w) for w in wave_directions])
     wave_directions /= norm
 
-    palette = sns.husl_palette(len(np.unique(t_idx)), h=0.3, l=0.35)
+    palette = sns.husl_palette(len(np.unique(t_idx))+1, h=0.3, l=0.4)[:-1]
 
     if ax is None:
         fig, ax = plt.subplots()
@@ -68,15 +68,21 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
         ti = t_idx[frame_i]
         frame = vector_field[ti, xi.astype(int), yi.astype(int)].magnitude
         ax.quiver(yi, xi, np.real(frame), np.imag(frame),
-                  color=palette[i], alpha=0.8, label='{:.3f}'.format(asig.times[frame_t]))
+                  # units='width', scale=max(frame.shape)/(10*skip_step),
+                  # width=0.15/max(frame.shape),
+                  color=palette[i], alpha=0.8,
+                  label='{:.3f} s'.format(times[frame_t].rescale('s').magnitude))
 
     dim_t, dim_x, dim_y = vector_field.as_array().shape
-    ax.set_xlim((0, dim_y))
-    ax.set_ylim((0, dim_x))
-    ax.set_xlabel(f'x scale {vector_field.spatial_scale}')
-    ax.set_ylabel(f'y scale {vector_field.spatial_scale}')
+    ax.axis('image')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_ylabel(f'pixel size {vector_field.spatial_scale}')
+    start_t = np.min(waves_event.times[idx]).rescale('s').magnitude
+    stop_t = np.max(waves_event.times[idx]).rescale('s').magnitude
+    ax.set_xlabel('{:.3f} - {:.3f} s'.format(start_t, stop_t))
     ax.set_title('planarity {:.3f}'.format(np.linalg.norm(np.mean(wave_directions))))
-    plt.legend()
+    plt.legend(bbox_to_anchor=(1,1), loc='upper left')
     return ax
 
 
@@ -115,14 +121,18 @@ if __name__ == '__main__':
 
     planar_labels = label_planar(waves_event=wavefront_evt,
                                  vector_field=optical_flow,
-                                 times = asig.times,
+                                 times=asig.times,
                                  threshold=args.alignment_threshold)
+
+    dim_t, dim_x, dim_y = optical_flow.shape
+    skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
     for i, wave_id in enumerate(np.unique(wavefront_evt.labels)):
         fig, ax = plt.subplots()
         plot_planarity(waves_event=wavefront_evt,
                        vector_field=optical_flow,
                        times=asig.times,
+                       skip_step=skip_step,
                        wave_id=i,
                        ax=ax)
         plt.savefig(os.path.join(os.path.dirname(args.output), f'wave_{wave_id}.png'))

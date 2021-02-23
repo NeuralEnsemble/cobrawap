@@ -1,13 +1,15 @@
+import os
+import argparse
 import neo
 import numpy as np
 import quantities as pq
 from scipy.signal import hilbert
 from scipy.stats import zscore
-import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
-from utils import load_neo, write_neo, time_slice, none_or_int,\
-                  remove_annotations, save_plot
+from utils import load_neo, write_neo, time_slice, none_or_int
+from utils import remove_annotations, save_plot
+import time
 
 def detect_transitions(asig, transition_phase):
     # ToDo: replace with elephant function
@@ -18,25 +20,28 @@ def detect_transitions(asig, transition_phase):
     hilbert_phase = np.angle(hilbert_signal)
 
     def _detect_phase_crossings(phase):
-        t_idx, channel_idx = np.where(np.diff(np.signbit(hilbert_phase-phase), axis=0))
-        crossings = [None] * channel_num
-        for ti, channel in zip(t_idx, channel_idx):
-            # select only crossings from negative to positive
-            if (hilbert_phase-phase)[ti][channel] <= 0 \
-            and np.real(hilbert_signal[ti][channel]) \
-              > np.imag(hilbert_signal[ti][channel]):
-                if crossings[channel] is None:
-                    crossings[channel] = np.array([])
-                if asig.times[ti].magnitude not in crossings[channel]:
-                    crossings[channel] = np.append(crossings[channel],
-                                                   asig.times[ti].magnitude)
-        return crossings
+        # detect phase crossings from below phase to above phase
+        is_larger = hilbert_phase > phase
+        positive_crossings = ~is_larger & np.roll(is_larger, -1, axis=0)
+        positive_crossings = positive_crossings[:-1]
+
+        # select phases within [-pi, pi]
+        real_crossings = np.real(hilbert_signal[:-1]) > np.imag(hilbert_signal[:-1])
+        crossings = real_crossings & positive_crossings
+
+        # arrange transitions times per channel
+        times = asig.times[:-1]
+        crossings_list = [times[crossings[:,channel]].magnitude
+                          for channel in range(channel_num)]
+        return crossings_list
 
     # UP transitions: A change of the hilbert phase from < transtion_phase
     #                 to > transition_phase, followed by a peak (phase = 0).
 
     peaks = _detect_phase_crossings(0)
+    start = time.time()
     transitions = _detect_phase_crossings(transition_phase)
+
     up_transitions = np.array([])
     channels = np.array([], dtype=int)
 
@@ -104,8 +109,11 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','),
-                     default='None', help="path(s) of output figure(s)")
+    CLI.add_argument("--img_dir", nargs='?', type=str,
+                     default='None', help="path of figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str,
+                     default='hilbert_phase_channel0.png',
+                     help='example image filename for channel 0')
     CLI.add_argument("--transition_phase", nargs='?', type=float, default=-1.570796,
                      help="phase to use as threshold for the upward transition")
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
@@ -127,12 +135,10 @@ if __name__ == '__main__':
     write_neo(args.output, block)
 
     if args.plot_channels[0] is not None:
-        if not len(args.output_img) == len(args.plot_channels):
-            raise InputError("The number of plotting channels must "\
-                           + "correspond to the number of image output paths!")
-
-        for output, channel in zip(args.output_img, args.plot_channels):
+        for channel in args.plot_channels:
             plot_hilbert_phase(asig=time_slice(asig, args.plot_tstart, args.plot_tstop),
                                event=time_slice(transition_event, args.plot_tstart, args.plot_tstop),
                                channel=int(channel))
-            save_plot(output)
+            output_path = os.path.join(args.img_dir,
+                                       args.img_name.replace('_channel0', f'_channel{channel}'))
+            save_plot(output_path)

@@ -7,8 +7,8 @@ from skimage import measure
 import shapely.geometry as geo
 import argparse
 import os
-from utils import load_neo, write_neo, none_or_str, save_plot, \
-                  AnalogSignal2ImageSequence
+from utils import load_neo, write_neo, none_or_str, save_plot
+from utils import AnalogSignal2ImageSequence
 
 
 def calculate_contour(img, contour_limit):
@@ -97,7 +97,7 @@ def contour2mask(contour, dim_x, dim_y):
 
 def plot_roi(img, contour):
     fig, ax = plt.subplots()
-    ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray)
+    ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray, origin='lower')
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])

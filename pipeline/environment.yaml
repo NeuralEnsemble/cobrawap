@@ -9,18 +9,17 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake >= 5.15.0
+  - snakemake == 5.15.0
+  - h5py
   - pip:
-    # - elephant >= 0.7.0
-    - git+https://github.com/NeuralEnsemble/elephant.git
-    # - neo >= 0.9.0
-    - git+https://github.com/NeuralEnsemble/python-neo.git
+    - git+https://github.com/NeuralEnsemble/elephant.git#egg=elephant
+    - git+https://github.com/NeuralEnsemble/python-neo.git#egg=neo
     - nixio >= 1.5.0b4
     - pillow >= 7.0.0
     - pandas >= 1.0.1
     - scikit-learn >= 0.22.1
     - scikit-image >= 0.16.2
-    - matplotlib
+    - matplotlib == 3.1.1
     - seaborn
     - networkx
-    - shapely >= 1.6.4.post2
+    - shapely == 1.6.4.post2

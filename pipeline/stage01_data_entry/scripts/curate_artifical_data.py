@@ -8,7 +8,6 @@ import os
 import sys
 from utils import parse_string2dict, ImageSequence2AnalogSignal
 from utils import none_or_float, none_or_str, write_neo, time_slice
-from utils import flip_image, rotate_image
 
 
 if __name__ == '__main__':
@@ -38,45 +37,50 @@ if __name__ == '__main__':
                      help="upward orientation of the recorded cortical region")
     CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
                      help="right-facing orientation of the recorded cortical region")
-    args, unknown = CLI.parse_known_args()
+    args = CLI.parse_args()
 
-    # Load optical data
-    io = neo.io.tiffio.TiffIO(directory_path=args.data,
-                              sampling_rate=args.sampling_rate*pq.Hz,
-                              spatial_scale=args.spatial_scale*pq.mm,
-                              units='dimensionless')
-    # loading the data flips the images vertically!
+    annotations = parse_string2dict(args.annotations)
 
-    block = io.read_block()
+    # local oscillation
+    f = annotations['oscillation_freq'] * np.pi  # in Hz
+    osciallation_function = lambda t: np.sin(f*t)
 
-    # change data orientation to be top=ventral, right=lateral
-    imgseq = block.segments[0].imagesequences[0]
-    imgseq = flip_image(imgseq, axis=-2)
-    imgseq = rotate_image(imgseq, rotation=-90)
-    block.segments[0].imagesequences[0] = imgseq
+    # spatial propagation
+    pixel_shift = args.spatial_scale/annotations['velocity']
 
-    # Transform into analogsignals
-    block.segments[0].analogsignals = []
+    # propagation direction
+    direction_vec = np.exp(1j*annotations['direction'])
+    dx, dy = np.real(direction_vec), np.imag(direction_vec)
+
+    # build signal array
+    Nx, Ny = annotations['grid_size']
+    t = np.linspace(0, int(args.t_stop), int(args.t_stop*args.sampling_rate))
+    signal = np.zeros((len(t), Ny, Nx))
+    for col in range(Nx):
+        for row in range(Ny):
+            signal[:,row,col] = osciallation_function(t - pixel_shift*(col*dx + row*dy))
+
+    imgseq = neo.ImageSequence(signal, units='dimensionless',
+                               sampling_rate=args.sampling_rate*pq.Hz,
+                               spatial_scale=args.spatial_scale*pq.mm)
+
+    block = neo.Block()
+    seg = neo.Segment()
+    block.segments.append(seg)
+    block.segments[0].imagesequences.append(imgseq)
     block = ImageSequence2AnalogSignal(block)
 
-    block.segments[0].analogsignals[0] = time_slice(
-                block.segments[0].analogsignals[0], args.t_start, args.t_stop)
-
     if args.annotations is not None:
-        block.segments[0].analogsignals[0].annotations.\
-                                    update(parse_string2dict(args.annotations))
+        block.segments[0].analogsignals[0].annotations.update(annotations)
 
     block.segments[0].analogsignals[0].annotations.update(orientation_top=args.orientation_top)
     block.segments[0].analogsignals[0].annotations.update(orientation_right=args.orientation_right)
 
-    # ToDo: add metadata
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
-    block.segments[0].description = 'Loaded with neo.TiffIO (neo version {}). '\
+    block.segments[0].description = 'artificially generate data (neo version {}). '\
                                     .format(neo.__version__)
-    if block.segments[0].analogsignals[0].description is None:
-        block.segments[0].analogsignals[0].description = ''
-    block.segments[0].analogsignals[0].description += 'Ca+ imaging signal. '
+    block.segments[0].analogsignals[0].description = ''
 
     # Save data
     write_neo(args.output, block)

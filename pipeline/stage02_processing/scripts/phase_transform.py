@@ -15,11 +15,12 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     block = load_neo(args.data)
+    asig = block.segments[0].analogsignals[0]
 
-    phase = np.angle(hilbert(block.segments[0].analogsignals[0]).as_array())
+    phase = np.angle(hilbert(asig).as_array())
 
     asig = asig.duplicate_with_new_data(phase)
-    asig.array_annotations = **block.segments[0].analogsignals[0].array_annotations
+    asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
 
     asig.name += ""
     asig.description += "Phase signal ({}). "\

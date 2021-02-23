@@ -1,4 +1,4 @@
-# Stage 04 Wavefront Detection
+# Stage 04 Wave Detection
 import os
 
 configfile: os.path.join('configs', 'config_template.yaml')
@@ -31,25 +31,31 @@ PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
 PLOT_FORMAT = config["PLOT_FORMAT"]
 
+DETECTION_BLOCK = config['DETECTION_BLOCK']
+ADDITIONAL_PROPERTIES = config['ADDITIONAL_PROPERTIES']
+
 METRIC = config["METRIC"]
 TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]
 NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
 MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
 
+USE_PHASES = config["USE_PHASES"]
 ALPHA = config["ALPHA"]
 MAX_NITER = config["MAX_NITER"]
 CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
 GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
-DETECT_CRITICAL_POINTS = config["DETECT_CRITICAL_POINTS"]
 
-#### Housekeeping ####
+localrules: all, check_input
+
+#### UTILITY BLOCKS ####
 
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
         data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        # img = os.path.join(OUTPUT_DIR, 'wave_plots')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
@@ -60,8 +66,8 @@ rule all:
         {params.command} "{input.data}" "{output.data}"
         """
 
-
 rule check_input:
+    priority: 10
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
@@ -74,12 +80,34 @@ rule check_input:
         touch "{output}"
         """
 
-#### Wave Definitions ####
+def additional_properties(wildcards):
+    return [os.path.join(wildcards.dir, prop, f'{prop}.{NEO_FORMAT}')
+            for prop in ADDITIONAL_PROPERTIES]
 
-rule clustering:
+rule merge_wave_definitions:
+    input:
+        waves = os.path.join('{dir}', DETECTION_BLOCK, STAGE_OUTPUT),
+        additional_properties = additional_properties,
+        script = os.path.join('scripts', 'merge_wave_definitions.py')
+    params:
+        properties = ','.join([os.path.join('{dir}', prop, f'{prop}.{NEO_FORMAT}')
+                for prop in ADDITIONAL_PROPERTIES])
+    output:
+        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --waves "{input.waves}" \
+                              --properties {params.properties} \
+                              --output "{output.data}"
+        """
+
+#### DETECTION BLOCK ####
+
+rule trigger_clustering:
     input:
         data = STAGE_INPUT,
-        script = os.path.join('scripts', 'clustering.py'),
+        script = os.path.join('scripts', 'trigger_clustering.py'),
         plot_script = os.path.join('scripts', 'plot_clustering.py')
     params:
         metric = METRIC,
@@ -88,8 +116,9 @@ rule clustering:
         min_samples = MIN_SAMPLES_PER_WAVE,
         plot_time_slice = 10
     output:
-        data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
-        img = report(os.path.join('{dir}', 'clustering', f'wave_clustering.{PLOT_FORMAT}'))
+        data = os.path.join('{dir}', 'trigger_clustering', STAGE_OUTPUT),
+        img = report(os.path.join('{dir}', 'trigger_clustering',
+                                  f'wave_cluster.{PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}
@@ -104,6 +133,7 @@ rule clustering:
                                    --time_slice {params.plot_time_slice}
         """
 
+#### ADDITIONAL PROPERTIES ####
 
 rule optical_flow:
     input:
@@ -114,9 +144,10 @@ rule optical_flow:
         max_Niter = MAX_NITER,
         convergence_limit = CONVERGENCE_LIMIT,
         gaussian_sigma = GAUSSIAN_SIGMA,
-        derivative_filter = DERIVATIVE_FILTER
+        derivative_filter = DERIVATIVE_FILTER,
+        use_phases = USE_PHASES
     output:
-        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
+        data = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+NEO_FORMAT),
         img = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
     shell:
         """
@@ -128,19 +159,20 @@ rule optical_flow:
                               --max_Niter {params.max_Niter} \
                               --convergence_limit {params.convergence_limit} \
                               --gaussian_sigma {params.gaussian_sigma} \
-                              --derivative_filter {params.derivative_filter}
+                              --derivative_filter {params.derivative_filter} \
+                              --use_phases {params.use_phases}
         """
 
 rule critical_points:
     input:
-        data = os.path.join('{dir}', 'optical_flow', STAGE_OUTPUT),
+        data = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+NEO_FORMAT),
         script = os.path.join('scripts', 'critical_points.py'),
         plot_script = os.path.join('scripts', 'plot_critical_points.py')
     params:
         plot_frame = 0,
         skip_step = 3
     output:
-        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT),
+        data = os.path.join('{dir}', 'critical_points', 'critical_points.'+NEO_FORMAT),
         img = os.path.join('{dir}', 'critical_points', 'critical_points.'+PLOT_FORMAT)
     shell:
         """
@@ -166,42 +198,25 @@ rule critical_points_clustering:
         cp {input.data} {output.data}
         """
 
-def vector_field_data(wildcards):
-    if DETECT_CRITICAL_POINTS:
-        return os.path.join(wildcards.dir, 'critical_points_clustering', STAGE_OUTPUT)
-    else:
-        return os.path.join(wildcards.dir, 'optical_flow', STAGE_OUTPUT)
+#### PLOTTING ####
 
-rule merge_wave_definitions:
+checkpoint plot_waves:
     input:
-        trigger_data = os.path.join('{dir}', 'clustering', STAGE_OUTPUT),
-        node_data = vector_field_data,
-        script = os.path.join('scripts', 'merge_wave_definitions.py')
-    output:
-        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --trigger_data "{input.trigger_data}" \
-                              --node_data "{input.node_data}" \
-                              --output "{output.data}"
-        """
-
-rule plot_waves:
-    input:
-        data = os.path.join('{dir}', '{filename}.'+NEO_FORMAT),
+        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT),
         script = os.path.join('scripts', 'plot_waves.py')
     params:
         time_window = 0.4,  # in s
         colormap='viridis',
+        img_name = 'wave_plot_id0.'+PLOT_FORMAT
     output:
-        # creates additional files for each wave
-        img = report(os.path.join('{dir}', 'wave_plots', '{filename}_id0.'+PLOT_FORMAT))
+        img = report(directory(os.path.join('{dir}', 'wave_plots')),
+                    patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {input.data} \
-                              --output {output.img} \
+        python {input.script} --data "{input.data}" \
+                              --output_dir "{output.img}" \
+                              --img_name {params.img_name} \
                               --time_window {params.time_window} \
                               --colormap {params.colormap}
         """

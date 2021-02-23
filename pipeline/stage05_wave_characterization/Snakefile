@@ -23,7 +23,7 @@ OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
 if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
     STAGE_INPUT = config["STAGE_INPUT"]
 else:
-    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage04_wavefront_detection',
+    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage04_wave_detection',
                                'waves.nix')
 
 PLOT_TSTART = config["PLOT_TSTART"]
@@ -33,6 +33,9 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MEASURES = config["MEASURES"]
 ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
+DIRECTION_METHOD = config["DIRECTION_METHOD"]
+
+#### Housekeeping ####
 
 def input(wildcards):
     return STAGE_INPUT
@@ -41,12 +44,16 @@ def measures_output(wildcards):
     return [os.path.join(OUTPUT_DIR, measure, measure+'.csv')
             for measure in MEASURES]
 
+localrules: all, check_input
+
+#### UTILITY BLOCKS ####
+
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
         data = measures_output,
         script = os.path.join('scripts', 'merge_dataframes.py'),
-        configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data]
@@ -61,8 +68,8 @@ rule all:
                               --output_img "{output.img}"
         """
 
-
 rule check_input:
+    priority: 10
     input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
@@ -75,6 +82,7 @@ rule check_input:
         touch "{output}"
         """
 
+#### CHARACTERIZATION BLOCKS ####
 
 rule velocity_planar:
     input:
@@ -110,29 +118,54 @@ rule velocity_gradient:
         """
 
 
-rule direction:
+rule velocity_flow:
     input:
         data = input,
-        script = os.path.join('scripts', 'direction.py')
+        script = os.path.join('scripts', 'velocity_flow.py')
     output:
-        data = os.path.join('{dir}', 'direction', 'direction.csv'),
-        img = report(os.path.join('{dir}', 'direction',
-                                  'direction.'+PLOT_FORMAT))
+        data = os.path.join('{dir}', 'velocity_flow', 'velocity_flow.csv'),
+        # img = report(os.path.join('{dir}', 'velocity_flow',
+                                  # 'velocity_flow.'+PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --output_img "{output.img}"
+        """
+        #                       --output_img "{output.img}"
+        # """
+
+rule direction_planar:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'direction_planar.py')
+    params:
+        direction_method = DIRECTION_METHOD
+    output:
+        data = os.path.join('{dir}', 'direction_planar', 'direction_planar.csv'),
+        img = report(os.path.join('{dir}', 'direction_planar',
+                                  'direction_planar.'+PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --method {params.direction_method}
         """
 
-# rule gradient_direction:
-    # slice signal for each wave
-
-# rule inter_wave_distance:
-
-
-#### Wave Clasification ####
+rule inter_wave_interval:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'inter_wave_interval.py')
+    output:
+        data = os.path.join('{dir}', 'inter_wave_interval', 'inter_wave_interval.csv')
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
 
 rule label_planar:
     input:

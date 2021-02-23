@@ -39,8 +39,10 @@ TRIGGER_FILTER: ['remove_short_states']
 THRESHOLD_METHOD: 'fitted'
 
 # Fitting Parameters
-# available fit functions: 'Gaussian'
-FIT_FUNCTION: 'Gaussian'
+# available fit functions: 'HalfGaussian', 'DoubleGaussian'
+# FirstGaussian: detects main peak (DOWN), fits Gaussian to left half, set threshold to mean + sigma x SIGMA_FACTOR
+# DoubleGaussian: Fits two Gaussians, threshold = central minima, or if no second peak mean1 + sigma1 x SIGMA_FACTOR
+FIT_FUNCTION: 'DoubleGaussian'
 BIN_NUM: 100
 # Factor to multiply with the standard deviation
 # to determine threshold
@@ -60,8 +62,12 @@ TRANSITION_PHASE: -1.570796
 
 # BLOCK - Minima
 ################
-# Number of neighbouring points which should be compared to define a local minimum.
+# Number of neighbouring points to each side which should be compared to define a local minimum.
 MINIMA_ORDER: 3
+# If minima position should be interpolated via parabolic fit
+USE_QUADRATIC_INTERPOLATION: False
+# Number of points to be used in the parabolic interpolation
+NUM_INTERPOLATION_POINTS: 5
 
 # BLOCK - Remove Short States
 #############################

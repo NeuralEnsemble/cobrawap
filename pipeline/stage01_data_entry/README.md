@@ -18,6 +18,7 @@ _required, for a correct processing of the data_
 * Sampling rate of the signals
 * Distance between electrodes/pixels (as annotation `spatial_scale` in AnalogSignal)
 * Relative spatial location of channels (as array_annotations `x_coords` and `y_coords` in AnalogSignal; _[use ChannelIndex objects instead, when [#773](https://github.com/NeuralEnsemble/python-neo/issues/773) is fixed]_)
+* Anatomical orientation of the recorded region
 
 #### Recommended metadata for SWAP pipeline
 _desired, for a correct interpretation of the results_

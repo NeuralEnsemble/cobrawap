@@ -46,12 +46,12 @@ def get_opticalflow(imagesequences, imgseq_name="Optical Flow"):
         return None
 
 def stretch_to_framerate(t_start, t_stop, num_frames, frame_rate=None):
-    if args.frame_rate is None:
+    if frame_rate is None:
         return np.arange(num_frames, dtype=int)
     else:
         new_num_frames = (t_stop.rescale('s').magnitude
                         - t_start.rescale('s').magnitude) \
-                        * args.frame_rate
+                        * frame_rate
         return np.linspace(0, num_frames-1, int(new_num_frames), dtype=int)
 
 def plot_frame(frame, up_coords=None, cmap=plt.cm.gray, vmin=None, vmax=None,
@@ -59,7 +59,7 @@ def plot_frame(frame, up_coords=None, cmap=plt.cm.gray, vmin=None, vmax=None,
     fig, ax = plt.subplots()
     img = ax.imshow(frame, interpolation='nearest',
                     cmap=cmap, vmin=vmin, vmax=vmax, origin='lower')
-    plt.colorbar(img, ax=ax)
+    plt.colorbar(img, pad=0, ax=ax)
 
     ax.axis('image')
     ax.set_xticks([])
@@ -68,13 +68,13 @@ def plot_frame(frame, up_coords=None, cmap=plt.cm.gray, vmin=None, vmax=None,
     # ax.set_ylim((dim_y, 0))
     return ax
 
-def plot_transitions(up_coords, markersize=1, ax=None):
+def plot_transitions(up_coords, markersize=1, markercolor='k', ax=None):
     if up_coords.size:
         if ax is None:
             ax = plt.gca()
 
         ax.plot(up_coords[:,1], up_coords[:,0],
-                marker='D', color='k', markersize=markersize,
+                marker='D', color=markercolor, markersize=markersize,
                 linestyle='None', alpha=0.6)
         # if len(pixels[0]) > 0.005*pixel_num:
         #     slope, intercept, _, _, stderr = scipy.stats.linregress(pixels[1], pixels[0])
@@ -103,6 +103,7 @@ if __name__ == '__main__':
     CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
     CLI.add_argument("--colormap",    nargs='?', type=str)
     CLI.add_argument("--event",       nargs='?', type=none_or_str, default=None)
+    CLI.add_argument("--markercolor",       nargs='?', type=str, default='k')
 
     args = CLI.parse_args()
 
@@ -147,9 +148,10 @@ if __name__ == '__main__':
         if optical_flow is not None:
             plot_vectorfield(optical_flow[frame_num], skip_step=skip_step)
         if args.event is not None and up_coords is not None:
-            plot_transitions(up_coords[frame_num], markersize)
-        ax.set_ylabel('pixel size: {} '.format(imgseq.spatial_scale))
-        ax.set_xlabel('{:.3f}'.format(times[frame_num].rescale('s')))
+            plot_transitions(up_coords[frame_num], markersize=markersize,
+                             markercolor=args.markercolor)
+        ax.set_ylabel('pixel size: {:.2f} mm'.format(imgseq.spatial_scale.rescale('mm').magnitude))
+        ax.set_xlabel('{:.3f} s'.format(times[frame_num].rescale('s').magnitude))
 
         save_plot(os.path.join(args.frame_folder,
                                args.frame_name + '_{}.{}'.format(str(i).zfill(5),

@@ -30,6 +30,40 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
                 del objects[i].annotations[k]
     return None
 
+def flip_image(imgseq, axis=-1):
+    # spatial axis 0 (~ 1) -> vertical
+    # spatial axis 1 (~ 2)-> horizontal
+    if len(imgseq.shape)==3 and axis==0:
+        warnings.warn("Can not flip along time axis!"
+                      "Interpreting axis=0 as first spatial axis (i.e. axis=1).")
+        axis=1
+
+    flipped = np.flip(imgseq.as_array(), axis=axis)
+
+    return imgseq.duplicate_with_new_data(flipped)
+
+def rotate_image(imgseq, rotation=0):
+    # rotating clockwise
+    if np.abs(rotation) <= 2*np.pi:
+        # interpret as rad
+        rotation = int(np.round(rotation/np.pi * 180, decimals=0))
+    else:
+        # interpret as deg
+        pass
+
+    nbr_of_rot90 = np.divide(rotation, 90)
+
+    if np.mod(nbr_of_rot90, 1):
+        nbr_of_rot90 = np.round(nbr_of_rot90, decimals=0)
+        warnings.warn("Images can only be rotated in steps of 90 degrees. "
+                       f"Rounding {rotation} deg to {nbr_of_rot90*90} deg.")
+
+    rotated = np.rot90(imgseq.as_array(),
+                       k=nbr_of_rot90,
+                       axes=(-2,-1))
+
+    return imgseq.duplicate_with_new_data(rotated)
+
 
 def guess_type(string):
     try:
@@ -89,7 +123,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict[nested_dict_name] = str2dict(nested_dict)
         kwargs = kwargs.replace(match, '')
     # match entries with word value, list value, or tuple value
-    pattern = re.compile("[\w\s]+:(?:[\w\.\s-]+|\[[^\]]+\]|\([^\)]+\))")
+    pattern = re.compile("[\w\s]+:(?:[\w\.\s\/\-]+|\[[^\]]+\]|\([^\)]+\))")
     for match in pattern.findall(kwargs):
         my_dict.update(str2dict(match))
     return my_dict
@@ -139,11 +173,8 @@ def time_slice(neo_obj, t_start=None, t_stop=None,
             if isinstance(t_value, pq.Quantity):
                 t_value = t_value.rescale('s').magnitude
             if hasattr(neo_obj, t_name):
-                obj_t = getattr(neo_obj, t_name).rescale('s').magnitude
-                if t_name == 't_start':
-                    t_value = max([t_value, obj_t])
-                else:
-                    t_value = min([t_value, obj_t])
+                if not (neo_obj.t_start <= t_value <= neo_obj.t_stop):
+                    t_value = getattr(neo_obj, t_name).rescale('s').magnitude
         return t_value*unit
 
     t_start = robust_t(neo_obj, t_start, t_name='t_start')
@@ -169,6 +200,11 @@ none_or_float = lambda v: none_or_X(v, float)
 none_or_str = lambda v: none_or_X(v, str)
 str_list = lambda v: s.split(',')
 
+def get_param(config, param_name):
+    if param_name in config:
+        return config[param_name]
+    else:
+        return None
 
 def determine_spatial_scale(coords):
     coords = np.array(coords)
@@ -208,7 +244,6 @@ def ImageSequence2AnalogSignal(block):
                                     name=imgseq.name,
                                     array_annotations={'x_coords': coords[:,0],
                                                        'y_coords': coords[:,1]},
-                                    # grid_size=(dim_x, dim_y),
                                     spatial_scale=imgseq.spatial_scale,
                                     **imgseq.annotations)
 
@@ -275,7 +310,7 @@ def AnalogSignal2ImageSequence(block):
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,
                                        dtype=asig.dtype,
-                                       # t_start=asig.t_start, # NotImplementedError
+                                       t_start=asig.t_start, # NotImplementedError
                                        sampling_rate=asig.sampling_rate,
                                        name=asig.name,
                                        description=asig.description,
@@ -335,4 +370,5 @@ def save_plot(filename):
     if not os.path.exists(dirname):
         os.makedirs(dirname)
     plt.savefig(fname=filename, bbox_inches='tight')
+    plt.close()
     return None

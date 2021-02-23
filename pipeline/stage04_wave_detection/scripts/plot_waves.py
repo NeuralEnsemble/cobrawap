@@ -28,10 +28,13 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
 
     fig, axes = plt.subplots(nrows=2, ncols=len(time_steps),
                              figsize=(2*len(time_steps), 5), sharey='row')
+    if len(time_steps) < 2:
+        axes = [[axes[0]], [axes[1]]]
+
     axes[0][0].set_ylabel(f"Wave {wave_id}", fontsize=20)
 
     for i, ax in enumerate(axes[0]):
-        ax.set_title('{:.3f} '.format(time_steps[i]) + f'{t.dimensionality}')
+        ax.set_title('{:.3f} '.format(time_steps[i].magnitude) + f'{time_steps[i].dimensionality}')
 
     for i in idx:
         x = waves_event.array_annotations['x_coords'][i]
@@ -64,7 +67,8 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--output",    nargs='?', type=str)
+    CLI.add_argument("--output_dir", nargs='?', type=str)
+    CLI.add_argument("--img_name",    nargs='?', type=str)
     CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
                      help="size of the ploted windown in seconds.")
     CLI.add_argument("--colormap",    nargs='?', type=str, default='viridis')
@@ -85,14 +89,16 @@ if __name__ == '__main__':
     cmap = plt.get_cmap(args.colormap)
 
     for wave_id in np.unique(waves_event.labels):
+        if int(wave_id) != -1:  # collection of not-clustered triggers
+            ax = plot_wave(wave_id=wave_id,
+                           waves_event=waves_event,
+                           asig=asig,
+                           frames=frames,
+                           vec_frames=vec_frames,
+                           time_window=args.time_window*pq.s,
+                           cmap=cmap)
 
-        ax = plot_wave(wave_id=wave_id,
-                       waves_event=waves_event,
-                       asig=asig,
-                       frames=frames,
-                       vec_frames=vec_frames,
-                       time_window=args.time_window*pq.s,
-                       cmap=cmap)
-
-        save_plot(args.output.replace('id0', f'id{wave_id}'))
-        plt.close()
+            output_path = os.path.join(args.output_dir,
+                                args.img_name.replace('id0', f'id{wave_id}'))
+            save_plot(output_path)
+            plt.close()

@@ -19,7 +19,7 @@ Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the con
 
 To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
 
-[see pipeline config](config_template.yaml)
+[see pipeline config](configs/config_template.yaml)
 
 ## Execution
 The required Python packages are defined in the _environment.yaml_ file. We suggest to use [conda](https://docs.conda.io/en/latest/) for the environment management.
@@ -60,11 +60,11 @@ In case the `STAGE_INPUT` file is not found, it needs to be set manually either 
 #### Single Blocks
 Each block is represented by a snakemake rule. To run a specific rule you can request its output file (for multiple output files any one will do):
 
-`snakemake --configfile='configs/config_LENS.yaml' --cores=1 /path/to/specific/file`
+`snakemake /path/to/specific/file --configfile='configs/config_LENS.yaml' --cores=1`
 
 However, keep in mind that snakemake keeps track of the timestamps of scripts, in- and output files. So, a rule will only be run again if any of its inputs has changed, and if the something in the creation of the input changed as well this might trigger also other rules to be re-executed.
 
-_See the [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional more snakemake command line arguments_
+_See the snakemake [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional command line arguments_
 
 ## Interfaces
 #### Stage inputs

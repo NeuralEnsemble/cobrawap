@@ -1,10 +1,10 @@
-# Config file for Stage 4 - Wavefront Detection
+# Config file for Stage 4 - Wave Detection
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage04_wavefront_detection'
+STAGE_NAME: 'stage04_wave_detection'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'IDIBAPS'
+PROFILE: 'LENS'
 
 # Name of the output file
 STAGE_OUTPUT: "waves.nix"
@@ -20,29 +20,32 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Plotting parameters
 PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
-PLOT_CHANNELS: [1,2,3]  # int or None. default 'None' -> randomly selected
+PLOT_CHANNELS: [4040, 5050, 6060]  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
-# Tigger Filter
-###############
-TRIGGER_FILTER: [] # ToDo
-
-# Wavefront Filter
+# DETECTIION BLOCK
 ##################
-WAVEFRONT_FILTER: [] # ToDo
+# Available Blocks: 'trigger_clustering'
+DETECTION_BLOCK: 'trigger_clustering'
+
+# ADDITIONAL PROPERTIES
+#######################
+# Available Blocks: 'optical_flow', 'critical_points'
+ADDITIONAL_PROPERTIES: ['optical_flow'] #, 'critical_points']
 
 # Wavefront Clustering
 ######################
 # Using sklearn.cluster.DBSCAN
 METRIC: 'euclidean'
 # eps, maximum distance between points to be neigbours
-NEIGHBOUR_DISTANCE: 2
-MIN_SAMPLES_PER_WAVE: 8
+NEIGHBOUR_DISTANCE: 10
+MIN_SAMPLES_PER_WAVE: 100
 # Factor from time dimension to space dimension in sampling_rate*spatial_scale
-TIME_SPACE_RATIO: 0.7272727272
+TIME_SPACE_RATIO: 8  # i.e. distance between 2 frames corresponds to X pixel
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############
+USE_PHASES: True
 # weight of the smoothness constraint over the brightness constancy constraint
 ALPHA: 1.5
 # maximum number of iterations optimizing the vector field
@@ -52,14 +55,10 @@ MAX_NITER: 100
 CONVERGENCE_LIMIT: 0.0001
 # standard deviations for the Gaussian filter applied on the vector field
 # [t_std, x_std, y_std]. (0,0,0) for no filter
-GAUSSIAN_SIGMA: [1,1,1]
+GAUSSIAN_SIGMA: [0,5,5]
 # Kernel filter to use to calucualte the spatial derivatives.
-# "Simple", "Prewitt", "Sobel", or "Roberts"
+# "Simple", "Simple2x2", "Prewitt", "Sobel", or "Sobel2"
 DERIVATIVE_FILTER: 'Simple'
-
-# Critical Point Detection
-##########################
-DETECT_CRITICAL_POINTS: False
 
 # Critical Point Clustering
 ###########################

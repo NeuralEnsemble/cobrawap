@@ -9,6 +9,8 @@ import sys
 from utils import parse_string2dict, ImageSequence2AnalogSignal
 from utils import none_or_float, none_or_str, write_neo, time_slice
 from utils import flip_image, rotate_image
+import scipy.io as sio
+import imageio
 
 
 if __name__ == '__main__':
@@ -38,16 +40,44 @@ if __name__ == '__main__':
                      help="upward orientation of the recorded cortical region")
     CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
                      help="right-facing orientation of the recorded cortical region")
-    args, unknown = CLI.parse_known_args()
+    CLI.add_argument("--trial", nargs='?', type=str, required=True, help="trial")
+    CLI.add_argument("--dim_x", nargs='?', type=str, required=True, help="number of pixel in x dimensio")
+    CLI.add_argument("--dim_y", nargs='?', type=str, required=True, help="number of pixel in y dimensio")
+
+    args = CLI.parse_args()
 
     # Load optical data
-    io = neo.io.tiffio.TiffIO(directory_path=args.data,
-                              sampling_rate=args.sampling_rate*pq.Hz,
-                              spatial_scale=args.spatial_scale*pq.mm,
-                              units='dimensionless')
+
+    mat_fname = args.data
+    Signal = np.array(sio.loadmat(mat_fname)['NuE']) #array of 1000x 2500 (50x50) images
+    y_pos_sel = np.array(sio.loadmat(mat_fname)['y_pos_sel']).T #array of 1000x 2500 (50x50) images
+    x_pos_sel = np.array(sio.loadmat(mat_fname)['x_pos_sel']).T #array of 1000x 2500 (50x50) images
+
+    Piexel = x_pos_sel + y_pos_sel*50
+    image_seq = np.empty([len(Signal[0]), 50, 50])
+        
+    for t in range(len(Signal[0])):
+        # per ogni tempo 
+        for px in range(len(y_pos_sel)):
+            # per ogni pixel
+            image_seq[t][x_pos_sel[px], y_pos_sel[px]] = Signal[px][t]
+
+    imageSequences = neo.ImageSequence(image_seq,
+                       sampling_rate=args.sampling_rate * pq.Hz,
+                       spatial_scale=args.spatial_scale * pq.mm,
+                       units='dimensionless')
+    
     # loading the data flips the images vertically!
 
-    block = io.read_block()
+    #block = io.read_block()
+    block = neo.Block()
+    seg = neo.Segment(name='segment 0', index=0)
+    block.segments.append(seg)
+    print('vlock', block)
+    print('seg', block.segments[0])
+
+    block.segments[0].imagesequences.append(imageSequences)
+
     # change data orientation to be top=ventral, right=lateral
     imgseq = block.segments[0].imagesequences[0]
     imgseq = flip_image(imgseq, axis=-2)
@@ -71,11 +101,11 @@ if __name__ == '__main__':
     # ToDo: add metadata
     block.name = args.data_name
     block.segments[0].name = 'Segment 1'
-    block.segments[0].description = 'Loaded with neo.TiffIO (neo version {}). '\
+    block.segments[0].description = 'Loaded from mat file. '\
                                     .format(neo.__version__)
     if block.segments[0].analogsignals[0].description is None:
         block.segments[0].analogsignals[0].description = ''
-    block.segments[0].analogsignals[0].description += 'Ca+ imaging signal. '
-
+    block.segments[0].analogsignals[0].description += 'MF simulation output '
+    
     # Save data
     write_neo(args.output, block)

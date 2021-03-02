@@ -6,13 +6,38 @@ report: "report.rst"
 import sys
 import numpy as np
 sys.path.append(os.getcwd())
-from settings import output_path
+from settings import output_path, configs_dir
 from scripts.snakefile_utils import create_temp_configs, set_global_configs
 from scripts.snakefile_utils import set_stage_inputs, read_stage_output
 
 # the working directory is by default the directory of the Snakefile
 working_dir = ''
 temp_config = 'working_config.yaml'
+if configs_dir is None:
+    configs_dir = working_dir
+
+# Setting the profile
+config_profile = f'config_{config["PROFILE"]}.yaml'
+output_path = os.path.join(output_path, config["PROFILE"])
+
+STAGES = config["STAGES"]
+
+# onstart:
+## building the temp_config files
+create_temp_configs(STAGES,
+                    working_dir=configs_dir,
+                    config_name=config_profile,
+                    output_dir=output_path,
+                    temp_name=temp_config)
+## overwrite stage configs with pipeline config parameters
+set_global_configs(STAGES,
+                   output_dir=output_path,
+                   config_dict=config,
+                   config_file=temp_config)
+## write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
+set_stage_inputs(STAGES,
+                 output_dir=output_path,
+                 config_file=temp_config)
 
 def get_stage(num):
     if num < len(STAGES):
@@ -20,29 +45,6 @@ def get_stage(num):
     else:
         # temporary solution
         return ''
-
-# Setting the profile
-config_profile = os.path.join('configs', f'config_{config["PROFILE"]}.yaml')
-output_path = os.path.join(output_path, config["PROFILE"])
-
-STAGES = config["STAGES"]
-
-# onstart:
-## Building the temp_config.yaml files
-create_temp_configs(STAGES,
-                    working_dir=working_dir,
-                    config_name=config_profile,
-                    output_dir=output_path,
-                    temp_name=temp_config)
-# # overwrite stage configs with pipeline config parameters
-set_global_configs(STAGES,
-                   output_dir=output_path,
-                   config_dict=config,
-                   config_file=temp_config)
-# # write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
-set_stage_inputs(STAGES,
-                 output_dir=output_path,
-                 config_file=temp_config)
 
 subworkflow stage01:
     workdir:

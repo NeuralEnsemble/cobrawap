@@ -21,6 +21,8 @@ def read_stage_output(stage, config_dir, config_name, output_namespace="STAGE_OU
 def get_config(dir, config_name):
     ext = os.path.splitext(config_name)[-1]
     config_dict = {}
+    if os.path.isdir(os.path.join(dir, 'configs')):
+        dir = os.path.join(dir, 'configs')
     while not config_dict:
         try:
             config_path = os.path.join(dir, config_name)

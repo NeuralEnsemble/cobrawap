@@ -49,8 +49,6 @@ localrules: all, check_input
 def input_file(wildcards):
     return DATA_SETS[wildcards.data_name]
 
-print(OUTPUT_DIR)
-
 rule all:
     input:
         data = expand(os.path.join(OUTPUT_DIR, '{data_name}',

@@ -356,7 +356,7 @@ def write_neo(filename, block, *args, **kwargs):
     # support array_annotations
     block.segments[0].imagesequences = []
     try:
-        io = neo.io.get_io(filename, *args, **kwargs)
+        io = neo.io.get_io(str(filename), *args, **kwargs)
         io.write(block)
     except Exception as e:
         print(e)

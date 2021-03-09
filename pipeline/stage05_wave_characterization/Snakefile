@@ -34,6 +34,7 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 MEASURES = config["MEASURES"]
 ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
 DIRECTION_METHOD = config["DIRECTION_METHOD"]
+TIME_STAMP_POINT = config["TIME_STAMP_POINT"]
 
 #### Housekeeping ####
 
@@ -182,4 +183,22 @@ rule label_planar:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --alignment_threshold {params.alignment_threshold}
+        """
+
+rule time_stamp:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'time_stamp.py')
+    params:
+        time_point = TIME_STAMP_POINT
+    output:
+        data = os.path.join('{dir}', 'time_stamp', 'time_stamp.csv'),
+        img = os.path.join('{dir}', 'time_stamp', 'time_stamp.'+PLOT_FORMAT),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --time_point {params.time_point}
         """

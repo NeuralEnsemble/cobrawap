@@ -16,7 +16,7 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-# 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval'
+# 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval', 'time_stamp'
 MEASURES: ['inter_wave_interval', 'label_planar', 'velocity_planar', 'direction_planar']
 
 # Label Planar
@@ -27,3 +27,8 @@ ALIGNMENT_THRESHOLD: 0.9
 ##################
 # tigger_interolation, optical_flow
 DIRECTION_METHOD: 'optical_flow'
+
+# Time Stamp
+############
+# start, middle, end
+TIME_STAMP_POINT: 'start'

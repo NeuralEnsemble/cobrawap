@@ -27,3 +27,8 @@ ALIGNMENT_THRESHOLD: 0.9
 ##################
 # tigger_interolation, optical_flow
 DIRECTION_METHOD: 'optical_flow'
+
+# Time Stamp
+############
+# start, middle, end
+TIME_STAMP_POINT: 'start'

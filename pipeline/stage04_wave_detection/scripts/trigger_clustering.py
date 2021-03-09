@@ -32,7 +32,7 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
     wave_idx = up_idx[cluster_idx]
 
     evt = neo.Event(times=event.times[wave_idx],
-                    labels=clustering.labels_[cluster_idx],
+                    labels=clustering.labels_[cluster_idx].astype(str),
                     name='Wavefronts',
                     array_annotations={'channels':event.array_annotations['channels'][wave_idx],
                                        'x_coords':triggers[:,0][cluster_idx],

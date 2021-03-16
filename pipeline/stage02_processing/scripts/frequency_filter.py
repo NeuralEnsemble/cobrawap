@@ -35,6 +35,9 @@ if __name__ == '__main__':
                   filter_function=args.filter_function)
 
     asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
+    asig.annotate(highpass_freq=args.highpass_freq*pq.Hz,
+                  lowpass_freq=args.lowpass_freq*pq.Hz,
+                  filter_order=args.order)
 
     asig.name += ""
     asig.description += "Frequency filtered with [{}, {}]Hz order {} "\

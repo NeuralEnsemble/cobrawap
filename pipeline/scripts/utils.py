@@ -7,6 +7,7 @@ import re
 import itertools
 import random
 import os
+import warnings
 import quantities as pq
 import matplotlib.pyplot as plt
 
@@ -237,7 +238,7 @@ def ImageSequence2AnalogSignal(block):
             asig = neo.AnalogSignal(signal=imgseq_flat,
                                     units=imgseq.units,
                                     dtype=imgseq.dtype,
-                                    # t_start=imgseq.t_start, # NotImplementedError
+                                    t_start=imgseq.t_start,
                                     sampling_rate=imgseq.sampling_rate,
                                     file_origin=imgseq.file_origin,
                                     description=imgseq.description,
@@ -245,7 +246,7 @@ def ImageSequence2AnalogSignal(block):
                                     array_annotations={'x_coords': coords[:,0],
                                                        'y_coords': coords[:,1]},
                                     spatial_scale=imgseq.spatial_scale,
-                                    **imgseq.annotations)
+                                    )
 
             # chidx = neo.ChannelIndex(name=asig.name,
             #                          channel_ids=np.arange(dim_x * dim_y),
@@ -256,6 +257,16 @@ def ImageSequence2AnalogSignal(block):
             # asig.channel_index = chidx
             # chidx.analogsignals = [asig] + chidx.analogsignals
             # block.channel_indexes.append(chidx)
+
+            if 'array_annotations' in imgseq.annotations.keys():
+                try:
+                    asig.array_annotations.update(imgseq.annotations['array_annotations'])
+                except ValueError:
+                    warnings.warn("ImageSequence <-> AnalogSignal transformation " \
+                                + "changed the signal shape!")
+                del imgseq.annotations['array_annotations']
+
+            asig.annotations.update(imgseq.annotations)
 
             remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
             block.segments[seg_count].analogsignals.append(asig)
@@ -310,13 +321,15 @@ def AnalogSignal2ImageSequence(block):
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,
                                        dtype=asig.dtype,
-                                       t_start=asig.t_start, # NotImplementedError
+                                       t_start=asig.t_start,
                                        sampling_rate=asig.sampling_rate,
                                        name=asig.name,
                                        description=asig.description,
                                        file_origin=asig.file_origin,
                                        # array_annotations=array_annotations,
                                        **asig.annotations)
+
+            imgseq.annotate(array_annotations=asig.array_annotations)
 
             remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
             block.segments[seg_count].imagesequences.append(imgseq)

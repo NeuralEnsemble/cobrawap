@@ -49,20 +49,21 @@ def calc_flow_direction(evts, asig):
     directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
     signals = asig.as_array()
 
+    wave_ids = np.setdiff1d(wave_ids.astype(int), -1) # rm -1 label wave
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
-        if not int(wave_i) == -1:
-            idx = np.where(evts.labels == wave_i)[0]
-            t_idx = times2ids(asig.times, evts.times[idx])
-            channels = evts.array_annotations['channels'][idx]
-            # ToDo: Normalize vectors?
-            if np.isnan(signals[t_idx, channels]).any():
-                warnings.warn("Signals at trigger points contain nans!")
-            x_avg = np.nanmean(np.real(signals[t_idx, channels]))
-            x_std = np.nanstd(np.real(signals[t_idx, channels]))
-            y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
-            y_std = np.nanstd(np.imag(signals[t_idx, channels]))
-            directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
+        idx = np.where(evts.labels == str(wave_i))[0]
+        t_idx = times2ids(asig.times, evts.times[idx])
+        channels = evts.array_annotations['channels'][idx]
+        # ToDo: Normalize vectors?
+        breakpoint()
+        if np.isnan(signals[t_idx, channels]).any():
+            warnings.warn("Signals at trigger points contain nans!")
+        x_avg = np.nanmean(np.real(signals[t_idx, channels]))
+        x_std = np.nanstd(np.real(signals[t_idx, channels]))
+        y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
+        y_std = np.nanstd(np.imag(signals[t_idx, channels]))
+        directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
 
     return directions
 
@@ -130,7 +131,7 @@ if __name__ == '__main__':
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
     CLI.add_argument("--method", nargs='?', type=str, default='trigger_interpolation',
-                     help="'tigger_interolation' or 'optical_flow'")
+                     help="'tigger_interpolation' or 'optical_flow'")
     args = CLI.parse_args()
 
     block = load_neo(args.data)
@@ -140,8 +141,7 @@ if __name__ == '__main__':
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)
     elif args.method == 'optical_flow':
-        # block = AnalogSignal2ImageSequence(block)
-        asig = [im for im in block.segments[0].analogsignals if im.name == 'Optical Flow'][0]
+        asig = block.filter(name='Optical Flow', objects="AnalogSignal")[0]
         directions = calc_flow_direction(evts, asig)
     else:
         raise NameError(f'Method name {args.method} is not recognized!')

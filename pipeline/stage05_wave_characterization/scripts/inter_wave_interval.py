@@ -31,7 +31,7 @@ if __name__ == '__main__':
     if wave_ids[0] == -1:
         wave_ids = np.delete(wave_ids, 0)
 
-    wave_times = np.empty((2, asig.shape[1]), dtype=np.float)
+    wave_times = np.empty((2, asig.shape[1]), dtype=float)
 
     IWIs = np.empty((len(wave_ids),2))
     IWIs.fill(np.nan)

@@ -219,7 +219,7 @@ rule hilbert_phase:
                               --transition_phase {params.transition_phase} \
                               --plot_channels {params.plot_channels} \
                               --plot_tstart {params.plot_tstart} \
-                              --plot_tstart {params.plot_tstart}
+                              --plot_tstop {params.plot_tstop}
         """
 
 rule minima:

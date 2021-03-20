@@ -49,22 +49,26 @@ def calc_flow_direction(evts, asig):
     directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
     signals = asig.as_array()
 
-    wave_ids = np.setdiff1d(wave_ids.astype(int), -1) # rm -1 label wave
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
-        idx = np.where(evts.labels == str(wave_i))[0]
-        t_idx = times2ids(asig.times, evts.times[idx])
-        channels = evts.array_annotations['channels'][idx]
-        # ToDo: Normalize vectors?
-        breakpoint()
-        if np.isnan(signals[t_idx, channels]).any():
-            warnings.warn("Signals at trigger points contain nans!")
-        x_avg = np.nanmean(np.real(signals[t_idx, channels]))
-        x_std = np.nanstd(np.real(signals[t_idx, channels]))
-        y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
-        y_std = np.nanstd(np.imag(signals[t_idx, channels]))
-        directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
-
+        if not int(wave_i) == -1:
+            idx = np.where(evts.labels == str(wave_i))[0]
+            t_idx = times2ids(asig.times, evts.times[idx])
+            x_coords = evts.array_annotations['x_coords'][idx]
+            y_coords = evts.array_annotations['y_coords'][idx]
+            channels = np.empty(len(idx), dtype=int)
+            for c, (x,y) in enumerate(zip(x_coords, y_coords)):
+                channels[c] = np.where((asig.array_annotations['x_coords'] == x) \
+                                     & (asig.array_annotations['y_coords'] == y))[0]
+            # channels = evts.array_annotations['channels'][idx]
+            # ToDo: Normalize vectors?
+            if np.isnan(signals[t_idx, channels]).any():
+                warnings.warn("Signals at trigger points contain nans!")
+            x_avg = np.nanmean(np.real(signals[t_idx, channels]))
+            x_std = np.nanstd(np.real(signals[t_idx, channels]))
+            y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
+            y_std = np.nanstd(np.imag(signals[t_idx, channels]))
+            directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
     return directions
 
 def plot_directions(dataframe, orientation_top=None, orientation_right=None):
@@ -136,7 +140,7 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
+    evts = block.filter(name='Wavefronts', objects="Event")[0]
 
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)

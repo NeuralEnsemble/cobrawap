@@ -23,18 +23,3 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 # Note that when using the None option, the automatic creation of reports will fail
 PLOT_FORMAT: 'png'
-
-# VIDEO SETTINGS
-################
-QUALITY: 5 # 0(good) - 31(bad)
-SCALE_X: 720
-SCALE_Y: 720
-FPS: 10
-BITRATE: 20M
-# displayed sampling rate, the data will be stretched or compressed to.
-# If None, the inherent sampling rate is used.
-FRAME_RATE: None
-# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
-COLORMAP: 'twilight'
-PLOT_EVENT: 'Transitions' # name of neo event to plot, default is None
-MARKER_COLOR: 'r'

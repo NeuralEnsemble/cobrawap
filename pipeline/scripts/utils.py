@@ -154,7 +154,7 @@ def parse_plot_channels(channels, input_file):
 
 
 def time_slice(neo_obj, t_start=None, t_stop=None,
-               lazy=False, channel_indexes=None):
+               lazy=False, channel_indexes=None, unit=pq.s):
     """
     Robustly time-slices neo.AnalogSignal, neo.IrregularSampledSignal, neo.ImageSequence, or neo.Event,
     with `t_start` and `t_stop` given in seconds.
@@ -164,7 +164,7 @@ def time_slice(neo_obj, t_start=None, t_stop=None,
     if t_start is None and t_stop is None:
         return neo_obj
 
-    def robust_t(neo_obj, t_value=None, t_name='t_start', unit=pq.s):
+    def robust_t(neo_obj, t_value=None, t_name='t_start', unit=unit):
         if t_value is None:
             if hasattr(neo_obj, t_name):
                 t_value = getattr(neo_obj, t_name).rescale('s').magnitude
@@ -334,6 +334,66 @@ def AnalogSignal2ImageSequence(block):
             remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
             block.segments[seg_count].imagesequences.append(imgseq)
     return block
+
+
+def add_empty_sites_to_analogsignal(asig):
+    coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
+                                            asig.array_annotations['y_coords'])],
+                      dtype=int)
+
+    asig_array = asig.as_array()
+    dim_t, dim_channels = asig_array.shape
+    dim_x, dim_y = determine_dims(coords)
+
+    grid_data = np.empty((dim_t, dim_x, dim_y), dtype=asig.dtype)
+    grid_data.fill(np.nan)
+
+    for channel in range(dim_channels):
+        x, y = coords[channel]
+        grid_data[:, x, y] = asig_array[:, channel]
+
+    new_asig = asig.duplicate_with_new_data(grid_data.reshape((dim_t, dim_x * dim_y)))
+
+    # insert nans into array_annotations for empty sites
+    nan_idx = np.where(np.isnan(new_asig[0]))[0]
+    if not len(nan_idx):
+        return asig
+    nan_idx -= np.arange(len(nan_idx))
+
+    nan_values = {'int': -1, 'float': np.nan,
+                  'str': 'None', 'complex': np.nan+1j*np.nan}
+    for key, values in asig.array_annotations.items():
+        nan_value = nan_values[get_base_type(values)]
+        new_values = np.insert(values, nan_idx, nan_value)
+        if type(values) == pq.Quantity:
+            new_values = new_values.magnitude * values.units
+        new_asig.array_annotations[key] = new_values
+
+    coords = np.array(list(itertools.product(np.arange(dim_x), np.arange(dim_y))))
+    new_asig.array_annotate(x_coords=coords[:,0], y_coords=coords[:,1])
+    return new_asig
+
+
+def get_base_type(datatype):
+    if hasattr(datatype, 'dtype'):
+        datatype = datatype.dtype
+    elif not type(datatype) == type:
+        datatype = type(datatype)
+
+    if datatype == list:
+        warnings.warn("List don't have a defined type!")
+
+    if np.issubdtype(datatype, np.integer):
+        return 'int'
+    elif np.issubdtype(datatype, float):
+        return 'float'
+    elif np.issubdtype(datatype, str):
+        return 'str'
+    elif np.issubdtype(datatype, complex):
+        return 'complex'
+    else:
+        warnings.warn("Did not recognize type {dtype}!")
+    return None
 
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):

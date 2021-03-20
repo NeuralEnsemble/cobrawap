@@ -15,39 +15,39 @@ from utils import load_neo, write_neo, none_or_str, save_plot, \
 def get_derviation_kernels(name='Simple'):
     if name=='Simple':
         kernelX = np.array([[ 0, 0],
-                            [-1, 1]], dtype=np.float)
+                            [-1, 1]], dtype=float)
         kernelY = np.array([[ 0,-1],
-                            [ 0, 1]], dtype=np.float)
+                            [ 0, 1]], dtype=float)
         center = (1,1)
     elif name=='Simple2x2':
         kernelX = np.array([[-1, 1],
-                            [-1, 1]], dtype=np.float) * .25
+                            [-1, 1]], dtype=float) * .25
         kernelY = np.array([[-1, -1],
-                            [ 1,  1]], dtype=np.float) * .25
+                            [ 1,  1]], dtype=float) * .25
         center = (1,1)
     elif name=='Prewitt':
         kernelX = np.array([[-1, 0, 1],
                             [-1, 0, 1],
-                            [-1, 0, 1]], dtype=np.float) * 1/6
+                            [-1, 0, 1]], dtype=float) * 1/6
         kernelY = np.array([[-1, -1, -1],
                             [ 0,  0,  0],
-                            [ 1,  1,  1]], dtype=np.float) * 1/6
+                            [ 1,  1,  1]], dtype=float) * 1/6
         center = (1,1)
     elif name=='Sobel':
         kernelX = np.array([[-1, 0, 1],
                             [-2, 0, 2],
-                            [-1, 0, 1]], dtype=np.float) * 1/8
+                            [-1, 0, 1]], dtype=float) * 1/8
         kernelY = np.array([[-1, -2, -1],
                             [ 0,  0,  0],
-                            [ 1,  2,  1]], dtype=np.float) * 1/8
+                            [ 1,  2,  1]], dtype=float) * 1/8
         center = (1,1)
     elif name=='Sobel2':
         kernelX = np.array([[-1, 0, 1],
                             [-4, 0, 4],
-                            [-1, 0, 1]], dtype=np.float) *1/12
+                            [-1, 0, 1]], dtype=float) *1/12
         kernelY = np.array([[-1, -4, -1],
                             [ 0,  0,  0],
-                            [ 1,  4,  1]], dtype=np.float) *1/12
+                            [ 1,  4,  1]], dtype=float) *1/12
         center = (1,1)
     else:
         print('Deriviative name {name} is not implemented, '\
@@ -291,9 +291,9 @@ if __name__ == '__main__':
 
     kernelHS = np.array([[1, 2, 1],
                          [2, 0, 2],
-                         [1, 2, 1]], dtype=np.float) * 1/12
+                         [1, 2, 1]], dtype=float) * 1/12
     kernelX, kernelY, center = get_derviation_kernels(args.derivative_filter)
-    kernelT = np.ones_like(kernelX, dtype=np.float)
+    kernelT = np.ones_like(kernelX, dtype=float)
     kernelT /= np.sum(kernelT)
 
     vector_frames = horn_schunck(frames=frames,
@@ -318,8 +318,8 @@ if __name__ == '__main__':
                                    sampling_rate=imgseq.sampling_rate,
                                    name='Optical Flow',
                                    description='Horn-Schunck estimation of optical flow',
-                                   file_origin=imgseq.file_origin,
-                                   **imgseq.annotations)
+                                   file_origin=imgseq.file_origin)
+    vec_imgseq.annotations = imgseq.annotations
 
     if args.output_img is not None:
         ax = plot_opticalflow(frames[0], vector_frames[0],

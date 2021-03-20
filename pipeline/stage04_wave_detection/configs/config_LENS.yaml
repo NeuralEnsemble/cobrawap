@@ -62,3 +62,18 @@ DERIVATIVE_FILTER: 'Simple'
 
 # Critical Point Clustering
 ###########################
+
+# VIDEO SETTINGS
+################
+QUALITY: 5 # 0(good) - 31(bad)
+SCALE_X: 720
+SCALE_Y: 720
+FPS: 10
+BITRATE: 20M
+# displayed sampling rate, the data will be stretched or compressed to.
+# If None, the inherent sampling rate is used.
+FRAME_RATE: None
+# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
+COLORMAP: 'twilight'
+PLOT_EVENT: 'Wavefronts' # name of neo event to plot, default is None
+MARKER_COLOR: 'r'

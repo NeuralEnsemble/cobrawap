@@ -7,9 +7,10 @@ from scipy.signal import hilbert
 from scipy.stats import zscore
 import matplotlib.pyplot as plt
 import seaborn as sns
-from utils import load_neo, write_neo, time_slice, none_or_int
+from utils import load_neo, write_neo, time_slice, none_or_int, none_or_float
 from utils import remove_annotations, save_plot
 import time
+
 
 def detect_transitions(asig, transition_phase):
     # ToDo: replace with elephant function
@@ -118,15 +119,18 @@ if __name__ == '__main__':
                      help="phase to use as threshold for the upward transition")
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
-    CLI.add_argument("--plot_tstart", nargs='?', type=float, default=0,
+    CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
                      help="start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=float, default=10,
+    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
                      help="stop time in seconds")
     args = CLI.parse_args()
 
     block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]
+
+    args.plot_tstart = asig.t_start if args.plot_tstart is None else args.plot_tstart
+    args.plot_tstop = asig.t_stop if args.plot_tstop is None else args.plot_tstop
 
     transition_event = detect_transitions(asig, args.transition_phase)
 

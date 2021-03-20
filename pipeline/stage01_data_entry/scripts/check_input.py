@@ -26,15 +26,15 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
 
-    block = AnalogSignal2ImageSequence(block)
-    block = ImageSequence2AnalogSignal(block)
-    asig2 = block.segments[0].analogsignals[1]
-
-    if asig.shape == asig2.shape:
-        del block.segments[0].analogsignals[1]
-    else:
-        raise ValueError("AnalogSignal doesn't include empty grid sites. " \
-                      + f"Reshape {asig.shape} to {asig2.shape} according to x/y_coords.")
+    # block = AnalogSignal2ImageSequence(block)
+    # block = ImageSequence2AnalogSignal(block)
+    # asig2 = block.segments[0].analogsignals[1]
+    #
+    # if asig.shape == asig2.shape:
+    #     del block.segments[0].analogsignals[1]
+    # else:
+    #     raise ValueError("AnalogSignal doesn't include empty grid sites. " \
+    #                   + f"Reshape {asig.shape} to {asig2.shape} according to x/y_coords.")
         # del block.segments[0].analogsignals[0]
 
     print('Recording Time:\t\t', asig.t_stop - asig.t_start)

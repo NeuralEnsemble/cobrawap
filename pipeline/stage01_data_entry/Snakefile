@@ -6,14 +6,14 @@ report: "report.rst"
 
 import sys
 utils_path = os.path.join('..', 'scripts')
-sys.path.append(os.path.join(os.getcwd(), '..'))
 sys.path.append(utils_path)
+sys.path.append(os.path.join(os.getcwd(), '..'))
 
-from settings import output_path
+from settings import output_path, configs_dir
 from utils import ordereddict_to_dict, get_param
 
 if not bool(config):
-    raise KeyError("Please specify a config file with '--configfile=...'")
+    raise FileNotFoundError("Please specify a config file with '--configfile=...'")
 
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]
@@ -103,10 +103,17 @@ rule plot_traces:
                               --channels {params.plot_channels}
         """
 
+def curation_script(w):
+    if configs_dir is None:
+        prefix = ''
+    else:
+        prefix = os.path.join(configs_dir, STAGE_NAME)
+    return os.path.join(prefix, 'scripts', CURATION_SCRIPT)
+
 rule enter_data:
     input:
         data = input_file,
-        script = os.path.join('scripts', CURATION_SCRIPT),
+        script = curation_script,
     params:
         spatial_scale = SPATIAL_SCALE,
         sampling_rate = SAMPLING_RATE,

@@ -36,9 +36,9 @@ def get_config(dir, config_name):
                 raise FileNotFoundError("No corresponding config file found!")
     return config_dict
 
-def create_temp_configs(stages, working_dir, config_name, output_dir, temp_name='temp_config.yaml'):
+def create_temp_configs(stages, configs_dir, config_name, output_dir, temp_name='temp_config.yaml'):
     for i, stage in enumerate(stages):
-        config_dict = get_config(os.path.join(working_dir, stage), config_name)
+        config_dict = get_config(os.path.join(configs_dir, stage), config_name)
         new_config_path = os.path.join(output_dir, stage, temp_name)
         with safe_open_w(new_config_path) as f:
             f.write(yaml.dump(config_dict, default_flow_style=False))

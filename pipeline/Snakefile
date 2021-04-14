@@ -1,8 +1,4 @@
 import os
-
-configfile: os.path.join('configs' ,'config.yaml')
-report: "report.rst"
-
 import sys
 import numpy as np
 sys.path.append(os.getcwd())
@@ -16,6 +12,9 @@ temp_config = 'working_config.yaml'
 if configs_dir is None:
     configs_dir = working_dir
 
+configfile: os.path.join(configs_dir, 'configs' ,'config.yaml')
+report: "report.rst"
+
 # Setting the profile
 config_profile = f'config_{config["PROFILE"]}.yaml'
 output_path = os.path.join(output_path, config["PROFILE"])
@@ -25,7 +24,7 @@ STAGES = config["STAGES"]
 # onstart:
 ## building the temp_config files
 create_temp_configs(STAGES,
-                    working_dir=configs_dir,
+                    configs_dir=configs_dir,
                     config_name=config_profile,
                     output_dir=output_path,
                     temp_name=temp_config)

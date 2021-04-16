@@ -189,7 +189,7 @@ def time_slice(neo_obj, t_start=None, t_stop=None,
 
 
 def none_or_X(value, type):
-    if value is None:
+    if value is None or not bool(value) or value == 'None':
         return None
     try:
         return type(value)

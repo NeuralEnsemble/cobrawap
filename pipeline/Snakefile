@@ -1,6 +1,6 @@
 import os
 
-configfile: os.path.join('configs' ,'config.yaml')
+configfile: os.path.join('configs', 'config.yaml')
 report: "report.rst"
 
 import sys

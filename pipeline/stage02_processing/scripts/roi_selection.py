@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 from skimage import measure
 import shapely.geometry as geo
 import argparse
+import neo
 import os
 from utils import load_neo, write_neo, none_or_str, save_plot
-from utils import AnalogSignal2ImageSequence
+from utils import AnalogSignal2ImageSequence, ImageSequence2AnalogSignal
 
 
 def calculate_contour(img, contour_limit):
@@ -150,11 +151,21 @@ if __name__ == '__main__':
     imgseq_array[:, np.bitwise_not(mask)] = np.nan
     if args.crop_to_selection:
         imgseq_array = crop_to_selection(imgseq_array)
-        dim_t, dim_x, dim_y = imgseq_array.shape
-    signal = imgseq_array.reshape((dim_t, dim_x * dim_y))
-    asig = block.segments[0].analogsignals[0].duplicate_with_new_data(signal)
+
+    # replace analogsingal
+    tmp_blk = neo.Block()
+    tmp_seg = neo.Segment()
+    tmp_imgseq = imgseq.duplicate_with_new_data(imgseq_array)
+    tmp_blk.segments.append(tmp_seg)
+    tmp_blk.segments[0].imagesequences.append(tmp_imgseq)
+    tmp_blk = ImageSequence2AnalogSignal(tmp_blk)
+    new_asig = tmp_blk.segments[0].analogsignals[0]
+
+    asig = block.segments[0].analogsignals[0].duplicate_with_new_data(new_asig.as_array())
     if not args.crop_to_selection:
         asig.array_annotate(**block.segments[0].analogsignals[0].array_annotations)
+    else:
+        asig.array_annotate(**new_asig.array_annotations)
 
     # save data and figure
     asig.name += ""

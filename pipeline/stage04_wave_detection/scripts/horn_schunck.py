@@ -4,6 +4,7 @@ import itertools
 from scipy.ndimage import convolve as conv
 from scipy.ndimage import gaussian_filter
 from scipy.signal import hilbert
+import time
 import neo
 import numpy as np
 from copy import copy
@@ -118,7 +119,7 @@ def phase_conv2D(frame, kernel, kernel_center):
     # loop over kernel window for each frame site
     for i,j in zip(*np.where(np.isfinite(frame))):
         phase = frame[i,j]
-        dphase = np.zeros((dx,dy), dtype=np.float)
+        dphase = np.zeros((dx,dy), dtype=float)
         for di,dj in itertools.product(range(dx), range(dy)):
             # kernelsite != 0, framesite within borders and != nan
             if k[di,dj] and i+di-ci < dimx and j+dj-cj < dimy \
@@ -149,14 +150,9 @@ def compute_derivatives(frame, next_frame, kernelX, kernelY, kernelT,
 def horn_schunck(frames, alpha, max_Niter, convergence_limit,
                  kernelHS, kernelT, kernelX, kernelY,
                  are_phases=False, kernel_center=None):
+
     nan_channels = np.where(np.bitwise_not(np.isfinite(frames[0])))
-
-    if are_phases:
-        nan_substitute = 0
-    else:
-        nan_substitute = np.nanmedian(frames)
-
-    frames[:,nan_channels[0],nan_channels[1]] = np.nanmedian(frames)
+    frames = interpolate_empty_sites(frames, are_phases)
 
     vector_frames = np.zeros(frames.shape, dtype=complex)
 
@@ -178,6 +174,36 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
 
     frames[:,nan_channels[0],nan_channels[1]] = np.nan
     return vector_frames
+
+
+def interpolate_empty_sites(frames, are_phases=False):
+    if np.isfinite(frames).all():
+        return frames
+    dim_x, dim_y = frames[0].shape
+    grid = np.meshgrid([-1,0,1],[-1,0,1])
+
+    for i, frame in enumerate(frames):
+        new_frame = copy(frame)
+        while not np.isfinite(new_frame).all():
+            x, y = np.where(np.bitwise_not(np.isfinite(new_frame)))
+            # loop over nan-sites
+            for xi, yi in zip(x,y):
+                neighbours = []
+                # collect neighbours of each site
+                for dx, dy in zip(grid[0].flatten(), grid[1].flatten()):
+                    xn = xi+dx
+                    yn = yi+dy
+                    if (0 <= xn) & (xn < dim_x) & (0 <= yn) & (yn < dim_y):
+                        neighbours.append(frames[i, xn, yn])
+                # average over neihbour values
+                if np.isfinite(neighbours).any():
+                    if are_phases:
+                        vectors = np.exp(1j*np.array(neighbours))
+                        new_frame[xi,yi] = np.angle(np.nansum(vectors))
+                    else:
+                        new_frame[xi,yi] = np.nansum(neighbours)
+            frames[i] = new_frame
+    return frames
 
 
 def smooth_frames(frames, sigma):

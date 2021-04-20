@@ -42,10 +42,12 @@ PSD_FREQ_RES = config["PSD_FREQ_RES"]
 PSD_OVERLAP = config["PSD_OVERLAP"]
 DETRENDING_ORDER = config["DETRENDING_ORDER"]
 INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
+CROP_TO_SELECTION = config["CROP_TO_SELECTION"]
 MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
 MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
 logMUA_RATE = config["logMUA_RATE"]
 FFT_SLICE = config["FFT_SLICE"]
+TARGET_RATE = config["TARGET_RATE"]
 
 #### Housekeeping ####
 
@@ -275,7 +277,8 @@ rule roi_selection:
         data = input_file,
         script = os.path.join('scripts','roi_selection.py')
     params:
-        intensity_threshold = INTENSITY_THRESHOLD
+        intensity_threshold = INTENSITY_THRESHOLD,
+        crop_to_selection = CROP_TO_SELECTION
     output:
         data = os.path.join('{dir}', 'roi_selection',
                             '{rule_name}.'+NEO_FORMAT),
@@ -287,7 +290,8 @@ rule roi_selection:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
-                              --intensity_threshold {params.intensity_threshold}
+                              --intensity_threshold {params.intensity_threshold} \
+                              --crop_to_selection {params.crop_to_selection}
         """
 
 rule logMUA_estimation:
@@ -351,11 +355,27 @@ rule zscore:
         data = input_file,
         script = os.path.join('scripts','z_score.py')
     output:
-        data = os.path.join('{dir}', 'zscore',
-                            '{rule_name}.'+NEO_FORMAT)
+        data = os.path.join('{dir}', 'zscore', '{rule_name}.'+NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
+        """
+
+rule subsampling:
+    input:
+        is_clear = os.path.join('{dir}', 'clear.done'),
+        data = input_file,
+        script = os.path.join('scripts','subsampling.py')
+    params:
+        target_rate = TARGET_RATE
+    output:
+        data = os.path.join('{dir}', 'subsampling', '{rule_name}.'+NEO_FORMAT)
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --target_rate {params.target_rate}
         """

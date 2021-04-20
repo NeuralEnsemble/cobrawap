@@ -28,7 +28,7 @@ PLOT_FORMAT: 'png'
 # The available blocks are:
 # 'background_subtraction', 'frequency_filter', 'normalization', 'detrending',
 # 'spatial_smooting', 'roi_selection', 'logMUA_estimation', 'phase_transform',
-# 'zscore'
+# 'zscore', 'subsampling'
 # Default: empty list [] -> it skips any processing blocks and returns the same
 # as input but, different from plot obtained from stage01, here the values on
 # the y-scale are correclty reported
@@ -41,7 +41,6 @@ BLOCK_ORDER: []
 # BLOCK - spatial_smoothig
 #################################
 MACRO_PIXEL_DIM: 2
-
 
 # BLOCK - normalization
 #######################
@@ -58,7 +57,7 @@ LOWPASS_FREQ: 150  # in Hz
 FILTER_ORDER: 2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
-FILTER_FUNCTION: 'filtfilt'
+FILTER_FUNCTION: 'sosfiltfilt'
 # Plotting parameters for the power spectrum
 PSD_FREQ_RES: 5  # in Hz
 PSD_OVERLAP: 0.5
@@ -72,11 +71,16 @@ PSD_OVERLAP: 0.5
 #             4 - cubic detrending.
 DETRENDING_ORDER: 2
 
+# BLOCK - subsampling
+#####################
+TARGET_RATE: 200  # in Hz
+
 # BLOCK - img_roi_selection
 ###########################
 # Threshold below which the pixels are discarded (set to nan).
 # Given in percent of the range between minimum and maximum intensity.
 INTENSITY_THRESHOLD: 0.5
+CROP_TO_SELECTION: True
 
 # BLOCK - logMUA_estimation
 ########################

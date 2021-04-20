@@ -95,6 +95,14 @@ def contour2mask(contour, dim_x, dim_y):
     return mask
 
 
+def crop_to_selection(frames):
+    frame = frames[0]
+    x, y = np.where(np.isfinite(frame))
+    x0, x1 = np.min(x), np.max(x)
+    y0, y1 = np.min(y), np.max(y)
+    return frames[:, x0:x1+1, y0:y1+1]
+
+
 def plot_roi(img, contour):
     fig, ax = plt.subplots()
     ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray, origin='lower')
@@ -117,6 +125,8 @@ if __name__ == '__main__':
                      help="path of output image", default=None)
     CLI.add_argument("--intensity_threshold", nargs='?', type=float,
                      help="threshold for mask [0,1]", default=0.5)
+    CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
+                     help="discard frame outside of ROI", default=True)
     args = CLI.parse_args()
 
     block = load_neo(args.data)
@@ -138,9 +148,13 @@ if __name__ == '__main__':
 
     # apply mask
     imgseq_array[:, np.bitwise_not(mask)] = np.nan
+    if args.crop_to_selection:
+        imgseq_array = crop_to_selection(imgseq_array)
+        dim_t, dim_x, dim_y = imgseq_array.shape
     signal = imgseq_array.reshape((dim_t, dim_x * dim_y))
     asig = block.segments[0].analogsignals[0].duplicate_with_new_data(signal)
-    asig.array_annotate(**block.segments[0].analogsignals[0].array_annotations)
+    if not args.crop_to_selection:
+        asig.array_annotate(**block.segments[0].analogsignals[0].array_annotations)
 
     # save data and figure
     asig.name += ""

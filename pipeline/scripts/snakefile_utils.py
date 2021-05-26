@@ -1,6 +1,7 @@
 import os
 import yaml
 import warnings
+from copy import copy
 
 def safe_open_w(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -18,23 +19,69 @@ def read_stage_output(stage, config_dir, config_name, output_namespace="STAGE_OU
         raise ValueError(f"config file of stage {stage} "
                        + f"does not define {output_namespace}!")
 
-def get_config(dir, config_name):
-    ext = os.path.splitext(config_name)[-1]
+
+def load_config_file(config_path):
+    with open(config_path, 'r') as f:
+        config_dict = yaml.safe_load(f)
+    return config_dict
+
+
+def get_parent_config_name(config_name):
+    """
+    splitting last '_<something>' element
+    keeping a trailing '|<anything>'
+    """
+    name, ext = os.path.splitext(config_name)
+    if '|' in name:
+        main, variant = name.split('|')
+    else:
+        main, variant = name, ''
+    parent = "_".join(main.split('_')[:-1])
+    if not parent:
+        return False
+    elif '|' in name:
+        return '|'.join([parent,variant]) + ext
+    else:
+        return parent + ext
+
+
+def get_config(config_dir, config_name):
+    """
+    # search order:
+    config_some_profile_name|variant.yaml
+    config_some_profile|variant.yaml
+    config_some|variant.yaml
+    config|variant.yaml
+    config_some_profile_name.yaml
+    config_some_profile.yaml
+    config_some.yaml
+    config.yaml
+    """
     config_dict = {}
-    if os.path.isdir(os.path.join(dir, 'configs')):
-        dir = os.path.join(dir, 'configs')
+    if os.path.isdir(os.path.join(config_dir, 'configs')):
+        config_dir = os.path.join(config_dir, 'configs')
+
+    try_config_name = copy(config_name)
+
+    keep_variant = True
     while not config_dict:
         try:
-            config_path = os.path.join(dir, config_name)
-            with open(config_path, 'r') as f:
-                config_dict = yaml.safe_load(f)
+            config_dict = load_config_file(os.path.join(config_dir, try_config_name))
         except FileNotFoundError:
-            parent_config_name = "_".join(config_name.split('_')[:-1]) + ext
-            print(f"{config_name} not found, trying {parent_config_name}")
-            config_name = parent_config_name
-            if config_name == '.yaml':
-                raise FileNotFoundError("No corresponding config file found!")
+            parent_config_name = get_parent_config_name(try_config_name)
+
+            if parent_config_name:
+                print(f"{try_config_name} not found, trying {parent_config_name}")
+                try_config_name = parent_config_name
+            else:
+                if keep_variant:
+                    name, ext = os.path.splitext(config_name)
+                    try_config_name = name.split('|')[0] + ext
+                else:
+                    raise FileNotFoundError("No corresponding config file found!")
+
     return config_dict
+
 
 def create_temp_configs(stages, configs_dir, config_name, output_dir, temp_name='temp_config.yaml'):
     for i, stage in enumerate(stages):

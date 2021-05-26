@@ -106,7 +106,7 @@ rule all:
         os.path.join(output_path, 'pipeline.done')
     shell:
         """
-        touch {output}
+        touch "{output}"
         """
 
 rule execute_stage:

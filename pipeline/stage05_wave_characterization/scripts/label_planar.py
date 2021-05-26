@@ -77,7 +77,7 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_ylabel(f'pixel size {vector_field.spatial_scale}')
+    ax.set_ylabel(f'pixel size {vector_field.spatial_scale:.2f}')
     start_t = np.min(waves_event.times[idx]).rescale('s').magnitude
     stop_t = np.max(waves_event.times[idx]).rescale('s').magnitude
     ax.set_xlabel('{:.3f} - {:.3f} s'.format(start_t, stop_t))

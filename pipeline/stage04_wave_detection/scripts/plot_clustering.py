@@ -7,6 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 import random
+import warnings
 from utils import load_neo, save_plot, none_or_float, time_slice
 
 if __name__ == '__main__':
@@ -29,15 +30,18 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     N = len(np.unique(evts.labels))
-    cmap = sns.husl_palette(N-1, h=.5, l=.6)
-    cmap = random.sample([c for c in cmap], N-1)
-    cmap = ListedColormap(['k']+cmap)
+    if N:
+        cmap = sns.husl_palette(N-1, h=.5, l=.6)
+        cmap = random.sample([c for c in cmap], N-1)
+        cmap = ListedColormap(['k']+cmap)
 
-    ax.scatter(evts.times,
-               evts.array_annotations['x_coords'],
-               evts.array_annotations['y_coords'],
-               c=[int(label) for label in evts.labels],
-               cmap=cmap, s=2)
+        ax.scatter(evts.times,
+                   evts.array_annotations['x_coords'],
+                   evts.array_annotations['y_coords'],
+                   c=[int(label) for label in evts.labels],
+                   cmap=cmap, s=2)
+    else:
+        warnings.warn('No trigger events to plot in clusters!')
 
     ax.set_xlabel('time [{}]'.format(evts.times.dimensionality.string))
     ax.set_ylabel('x-pixel')

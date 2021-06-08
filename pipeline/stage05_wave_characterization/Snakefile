@@ -202,3 +202,29 @@ rule time_stamp:
                               --output_img "{output.img}" \
                               --time_point {params.time_point}
         """
+
+rule duration:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'duration.py')
+    output:
+        data = os.path.join('{dir}', 'duration', 'duration.csv'),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """
+
+rule number_of_triggers:
+    input:
+        data = input,
+        script = os.path.join('scripts', 'number_of_triggers.py')
+    output:
+        data = os.path.join('{dir}', 'number_of_triggers', 'number_of_triggers.csv'),
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}"
+        """

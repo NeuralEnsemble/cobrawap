@@ -38,7 +38,7 @@ def calc_planar_velocities(evts):
         v = np.sqrt(vx**2 + vy**2)
         v_err = 1/v * np.sqrt((vx*vx_err)**2 + (vy+vy_err)**2)
         velocities[i] = np.array([v, v_err])
-        
+
         # Plot fit
         row = int(i/ncols)
         if ncols == 1:

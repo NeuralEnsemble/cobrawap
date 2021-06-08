@@ -16,7 +16,7 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-# 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval', 'time_stamp'
+# 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval', 'time_stamp', 'duration', 'number_of_triggers'
 MEASURES: ['inter_wave_interval', 'label_planar', 'velocity_planar', 'direction_planar']
 
 # Label Planar

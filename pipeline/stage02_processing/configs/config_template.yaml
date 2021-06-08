@@ -64,12 +64,9 @@ PSD_OVERLAP: 0.5
 
 # BLOCK - detrending
 ####################
-# Detrending: 0 - no detrending;
-#             1 - mean detrending;
-#             2 - mean and slope detrending (linear): this should be the default.
-#             3 - quadratic detrending.
-#             4 - cubic detrending.
-DETRENDING_ORDER: 2
+# Detrending: 0 - mean detrending;
+#             1 - mean and slope detrending (linear): this should be the default.
+DETRENDING_ORDER: 1
 
 # BLOCK - subsampling
 #####################

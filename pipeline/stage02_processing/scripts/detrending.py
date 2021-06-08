@@ -2,6 +2,7 @@
 ToDo
 """
 import numpy as np
+import scipy
 import neo
 import argparse
 import os
@@ -49,6 +50,26 @@ from utils import load_neo, write_neo
 #     elif isinstance(signal, np.ndarray):
 #         return X
 
+def detrend(asig, order):
+    if (args.order != 0) and (args.order != 1):
+        warnings.warn("Detrending order must be either 0 (constant) or 1 (linear)! Skip.")
+    return asig
+
+    dtrend = 'linear' if args.order else 'constant'
+    detrended_signals = np.empty(asig.shape)
+    detrended_signals.fill(np.nan)
+
+    for channel in range(asig.shape[1]):
+        channel_signal = asig.as_array()[:,channel]
+        if np.isnan(channel_signal).any():
+            continue
+        detrended = scipy.signal.detrend(channel_signal, type=dtrend, axis=0)
+        detrended_signals[:,channel] = detrended
+
+    asig = asig.duplicate_with_new_data(detrended_signals)
+    asig.array_annotate(**asig.array_annotations)
+    return asig
+
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -62,15 +83,8 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     block = load_neo(args.data)
-    asig = block.segments[0].analogsignals[0]
 
-    if (args.order == 0) or (args.order == 1):
-        dtrend = 'linear' if args.order else 'constant'
-        signal = scipy.signal.detrend(asig.as_array(), type=dtrend, axis=0)
-        asig = asig.duplicate_with_new_data(signal)
-        asig.array_annotate(**asig.array_annotations)
-    else:
-        warnings.warn("Detrending order must be either 0 (constant) or 1 (linear)! Skip.")
+    asig = detrend(block.segments[0].analogsignals[0], args.order)
 
     asig.name += ""
     asig.description += "Detrended by order {} ({}). "\

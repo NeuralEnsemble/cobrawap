@@ -3,12 +3,13 @@ ToDo
 """
 import numpy as np
 import scipy
+import matplotlib.pyplot as plt
 import neo
 import argparse
 import os
 from copy import copy
 import warnings
-from utils import load_neo, write_neo
+from utils import load_neo, write_neo, save_plot
 
 ## REPLACED BY SCIPY FUNCTION
 # def detrending(signal, order):
@@ -53,7 +54,7 @@ from utils import load_neo, write_neo
 def detrend(asig, order):
     if (args.order != 0) and (args.order != 1):
         warnings.warn("Detrending order must be either 0 (constant) or 1 (linear)! Skip.")
-    return asig
+        return asig
 
     dtrend = 'linear' if args.order else 'constant'
     detrended_signals = np.empty(asig.shape)
@@ -65,10 +66,21 @@ def detrend(asig, order):
             continue
         detrended = scipy.signal.detrend(channel_signal, type=dtrend, axis=0)
         detrended_signals[:,channel] = detrended
+    detrend_asig = asig.duplicate_with_new_data(detrended_signals)
+    detrend_asig.array_annotate(**asig.array_annotations)
+    return detrend_asig
 
-    asig = asig.duplicate_with_new_data(detrended_signals)
-    asig.array_annotate(**asig.array_annotations)
-    return asig
+
+def plot_detrend(asig, detrend_asig, channel):
+    fig, ax = plt.subplots(nrows=2, sharex=True, figsize=(17,8))
+
+    ax[0].plot(asig.times, asig.as_array()[:,channel], color='b', linewidth=1)
+    ax[0].set_ylabel('signal')
+
+    ax[1].plot(asig.times, detrend_asig.as_array()[:,channel], color='b', linewidth=1)
+    ax[1].set_ylabel('detrended signal')
+    ax[1].set_xlabel(f'time [{asig.times.dimensionality.string}]')
+    return ax
 
 
 if __name__ == '__main__':
@@ -80,15 +92,29 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--order", nargs='?', type=int, default=1,
                      help="detrending order")
+    CLI.add_argument("--img_dir",  nargs='?', type=str, required=True,
+                     help="path of output figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str,
+                     default='processed_trace_channel0.png',
+                     help='example filename for channel 0')
+    CLI.add_argument("--channels", nargs='+', type=int, default=0,
+                     help="channel to plot")
     args = CLI.parse_args()
 
     block = load_neo(args.data)
+    asig = block.segments[0].analogsignals[0]
 
-    asig = detrend(block.segments[0].analogsignals[0], args.order)
+    detrend_asig = detrend(asig, args.order)
 
-    asig.name += ""
-    asig.description += "Detrended by order {} ({}). "\
+    for channel in args.channels:
+        plot_detrend(asig, detrend_asig, channel)
+        output_path = os.path.join(args.img_dir,
+                                   args.img_name.replace('_channel0', f'_channel{channel}'))
+        save_plot(output_path)
+
+    detrend_asig.name += ""
+    detrend_asig.description += "Detrended by order {} ({}). "\
                         .format(args.order, os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = asig
+    block.segments[0].analogsignals[0] = detrend_asig
 
     write_neo(args.output, block)

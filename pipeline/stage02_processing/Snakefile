@@ -233,16 +233,24 @@ rule detrending:
         data = input_file,
         script = os.path.join('scripts', 'detrending.py')
     params:
-        order = DETRENDING_ORDER
+        order = DETRENDING_ORDER,
+        plot_channels = PLOT_CHANNELS,
+        img_name = 'detrending_channel0.'+PLOT_FORMAT,
     output:
         data = os.path.join('{dir}', 'detrending',
-                            '{rule_name}.'+NEO_FORMAT)
+                            '{rule_name}.'+NEO_FORMAT),
+        img_dir = report(directory(os.path.join('{dir}', '{rule_name}',
+                                                'detrending_plots')),
+                         patterns=["{img_name}."+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
-                              --order {params.order}
+                              --order {params.order} \
+                              --img_dir "{output.img_dir}" \
+                              --img_name {params.img_name} \
+                              --channels {params.plot_channels}
         """
 
 rule frequency_filter:

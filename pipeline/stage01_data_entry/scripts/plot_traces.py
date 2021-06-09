@@ -34,7 +34,7 @@ def plot_traces(asig, channels):
     ax.set_ylabel(f'channels [in {asig.units.dimensionality.string}]')
     ax.set_yticks([i*offset for i in range(len(channels))])
     ax.set_yticklabels(channels)
-    return fig
+    return ax
 
 
 if __name__ == '__main__':
@@ -59,6 +59,5 @@ if __name__ == '__main__':
     asig = time_slice(asig, t_start=args.t_start, t_stop=args.t_stop,
                       lazy=True, channel_indexes=channels)
 
-    fig = plot_traces(asig, channels)
-
+    ax = plot_traces(asig, channels)
     save_plot(args.output)

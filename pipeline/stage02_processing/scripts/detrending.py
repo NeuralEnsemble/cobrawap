@@ -75,9 +75,11 @@ def plot_detrend(asig, detrend_asig, channel):
     fig, ax = plt.subplots(nrows=2, sharex=True, figsize=(17,8))
 
     ax[0].plot(asig.times, asig.as_array()[:,channel], color='b', linewidth=1)
+    ax[0].axhline(0, linestyle="--", color='k', linewidth=1)
     ax[0].set_ylabel('signal')
 
-    ax[1].plot(asig.times, detrend_asig.as_array()[:,channel], color='b', linewidth=1)
+    ax[1].plot(asig.times, detrend_asig.as_array()[:,channel], color='g', linewidth=1)
+    ax[1].axhline(0, linestyle="--", color='k', linewidth=1)
     ax[1].set_ylabel('detrended signal')
     ax[1].set_xlabel(f'time [{asig.times.dimensionality.string}]')
     return ax

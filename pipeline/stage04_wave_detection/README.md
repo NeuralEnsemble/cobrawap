@@ -1,7 +1,7 @@
 # Stage 04 - Wave Detection
 This stage detects individual propagating waves based on either the detected transition times (or the input signals directly).
 
-[config template](config_template.yaml)
+[config template](configs/config_template.yaml)
 
 #### Input
 Simultaneous neural activity recordings from spatially arranged (on a grid) electrodes/pixels

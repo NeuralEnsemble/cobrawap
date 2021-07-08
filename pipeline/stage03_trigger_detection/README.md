@@ -1,7 +1,7 @@
 # Stage 03 - Trigger Detection
 This stage detects the transitions from DOWN to UP states (and back, if applicable) as trigger times.
 
-[config template](config_template.yaml)
+[config template](configs/config_template.yaml)
 
 #### Input
 Signals containing distinguishable states of low and high activity

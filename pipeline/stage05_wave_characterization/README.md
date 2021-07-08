@@ -1,7 +1,7 @@
 # Stage 05 - Wave Characterization
 This stage evaluates the detected waves by deriving characteristic measures from their dynamics.
 
-[config template](config_template.yaml)
+[config template](configs/config_template.yaml)
 
 #### Input
 Collection of waves in form of groups of trigger times.

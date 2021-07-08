@@ -1,7 +1,7 @@
 # Stage 2 - Processing
 This stage prepares the data for analysis. The user can select the required processing steps depending on the data and analysis objectives.
 
-[config template](config_template.yaml)
+[config template](configs/config_template.yaml)
 <!-- |
 [example report](../../examples/reports/report_stage02-preprocessing.html) -->
 

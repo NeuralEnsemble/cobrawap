@@ -40,9 +40,12 @@ FIT_FUNCTION = config["FIT_FUNCTION"]
 BIN_NUM = config["BIN_NUM"]
 SIGMA_FACTOR = config["SIGMA_FACTOR"]
 TRANSITION_PHASE = config["TRANSITION_PHASE"]
+
 MINIMA_ORDER = config["MINIMA_ORDER"]
-NUM_INTERPOLATION_POINTS = config["NUM_INTERPOLATION_POINTS"]
 USE_QUADRATIC_INTERPOLATION = config["USE_QUADRATIC_INTERPOLATION"]
+NUM_INTERPOLATION_POINTS = config["NUM_INTERPOLATION_POINTS"]
+MIN_PEAK_DISTANCE = config["MIN_PEAK_DISTANCE"]
+THRESHOLD_FRACTION = config["THRESHOLD_FRACTION"]
 
 MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
@@ -228,8 +231,10 @@ rule minima:
         script = os.path.join('scripts', 'minima.py')
     params:
         order = MINIMA_ORDER,
-	    use_quadtratic_interpolation = USE_QUADRATIC_INTERPOLATION,
-	    num_interpolation_points = NUM_INTERPOLATION_POINTS
+	min_peak_distance = MIN_PEAK_DISTANCE,
+        threshold_fraction = THRESHOLD_FRACTION,
+	num_interpolation_points = NUM_INTERPOLATION_POINTS,
+        use_quadtratic_interpolation = USE_QUADRATIC_INTERPOLATION,
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
     shell:
@@ -238,9 +243,10 @@ rule minima:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --order {params.order} \
+                              --min_peak_distance {params.min_peak_distance} \
+                              --threshold_fraction {params.threshold_fraction} \
                               --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
-                              --num_interpolation_points {params.num_interpolation_points}
-
+                              --num_interpolation_points {params.num_interpolation_points} 
         """
 
 #### FILTER BLOCKS (choose any) ####

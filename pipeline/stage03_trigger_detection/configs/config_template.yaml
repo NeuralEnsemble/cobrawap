@@ -60,14 +60,17 @@ MOMENT_FACTOR: 3
 # Phase at which to define the upward transition [-pi, 0]
 TRANSITION_PHASE: -1.570796
 
-# BLOCK - Minima
 ################
 # Number of neighbouring points to each side which should be compared to define a local minimum.
 MINIMA_ORDER: 3
 # If minima position should be interpolated via parabolic fit
 USE_QUADRATIC_INTERPOLATION: False
 # Number of points to be used in the parabolic interpolation
-NUM_INTERPOLATION_POINTS: 5
+NUM_INTERPOLATION_POINTS: 4
+# minimum distance between two peacks (s)
+MIN_PEAK_DISTANCE: 0.2
+# amplitude fraction to set the threshold detecting local maxima
+THRESHOLD_FRACTION: 0.
 
 # BLOCK - Remove Short States
 #############################

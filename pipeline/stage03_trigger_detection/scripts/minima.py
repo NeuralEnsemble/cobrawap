@@ -1,7 +1,7 @@
 import neo
 import numpy as np
 import quantities as pq
-from scipy.signal import argrelmin, find_peaks
+from scipy.signal import find_peaks
 import argparse
 from distutils.util import strtobool
 from utils import load_neo, write_neo, remove_annotations
@@ -12,19 +12,19 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
     signal = asig.as_array()
     times = asig.times
     sampling_rate = asig.sampling_rate
-    min_idx, channel_idx_minima = argrelmin(signal, order=order, axis=0)
 
     amplitude_span = np.max(signal, axis=0) - np.min(signal, axis=0)
     threshold = np.min(signal, axis=0) + threshold_fraction*(amplitude_span)
-    
+    threshold_minima = np.max(-signal, axis=0) - threshold_fraction*(amplitude_span)
+
     
     min_time_idx = np.array([], dtype=int)
-    channel_idx = np.array([], dtype=np.int32)
+    channel_idx = np.array([], dtype='int32')
 
     for channel, channel_signal in enumerate(signal.T):
         if np.isnan(channel_signal).any(): continue
         peaks, _ = find_peaks(channel_signal, height=threshold[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))#, prominence=prominence)
-        mins = min_idx[np.where(channel_idx_minima==channel)[0]]
+        mins, _ = find_peaks(-channel_signal, height=threshold_minima[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))
 
         clean_mins = np.array([], dtype=int)
         for i, peak in enumerate(peaks):
@@ -35,9 +35,8 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
                 clean_mins = np.append(clean_mins, mins[trans_idx])
 
         min_time_idx = np.append(min_time_idx, clean_mins)
-        channel_idx = np.append(channel_idx, np.ones(len(clean_mins))*channel)
+        channel_idx = np.append(channel_idx, np.ones(len(clean_mins), dtype='int32')*channel)
         
-    
     # compute local minima times.
     if interpolation:
         # parabolic fit around the local minima
@@ -67,7 +66,6 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
     ###################################
     sort_idx = np.argsort(minimum_times)
     
-    channel_idx = np.int32(channel_idx)
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
                     name='Transitions',

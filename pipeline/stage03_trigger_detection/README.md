@@ -26,6 +26,6 @@ There are additional filter blocks to post-process the detected triggers, they c
 |__threshold__|thresholds UP states in channels|`THRESHOLD_METHOD`|
 |__calc_threshold_fixed__|calculates values for threshold block|`FIXED_THRESHOLD`|
 |__calc_threshold_fitted__|calculates values for threshold block|`FIT_FUNCTION`, `BIN_NUM`, `SIGMA_FACTOR`|
-|__minima__|detects UP transitions as local minima. |`MINIMA_ORDER`, `NUM_INTERPOLATION_POINTS`, `USE_QUADRATIC_INTERPOLATION`|
+|__minima__|detects UP transitions as local minima. |`MINIMA_ORDER`, `NUM_INTERPOLATION_POINTS`, `USE_QUADRATIC_INTERPOLATION`, `MIN_PEAK_DISTANCE`, `THRESHOLD_FRACTION`|
 |__hilbert_phase__|detects UP transitions as phase transitions|`TRANSITION_PHASE`|
 |__remove_short_states__|removes short UP and/or DOWN states|`MIN_UP_DURATION`, `MIN_DOWN_DURATION`, `REMOVE_DOWN_FIRST`|

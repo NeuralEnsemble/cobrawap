@@ -7,15 +7,15 @@ from distutils.util import strtobool
 from utils import load_neo, write_neo, remove_annotations
 
 
-def detect_minima(asig, order, interpolation_points, interpolation, threshold_fraction,  min_peak_distance):
+def detect_minima(asig, interpolation_points, interpolation, minima_threshold_fraction, maxima_threshold_fraction,  min_peak_distance):
         
     signal = asig.as_array()
     times = asig.times
-    sampling_rate = asig.sampling_rate
+    sampling_rate = asig.sampling_rate.rescale('Hz').magnitude
 
     amplitude_span = np.max(signal, axis=0) - np.min(signal, axis=0)
-    threshold = np.min(signal, axis=0) + threshold_fraction*(amplitude_span)
-    threshold_minima = np.max(-signal, axis=0) - threshold_fraction*(amplitude_span)
+    maxima_threshold = np.min(signal, axis=0) + maxima_threshold_fraction*(amplitude_span)
+    minima_threshold = np.max(-signal, axis=0) - minima_threshold_fraction*(amplitude_span)
 
     
     min_time_idx = np.array([], dtype=int)
@@ -23,8 +23,8 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
 
     for channel, channel_signal in enumerate(signal.T):
         if np.isnan(channel_signal).any(): continue
-        peaks, _ = find_peaks(channel_signal, height=threshold[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))#, prominence=prominence)
-        mins, _ = find_peaks(-channel_signal, height=threshold_minima[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))
+        peaks, _ = find_peaks(channel_signal, height=maxima_threshold[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))#, prominence=prominence)
+        mins, _ = find_peaks(-channel_signal, height=minima_threshold[channel], distance=np.max([min_peak_distance*sampling_rate, 1]))
 
         clean_mins = np.array([], dtype=int)
         for i, peak in enumerate(peaks):
@@ -39,7 +39,7 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
         
     # compute local minima times.
     if interpolation:
-        # parabolic fit around the local minima
+        # parabolic fit on the right branch of local minima
         fitted_idx_times = np.zeros([len(min_time_idx)])
         start_arr = min_time_idx - 1
         start_arr = np.where(start_arr > 0, start_arr, 0)
@@ -69,7 +69,6 @@ def detect_minima(asig, order, interpolation_points, interpolation, threshold_fr
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
                     name='Transitions',
-                    minima_order=order,
                     use_quadtratic_interpolation=interpolation,
                     num_interpolation_points=interpolation_points,
                     array_annotations={'channels':channel_idx[sort_idx]})
@@ -92,15 +91,15 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--order", nargs='?', type=int, default=3,
-                     help="number of neighbouring points to compare")
     CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=5,
                      help="number of neighbouring points to interpolate")
     CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=strtobool, default=False,
                      help="wether use interpolation or not")
     CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
                      help="minimum distance between peaks (s)")
-    CLI.add_argument("--threshold_fraction", nargs='?', type=float, default=0.,
+    CLI.add_argument("--minima_threshold_fraction", nargs='?', type=float, default=0.,
+                     help="amplitude fraction to set the threshold detecting local minima")
+    CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.,
                      help="amplitude fraction to set the threshold detecting local maxima")
 
     args = CLI.parse_args()
@@ -108,10 +107,10 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
 
     transition_event = detect_minima(asig,
-                                     order=args.order,
                                      interpolation_points=args.num_interpolation_points,
                                      interpolation=args.use_quadtratic_interpolation,
-                                     threshold_fraction=args.threshold_fraction,
+                                     minima_threshold_fraction=args.minima_threshold_fraction,
+                                     maxima_threshold_fraction=args.maxima_threshold_fraction,
                                      min_peak_distance=args.min_peak_distance)
     
    

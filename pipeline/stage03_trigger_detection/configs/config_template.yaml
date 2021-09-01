@@ -69,9 +69,9 @@ NUM_INTERPOLATION_POINTS: 4
 # minimum distance between two peaks (s)
 MIN_PEAK_DISTANCE: 0.2
 # amplitude fraction to set the threshold detecting local minima
-MINIMA_THRESHOLD_FRACTION: 0.
+MINIMA_THRESHOLD_FRACTION: 1.
 # amplitude fraction to set the threshold detecting local maxima
-MAXIMA_THRESHOLD_FRACTION: 0.
+MAXIMA_THRESHOLD_FRACTION: .0
 
 # BLOCK - Remove Short States
 #############################

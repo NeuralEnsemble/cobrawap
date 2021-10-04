@@ -66,12 +66,12 @@ TRANSITION_PHASE: -1.570796
 USE_QUADRATIC_INTERPOLATION: False
 # Number of points to be used in the parabolic interpolation
 NUM_INTERPOLATION_POINTS: 4
-# minimum distance between two peaks (s)
-MIN_PEAK_DISTANCE: 0.2
-# amplitude fraction to set the threshold detecting local minima
-MINIMA_THRESHOLD_FRACTION: 1.
+# minimum distance between two maxima peacks (s)
+MIN_PEAK_DISTANCE_MAXIMA: 0.280
+# minimum time the signal must be increasing after a minima candidate (s)
+MINIMA_PERSISTENCE: 0.160
 # amplitude fraction to set the threshold detecting local maxima
-MAXIMA_THRESHOLD_FRACTION: .0
+MAXIMA_THRESHOLD_FRACTION: 0.5
 
 # BLOCK - Remove Short States
 #############################

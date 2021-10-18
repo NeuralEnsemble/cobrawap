@@ -35,7 +35,7 @@ TRIGGER_FILTER: ['remove_short_states']
 
 # BLOCK - Threshold
 ###################
-# Thresholding method: 'fixed', 'fitted', 'moment'
+# Thresholding method: 'fixed', 'fitted'
 THRESHOLD_METHOD: 'fixed'
 
 # Fitting Parameters
@@ -50,10 +50,6 @@ SIGMA_FACTOR: 2
 
 # Fixed Parameters
 FIXED_THRESHOLD: 0
-
-# Moment Parameters
-MOMENT_ORDER: 2
-MOMENT_FACTOR: 3
 
 # BLOCK - Hilbert_phase
 #######################

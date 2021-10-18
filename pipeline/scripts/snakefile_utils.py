@@ -2,6 +2,8 @@ import os
 import yaml
 import warnings
 from copy import copy
+from snakemake.logging import logger
+
 
 def safe_open_w(path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -71,7 +73,7 @@ def get_config(config_dir, config_name):
             parent_config_name = get_parent_config_name(try_config_name)
 
             if parent_config_name:
-                print(f"{try_config_name} not found, trying {parent_config_name}")
+                logger.info(f"{try_config_name} not found, trying {parent_config_name}")
                 try_config_name = parent_config_name
             else:
                 if keep_variant:
@@ -98,7 +100,7 @@ def update_configfile(config_path, update_dict):
         try:
             config_dict = yaml.safe_load(f)
         except Exception as e:
-            print(e)
+            logger.info(e)
             config_dict = None
     if config_dict is None:
         warnings.warn(f'config file {config_path} can not be loaded! Skipping updating config.')

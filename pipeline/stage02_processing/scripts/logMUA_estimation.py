@@ -71,6 +71,7 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                 + "{:.2f} - {:.2f}.".format(freqs[1], freqs[high_idx]))
 
         avg_power = np.mean(psd, axis=-1)
+        # psd[:,1] corresponds to the highpass freq because that's the resolution
         avg_power_in_freq_band = np.mean(psd[:,1:high_idx], axis=-1)
         logMUA_signal[i] = np.squeeze(np.log(avg_power_in_freq_band/avg_power))
 

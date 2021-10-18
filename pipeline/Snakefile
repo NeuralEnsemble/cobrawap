@@ -12,7 +12,7 @@ temp_config = 'working_config.yaml'
 if configs_dir is None:
     configs_dir = working_dir
 
-configfile: os.path.join(configs_dir, 'configs' ,'config.yaml')
+configfile: os.path.join(configs_dir, 'configs', 'config.yaml')
 report: "report.rst"
 
 # Setting the profile

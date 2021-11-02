@@ -25,3 +25,4 @@ Select which characterization measures should be calculated via the `MEASURES` p
 |:----|:------------|:-----------|
 |__direction__|interpolates directions of planar waves||
 |__velocity_planar__|interpolates planer propagation velocity||
+|__local_macro_observables__|compute local (i.e. pixel by pixel) macroscopic measures (velocity, direction and iwi)|

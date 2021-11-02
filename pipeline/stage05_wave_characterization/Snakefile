@@ -36,7 +36,7 @@ ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
 DIRECTION_METHOD = config["DIRECTION_METHOD"]
 TIME_STAMP_POINT = config["TIME_STAMP_POINT"]
 
-TIME_STAMP_POINT = config["TIME_STAMP_POINT"]
+
 #### Housekeeping ####
 
 def input(wildcards):

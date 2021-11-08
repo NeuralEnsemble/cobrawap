@@ -1,0 +1,85 @@
+# Stage 05 Channel-wise Wave Characterization
+import os
+
+configfile: os.path.join('configs', 'config_template.yaml')
+report: "report.rst"
+
+import sys
+utils_path = os.path.join('..', 'scripts')
+sys.path.append(os.path.join(os.getcwd(), '..'))
+sys.path.append(utils_path)
+from settings import output_path
+from utils import parse_plot_channels
+from types import SimpleNamespace
+
+config = SimpleNamespace(**config)
+config.ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
+
+SCRIPT_ARGS = ' '.join()[f"--{key} {value}"for key, value
+                                           in config.__dict__.items()])
+#### Housekeeping ####
+
+def input(wildcards):
+    return config.STAGE_INPUT
+
+def measures_output(wildcards):
+    return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
+            for measure in config.MEASURES]
+
+localrules: all, check_input
+
+#### UTILITY BLOCKS ####
+
+rule all:
+    input:
+        check = os.path.join(config.OUTPUT_DIR, 'input.check'),
+        data = measures_output,
+        script = os.path.join('scripts', 'merge_dataframes.py'),
+        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+    params:
+        data = lambda wildcards, input:
+                      ['"{}"'.format(path) for path in input.data]
+    output:
+        data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
+        img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
+    shell:
+        """
+        {config.ADD_UTILS}
+        python {input.script} --data {params.data} \
+                              --output "{output.data}" \
+                              --output_img "{output.img}"
+        """
+
+rule check_input:
+    priority: 10
+    input:
+        data = config.STAGE_INPUT,
+        script = os.path.join('scripts', 'check_input.py')
+    output:
+        temp(os.path.join('{dir}', 'input.check'))
+    shell:
+        """
+        {config.ADD_UTILS}
+        python {input.script} --data "{input.data}"
+        touch "{output}"
+        """
+
+#### CHARACTERIZATION BLOCKS ####
+
+rule compute_measure:h
+    input:
+        data = input,
+        script = os.path.join('scripts', '{measure}.py')
+    output:
+        data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
+        img = report(os.path.join('{dir}', '{measure}',
+                                  '{measure}.'+config.PLOT_FORMAT))
+    shell:
+        """
+        {config.ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              {SCRIPT_ARGS}
+        """

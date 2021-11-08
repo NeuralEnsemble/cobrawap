@@ -7,7 +7,7 @@ STAGE_NAME: 'stage05_wave_characterization'
 PROFILE: 'dataset_key'
 
 # Name of the output file
-STAGE_OUTPUT: 'measures.csv'
+STAGE_OUTPUT: 'wave-wise_measures.csv'
 
 # Plotting parameters
 PLOT_TSTART: 0  # in s

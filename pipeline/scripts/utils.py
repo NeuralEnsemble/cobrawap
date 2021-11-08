@@ -10,6 +10,7 @@ import os
 import warnings
 import quantities as pq
 import matplotlib.pyplot as plt
+from elephant.parallel import SingleProcess
 
 # def check_analogsignal_shape(asig):
 #     if type(asig) == list and len(asig) > 1:

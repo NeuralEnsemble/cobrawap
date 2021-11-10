@@ -1,4 +1,4 @@
-name: wavescalephant_env
+name: mowap
 channels:
   - conda-forge
   - bioconda

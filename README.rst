@@ -1,9 +1,8 @@
-==============
-WaveScalEphant
-==============
-This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of slow wave activity, brain states and their complexity.
+======================================
+Modular-Wave-Analysis-Pipeline Project
+======================================
 
-The repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
+This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of cortical wave activity, brain states and their complexity.
 
 `Link to introductive video <https://www.youtube.com/watch?v=uuAiY6HScM0>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_ | `Link to pipeline README <https://github.com/INM-6/wavescalephant/tree/master/pipeline>`_
 
@@ -83,8 +82,10 @@ Repositories
 * `gulpgiulia/CaImanSWAP <https://github.com/gulpgiulia/CaImanSWAP>`_
 
 
-Involved members
-================
+Involved partners
+=================
+This collaboration was originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
+
 - **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca.
 
 - **Forschungszentrum Jülich, Germany:** Michael Denker, Robin Gutzen, Alper Yegenoglu.
@@ -105,4 +106,4 @@ Please cite this repository if you use it in your work.
 
 License
 =======
-The wavescalephant project is open source software and is licensed under the GNU General Public License v3 or later.
+The Modular-Wave-Analysis-Pipeline project is open-source software and is licensed under the GNU General Public License v3 or later.

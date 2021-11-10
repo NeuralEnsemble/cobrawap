@@ -18,6 +18,7 @@ config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
 
 SCRIPT_ARGS = ' '.join()[f"--{key} {value}"for key, value
                                            in config.__dict__.items()])
+
 #### Housekeeping ####
 
 def input(wildcards):
@@ -39,7 +40,8 @@ rule all:
         # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         data = lambda wildcards, input:
-                      ['"{}"'.format(path) for path in input.data]
+                      ['"{}"'.format(path) for path in input.data],
+        merge_key = 'channel_id'
     output:
         data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
@@ -48,7 +50,8 @@ rule all:
         {config.ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
-                              --output_img "{output.img}"
+                              --output_img "{output.img}" \
+                              --merge_key {params.merge_key}
         """
 
 rule check_input:
@@ -67,7 +70,7 @@ rule check_input:
 
 #### CHARACTERIZATION BLOCKS ####
 
-rule compute_measure:h
+rule compute_measure:
     input:
         data = input,
         script = os.path.join('scripts', '{measure}.py')
@@ -83,3 +86,10 @@ rule compute_measure:h
                               --output_img "{output.img}" \
                               {SCRIPT_ARGS}
         """
+
+
+rule compute_measure as velocity:
+    params:
+        xy = config.xy
+    output:
+        data = os.path.join('{dir}', '{measure}', '{measure}.csv')

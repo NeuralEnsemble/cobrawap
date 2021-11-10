@@ -16,6 +16,7 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
+    
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

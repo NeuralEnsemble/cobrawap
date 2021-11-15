@@ -44,8 +44,6 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
     times = asig.times
     sampling_rate = asig.sampling_rate.rescale('Hz').magnitude
     window_frame = np.int32(maxima_threshold_window*sampling_rate)
-    #amplitude_span = np.max(signal, axis=0) - np.min(signal, axis=0)
-    #maxima_threshold = np.min(signal, axis=0) + maxima_threshold_fraction*(amplitude_span)
     
     min_time_idx = np.array([], dtype=int)
     channel_idx = np.array([], dtype='int32')
@@ -58,10 +56,11 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
         #compute a dynamic treshold function through a sliding window on the signal array
         strides = np.lib.stride_tricks.sliding_window_view(channel_signal, window_frame)
         threshold_func = np.min(strides, axis = 1) + maxima_threshold_fraction*np.ptp(strides, axis = 1)
+        #add elements at the beginning
+        threshold_func = np.append(np.ones(window_frame//2)*threshold_func[0], threshold_func)
         threshold_func = np.append(threshold_func, np.ones(len(channel_signal) - len(threshold_func))*threshold_func[-1])
 
         peaks, _ = find_peaks(channel_signal, height=threshold_func, distance=np.max([min_peak_distance*sampling_rate, 1]))
-        #peaks, _ = find_peaks(channel_signal, height=maxima_threshold[channel], distance=np.max([min_peak_distance*sampling_rate, 1])) 
         
         mins_distance, _ = find_peaks(-channel_signal, distance=np.max([min_peak_distance*sampling_rate, 1]))
         mins_persistance = one_side_argrelmin(channel_signal, order = minima_order)

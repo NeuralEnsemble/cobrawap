@@ -261,7 +261,7 @@ rule minima:
                               --maxima_threshold_fraction {params.maxima_threshold_fraction} \
                               --maxima_threshold_window {params.maxima_threshold_window} \
                               --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
-                              --num_interpolation_points {params.num_interpolation_points} \ 
+                              --num_interpolation_points {params.num_interpolation_points} 
         """
 
 #### FILTER BLOCKS (choose any) ####

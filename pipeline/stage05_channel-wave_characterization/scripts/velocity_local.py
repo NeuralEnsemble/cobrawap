@@ -23,25 +23,25 @@ def calc_local_velocities(wave_evts, dim_x, dim_y):
     wave_collection = np.empty([len(labels), dim_x, dim_y]) * np.nan
     wave_collection[labels, x_coords, y_coords] = evts.times
 
-    channel_ids = np.empty([len(labels), dim_x, dim_y]) * np.nan
-    channel_ids[labels, x_coords, y_coords] = evts.array_annotations['channels']
+    # channel_ids = np.empty([len(labels), dim_x, dim_y]) * np.nan
+    # channel_ids[labels, x_coords, y_coords] = evts.array_annotations['channels']
 
     # ToDo: use derivate kernel convolution instead (while ignoring nans)
     Tx = np.diff(wave_collection, axis=1, append=np.nan) #[:, :dim_x-1, :dim_y-1]
-    Ty = np.diff(wave_collection, axis=2, append=np.nan)#[:, :dim_x-1, :dim_y-1]
+    Ty = np.diff(wave_collection, axis=2, append=np.nan) #[:, :dim_x-1, :dim_y-1]
     # channel_ids = channel_ids[:, :dim_x-1, :dim_y-1]
 
     Tx = np.reshape(Tx, (len(labels), -1))
     Ty = np.reshape(Ty, (len(labels), -1))
-    channel_ids = np.reshape(channel_ids, (len(labels), -1)).flatten()
+    # channel_ids = np.reshape(channel_ids, (len(labels), -1)).flatten()
 
     velocities = np.sqrt(2*scale**2/(Tx**2 + Ty**2))
     wave_ids, channel_idx = np.where(np.isfinite(velocities))
 
     velocities = velocities[wave_ids, channel_idx]
-    print(channel_idx == channel_ids[channel_idx])
+    # print(channel_idx == channel_ids[channel_idx])
 
-    return wave_ids, channel_ids[channel_idx], velocities * unit
+    return wave_ids, channel_idx, velocities * unit
 
 
 if __name__ == '__main__':

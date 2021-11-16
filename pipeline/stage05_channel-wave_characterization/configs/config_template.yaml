@@ -17,4 +17,4 @@ PLOT_FORMAT: 'png'
 
 # Measures to compute
 #
-MEASURES: []
+MEASURES: ['velocity_local']

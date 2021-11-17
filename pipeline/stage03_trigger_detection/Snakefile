@@ -241,7 +241,7 @@ rule minima:
         plot_channels = PLOT_CHANNELS,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        img_name = 'minima_channel0.'+PLOT_FORMAT
+        img_name = 'minima_channel0'
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
         img_dir = report(directory(os.path.join('{dir}', 'minima',

@@ -6,42 +6,98 @@ import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import itertools
 from utils import load_neo, save_plot, none_or_str
 from scipy.ndimage import convolve as conv
 from utils import AnalogSignal2ImageSequence
+
+# Sobol kernel:
+kernelX = np.array([[-1, 0, 1],
+                    [-2, 0, 2],
+                    [-1, 0, 1]], dtype=float) * 1/8
+kernelY = np.array([[-1, -2, -1],
+                    [ 0,  0,  0],
+                    [ 1,  2,  1]], dtype=float) * 1/8
+center = (1,1)
+
+
+def nanconv2d(frame, kernel, kernel_center=None):
+    dx, dy = kernel.shape
+    dimx, dimy = frame.shape
+    dframe = np.empty((dimx, dimy))*np.nan
+
+    if kernel_center is None:
+        kernel_center = [int((dim-1)/2) for dim in kernel.shape]
+
+    # inverse kernel to mimic behavior or regular convolution algorithm
+    k = kernel[::-1, ::-1]
+    ci = dx - 1 - kernel_center[0]
+    cj = dy - 1 - kernel_center[1]
+
+    # loop over each frame site
+    for i,j in zip(*np.where(np.isfinite(frame))):
+        site = frame[i,j]
+
+        # loop over kernel window for frame site
+        window = np.zeros((dx,dy), dtype=float)*np.nan
+        for di,dj in itertools.product(range(dx), range(dy)):
+
+            # kernelsite != 0, framesite within borders and != nan
+            if k[di,dj] and 0 <= i+di-ci < dimx and 0 <= j+dj-cj < dimy \
+                        and np.isfinite(frame[i+di-ci,j+dj-cj]):
+                sign = -1*np.sign(k[di,dj])
+                window[di,dj] = sign * (site - frame[i+di-ci,j+dj-cj])
+
+        xi, yi = np.where(np.logical_not(np.isnan(window)))
+        if np.sum(np.logical_not(np.isnan(window))) > dx*dy/5:
+            # print(i,j, k[xi,yi], window)
+            dframe[i,j] = np.average(window[xi,yi], weights=abs(k[xi,yi]))
+    return dframe
 
 
 def calc_local_velocities(wave_evts, dim_x, dim_y):
     evts = wave_evts[wave_evts.labels != '-1']
     labels = evts.labels.astype(int)
     print(labels)
-    x_coords = evts.array_annotations['x_coords'].astype(int)
-    y_coords = evts.array_annotations['y_coords'].astype(int)
+
     scale = evts.annotations['spatial_scale'].magnitude
     unit = evts.annotations['spatial_scale'].units / evts.times.units
 
-    wave_collection = np.empty([len(labels), dim_x, dim_y]) * np.nan
-    wave_collection[labels, x_coords, y_coords] = evts.times
+    channel_ids = np.empty([dim_x, dim_y]) * np.nan
+    channel_ids[evts.array_annotations['x_coords'].astype(int),
+                evts.array_annotations['y_coords'].astype(int)] = evts.array_annotations['channels']
+    channel_ids = channel_ids.reshape(-1)
 
-    # channel_ids = np.empty([len(labels), dim_x, dim_y]) * np.nan
-    # channel_ids[labels, x_coords, y_coords] = evts.array_annotations['channels']
+    velocities = np.array([], dtype=float)
+    wave_ids = np.array([], dtype=int)
+    channels = np.array([], dtype=int)
 
-    # ToDo: use derivate kernel convolution instead (while ignoring nans)
-    Tx = np.diff(wave_collection, axis=1, append=np.nan) #[:, :dim_x-1, :dim_y-1]
-    Ty = np.diff(wave_collection, axis=2, append=np.nan) #[:, :dim_x-1, :dim_y-1]
-    # channel_ids = channel_ids[:, :dim_x-1, :dim_y-1]
+    for wave_id in np.unique(labels):
+        print('WAVE ID', wave_id)
+        wave_trigger_evts = evts[labels == wave_id]
 
-    Tx = np.reshape(Tx, (len(labels), -1))
-    Ty = np.reshape(Ty, (len(labels), -1))
-    # channel_ids = np.reshape(channel_ids, (len(labels), -1)).flatten()
+        x_coords = wave_trigger_evts.array_annotations['x_coords'].astype(int)
+        y_coords = wave_trigger_evts.array_annotations['y_coords'].astype(int)
 
-    velocities = np.sqrt(2*scale**2/(Tx**2 + Ty**2))
-    wave_ids, channel_idx = np.where(np.isfinite(velocities))
+        trigger_collection = np.empty([dim_x, dim_y]) * np.nan
+        trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
 
-    velocities = velocities[wave_ids, channel_idx]
-    # print(channel_idx == channel_ids[channel_idx])
+        # ToDo: use derivate kernel convolution instead (while ignoring nans) [done]
+        # Tx = np.diff(trigger_collection, axis=0, append=np.nan).reshape(-1)
+        # Ty = np.diff(trigger_collection, axis=1, append=np.nan).reshape(-1)
+        t_x = nanconv2d(trigger_collection, kernelX).reshape(-1)
+        t_y = nanconv2d(trigger_collection, kernelY).reshape(-1)
 
-    return wave_ids, channel_idx, velocities * unit
+        # Todo: rethink calculation [done]
+        # velocities = np.sqrt(2*scale**2/(Tx**2 + Ty**2))
+        v = np.sqrt((scale/t_x)**2 + (scale/t_y)**2)
+        channel_idx = np.where(np.isfinite(v))[0]
+
+        velocities = np.append(velocities, v[channel_idx])
+        channels = np.append(channels, channel_ids[channel_idx])
+        wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channel_idx)))
+
+    return wave_ids, channels, velocities*unit
 
 
 if __name__ == '__main__':

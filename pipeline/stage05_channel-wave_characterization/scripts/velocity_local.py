@@ -20,7 +20,7 @@ kernelY = np.array([[-1, -2, -1],
                     [ 1,  2,  1]], dtype=float) * 1/8
 center = (1,1)
 
-# Simple kernel:
+# Large kernel:
 kernelX = np.array([[-0, 0, 0],
                     [-1, 0, 1],
                     [-0, 0, 0]], dtype=float) * 1/2
@@ -29,6 +29,17 @@ kernelY = np.array([[-0, -1, -0],
                     [ 0,  1,  0]], dtype=float) * 1/2
 center = (1,1)
 
+kernelX = np.array([[-1.1, -1.3, 0, 1.3, 1.1],
+                    [-1.3, -2.1, 0, 2.1, 1.3],
+                    [-1.5, -3.0, 0, 3.0, 1.5],
+                    [-1.3, -2.1, 0, 2.1, 1.3],
+                    [-1.1, -1.3, 0, 1.3, 1.1]], dtype=float) / 32.2
+kernelY = np.array([[-1.1, -1.3, -1.5, -1.3, -1.1],
+                    [-1.3, -2.1, -3.0, -2.1, -1.3],
+                    [ 0,    0,    0,    0,    0],
+                    [ 1.3,  2.1,  3.0,  2.1, 1.3],
+                    [ 1.1,  1.3,  1.5,  1.3, 1.1]], dtype=float) / 32.2
+center = (2,2)
 
 def nanconv2d(frame, kernel, kernel_center=None):
     dx, dy = kernel.shape

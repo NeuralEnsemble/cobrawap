@@ -20,6 +20,15 @@ kernelY = np.array([[-1, -2, -1],
                     [ 1,  2,  1]], dtype=float) * 1/8
 center = (1,1)
 
+# Simple kernel:
+kernelX = np.array([[-0, 0, 0],
+                    [-1, 0, 1],
+                    [-0, 0, 0]], dtype=float) * 1/2
+kernelY = np.array([[-0, -1, -0],
+                    [ 0,  0,  0],
+                    [ 0,  1,  0]], dtype=float) * 1/2
+center = (1,1)
+
 
 def nanconv2d(frame, kernel, kernel_center=None):
     dx, dy = kernel.shape
@@ -49,8 +58,7 @@ def nanconv2d(frame, kernel, kernel_center=None):
                 window[di,dj] = sign * (site - frame[i+di-ci,j+dj-cj])
 
         xi, yi = np.where(np.logical_not(np.isnan(window)))
-        if np.sum(np.logical_not(np.isnan(window))) > dx*dy/5:
-            # print(i,j, k[xi,yi], window)
+        if np.sum(np.logical_not(np.isnan(window))) > dx*dy/10:
             dframe[i,j] = np.average(window[xi,yi], weights=abs(k[xi,yi]))
     return dframe
 
@@ -58,7 +66,6 @@ def nanconv2d(frame, kernel, kernel_center=None):
 def calc_local_velocities(wave_evts, dim_x, dim_y):
     evts = wave_evts[wave_evts.labels != '-1']
     labels = evts.labels.astype(int)
-    print(labels)
 
     scale = evts.annotations['spatial_scale'].magnitude
     unit = evts.annotations['spatial_scale'].units / evts.times.units
@@ -73,7 +80,6 @@ def calc_local_velocities(wave_evts, dim_x, dim_y):
     channels = np.array([], dtype=int)
 
     for wave_id in np.unique(labels):
-        print('WAVE ID', wave_id)
         wave_trigger_evts = evts[labels == wave_id]
 
         x_coords = wave_trigger_evts.array_annotations['x_coords'].astype(int)

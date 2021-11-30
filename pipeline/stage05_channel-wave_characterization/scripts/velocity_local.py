@@ -107,7 +107,7 @@ def calc_local_velocities(wave_evts, dim_x, dim_y):
         t_y = nanconv2d(trigger_collection, kernelY).reshape(-1)
 
         # polar
-        v = np.sqrt((2*scale**2)/(Tx**2 + Ty**2))
+        v = np.sqrt((2*scale**2)/(t_x**2 + t_y**2))
         # # cartesian
         # v = np.sqrt((scale/t_x)**2 + (scale/t_y)**2)
         channel_idx = np.where(np.isfinite(v))[0]

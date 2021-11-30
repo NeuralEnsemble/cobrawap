@@ -11,23 +11,23 @@ from utils import load_neo, save_plot, none_or_str
 from scipy.ndimage import convolve as conv
 from utils import AnalogSignal2ImageSequence
 
-# # Simple kernel:
-# kernelX = np.array([[-0, 0, 0],
-#                     [-1, 0, 1],
-#                     [-0, 0, 0]], dtype=float) * 1/2
-# kernelY = np.array([[-0, -1, -0],
-#                     [ 0,  0,  0],
-#                     [ 0,  1,  0]], dtype=float) * 1/2
-# center = (1,1)
-
-# Sobol kernel:
-kernelX = np.array([[-1, 0, 1],
-                    [-2, 0, 2],
-                    [-1, 0, 1]], dtype=float) * 1/8
-kernelY = np.array([[-1, -2, -1],
+# Simple kernel:
+kernelX = np.array([[-0, 0, 0],
+                    [-1, 0, 1],
+                    [-0, 0, 0]], dtype=float) * 1/2
+kernelY = np.array([[-0, -1, -0],
                     [ 0,  0,  0],
-                    [ 1,  2,  1]], dtype=float) * 1/8
+                    [ 0,  1,  0]], dtype=float) * 1/2
 center = (1,1)
+
+# # Sobol kernel:
+# kernelX = np.array([[-1, 0, 1],
+#                     [-2, 0, 2],
+#                     [-1, 0, 1]], dtype=float) * 1/8
+# kernelY = np.array([[-1, -2, -1],
+#                     [ 0,  0,  0],
+#                     [ 1,  2,  1]], dtype=float) * 1/8
+# center = (1,1)
 
 # # Large kernel
 # kernelX = np.array([[-1.1, -1.3, 0, 1.3, 1.1],

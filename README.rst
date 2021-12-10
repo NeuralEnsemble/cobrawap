@@ -1,6 +1,6 @@
-======================================
-Modular-Wave-Analysis-Pipeline Project
-======================================
+=====================================================
+Collaborative Brain Wave Analysis Pipeline (CobraWAP)
+=====================================================
 
 This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of cortical wave activity, brain states and their complexity.
 

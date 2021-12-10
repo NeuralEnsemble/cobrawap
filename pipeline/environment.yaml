@@ -1,4 +1,4 @@
-name: mowap
+name: cobrawap
 channels:
   - conda-forge
   - bioconda

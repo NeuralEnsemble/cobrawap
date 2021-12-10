@@ -11,15 +11,15 @@ from utils import load_neo, save_plot, none_or_str
 from scipy.ndimage import convolve as conv
 from utils import AnalogSignal2ImageSequence
 
-# Simple kernel:
-kernelX = np.array([[-0, 0, 0],
-                    [-1, 0, 1],
-                    [-0, 0, 0]], dtype=float) * 1/2
-kernelY = np.array([[-0, -1, -0],
-                    [ 0,  0,  0],
-                    [ 0,  1,  0]], dtype=float) * 1/2
-center = (1,1)
-
+# # Simple kernel:
+# kernelX = np.array([[-0, 0, 0],
+#                     [-1, 0, 1],
+#                     [-0, 0, 0]], dtype=float) * 1/2
+# kernelY = np.array([[-0, -1, -0],
+#                     [ 0,  0,  0],
+#                     [ 0,  1,  0]], dtype=float) * 1/2
+# center = (1,1)
+#
 # # Sobol kernel:
 # kernelX = np.array([[-1, 0, 1],
 #                     [-2, 0, 2],
@@ -29,18 +29,18 @@ center = (1,1)
 #                     [ 1,  2,  1]], dtype=float) * 1/8
 # center = (1,1)
 
-# # Large kernel
-# kernelX = np.array([[-1.1, -1.3, 0, 1.3, 1.1],
-#                     [-1.3, -2.1, 0, 2.1, 1.3],
-#                     [-1.5, -3.0, 0, 3.0, 1.5],
-#                     [-1.3, -2.1, 0, 2.1, 1.3],
-#                     [-1.1, -1.3, 0, 1.3, 1.1]], dtype=float) * 1/32.2
-# kernelY = np.array([[-1.1, -1.3, -1.5, -1.3, -1.1],
-#                     [-1.3, -2.1, -3.0, -2.1, -1.3],
-#                     [ 0,    0,    0,    0,    0],
-#                     [ 1.3,  2.1,  3.0,  2.1, 1.3],
-#                     [ 1.1,  1.3,  1.5,  1.3, 1.1]], dtype=float) * 1/32.2
-# center = (2,2)
+# Large kernel
+kernelX = np.array([[-1.1, -1.3, 0, 1.3, 1.1],
+                    [-1.3, -2.1, 0, 2.1, 1.3],
+                    [-1.5, -3.0, 0, 3.0, 1.5],
+                    [-1.3, -2.1, 0, 2.1, 1.3],
+                    [-1.1, -1.3, 0, 1.3, 1.1]], dtype=float) * 1/32.2
+kernelY = np.array([[-1.1, -1.3, -1.5, -1.3, -1.1],
+                    [-1.3, -2.1, -3.0, -2.1, -1.3],
+                    [ 0,    0,    0,    0,    0],
+                    [ 1.3,  2.1,  3.0,  2.1, 1.3],
+                    [ 1.1,  1.3,  1.5,  1.3, 1.1]], dtype=float) * 1/32.2
+center = (2,2)
 
 def nanconv2d(frame, kernel, kernel_center=None):
     dx, dy = kernel.shape
@@ -100,16 +100,12 @@ def calc_local_velocities(wave_evts, dim_x, dim_y):
         trigger_collection = np.empty([dim_x, dim_y]) * np.nan
         trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
 
-        # ToDo: use derivate kernel convolution instead (while ignoring nans) [done]
-        # Tx = np.diff(trigger_collection, axis=0, append=np.nan).reshape(-1)
-        # Ty = np.diff(trigger_collection, axis=1, append=np.nan).reshape(-1)
         t_x = nanconv2d(trigger_collection, kernelX).reshape(-1)
         t_y = nanconv2d(trigger_collection, kernelY).reshape(-1)
 
-        # polar
-        v = np.sqrt((2*scale**2)/(t_x**2 + t_y**2))
-        # # cartesian
-        # v = np.sqrt((scale/t_x)**2 + (scale/t_y)**2)
+        ## gradient based local velocity:
+        v = scale * np.sqrt(1/(t_x**2 + t_y**2))
+
         channel_idx = np.where(np.isfinite(v))[0]
 
         velocities = np.append(velocities, v[channel_idx])

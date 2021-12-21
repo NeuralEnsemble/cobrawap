@@ -1,4 +1,4 @@
-name: wavescalephant_env
+name: cobrawap
 channels:
   - conda-forge
   - bioconda
@@ -23,3 +23,4 @@ dependencies:
     - seaborn
     - networkx
     - shapely == 1.6.4.post2
+    - mpi4py

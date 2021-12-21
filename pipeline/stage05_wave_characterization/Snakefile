@@ -58,7 +58,8 @@ rule all:
         # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         data = lambda wildcards, input:
-                      ['"{}"'.format(path) for path in input.data]
+                      ['"{}"'.format(path) for path in input.data],
+        merge_key = 'wave_id'
     output:
         data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
         img = report(os.path.join(OUTPUT_DIR, 'overview_measures.html'))
@@ -67,7 +68,8 @@ rule all:
         {ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
-                              --output_img "{output.img}"
+                              --output_img "{output.img}" \
+                              --merge_key {params.merge_key}
         """
 
 rule check_input:

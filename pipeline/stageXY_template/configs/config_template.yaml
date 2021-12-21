@@ -1,0 +1,20 @@
+# Config file for Stage 5 - Channel-wise Wave Characterization
+
+# Name of stage, must be identical with folder name
+STAGE_NAME: 'stage05_channel-wave_characterization'
+
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'dataset_key'
+
+# Name of the output file
+STAGE_OUTPUT: 'channel-wise_measures.csv'
+
+# Plotting parameters
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
+PLOT_FORMAT: 'png'
+
+# Measures to compute
+#
+MEASURES: []

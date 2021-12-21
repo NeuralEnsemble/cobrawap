@@ -1,9 +1,8 @@
-==============
-WaveScalEphant
-==============
-This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of slow wave activity, brain states and their complexity.
+=====================================================
+Collaborative Brain Wave Analysis Pipeline (CobraWAP)
+=====================================================
 
-The repository hosts the collaboration originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
+This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of cortical wave activity, brain states and their complexity.
 
 `Link to introductive video <https://www.youtube.com/watch?v=uuAiY6HScM0>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_ | `Link to pipeline README <https://github.com/INM-6/wavescalephant/tree/master/pipeline>`_
 
@@ -13,13 +12,13 @@ For researchers to be able to effectively reproduce results and build on each ot
 
 Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows in a manner that they are general and flexible enough so that they can actually be reused in further research. Within the rich diversity of analyses there is no one-size-fit-all solution for this. However, there is a lot of existing work that can help with the challenges of developing a general, adaptable, reusable analysis pipeline.
 
-Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting slow-wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
+Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
 
 The current prototype includes
 ------------------------------
 * a hierarchical and modular pipeline framework based on Snakemake_
 * reusable blocks and stages for standalone application or integration into workflows
-* analysis methods of electrophysiological and optical data on the characterization of cortical slow wave activity and local slow oscillations
+* analysis methods for electrophysiological and optical data on the characterization of cortical wave activity and local oscillations
 * visualization of the analysis steps and the intermediate results
 * intermediate results curated with annotated metadata and reports
 * guides for execution locally and on the collab
@@ -29,7 +28,7 @@ The current prototype includes
 
 For further developments see the Issues.
 
-Context
+Further Context
 =======
 
 WaveScalES
@@ -60,31 +59,15 @@ HBP Deliverables
 
 Showcase notebooks
 ==================
-... coming soon
+`Showcase in EBRAINS Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
 
-References
-==========
-Papers
-------
-* `De Bonis, Giulia, et al. "Analysis pipeline for extracting features of cortical slow oscillations." Frontiers in Systems Neuroscience 13 (2019): 70. <https://doi.org/10.3389/fnsys.2019.00070>`_
-* `Celotto, Marco, et al. "Analysis and Model of Cortical Slow Waves Acquired with Optical Techniques." Methods and Protocols 3.1 (2020): 14. <https://doi.org/10.3390/mps3010014>`_
-
-Datasets
---------
-* `Resta, F., Allegra Mascaro, A. L., & Pavone, F. (2020) "Study of Slow Waves (SWs) propagation through wide-field calcium imaging of the right cortical hemisphere of GCaMP6f mice" EBRAINS <https://doi.org/10.25493/3E6Y-E8G>`_
-* `Resta, F., Allegra Mascaro, A. L., & Pavone, F. (2020) "Wide-field calcium imaging of the right cortical hemisphere of GCaMP6f mice at different anesthesia levels" EBRAINS <https://doi.org/10.25493/XJR8-QCA>`_
-* `Sanchez-Vives, M. (2020) "Propagation modes of slow waves in mouse cortex" EBRAINS <https://doi.org/10.25493/WKA8-Q4T>`_
-* `Sanchez-Vives, M. (2019) "Cortical activity features in transgenic mouse models of cognitive deficits (Fragile X Syndrome)" EBRAINS <https://doi.org/10.25493/ANF9-EG3>`_
-* `Sanchez-Vives, M. (2019) "Cortical activity features in transgenic mouse models of cognitive deficits (Williams Beuren Syndrome)" EBRAINS <https://doi.org/10.25493%2FDZWT-1T8>`_
-
-Repositories
-------------
-* `gulpgiulia/ElePhySWAPandSOAP <https://github.com/gulpgiulia/ElePhySWAP_SOAP>`_
-* `gulpgiulia/CaImanSWAP <https://github.com/gulpgiulia/CaImanSWAP>`_
+... additional demos coming soon.
 
 
-Involved members
-================
+Involved partners
+=================
+This collaboration was originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
+
 - **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca.
 
 - **Forschungszentrum Jülich, Germany:** Michael Denker, Robin Gutzen, Alper Yegenoglu.
@@ -99,10 +82,22 @@ Involved members
 
 - **Unité de Neurosciences, Neuroinformatics Group, CNRS, France:** Andrew Davison
 
+References
+==========
+Papers
+------
+* `De Bonis, Giulia, et al. "Analysis pipeline for extracting features of cortical slow oscillations." Frontiers in Systems Neuroscience 13 (2019): 70. <https://doi.org/10.3389/fnsys.2019.00070>`_
+* `Celotto, Marco, et al. "Analysis and Model of Cortical Slow Waves Acquired with Optical Techniques." Methods and Protocols 3.1 (2020): 14. <https://doi.org/10.3390/mps3010014>`_
+
+Repositories
+------------
+* `gulpgiulia/ElePhySWAPandSOAP <https://github.com/gulpgiulia/ElePhySWAP_SOAP>`_
+* `gulpgiulia/CaImanSWAP <https://github.com/gulpgiulia/CaImanSWAP>`_
+
 Citation
 ========
 Please cite this repository if you use it in your work.
 
 License
 =======
-The wavescalephant project is open source software and is licensed under the GNU General Public License v3 or later.
+The Modular-Wave-Analysis-Pipeline project is open-source software and is licensed under the GNU General Public License v3 or later.

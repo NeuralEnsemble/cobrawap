@@ -1,5 +1,6 @@
 """
-ToDo: write docstring
+Enter Data Template
+-------------------
 """
 
 import argparse

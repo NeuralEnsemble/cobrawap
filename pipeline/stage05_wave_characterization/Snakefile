@@ -36,7 +36,6 @@ ALIGNMENT_THRESHOLD = config["ALIGNMENT_THRESHOLD"]
 DIRECTION_METHOD = config["DIRECTION_METHOD"]
 TIME_STAMP_POINT = config["TIME_STAMP_POINT"]
 
-
 #### Housekeeping ####
 
 def input(wildcards):
@@ -87,23 +86,6 @@ rule check_input:
         """
 
 #### CHARACTERIZATION BLOCKS ####
-rule local_observables:
-    input:
-        data = input,
-        script = os.path.join('scripts', 'local_macro_observables.py')
-    output:
-        data = os.path.join('{dir}', 'local_observables', 'local_observables.csv'),
-        img = report(os.path.join('{dir}', 'local_observables',
-                                  'local_observables.'+PLOT_FORMAT))
-
-    shell:
-        """
-        {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-
-        """
 
 rule velocity_planar:
     input:
@@ -248,4 +230,3 @@ rule number_of_triggers:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}"
         """
-

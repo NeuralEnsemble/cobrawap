@@ -16,5 +16,5 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-#
+# velocity_local, directions_local, ISI_local
 MEASURES: ['velocity_local']

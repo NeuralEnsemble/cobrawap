@@ -18,7 +18,6 @@ config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
 
 SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
                                            in config.__dict__.items()])
-
 #### Housekeeping ####
 
 def input(wildcards):
@@ -74,6 +73,8 @@ rule compute_measure:
     input:
         data = input,
         script = os.path.join('scripts', '{measure}.py')
+    params: 
+        kernel_name = config.KERNEL_NAME
     output:
         data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
         img = report(os.path.join('{dir}', '{measure}',
@@ -84,5 +85,6 @@ rule compute_measure:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
+                              --kernel_name "{params.kernel_name}" \
                               {SCRIPT_ARGS}
         """

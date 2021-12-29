@@ -72,8 +72,6 @@ if __name__ == '__main__':
     dim_t, dim_x, dim_y = np.shape(imgseq)
     wave_ids, channel_ids, ISI = calc_local_directions(evts, dim_x, dim_y)
 
-    print(np.sort(ISI.magnitude))
-    print(wave_ids)
     # transform to DataFrame
     df = pd.DataFrame(list(zip(wave_ids, ISI.magnitude)),
                       columns=['wave_id', 'ISI_local'],

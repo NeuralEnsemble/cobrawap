@@ -1,7 +1,7 @@
 import neo
 import numpy as np
 import argparse
-from utils import load_neo
+from utils.io import load_neo
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,

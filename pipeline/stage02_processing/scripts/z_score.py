@@ -1,6 +1,6 @@
 import argparse
 from elephant.signal_processing import zscore
-from utils import load_neo, write_neo
+from utils.io import load_neo, write_neo
 
 
 if __name__ == '__main__':

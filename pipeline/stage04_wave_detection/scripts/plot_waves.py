@@ -3,8 +3,8 @@ import numpy as np
 import quantities as pq
 import argparse
 import matplotlib.pyplot as plt
-from utils import AnalogSignal2ImageSequence, load_neo, save_plot
-from utils import none_or_str, none_or_float
+from utils.io import load_neo, save_plot
+from utils.neo import analogsignals_to_imagesequences
 
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     block = load_neo(args.data)
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     waves_event = [ev for ev in block.segments[0].events
                              if ev.name== 'Wavefronts'][0]

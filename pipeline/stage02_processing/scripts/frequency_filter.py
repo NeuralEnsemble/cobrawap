@@ -6,7 +6,8 @@ import argparse
 import quantities as pq
 import os
 from elephant.signal_processing import butter
-from utils import load_neo, write_neo, none_or_float
+from utils.io import load_neo, write_neo
+from utils.parse import none_or_float
 
 
 if __name__ == '__main__':

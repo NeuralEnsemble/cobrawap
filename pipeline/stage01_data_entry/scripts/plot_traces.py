@@ -7,8 +7,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import quantities as pq
 import random
-from utils import load_neo, save_plot, time_slice, parse_plot_channels,\
-                  none_or_int
+from utils.io import load_neo, save_plot
+from utils.neo import time_slice
+from utils.parse import parse_plot_channels, none_or_int
 
 
 def plot_traces(asig, channels):

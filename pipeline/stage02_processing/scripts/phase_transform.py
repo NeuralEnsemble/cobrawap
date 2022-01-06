@@ -2,7 +2,7 @@ import numpy as np
 from elephant.signal_processing import hilbert
 import argparse
 import os
-from utils import load_neo, write_neo
+from utils.io import load_neo, write_neo
 
 
 if __name__ == '__main__':

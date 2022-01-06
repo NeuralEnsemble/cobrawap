@@ -3,8 +3,8 @@ import numpy as np
 import neo
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
-from utils import load_neo, write_neo, none_or_str, save_plot
-from utils import ImageSequence2AnalogSignal, AnalogSignal2ImageSequence
+from utils.io import load_neo, write_neo, save_plot
+from utils.neo import analogsignals_to_imagesequences
 
 
 def detect_critical_points(imgseq, times):
@@ -183,7 +183,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
     block = load_neo(args.data)
 
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     imgseq = [im for im in block.segments[0].imagesequences
                         if im.name == "Optical Flow"]

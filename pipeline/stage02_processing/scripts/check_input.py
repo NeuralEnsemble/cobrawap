@@ -4,13 +4,13 @@
 import numpy as np
 import argparse
 import quantities as pq
-from utils import load_neo, none_or_int
+from utils.io import load_neo
 
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
     args = CLI.parse_args()
 

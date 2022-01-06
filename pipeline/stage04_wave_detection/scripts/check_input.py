@@ -4,7 +4,7 @@
 import numpy as np
 import argparse
 import quantities as pq
-from utils import load_neo, none_or_int
+from utils.io import load_neo
 
 
 if __name__ == '__main__':

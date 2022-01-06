@@ -4,13 +4,13 @@ import os
 configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
+from pathlib import Path
 import sys
-utils_path = os.path.join('..', 'scripts')
-sys.path.append(os.path.join(os.getcwd(), '..'))
+utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
-
 from settings import output_path
-from utils import parse_plot_channels
+from utils.parse import parse_plot_channels
+
 
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]

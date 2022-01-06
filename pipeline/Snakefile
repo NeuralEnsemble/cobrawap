@@ -3,8 +3,8 @@ import sys
 import numpy as np
 sys.path.append(os.getcwd())
 from settings import output_path, configs_dir
-from scripts.snakefile_utils import create_temp_configs, set_global_configs
-from scripts.snakefile_utils import set_stage_inputs, read_stage_output
+from utils.snakefile import create_temp_configs, set_global_configs
+from utils.snakefile import set_stage_inputs, read_stage_output
 
 # the working directory is by default the directory of the Snakefile
 working_dir = ''

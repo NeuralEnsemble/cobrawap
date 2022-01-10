@@ -4,13 +4,13 @@ import os
 configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
+from pathlib import Path
 import sys
-utils_path = os.path.join('..', 'scripts')
-sys.path.append(os.path.join(os.getcwd(), '..'))
+utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
-
 from settings import output_path
-from utils import parse_plot_channels
+from utils.parse import parse_plot_channels
+
 
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]
@@ -153,7 +153,7 @@ rule threshold:
                               --thresholds "{input.thresholds}"
         """
 
-rule calc_tresholds_fixed:
+rule calc_thresholds_fixed:
 # sub-rule of threshold
     input:
         data = STAGE_INPUT,
@@ -170,7 +170,7 @@ rule calc_tresholds_fixed:
                               --threshold {params.threshold}
         """
 
-rule calc_tresholds_fitted:
+rule calc_thresholds_fitted:
 # sub-rule of threshold
     input:
         data = STAGE_INPUT,
@@ -261,7 +261,7 @@ rule minima:
                               --maxima_threshold_fraction {params.maxima_threshold_fraction} \
                               --maxima_threshold_window {params.maxima_threshold_window} \
                               --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
-                              --num_interpolation_points {params.num_interpolation_points} 
+                              --num_interpolation_points {params.num_interpolation_points}
         """
 
 #### FILTER BLOCKS (choose any) ####

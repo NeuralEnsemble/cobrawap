@@ -4,14 +4,14 @@
 import numpy as np
 import argparse
 import quantities as pq
-from utils import load_neo, none_or_int
-from utils import AnalogSignal2ImageSequence, ImageSequence2AnalogSignal
+from utils.io import load_neo
+from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
     args = CLI.parse_args()
 
@@ -26,16 +26,16 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
 
-    # block = AnalogSignal2ImageSequence(block)
-    # block = ImageSequence2AnalogSignal(block)
-    # asig2 = block.segments[0].analogsignals[1]
-    #
-    # if asig.shape == asig2.shape:
-    #     del block.segments[0].analogsignals[1]
-    # else:
-    #     raise ValueError("AnalogSignal doesn't include empty grid sites. " \
-    #                   + f"Reshape {asig.shape} to {asig2.shape} according to x/y_coords.")
-        # del block.segments[0].analogsignals[0]
+    block = analogsignals_to_imagesequences(block)
+    block = imagesequences_to_analogsignals(block)
+    asig2 = block.segments[0].analogsignals[1]
+
+    if asig.shape != asig2.shape:
+        raise ValueError("AnalogSignal doesn't include empty grid sites. "
+                      + f"Reshape {asig.shape} to {asig2.shape} according to "
+                         "x/y_coords. You may use `add_empty_sites_to_analogsignal` "
+                         "from the utils.neo module.")
+    del asig2
 
     print('Recording Time:\t\t', asig.t_stop - asig.t_start)
     print('Sampling Rate:\t\t', asig.sampling_rate)

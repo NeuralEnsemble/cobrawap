@@ -6,11 +6,18 @@ import os
 import argparse
 import scipy
 import pandas as pd
-from utils import load_neo, none_or_str, save_plot
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
+
+
+def center_points(x, y):
+    return x - np.mean(x), y - np.mean(y)
 
 def linregress(times, locations):
+    times, locations = center_points(times, locations)
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
     return slope, stderr, offset
+
 
 def calc_planar_velocities(evts):
     spatial_scale = evts.annotations['spatial_scale']
@@ -29,12 +36,14 @@ def calc_planar_velocities(evts):
     for i, wave_i in enumerate(wave_ids):
         # Fit wave displacement
         idx = np.where(evts.labels == wave_i)[0]
-        vx, vx_err, dx = linregress(evts.times[idx].magnitude,
-                                   evts.array_annotations['x_coords'][idx]
-                                   * spatial_scale.magnitude)
-        vy, vy_err, dy = linregress(evts.times[idx].magnitude,
-                                   evts.array_annotations['y_coords'][idx]
-                                   * spatial_scale.magnitude)
+        x_times, x_locations = center_points(evts.times[idx].magnitude,
+                                        evts.array_annotations['x_coords'][idx]
+                                        * spatial_scale.magnitude)
+        y_times, y_locations = center_points(evts.times[idx].magnitude,
+                                        evts.array_annotations['y_coords'][idx]
+                                        * spatial_scale.magnitude)
+        vx, vx_err, dx = linregress(x_times, x_locations)
+        vy, vy_err, dy = linregress(y_times, y_locations)
         v = np.sqrt(vx**2 + vy**2)
         v_err = 1/v * np.sqrt((vx*vx_err)**2 + (vy+vy_err)**2)
         velocities[i] = np.array([v, v_err])
@@ -46,16 +55,12 @@ def calc_planar_velocities(evts):
         else:
             col = i % ncols
             cax = ax[row][col]
-        cax.plot(evts.times[idx].magnitude,
-                evts.array_annotations['x_coords'][idx]*spatial_scale.magnitude,
+        cax.plot(x_times, x_locations,
                 color='b', label='x coords', linestyle='', marker='.', alpha=0.5)
-        cax.plot(evts.times[idx].magnitude,
-                [vx*t + dx for t in evts.times[idx].magnitude], color='b')
-        cax.plot(evts.times[idx].magnitude,
-                evts.array_annotations['y_coords'][idx]*spatial_scale.magnitude,
+        cax.plot(x_times, [vx*t + dx for t in x_times], color='b')
+        cax.plot(y_times, y_locations,
                 color='r', label='y coords', linestyle='', marker='.', alpha=0.5)
-        cax.plot(evts.times[idx].magnitude,
-                [vy*t + dy for t in evts.times[idx].magnitude], color='r')
+        cax.plot(y_times, [vy*t + dy for t in y_times], color='r')
         if not col:
             cax.set_ylabel('x/y position [{}]'\
                            .format(spatial_scale.dimensionality.string))
@@ -98,7 +103,7 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
+    evts = block.filter(name='Wavefronts', objects="Event")[0]
 
     velocities_df = calc_planar_velocities(evts)
 

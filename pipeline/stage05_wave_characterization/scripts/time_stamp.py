@@ -7,7 +7,8 @@ import os
 import argparse
 import scipy
 import pandas as pd
-from utils import load_neo, none_or_str, save_plot
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
 
 
 if __name__ == '__main__':

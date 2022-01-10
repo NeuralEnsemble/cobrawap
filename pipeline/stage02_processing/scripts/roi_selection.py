@@ -8,8 +8,9 @@ import shapely.geometry as geo
 import argparse
 import neo
 import os
-from utils import load_neo, write_neo, none_or_str, save_plot
-from utils import AnalogSignal2ImageSequence, ImageSequence2AnalogSignal
+from utils.io import load_neo, write_neo, save_plot
+from utils.parse import none_or_str
+from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 def calculate_contour(img, contour_limit):
@@ -131,7 +132,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     block = load_neo(args.data)
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     # get average image
     imgseq = block.segments[0].imagesequences[-1]
@@ -158,7 +159,7 @@ if __name__ == '__main__':
     tmp_imgseq = imgseq.duplicate_with_new_data(imgseq_array)
     tmp_blk.segments.append(tmp_seg)
     tmp_blk.segments[0].imagesequences.append(tmp_imgseq)
-    tmp_blk = ImageSequence2AnalogSignal(tmp_blk)
+    tmp_blk = imagesequences_to_analogsignals(tmp_blk)
     new_asig = tmp_blk.segments[0].analogsignals[0]
 
     asig = block.segments[0].analogsignals[0].duplicate_with_new_data(new_asig.as_array())

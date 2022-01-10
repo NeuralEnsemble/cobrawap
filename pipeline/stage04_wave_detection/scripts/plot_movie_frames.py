@@ -6,8 +6,9 @@ import seaborn as sns
 import numpy as np
 import random
 import scipy
-from utils import AnalogSignal2ImageSequence, load_neo, save_plot
-from utils import none_or_str, none_or_float
+from utils.io import load_neo, save_plot
+from utils.neo import analogsignals_to_imagesequences
+from utils.parse import none_or_str, none_or_float
 
 def get_events(events, frame_times, event_name='Transitions'):
     trans_events = [ev for ev in events if ev.name == event_name]
@@ -108,7 +109,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
 
     blk = load_neo(args.data)
-    blk = AnalogSignal2ImageSequence(blk)
+    blk = analogsignals_to_imagesequences(blk)
 
     # get data
     imgseq = blk.segments[0].imagesequences[0]

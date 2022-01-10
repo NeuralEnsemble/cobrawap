@@ -27,7 +27,7 @@ PLOT_FORMAT: 'png'
 # and in which order. Execution order is from first to last entry.
 # The available blocks are:
 # 'background_subtraction', 'frequency_filter', 'normalization', 'detrending',
-# 'spatial_smooting', 'roi_selection', 'logMUA_estimation', 'phase_transform',
+# 'spatial_downsampling', 'roi_selection', 'logMUA_estimation', 'phase_transform',
 # 'zscore', 'subsampling'
 # Default: empty list [] -> it skips any processing blocks and returns the same
 # as input but, different from plot obtained from stage01, here the values on

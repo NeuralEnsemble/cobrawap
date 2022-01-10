@@ -6,7 +6,7 @@ import argparse
 import neo
 import os
 import sys
-from utils import write_neo, load_neo
+from utils.io import write_neo, load_neo
 
 
 def normalize(asig, normalize_by):

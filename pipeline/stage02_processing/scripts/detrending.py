@@ -9,7 +9,7 @@ import argparse
 import os
 from copy import copy
 import warnings
-from utils import load_neo, write_neo, save_plot
+from utils.io import load_neo, write_neo, save_plot
 
 ## REPLACED BY SCIPY FUNCTION
 # def detrending(signal, order):

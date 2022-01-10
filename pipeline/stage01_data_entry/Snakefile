@@ -4,13 +4,13 @@ import os
 # configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
+from pathlib import Path
 import sys
-utils_path = os.path.join('..', 'scripts')
+utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
-sys.path.append(os.path.join(os.getcwd(), '..'))
-
 from settings import output_path, configs_dir
-from utils import ordereddict_to_dict, get_param
+from utils.snakefile import get_param
+from utils.parse import ordereddict_to_dict
 
 if not bool(config):
     raise FileNotFoundError("Please specify a config file with '--configfile=...'")

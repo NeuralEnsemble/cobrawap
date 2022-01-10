@@ -9,7 +9,9 @@ import argparse
 import scipy
 import pandas as pd
 import seaborn as sns
-from utils import load_neo, save_plot, none_or_str, AnalogSignal2ImageSequence
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
+
 
 def calc_displacement(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
@@ -106,23 +108,27 @@ def plot_directions(dataframe, orientation_top=None, orientation_right=None):
         cax.set_xticks([])
         cax.set_yticks([])
 
-    ax[-1][-1].axhline(0, c='k')
-    ax[-1][-1].axvline(0, c='k')
-    ax[-1][-1].set_xlim((-2,2))
-    ax[-1][-1].set_ylim((-2,2))
+    if ncols == 1:
+        cax = ax[-1]
+    else:
+        cax = ax[-1][-1]
+        for i in range(len(directions), nrows*ncols):
+            row = int(i/ncols)
+            col = i % ncols
+            ax[row][col].set_axis_off()
+
+    cax.axhline(0, c='k')
+    cax.axvline(0, c='k')
+    cax.set_xlim((-2,2))
+    cax.set_ylim((-2,2))
     if orientation_top is not None:
-        ax[-1][-1].text(0, 1,orientation_top, rotation='vertical',
+        cax.text(0, 1,orientation_top, rotation='vertical',
                         verticalalignment='center', horizontalalignment='right')
     if orientation_right is not None:
-        ax[-1][-1].text(1, 0, orientation_right,
+        cax.text(1, 0, orientation_right,
                         verticalalignment='top', horizontalalignment='center')
 
     sns.despine(left=True, bottom=True)
-
-    for i in range(len(directions), nrows*ncols):
-        row = int(i/ncols)
-        col = i % ncols
-        ax[row][col].set_axis_off()
     return ax
 
 if __name__ == '__main__':

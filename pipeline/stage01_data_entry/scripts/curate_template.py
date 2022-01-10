@@ -6,9 +6,9 @@ Enter Data Template
 import argparse
 import quantities as pq
 import neo
-from utils import parse_string2dict, ImageSequence2AnalogSignal
-from utils import none_or_float, none_or_int, none_or_str, load_neo, write_neo
-from utils import flip_image, rotate_image, time_slice
+from utils.parse import parse_string2dict, none_or_float, none_or_int, none_or_str
+from utils.neo import imagesequences_to_analogsignals, flip_image, rotate_image, time_slice
+from utils.io import load_neo, write_neo
 
 
 if __name__ == '__main__':
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     # In case the dataset is imagaging data and therefore stored as an
     # ImageSequence object, it needs to be transformed into an AnalogSignal
-    # object. To do this use the function ImageSequence2AnalogSignal in utils.py
+    # object. To do this use the function imagesequences_to_analogsignals in utils/neo.py
 
     asig = block.segments[0].analogsignals[0]
 

@@ -4,7 +4,8 @@ import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
 from elephant.spectral import welch_psd
-from utils import load_neo, save_plot, none_or_float
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_float
 
 
 def plot_psd(freqs, psd, highpass_freq, lowpass_freq):

@@ -8,8 +8,9 @@ import os
 import neo
 import quantities as pq
 from skimage import data, io, filters, measure
-from utils import determine_spatial_scale, load_neo, write_neo, save_plot, \
-                  none_or_str, AnalogSignal2ImageSequence, ImageSequence2AnalogSignal
+from utils.io import load_neo, write_neo, save_plot
+from utils.parse import none_or_str
+from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 def spatial_smoothing(imgseq, macro_pixel_dim):
@@ -58,7 +59,7 @@ if __name__ == '__main__':
 
     args = CLI.parse_args()
     block = load_neo(args.data)
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
     imgseq = block.segments[0].imagesequences[0]
 
     imgseq_reduced = spatial_smoothing(imgseq, args.macro_pixel_dim)
@@ -70,7 +71,7 @@ if __name__ == '__main__':
     new_segment = neo.Segment()
     new_block.segments.append(new_segment)
     new_block.segments[0].imagesequences.append(imgseq_reduced)
-    new_block = ImageSequence2AnalogSignal(new_block)
+    new_block = imagesequences_to_analogsignals(new_block)
 
     block.segments[0].analogsignals[0] = new_block.segments[0].analogsignals[0]
 

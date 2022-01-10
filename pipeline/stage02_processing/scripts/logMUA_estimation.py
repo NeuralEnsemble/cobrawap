@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
-from utils import load_neo, write_neo, none_or_float, none_or_str, none_or_int,\
-                  time_slice, save_plot
+from utils.io import load_neo, write_neo, save_plot
+from utils.parse import none_or_float, none_or_int
+from utils.neo import time_slice
+
 
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                       psd_overlap, fft_slice):

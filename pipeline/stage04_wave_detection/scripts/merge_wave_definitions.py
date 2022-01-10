@@ -1,7 +1,7 @@
 import argparse
 import numpy as np
 import neo
-from utils import load_neo, write_neo, AnalogSignal2ImageSequence
+from utils.io import load_neo, write_neo
 
 
 if __name__ == '__main__':

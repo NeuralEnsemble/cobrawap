@@ -5,7 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
-from utils import load_neo, write_neo, save_plot, none_or_str
+from utils.io import load_neo, write_neo, save_plot
+from utils.parse import none_or_str
+
 
 def shape_frame(value_array, coords):
     dim_x = np.max(coords[:,0]) + 1

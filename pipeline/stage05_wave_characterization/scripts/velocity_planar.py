@@ -6,7 +6,9 @@ import os
 import argparse
 import scipy
 import pandas as pd
-from utils import load_neo, none_or_str, save_plot
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
+
 
 def center_points(x, y):
     return x - np.mean(x), y - np.mean(y)
@@ -43,9 +45,6 @@ def calc_planar_velocities(evts):
         vx, vx_err, dx = linregress(x_times, x_locations)
         vy, vy_err, dy = linregress(y_times, y_locations)
         v = np.sqrt(vx**2 + vy**2)
-        print(np.concatenate((x_times[:, np.newaxis],
-                              x_locations[:, np.newaxis],
-                              y_locations[:, np.newaxis]), axis=1))
         v_err = 1/v * np.sqrt((vx*vx_err)**2 + (vy+vy_err)**2)
         velocities[i] = np.array([v, v_err])
 
@@ -104,7 +103,7 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    evts = [ev for ev in block.segments[0].events if ev.name == 'Wavefronts'][0]
+    evts = block.filter(name='Wavefronts', objects="Event")[0]
 
     velocities_df = calc_planar_velocities(evts)
 

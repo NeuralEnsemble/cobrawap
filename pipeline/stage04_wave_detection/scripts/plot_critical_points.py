@@ -2,8 +2,8 @@ import argparse
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
-from utils import load_neo, write_neo, none_or_str, save_plot, \
-                  ImageSequence2AnalogSignal, AnalogSignal2ImageSequence
+from utils.io import load_neo, write_neo, save_plot
+from utils.neo import analogsignals_to_imagesequences
 
 
 def plot_frame(frame, ax=None, skip_step=3):
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
     block = load_neo(args.data)
 
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     asig = block.segments[0].analogsignals[0]
 

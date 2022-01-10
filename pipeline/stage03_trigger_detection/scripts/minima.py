@@ -4,10 +4,12 @@ import quantities as pq
 from scipy.signal import find_peaks
 import argparse
 from distutils.util import strtobool
-from utils import load_neo, write_neo, remove_annotations
+from utils.io import load_neo, write_neo
+from utils.neo import remove_annotations
 
 
-def detect_minima(asig, interpolation_points, interpolation, minima_threshold_fraction, maxima_threshold_fraction,  min_peak_distance):
+def detect_minima(asig, interpolation_points, interpolation, min_peak_distance
+                  minima_threshold_fraction, maxima_threshold_fraction):
 
     signal = asig.as_array()
     times = asig.times

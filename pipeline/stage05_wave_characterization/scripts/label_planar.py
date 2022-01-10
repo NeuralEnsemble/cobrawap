@@ -6,7 +6,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import copy
 import seaborn as sns
-from utils import load_neo, AnalogSignal2ImageSequence
+from utils.io import load_neo
+from utils.neo import analogsignals_to_imagesequences
 
 
 def label_planar(waves_event, vector_field, times, threshold):
@@ -99,7 +100,7 @@ if __name__ == '__main__':
     args = CLI.parse_args()
     block = load_neo(args.data)
 
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
     asig = block.segments[0].analogsignals[0]
 
     wavefront_evt = block.filter(name='Wavefronts', objects="Event")[0]

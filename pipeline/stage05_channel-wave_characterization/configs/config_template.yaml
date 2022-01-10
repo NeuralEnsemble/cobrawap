@@ -16,8 +16,10 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Measures to compute
-# velocity_local, directions_local, ISI_local
+# 'velocity_local'
 MEASURES: ['velocity_local']
-# Spatial kernel for convolution
-# available kernels: Simple, Sobol, Large
-KERNEL_NAME: 'Simple'
+
+# Velocity Local
+################
+# simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
+KERNEL: 'sobol_3x3'

@@ -7,7 +7,8 @@ import scipy as sc
 import warnings
 from scipy.optimize import OptimizeWarning
 import matplotlib.pyplot as plt
-from utils import load_neo, save_plot, none_or_int
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_int
 
 warnings.simplefilter("error", OptimizeWarning)
 

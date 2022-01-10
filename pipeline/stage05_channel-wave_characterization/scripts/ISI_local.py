@@ -4,12 +4,14 @@ Compute local directions
 
 import argparse
 import numpy as np
-from utils import load_neo, save_plot, none_or_str
-from utils import AnalogSignal2ImageSequence
 import quantities as pq
 import itertools
 import pandas as pd
 import matplotlib.pyplot as plt
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
+from utils.neo import analogsignals_to_imagesequences
+
 
 
 def calc_local_directions(wave_evts, dim_x, dim_y):
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     imgseq = block.segments[0].imagesequences[0]
     asig = block.segments[0].analogsignals[0]

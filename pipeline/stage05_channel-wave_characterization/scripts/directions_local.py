@@ -4,13 +4,14 @@ Compute local directions
 
 import argparse
 import numpy as np
-from utils import load_neo, save_plot, none_or_str
-from utils import AnalogSignal2ImageSequence
+from utils.io import load_neo, save_plot
+from utils.parse import none_or_str
+from utils.neo import analogsignals_to_imagesequences
+from utils.convolve import nan_conv2d, get_kernel
 import quantities as pq
 import itertools
 import pandas as pd
 import matplotlib.pyplot as plt
-from apply_kernel import convolve_triggers
 
 def calc_local_directions(wave_evts, dim_x, dim_y, kernel_name):
     evts = wave_evts[wave_evts.labels != '-1']
@@ -36,10 +37,10 @@ def calc_local_directions(wave_evts, dim_x, dim_y, kernel_name):
 
         trigger_collection = np.empty([dim_x, dim_y]) * np.nan
         trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
-        
-        convolved_trigger_X, convolved_trigger_Y = convolve_triggers(trigger_collection, kernel_name)
-        t_x = convolved_trigger_X.reshape(-1)
-        t_y = convolved_trigger_Y.reshape(-1)
+         
+        kernel = get_kernel(kernel_name)
+        t_x = nan_conv2d(trigger_collection, kernel.x).reshape(-1)
+        t_y = nan_conv2d(trigger_collection, kernel.y).reshape(-1)
 
         ## gradient based local directions:
         angle = np.arctan2(t_x, t_y)
@@ -62,20 +63,20 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
-    CLI.add_argument("--kernel_name", nargs='?', type=str, default='Simple',
-                     help="name of the kernel to be used")
+    CLI.add_argument("--KERNEL", nargs='?', type=none_or_str, default=None,
+                     help="derivative kernel")
 
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    block = AnalogSignal2ImageSequence(block)
+    block = analogsignals_to_imagesequences(block)
 
     imgseq = block.segments[0].imagesequences[0]
     asig = block.segments[0].analogsignals[0]
     evts = block.filter(name='Wavefronts', objects="Event")[0]
 
     dim_t, dim_x, dim_y = np.shape(imgseq)
-    wave_ids, channel_ids, directions = calc_local_directions(evts, dim_x, dim_y, args.kernel_name)
+    wave_ids, channel_ids, directions = calc_local_directions(evts, dim_x, dim_y, args.KERNEL)
 
     # transform to DataFrame
     df = pd.DataFrame(list(zip(wave_ids, directions.magnitude)),

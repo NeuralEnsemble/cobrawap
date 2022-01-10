@@ -4,7 +4,7 @@ import quantities as pq
 from scipy.signal import find_peaks
 import argparse
 from distutils.util import strtobool
-from utils.io import load_neo, write_neoi, save_plot
+from utils.io import load_neo, write_neo, save_plot
 from utils.neo import remove_annotations, time_slice
 from utils.parse import none_or_int, none_or_float
 import seaborn as sns

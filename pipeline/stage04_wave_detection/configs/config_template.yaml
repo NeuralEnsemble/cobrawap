@@ -31,8 +31,8 @@ DETECTION_BLOCK: 'trigger_clustering'
 
 # ADDITIONAL PROPERTIES
 #######################
-# Available Blocks: 'optical_flow', 'critical_points'
-ADDITIONAL_PROPERTIES: ['optical_flow'] #, 'critical_points']
+# Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
+ADDITIONAL_PROPERTIES: ['optical_flow']
 
 # Wavefront Clustering
 ######################
@@ -63,6 +63,21 @@ DERIVATIVE_FILTER: 'Simple'
 
 # Critical Point Clustering
 ###########################
+
+# Wave Mode Clustering
+######################
+# fraction of channels that need to be involved in a wave to be included
+MIN_TRIGGER_FRACTION: 0.5
+# number of similar waves to use to extrapolate missing trigger from
+NUM_WAVE_NEIGHBOURS: 5
+# percentage of similar waves to keep for the clustering
+WAVE_OUTLIER_QUANTILE: 0.95
+# number of pca dims to project the trigger patterns onto before clustering
+PCA_DIMS: 10
+# number of clusters for the kmeans algorithm
+NUM_KMEANS_CLUSTER: 4
+# grid spacing for the interpolation [0,1]
+INTERPOLATION_STEP_SIZE: 0.2
 
 # VIDEO SETTINGS
 ################

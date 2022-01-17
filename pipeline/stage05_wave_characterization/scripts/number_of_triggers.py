@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     wave_ids = np.sort(np.unique(evts.labels).astype(int))
 
-    number_of_triggers = np.empty(len(wave_ids), dtype=np.float)
+    number_of_triggers = np.empty(len(wave_ids), dtype=float)
 
     for i, wave_id in enumerate(wave_ids):
         idx = np.where(evts.labels == str(wave_id))[0]

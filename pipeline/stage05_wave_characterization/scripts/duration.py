@@ -28,7 +28,7 @@ if __name__ == '__main__':
     if wave_ids[0] == -1:
         wave_ids = np.delete(wave_ids, 0)
 
-    durations = np.empty(len(wave_ids), dtype=np.float)
+    durations = np.empty(len(wave_ids), dtype=float)
 
     t_unit = evts.times[0].dimensionality.string
 

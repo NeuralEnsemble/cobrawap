@@ -45,6 +45,13 @@ CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
 GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
 DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
 
+MIN_TRIGGER_FRACTION = config['MIN_TRIGGER_FRACTION']
+NUM_WAVE_NEIGHBOURS = config['NUM_WAVE_NEIGHBOURS']
+WAVE_OUTLIER_QUANTILE = config['WAVE_OUTLIER_QUANTILE']
+PCA_DIMS = config['PCA_DIMS']
+NUM_KMEANS_CLUSTER = config['NUM_KMEANS_CLUSTER']
+INTERPOLATION_STEP_SIZE = config['INTERPOLATION_STEP_SIZE']
+
 localrules: all, check_input
 
 #### UTILITY BLOCKS ####
@@ -202,6 +209,12 @@ rule wave_mode_clustering:
         data = rules.trigger_clustering.output.data,
         script = os.path.join('scripts', 'wave_mode_clustering.py')
     params:
+        min_trigger_fraction = MIN_TRIGGER_FRACTION,
+        num_wave_neighbours = NUM_WAVE_NEIGHBOURS,
+        wave_outlier_quantile = WAVE_OUTLIER_QUANTILE,
+        pca_dims = PCA_DIMS,
+        num_kmeans_cluster = NUM_KMEANS_CLUSTER,
+        interpolation_step_size = INTERPOLATION_STEP_SIZE
     output:
         data = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+NEO_FORMAT),
         img = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+PLOT_FORMAT)
@@ -211,6 +224,12 @@ rule wave_mode_clustering:
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
+                              --min_trigger_fraction {params.min_trigger_fraction} \
+                              --num_wave_neighbours {params.num_wave_neighbours} \
+                              --wave_outlier_quantile {params.wave_outlier_quantile} \
+                              --pca_dims {params.pca_dims} \
+                              --num_kmeans_cluster {params.num_kmeans_cluster} \
+                              --interpolation_step_size {params.interpolation_step_size}
         """
 
 #### PLOTTING ####

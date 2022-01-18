@@ -10,11 +10,12 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from skimage.transform import resize
 from scipy.interpolate import RBFInterpolator
+from scipy.spatial.distance import cdist
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from utils.io import load_neo, write_neo, save_plot
-from utils.parse import none_or_str
-from utils.neo import analogsignals_to_imagesequences
+from utils.parse import none_or_str, none_or_int
+from utils.neo import analogsignals_to_imagesequences, remove_annotations
 
 
 def build_timelag_dataframe(waves_evt, normalize=True):
@@ -145,6 +146,18 @@ def interpolate_grid(grid):
                                degree=None)
     return rbf_func
 
+def calc_cluster_distortions(feature_matrix, cluster_indices, cluster_centers):
+    cluster_labels = np.unique(cluster_indices)
+    cluster_dists = np.zeros(len(cluster_labels), dtype=float)
+
+    for i, cluster_id in enumerate(cluster_labels):
+        cluster_points = feature_matrix[np.where(cluster_indices==i)[0]]
+        dists = cdist(cluster_points,
+                      cluster_centers[i][np.newaxis,:],
+                      metric='euclidean')
+        cluster_dists[i] = np.sqrt(np.mean(dists**2))
+    return cluster_dists
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -160,7 +173,7 @@ if __name__ == '__main__':
                      help="number of similar waves to extrapolate nans from")
     CLI.add_argument("--wave_outlier_quantile", nargs='?', type=float, default=.95,
                      help="percentage of similar waves to keep")
-    CLI.add_argument("--pca_dims", nargs='?', type=int, default=10,
+    CLI.add_argument("--pca_dims", nargs='?', type=none_or_int, default=None,
                      help="reduce wave patterns to n dimensions before kmeans clustering")
     CLI.add_argument("--num_kmeans_cluster", nargs='?', type=int, default=5,
                      help="number of wave modes to cluster with kmeans")
@@ -195,10 +208,14 @@ if __name__ == '__main__':
     # kmeans cluster the transformed timelag_matrix into modes
     kout = kmeans_cluster_waves(timelag_matrix_transformed,
                                 n_cluster=args.num_kmeans_cluster)
-    mode_labels = kout.labels_
+    mode_ids = kout.labels_
+    mode_labels, mode_counts = np.unique(mode_ids, return_counts=True)
+    mode_dists = calc_cluster_distortions(timelag_matrix_transformed,
+                                          cluster_indices=mode_ids,
+                                          cluster_centers=kout.cluster_centers_)
 
     # calculate the average timelags per mode
-    mode_timelag_df = build_cluster_timelag_dataframe(timelag_df, mode_labels)
+    mode_timelag_df = build_cluster_timelag_dataframe(timelag_df, mode_ids)
 
     # rearrange average mode timelags onto channel grid
     x_coords = asig.array_annotations['x_coords']
@@ -217,9 +234,10 @@ if __name__ == '__main__':
                                            if i else pattern[np.newaxis,:]
 
     # plot average wave modes
-    cmap = mpl.cm.get_cmap('coolwarm')
+    cmap = mpl.cm.get_cmap('coolwarm').copy()
     cmap.set_bad(color='white')
     fig, axes = plt.subplots(ncols=n_modes+1,
+                             figsize=(n_modes*4, 5),
                              gridspec_kw={'width_ratios':[1]*n_modes+[0.1]})
 
     for i, pattern in enumerate(interpolated_mode_grids):
@@ -231,8 +249,13 @@ if __name__ == '__main__':
         ctr = ax.contour(fy, fx, pattern, levels=np.max([dim_x, dim_y]),
                          cmap=cmap, linewidths=2, alpha=1,
                          vmin=-vminmax, vmax=vminmax)
-        ax.set_axis_off()
-        ax.set_title(f'mode {i+1}')
+        for side in ['top','right','bottom','left']:
+            ax.spines[side].set_visible(False)
+        ax.tick_params(axis='both', which='both',
+                       labelbottom=False, bottom=False, left=False)
+        ax.set_yticklabels([])
+        ax.set_xlabel(f'{mode_counts[i]} waves\n Var = {mode_dists[i]:.2f}')
+        ax.set_title(f'mode {mode_labels[i]}')
 
     cbar = plt.colorbar(img, cax=axes[-1], ticks=[-vminmax/1.5, vminmax/1.5])
     cbar.ax.set_yticklabels(['wave start', 'wave end'],
@@ -245,45 +268,53 @@ if __name__ == '__main__':
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \
                                          if evt.name=='Wavefronts'][0]
-    mode_ids = np.empty(waves.size) * np.nan
 
-    for wave_id, mode_id in zip(timelag_df.index, mode_labels):
+    mode_id_annotations = np.empty(waves.size) * np.nan
+    for wave_id, mode_id in zip(timelag_df.index, mode_ids):
         index = np.where(waves.labels.astype(int) == wave_id)[0]
-        mode_ids[index] = mode_id
+        mode_id_annotations[index] = mode_id
 
-    block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_ids
+    block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
 
     # add clustered wave modes as additional event 'Wavemodes'
-    n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
-    block = analogsignals_to_imagesequences(block)
-    site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
-    interpolated_site_grid = resize(site_grid,
-                                    output_shape=(inter_dim_x, inter_dim_y),
-                                    mode='constant', cval=True,
-                                    order=0)
-    ixs, iys = np.where(interpolated_site_grid)
-    n_sites = len(ixs)
-    ix_annotation = np.tile(ixs, n_modes)
-    iy_annotation = np.tile(iys, n_modes)
-    mode_trigger = np.empty(n_modes*n_sites)*np.nan
+    # n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
+    # block = analogsignals_to_imagesequences(block)
+    # site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
+    # interpolated_site_grid = resize(site_grid,
+    #                                 output_shape=(inter_dim_x, inter_dim_y),
+    #                                 mode='constant', cval=True,
+    #                                 order=0)
+    # ixs, iys = np.where(interpolated_site_grid)
+    # n_sites = len(ixs)
+    # ix_annotation = np.tile(ixs, n_modes)
+    # iy_annotation = np.tile(iys, n_modes)
+    # mode_trigger = np.empty(n_modes*n_sites)*np.nan
+    #
+    # for mode_id in range(n_modes):
+    #     for site_id, (ix, iy) in enumerate(zip(ixs, iys)):
+    #         mode_trigger[mode_id*n_sites + site_id] \
+    #                                 = interpolated_mode_grids[mode_id, ix, iy]
 
-    for mode_id in range(n_modes):
-        for site_id, (ix, iy) in enumerate(zip(ixs, iys)):
-            mode_trigger[mode_id*n_sites + site_id] \
-                                    = interpolated_mode_grids[mode_id, ix, iy]
+    remove_annotations(waves)
+    modes, xs, ys = np.where(np.isfinite(mode_grids))
+    channels = [np.where((asig.array_annotations['x_coords'] == x) \
+                       & (asig.array_annotations['y_coords'] == y))[0][0] \
+                for x,y in zip(xs,ys)]
 
-    evt = neo.Event(mode_trigger * waves.units,
-                    labels=np.repeat(range(n_modes), n_sites),
+    evt = neo.Event(mode_grids[modes,xs,ys] * waves.units,
+                    labels=mode_labels[modes],
                     name='Wavemodes',
+                    mode_labels=mode_labels,
+                    mode_counts=mode_counts[mode_labels],
+                    mode_distortions=mode_dists,
                     n_modes=n_modes,
                     pca_dims=args.pca_dims,
                     **waves.annotations)
-    evt.annotations['spatial_scale'] *= args.interpolation_step_size
-    evt.array_annotations['x_coords'] = np.tile(ixs, n_modes)
-    evt.array_annotations['y_coords'] = np.tile(iys, n_modes)
-    evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
+    evt.array_annotations['x_coords'] = xs
+    evt.array_annotations['y_coords'] = ys
+    evt.array_annotations['channels'] = channels
 
     block.segments[0].events.append(evt)
-
+    
     # save output neo object
     write_neo(args.output, block)

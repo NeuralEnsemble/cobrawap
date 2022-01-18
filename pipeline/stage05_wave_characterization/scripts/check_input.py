@@ -28,7 +28,7 @@ if __name__ == '__main__':
     evt = evts[0]
     evt = evt[evt.labels != '-1']
     num_waves = len(np.unique(evt.labels))
-    
+
     if num_waves:
         print(f'{num_waves} wavefronts found.')
     else:
@@ -41,3 +41,9 @@ if __name__ == '__main__':
     optical_flow = block.filter(name='Optical Flow', objects="AnalogSignal")
     if not len(evts):
         warnings.warn('No Optical-Flow signal available!')
+
+    evts = block.filter(name='Wavemodes', objects="Event")
+    if len(evts):
+        print(f'{len(np.unique(evts[0].labels))} wavemodes found')
+    else:
+        warnings.warn("No 'Wavemodes' events found!")

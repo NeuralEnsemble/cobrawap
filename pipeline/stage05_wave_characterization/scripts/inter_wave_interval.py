@@ -10,6 +10,7 @@ import pandas as pd
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -17,9 +18,11 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    # CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-    #                  help="path of output image file")
-    args = CLI.parse_args()
+    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                     help="path of output image file")
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
@@ -72,6 +75,9 @@ if __name__ == '__main__':
                       columns=['inter_wave_interval', 'inter_wave_interval_std'],
                       index=wave_ids)
     df['inter_wave_interval_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = 'wave_id'
+    df.index.name = f'{args.event_name}_id'
 
     df.to_csv(args.output)
+
+    # ToDo
+    save_plot(args.output_img)

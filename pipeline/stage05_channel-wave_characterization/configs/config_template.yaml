@@ -15,6 +15,10 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
+# Wave event name
+# 'Wavefronts', 'Wavemodes'
+EVENT_NAME: 'Wavefronts'
+
 # Measures to compute
 # 'velocity_local'
 MEASURES: ['velocity_local']

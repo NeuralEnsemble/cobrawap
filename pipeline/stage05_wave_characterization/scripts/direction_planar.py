@@ -140,13 +140,15 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
-    CLI.add_argument("--method", nargs='?', type=str, default='trigger_interpolation',
+    CLI.add_argument("--method", "--DIRECTION_METHOD", nargs='?', type=str, default='trigger_interpolation',
                      help="'tigger_interpolation' or 'optical_flow'")
-    args = CLI.parse_args()
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
-    evts = block.filter(name='Wavefronts', objects="Event")[0]
+    evts = block.filter(name=args.event_name, objects="Event")[0]
 
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)
@@ -159,7 +161,7 @@ if __name__ == '__main__':
     df = pd.DataFrame(directions,
                       columns=['direction', 'direction_std'],
                       index=np.unique(evts.labels))
-    df.index.name = 'wave_id'
+    df.index.name = f'{args.event_name}_id'
 
     if args.output_img is not None:
         orientation_top = evts.annotations['orientation_top']

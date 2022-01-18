@@ -23,7 +23,7 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
     clustering.fit(triggers)
 
     if len(np.unique(clustering.labels_)) < 1:
-        raise ValueError("No Clusters found, please adapt the parameters!")
+        raise ValueError("No clusters found, please adapt the parameters!")
 
     # remove unclassified trigger points (label == -1)
     cluster_idx = np.where(clustering.labels_ != -2)[0]

@@ -13,16 +13,12 @@ from utils.parse import parse_plot_channels
 from types import SimpleNamespace
 
 config = SimpleNamespace(**config)
-config.ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
-
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
                                            in config.__dict__.items()])
 
 #### Housekeeping ####
-
-def input(wildcards):
-    return config.STAGE_INPUT
 
 def measures_output(wildcards):
     return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
@@ -47,7 +43,7 @@ rule all:
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
     shell:
         """
-        {config.ADD_UTILS}
+        {ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
@@ -63,7 +59,7 @@ rule check_input:
         temp(os.path.join('{dir}', 'input.check'))
     shell:
         """
-        {config.ADD_UTILS}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}"
         touch "{output}"
         """
@@ -72,7 +68,7 @@ rule check_input:
 
 rule compute_measure:
     input:
-        data = input,
+        data = config.STAGE_INPUT,
         script = os.path.join('scripts', '{measure}.py')
     output:
         data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
@@ -80,7 +76,7 @@ rule compute_measure:
                                   '{measure}.'+config.PLOT_FORMAT))
     shell:
         """
-        {config.ADD_UTILS}
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \

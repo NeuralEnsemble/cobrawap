@@ -20,9 +20,11 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image")
-    CLI.add_argument("--time_point", nargs='?', type=str, default='start',
+    CLI.add_argument("--time_point", "--TIME_STAMP_POINT" nargs='?', type=str, default='start',
                      help="when to register the time for a wave [start, middle, end]")
-    args = CLI.parse_args()
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
@@ -36,7 +38,7 @@ if __name__ == '__main__':
         raise InputError('')
 
     asig = block.segments[0].analogsignals[0]
-    evts = block.filter(name='Wavefronts', objects="Event")[0]
+    evts = block.filter(name=args.event_name, objects="Event")[0]
 
     wave_ids = np.sort(np.unique(evts.labels).astype(int))
     if wave_ids[0] == -1:
@@ -66,6 +68,6 @@ if __name__ == '__main__':
                       columns=['time_stamp'],
                       index=wave_ids)
     df['time_stamp_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = 'wave_id'
+    df.index.name = f'{args.event_name}_id'
 
     df.to_csv(args.output)

@@ -73,6 +73,7 @@ NUM_WAVE_NEIGHBOURS: 5
 # percentage of similar waves to keep for the clustering
 WAVE_OUTLIER_QUANTILE: 0.95
 # number of pca dims to project the trigger patterns onto before clustering
+# None -> no dimensionality reduction
 PCA_DIMS: 10
 # number of clusters for the kmeans algorithm
 NUM_KMEANS_CLUSTER: 4

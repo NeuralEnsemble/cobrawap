@@ -74,7 +74,7 @@ def detect_minima(asig, interpolation_points, interpolation, min_peak_distance
 
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
-                    name='Transitions',
+                    name='transitions',
                     use_quadtratic_interpolation=interpolation,
                     num_interpolation_points=interpolation_points,
                     array_annotations={'channels':channel_idx[sort_idx]})

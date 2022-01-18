@@ -185,7 +185,7 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
     dim_t, num_channels = asig.shape
 
-    waves = block.filter(name='Wavefronts', objects="Event")[0]
+    waves = block.filter(name='wavefronts', objects="Event")[0]
     waves = waves[waves.labels != '-1']
 
     timelag_df = build_timelag_dataframe(waves)
@@ -267,7 +267,7 @@ if __name__ == '__main__':
 
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \
-                                         if evt.name=='Wavefronts'][0]
+                                         if evt.name=='wavefronts'][0]
 
     mode_id_annotations = np.empty(waves.size) * np.nan
     for wave_id, mode_id in zip(timelag_df.index, mode_ids):
@@ -276,7 +276,7 @@ if __name__ == '__main__':
 
     block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
 
-    # add clustered wave modes as additional event 'Wavemodes'
+    # add clustered wave modes as additional event 'wavemodes'
     # n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
     # block = analogsignals_to_imagesequences(block)
     # site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
@@ -303,7 +303,7 @@ if __name__ == '__main__':
 
     evt = neo.Event(mode_grids[modes,xs,ys] * waves.units,
                     labels=mode_labels[modes],
-                    name='Wavemodes',
+                    name='wavemodes',
                     mode_labels=mode_labels,
                     mode_counts=mode_counts[mode_labels],
                     mode_distortions=mode_dists,
@@ -315,6 +315,6 @@ if __name__ == '__main__':
     evt.array_annotations['channels'] = channels
 
     block.segments[0].events.append(evt)
-    
+
     # save output neo object
     write_neo(args.output, block)

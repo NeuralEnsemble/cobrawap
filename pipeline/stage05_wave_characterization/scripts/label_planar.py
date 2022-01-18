@@ -99,7 +99,7 @@ if __name__ == '__main__':
                      help="path of output image file")
     CLI.add_argument("--alignment_threshold", nargs='?', type=float, default=.85,
                      help="threshold for alignment of velocity vectors at transitions")
-    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                      help="name of neo.Event to analyze (must contain waves)")
     args, unknown = CLI.parse_known_args()
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
 
-    optical_flow = block.filter(name='Optical Flow', objects="ImageSequence")[0]
+    optical_flow = block.filter(name='optical_flow', objects="ImageSequence")[0]
 
     planar_labels = label_planar(waves_event=wavefront_evt,
                                  vector_field=optical_flow,

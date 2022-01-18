@@ -66,7 +66,7 @@ if __name__ == '__main__':
                      help="path of output image file")
     CLI.add_argument("--kernel", "--KERNEL", nargs='?', type=none_or_str, default=None,
                      help="derivative kernel")
-    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                      help="name of neo.Event to analyze (must contain waves)")
 
     args, unknown = CLI.parse_known_args()

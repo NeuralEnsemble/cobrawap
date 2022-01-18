@@ -92,5 +92,5 @@ BITRATE: 20M
 FRAME_RATE: None
 # 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
 COLORMAP: 'twilight'
-PLOT_EVENT: 'Wavefronts' # name of neo event to plot, default is None
+PLOT_EVENT: 'wavefronts' # name of neo event to plot, default is None
 MARKER_COLOR: 'r'

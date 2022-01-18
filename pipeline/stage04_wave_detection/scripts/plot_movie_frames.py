@@ -10,7 +10,7 @@ from utils.io import load_neo, save_plot
 from utils.neo import analogsignals_to_imagesequences
 from utils.parse import none_or_str, none_or_float
 
-def get_events(events, frame_times, event_name='Transitions'):
+def get_events(events, frame_times, event_name='transitions'):
     trans_events = [ev for ev in events if ev.name == event_name]
     if len(trans_events):
         event = trans_events[0]
@@ -38,7 +38,7 @@ def get_events(events, frame_times, event_name='Transitions'):
         return None
 
 
-def get_opticalflow(imagesequences, imgseq_name="Optical Flow"):
+def get_opticalflow(imagesequences, imgseq_name="optical_flow"):
     imgseqs = [im for im in imagesequences if im.name == imgseq_name]
     if len(imgseqs):
         # Normalize?

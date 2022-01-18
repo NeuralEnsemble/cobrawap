@@ -29,9 +29,10 @@ if __name__ == '__main__':
     # print('Sampling Rate:\t\t', asig.sampling_rate)
     # print('Spatial Scale:\t\t', asig.annotations['spatial_scale'])
 
-    evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions']
+    evts = block.filter(name='transitions', objects="Event")
+
     if not len(evts):
-        raise ValueError("No 'Transitions' events found!")
+        raise ValueError("No 'transitions' events found!")
     evt = evts[0]
 
     if not 'UP' in evt.labels:

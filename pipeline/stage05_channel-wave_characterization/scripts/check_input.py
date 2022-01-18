@@ -21,9 +21,9 @@ if __name__ == '__main__':
         print("More than one Segment found; all except the first one " \
             + "will be ignored.")
 
-    evts = block.filter(name='Wavefronts', objects="Event")
+    evts = block.filter(name='wavefronts', objects="Event")
     if not len(evts):
-        raise ValueError("No 'Wavefronts' events found!")
+        raise ValueError("No 'wavefronts' events found!")
 
     evt = evts[0]
     evt = evt[evt.labels != '-1']
@@ -38,12 +38,12 @@ if __name__ == '__main__':
     evt.array_annotations['y_coords']
     evt.annotations['spatial_scale']
 
-    optical_flow = block.filter(name='Optical Flow', objects="AnalogSignal")
-    if not len(evts):
+    optical_flow = block.filter(name='optical_flow', objects="AnalogSignal")
+    if not len(optical_flow):
         warnings.warn('No Optical-Flow signal available!')
 
-    evts = block.filter(name='Wavemodes', objects="Event")
+    evts = block.filter(name='wavemodes', objects="Event")
     if len(evts):
         print(f'{len(np.unique(evts[0].labels))} wavemodes found')
     else:
-        warnings.warn("No 'Wavemodes' events found!")
+        warnings.warn("No 'wavemodes' events found!")

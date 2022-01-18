@@ -142,7 +142,7 @@ if __name__ == '__main__':
                      help="path of output image file")
     CLI.add_argument("--method", "--DIRECTION_METHOD", nargs='?', type=str, default='trigger_interpolation',
                      help="'tigger_interpolation' or 'optical_flow'")
-    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                      help="name of neo.Event to analyze (must contain waves)")
     args, unknown = CLI.parse_known_args()
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)
     elif args.method == 'optical_flow':
-        asig = block.filter(name='Optical Flow', objects="AnalogSignal")[0]
+        asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
         directions = calc_flow_direction(evts, asig)
     else:
         raise NameError(f'Method name {args.method} is not recognized!')

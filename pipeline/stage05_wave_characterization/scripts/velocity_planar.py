@@ -99,7 +99,7 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
-    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='Wavefronts',
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                      help="name of neo.Event to analyze (must contain waves)")
     args, unknown = CLI.parse_known_args()
 

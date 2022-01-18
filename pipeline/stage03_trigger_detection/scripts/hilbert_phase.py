@@ -67,10 +67,10 @@ def detect_transitions(asig, transition_phase):
 
     evt = neo.Event(times=up_transitions[sort_idx]*asig.times.units,
                     labels=['UP'] * len(up_transitions),
-                    name='Transitions',
+                    name='transitions',
                     array_annotations={'channels':channels[sort_idx]},
                     hilbert_transition_phase=transition_phase,
-                    description='Transitions from down to up states. '\
+                    description='transitions from down to up states. '\
                                +'annotated with the channel id ("channels").')
 
     for key in asig.array_annotations.keys():

@@ -16,8 +16,8 @@ PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
 # Wave event name
-# 'Wavefronts', 'Wavemodes'
-EVENT_NAME: 'Wavefronts'
+# 'wavefronts', 'wavemodes'
+EVENT_NAME: 'wavefronts'
 
 # Measures to compute
 # 'velocity_local'

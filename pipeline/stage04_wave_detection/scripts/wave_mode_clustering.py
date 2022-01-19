@@ -308,7 +308,7 @@ if __name__ == '__main__':
                     mode_counts=mode_counts[mode_labels],
                     mode_distortions=mode_dists,
                     n_modes=n_modes,
-                    pca_dims=args.pca_dims,
+                    pca_dims='None' if args.pca_dims is None else args.pca_dims,
                     **waves.annotations)
     evt.annotations['spatial_scale'] *= args.interpolation_step_size
     evt.array_annotations['x_coords'] = np.tile(ixs, n_modes)
@@ -316,5 +316,6 @@ if __name__ == '__main__':
     evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)
+
     # save output neo object
     write_neo(args.output, block)

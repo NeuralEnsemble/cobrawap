@@ -18,7 +18,6 @@ def linregress(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
     return slope, stderr, offset
 
-
 def calc_planar_velocities(evts):
     spatial_scale = evts.annotations['spatial_scale']
     v_unit = (spatial_scale.units/evts.times.units).dimensionality.string
@@ -72,7 +71,7 @@ def calc_planar_velocities(evts):
     # plot total velocities
     ax[-1][-1].errorbar(wave_ids, velocities[:,0], yerr=velocities[:,1],
                         linestyle='', marker='+')
-    ax[-1][-1].set_xlabel('wave id')
+    ax[-1][-1].set_xlabel(f'{evts.name} id')
     ax[-1][-1].set_title('velocities [{}]'.format(v_unit))
 
     for i in range(len(wave_ids), nrows*ncols-1):

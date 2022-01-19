@@ -148,8 +148,20 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    evts = block.filter(name=args.event_name, objects="Event")[0]
+    if args.method == 'optical_flow':
+        if args.event_name == 'wavemodes':
+            warnings.warn('The planar direction of wavemodes can not be '
+                          'calculated with the optical_flow method. '
+                          'Using trigger_interpolation instead.')
+            args.method = 'trigger_interpolation'
+        elif not len(block.filter(name='optical_flow', objects="AnalogSignal")):
+            warnings.warn('No optical_flow signal could be found for the '
+                          'calculation of planar directions. '
+                          'Using trigger_interpolation instead.')
+            args.method = 'trigger_interpolation'
 
+    evts = block.filter(name=args.event_name, objects="Event")[0]
+    
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)
     elif args.method == 'optical_flow':

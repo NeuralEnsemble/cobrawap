@@ -30,6 +30,10 @@ def measures_output(wildcards):
     return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
             for measure in config.MEASURES]
 
+if config.EVENT_NAME == 'wavemodes':
+    config.MEASURES = [m for m in config.MEASURES if m not in
+                        ['label_planar', 'time_stamp', 'inter_wave_interval']]
+
 localrules: all, check_input
 
 #### UTILITY BLOCKS ####
@@ -66,7 +70,8 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}"
+        python {input.script} --data "{input.data}" \
+                              {SCRIPT_ARGS}
         touch "{output}"
         """
 

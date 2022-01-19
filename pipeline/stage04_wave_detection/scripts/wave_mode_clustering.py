@@ -277,32 +277,32 @@ if __name__ == '__main__':
     block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
 
     # add clustered wave modes as additional event 'wavemodes'
-    # n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
-    # block = analogsignals_to_imagesequences(block)
-    # site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
-    # interpolated_site_grid = resize(site_grid,
-    #                                 output_shape=(inter_dim_x, inter_dim_y),
-    #                                 mode='constant', cval=True,
-    #                                 order=0)
-    # ixs, iys = np.where(interpolated_site_grid)
-    # n_sites = len(ixs)
-    # ix_annotation = np.tile(ixs, n_modes)
-    # iy_annotation = np.tile(iys, n_modes)
-    # mode_trigger = np.empty(n_modes*n_sites)*np.nan
-    #
-    # for mode_id in range(n_modes):
-    #     for site_id, (ix, iy) in enumerate(zip(ixs, iys)):
-    #         mode_trigger[mode_id*n_sites + site_id] \
-    #                                 = interpolated_mode_grids[mode_id, ix, iy]
+    n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
+    block = analogsignals_to_imagesequences(block)
+    site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
+    interpolated_site_grid = resize(site_grid,
+                                    output_shape=(inter_dim_x, inter_dim_y),
+                                    mode='constant', cval=True,
+                                    order=0)
+    ixs, iys = np.where(interpolated_site_grid)
+    n_sites = len(ixs)
+    ix_annotation = np.tile(ixs, n_modes)
+    iy_annotation = np.tile(iys, n_modes)
+    mode_trigger = np.empty(n_modes*n_sites)*np.nan
+
+    for mode_id in range(n_modes):
+        for site_id, (ix, iy) in enumerate(zip(ixs, iys)):
+            mode_trigger[mode_id*n_sites + site_id] \
+                                    = interpolated_mode_grids[mode_id, ix, iy]
+
+    # modes, xs, ys = np.where(np.isfinite(mode_grids))
+    # channels = [np.where((asig.array_annotations['x_coords'] == x) \
+    #                    & (asig.array_annotations['y_coords'] == y))[0][0] \
+    #             for x,y in zip(xs,ys)]
 
     remove_annotations(waves)
-    modes, xs, ys = np.where(np.isfinite(mode_grids))
-    channels = [np.where((asig.array_annotations['x_coords'] == x) \
-                       & (asig.array_annotations['y_coords'] == y))[0][0] \
-                for x,y in zip(xs,ys)]
-
-    evt = neo.Event(mode_grids[modes,xs,ys] * waves.units,
-                    labels=mode_labels[modes],
+    evt = neo.Event(mode_trigger * waves.units,
+                    labels=np.repeat(mode_labels, n_sites),
                     name='wavemodes',
                     mode_labels=mode_labels,
                     mode_counts=mode_counts[mode_labels],
@@ -310,9 +310,10 @@ if __name__ == '__main__':
                     n_modes=n_modes,
                     pca_dims=args.pca_dims,
                     **waves.annotations)
-    evt.array_annotations['x_coords'] = xs
-    evt.array_annotations['y_coords'] = ys
-    evt.array_annotations['channels'] = channels
+    evt.annotations['spatial_scale'] *= args.interpolation_step_size
+    evt.array_annotations['x_coords'] = np.tile(ixs, n_modes)
+    evt.array_annotations['y_coords'] = np.tile(iys, n_modes)
+    evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)
 

@@ -60,7 +60,8 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}"
+        python {input.script} --data "{input.data}" \
+                              {SCRIPT_ARGS}
         touch "{output}"
         """
 

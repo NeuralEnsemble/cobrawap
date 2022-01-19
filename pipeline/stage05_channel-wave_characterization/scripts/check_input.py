@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import quantities as pq
 import warnings
+import re
 from utils.io import load_neo
 
 
@@ -13,6 +14,11 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=none_or_str, default=None,
+                     help="name of neo.Event to analyze (must contain waves)")
+    CLI.add_argument("--measures", "--MEASURES", nargs='+', type=none_or_str, default=None,
+                     help="list of measure names to apply")
+    args, unknown = CLI.parse_known_args()
     args = CLI.parse_args()
 
     block = load_neo(args.data)

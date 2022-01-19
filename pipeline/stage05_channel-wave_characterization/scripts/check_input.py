@@ -7,7 +7,7 @@ import quantities as pq
 import warnings
 import re
 from utils.io import load_neo
-
+from utils.parse import none_or_str
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -19,7 +19,6 @@ if __name__ == '__main__':
     CLI.add_argument("--measures", "--MEASURES", nargs='+', type=none_or_str, default=None,
                      help="list of measure names to apply")
     args, unknown = CLI.parse_known_args()
-    args = CLI.parse_args()
 
     block = load_neo(args.data)
 

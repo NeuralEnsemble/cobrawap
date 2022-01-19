@@ -14,9 +14,11 @@ from utils.neo import analogsignals_to_imagesequences
 from utils.convolve import nan_conv2d, get_kernel
 
 
-def calc_local_velocities(wave_evts, dim_x, dim_y, kernel_name):
+def calc_local_velocities(wave_evts, kernel_name):
     evts = wave_evts[wave_evts.labels != '-1']
     labels = evts.labels.astype(int)
+    dim_x = max(evts.array_annotations['x_coords'])+1
+    dim_y = max(evts.array_annotations['y_coords'])+1
 
     scale = evts.annotations['spatial_scale'].magnitude
     unit = evts.annotations['spatial_scale'].units / evts.times.units
@@ -78,8 +80,7 @@ if __name__ == '__main__':
     evts = block.filter(name=args.event_name, objects="Event")[0]
 
     dim_t, dim_x, dim_y = np.shape(imgseq)
-    wave_ids, channel_ids, velocities = calc_local_velocities(evts, dim_x, dim_y,
-                                                              args.kernel)
+    wave_ids, channel_ids, velocities = calc_local_velocities(evts, args.kernel)
 
     # transform to DataFrame
     df = pd.DataFrame(list(zip(wave_ids, velocities.magnitude)),

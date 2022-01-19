@@ -8,7 +8,7 @@ if __name__ == '__main__':
     CLI.add_argument("--output",    nargs='?', type=str)
     CLI.add_argument("--data",      nargs='+', type=str)
     CLI.add_argument("--output_img",nargs='?', type=str)
-    CLI.add_argument("--merge_key", nargs='?', type=str)
+    CLI.add_argument("--merge_key", nargs='+', type=str)
     args, unknown = CLI.parse_known_args()
 
     for i, datafile in enumerate(args.data):

@@ -13,7 +13,7 @@ dependencies:
   - h5py
   - pip:
     - elephant >= 0.10.0
-    - neo >= 0.9.0
+    - neo == 0.9.0
     - nixio >= 1.5.0b4
     - pillow >= 7.0.0
     - pandas >= 1.0.1
@@ -24,4 +24,4 @@ dependencies:
     - seaborn
     - networkx
     - shapely == 1.6.4.post2
-    - mpi4py
+    # - mpi4py

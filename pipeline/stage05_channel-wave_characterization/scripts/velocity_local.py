@@ -88,6 +88,12 @@ if __name__ == '__main__':
                       index=channel_ids)
     df['velocity_local_unit'] = [velocities.dimensionality.string]*len(channel_ids)
     df.index.name = 'channel_id'
+
+    annotation_idx = [np.argmax(evts.array_annotations['channels'] == id)
+                                                        for id in channel_ids]
+    for key, value in evts.array_annotations.items():
+        df[key] = value[annotation_idx]
+
     df.to_csv(args.output)
 
     plt.subplots()

@@ -41,7 +41,7 @@ rule all:
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data],
-        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
+        # merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
     output:
         data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
@@ -50,8 +50,7 @@ rule all:
         {ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              --merge_key {params.merge_key}
+                              --output_img "{output.img}" 
         """
 
 rule check_input:

@@ -1,36 +1,34 @@
 """
-Docstring
 """
 
 import argparse
 import numpy as np
+import quantities as pq
+import itertools
 import pandas as pd
 import matplotlib.pyplot as plt
-import itertools
-from scipy.ndimage import convolve as conv
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo import analogsignals_to_imagesequences
-from utils.convolve import nan_conv2d, get_kernel
 
 
-def calc_local_velocities(wave_evts, dim_x, dim_y, kernel_name):
+def calc_local_wave_intervals(wave_evts, dim_x, dim_y):
     evts = wave_evts[wave_evts.labels != '-1']
     labels = evts.labels.astype(int)
 
     scale = evts.annotations['spatial_scale'].magnitude
-    unit = evts.annotations['spatial_scale'].units / evts.times.units
+    unit = evts.times.units
 
     channel_ids = np.empty([dim_x, dim_y]) * np.nan
     channel_ids[evts.array_annotations['x_coords'].astype(int),
                 evts.array_annotations['y_coords'].astype(int)] = evts.array_annotations['channels']
     channel_ids = channel_ids.reshape(-1)
 
-    velocities = np.array([], dtype=float)
+    intervals_collection = np.array([], dtype=float)
     wave_ids = np.array([], dtype=int)
     channels = np.array([], dtype=int)
 
-    for wave_id in np.unique(labels):
+    for (i, wave_id) in enumerate(np.unique(labels)):
         wave_trigger_evts = evts[labels == wave_id]
 
         x_coords = wave_trigger_evts.array_annotations['x_coords'].astype(int)
@@ -39,20 +37,19 @@ def calc_local_velocities(wave_evts, dim_x, dim_y, kernel_name):
         trigger_collection = np.empty([dim_x, dim_y]) * np.nan
         trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
 
-        kernel = get_kernel(kernel_name)
-        t_x = nan_conv2d(trigger_collection, kernel.x).reshape(-1)
-        t_y = nan_conv2d(trigger_collection, kernel.y).reshape(-1)
+        if i != 0: # if this is not the first wave
+            ## local intervals:
+            intervals = trigger_collection - trigger_collection_pre
+            channel_idx = np.where(np.isfinite(intervals))[0]
 
-        ## gradient based local velocity:
-        v = scale * np.sqrt(1/(t_x**2 + t_y**2))
+            intervals_collection = np.append(intervals_collection,
+                                             intervals[channel_idx])
+            channels = np.append(channels, channel_ids[channel_idx])
+            wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channel_idx)))
 
-        channel_idx = np.where(np.isfinite(v))[0]
+        trigger_collection_pre = trigger_collection.copy()
 
-        velocities = np.append(velocities, v[channel_idx])
-        channels = np.append(channels, channel_ids[channel_idx])
-        wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channel_idx)))
-
-    return wave_ids, channels, velocities*unit
+    return wave_ids, channels, intervals_collection*unit
 
 
 if __name__ == '__main__':
@@ -78,17 +75,22 @@ if __name__ == '__main__':
     evts = block.filter(name=args.event_name, objects="Event")[0]
 
     dim_t, dim_x, dim_y = np.shape(imgseq)
-    wave_ids, channel_ids, velocities = calc_local_velocities(evts, dim_x, dim_y,
-                                                              args.kernel)
+    wave_ids, channel_ids, intervals = calc_local_wave_intervals(evts,
+                                                                 dim_x, dim_y)
 
     # transform to DataFrame
-    df = pd.DataFrame(list(zip(wave_ids, velocities.magnitude)),
-                      columns=[f'{args.event_name}_id', 'velocity_local'],
+    df = pd.DataFrame(list(zip(wave_ids, intervals.magnitude)),
+                      columns=[f'{args.event_name}_id',
+                                'inter_wave_interval_local'],
                       index=channel_ids)
-    df['velocity_local_unit'] = [velocities.dimensionality.string]*len(channel_ids)
+    df['inter_wave_interval_local_unit'] = [intervals.dimensionality.string]*len(channel_ids)
     df.index.name = 'channel_id'
+
     df.to_csv(args.output)
 
-    plt.subplots()
+    fig, ax = plt.subplots()
+    ax.hist(1./intervals.magnitude[np.where(np.isfinite(1./intervals))[0]],
+            bins=100, range=[0, 8])
+    plt.xlabel('local rate of waves (Hz)', fontsize=7.)
     if args.output_img is not None:
         save_plot(args.output_img)

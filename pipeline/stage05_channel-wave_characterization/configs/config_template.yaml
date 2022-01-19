@@ -20,7 +20,7 @@ PLOT_FORMAT: 'png'
 EVENT_NAME: 'wavefronts'
 
 # Measures to compute
-# 'velocity_local'
+# 'velocity_local', 'direction_local', 'inter_wave_interval_local'
 MEASURES: ['velocity_local']
 
 # Velocity Local

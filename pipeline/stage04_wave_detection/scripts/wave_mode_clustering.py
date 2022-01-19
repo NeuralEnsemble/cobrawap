@@ -316,6 +316,5 @@ if __name__ == '__main__':
     evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)
-    breakpoint()
     # save output neo object
     write_neo(args.output, block)

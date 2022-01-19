@@ -1,32 +1,32 @@
 """
-Docstring
+Compute local directions
 """
 
 import argparse
 import numpy as np
+import quantities as pq
+import itertools
 import pandas as pd
 import matplotlib.pyplot as plt
-import itertools
-from scipy.ndimage import convolve as conv
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo import analogsignals_to_imagesequences
 from utils.convolve import nan_conv2d, get_kernel
 
 
-def calc_local_velocities(wave_evts, dim_x, dim_y, kernel_name):
+def calc_local_directions(wave_evts, dim_x, dim_y, kernel_name):
     evts = wave_evts[wave_evts.labels != '-1']
     labels = evts.labels.astype(int)
 
     scale = evts.annotations['spatial_scale'].magnitude
-    unit = evts.annotations['spatial_scale'].units / evts.times.units
+    unit = pq.radians
 
     channel_ids = np.empty([dim_x, dim_y]) * np.nan
     channel_ids[evts.array_annotations['x_coords'].astype(int),
                 evts.array_annotations['y_coords'].astype(int)] = evts.array_annotations['channels']
     channel_ids = channel_ids.reshape(-1)
 
-    velocities = np.array([], dtype=float)
+    directions = np.array([], dtype=float)
     wave_ids = np.array([], dtype=int)
     channels = np.array([], dtype=int)
 
@@ -43,16 +43,16 @@ def calc_local_velocities(wave_evts, dim_x, dim_y, kernel_name):
         t_x = nan_conv2d(trigger_collection, kernel.x).reshape(-1)
         t_y = nan_conv2d(trigger_collection, kernel.y).reshape(-1)
 
-        ## gradient based local velocity:
-        v = scale * np.sqrt(1/(t_x**2 + t_y**2))
+        ## gradient based local directions:
+        angle = np.arctan2(t_x, t_y)
 
-        channel_idx = np.where(np.isfinite(v))[0]
+        channel_idx = np.where(np.isfinite(angle))[0]
 
-        velocities = np.append(velocities, v[channel_idx])
+        directions = np.append(directions, angle[channel_idx])
         channels = np.append(channels, channel_ids[channel_idx])
         wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channel_idx)))
 
-    return wave_ids, channels, velocities*unit
+    return wave_ids, channels, directions*unit
 
 
 if __name__ == '__main__':
@@ -78,17 +78,18 @@ if __name__ == '__main__':
     evts = block.filter(name=args.event_name, objects="Event")[0]
 
     dim_t, dim_x, dim_y = np.shape(imgseq)
-    wave_ids, channel_ids, velocities = calc_local_velocities(evts, dim_x, dim_y,
-                                                              args.kernel)
+    wave_ids, channel_ids, directions = calc_local_directions(evts, dim_x, dim_y, args.KERNEL)
 
     # transform to DataFrame
-    df = pd.DataFrame(list(zip(wave_ids, velocities.magnitude)),
-                      columns=[f'{args.event_name}_id', 'velocity_local'],
+    df = pd.DataFrame(list(zip(wave_ids, directions.magnitude)),
+                      columns=[f'{args.event_name}_id', 'directions_local'],
                       index=channel_ids)
-    df['velocity_local_unit'] = [velocities.dimensionality.string]*len(channel_ids)
+    df['directions_local_unit'] = [directions.dimensionality.string]*len(channel_ids)
     df.index.name = 'channel_id'
     df.to_csv(args.output)
 
-    plt.subplots()
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+    ax.hist(directions.magnitude, bins=36, range=[-np.pi, np.pi])
+
     if args.output_img is not None:
         save_plot(args.output_img)

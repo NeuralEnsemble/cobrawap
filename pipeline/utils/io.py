@@ -51,7 +51,7 @@ def save_plot(filename):
         os.makedirs(dirname)
     try:
         plt.savefig(fname=filename, bbox_inches='tight')
-    except ValueError ve:
+    except ValueError as ve:
         warnings.warn(ve)
         plt.subplots()
         plt.savefig(fname=filename, bbox_inches='tight')

@@ -1,7 +1,7 @@
 import os
 import neo
 import matplotlib.pyplot as plt
-
+import warnings
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):
     try:
@@ -49,6 +49,11 @@ def save_plot(filename):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
-    plt.savefig(fname=filename, bbox_inches='tight')
+    try:
+        plt.savefig(fname=filename, bbox_inches='tight')
+    except ValueError ve:
+        warnings.warn(ve)
+        plt.subplots()
+        plt.savefig(fname=filename, bbox_inches='tight')
     plt.close()
     return None

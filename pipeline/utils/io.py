@@ -39,7 +39,7 @@ def write_neo(filename, block, *args, **kwargs):
         io = neo.io.get_io(str(filename), *args, **kwargs)
         io.write(block)
     except Exception as e:
-        print(e)
+        warnings.warn(str(e))
     finally:
         io.close()
     return True
@@ -52,7 +52,7 @@ def save_plot(filename):
     try:
         plt.savefig(fname=filename, bbox_inches='tight')
     except ValueError as ve:
-        warnings.warn(ve)
+        warnings.warn(str(ve))
         plt.subplots()
         plt.savefig(fname=filename, bbox_inches='tight')
     plt.close()

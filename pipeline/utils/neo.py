@@ -15,8 +15,10 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
         objects = [objects]
     for i, obj in enumerate(objects):
         for k in del_keys:
-            if k in objects[i].annotations:
+            if k in obj.annotations:
                 del objects[i].annotations[k]
+            if hasattr(obj, 'array_annotations') and k in obj.array_annotations:
+                del objects[i].array_annotations[k]
     return None
 
 

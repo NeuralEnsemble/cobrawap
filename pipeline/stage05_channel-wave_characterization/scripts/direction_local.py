@@ -14,47 +14,42 @@ from utils.neo import analogsignals_to_imagesequences
 from utils.convolve import nan_conv2d, get_kernel
 
 
-def calc_local_directions(wave_evts, kernel_name):
-    evts = wave_evts[wave_evts.labels != '-1']
+def calc_local_directions(evts, kernel_name):
     labels = evts.labels.astype(int)
-    dim_x = max(evts.array_annotations['x_coords'])+1
-    dim_y = max(evts.array_annotations['y_coords'])+1
+    dim_x = int(max(evts.array_annotations['x_coords']))+1
+    dim_y = int(max(evts.array_annotations['y_coords']))+1
 
     scale = evts.annotations['spatial_scale'].magnitude
     unit = pq.radians
 
-    channel_ids = np.empty([dim_x, dim_y]) * np.nan
-    channel_ids[evts.array_annotations['x_coords'].astype(int),
-                evts.array_annotations['y_coords'].astype(int)] = evts.array_annotations['channels']
-    channel_ids = channel_ids.reshape(-1)
-
     directions = np.array([], dtype=float)
     wave_ids = np.array([], dtype=int)
-    channels = np.array([], dtype=int)
+    channel_ids = np.array([], dtype=int)
 
     for wave_id in np.unique(labels):
         wave_trigger_evts = evts[labels == wave_id]
 
         x_coords = wave_trigger_evts.array_annotations['x_coords'].astype(int)
         y_coords = wave_trigger_evts.array_annotations['y_coords'].astype(int)
+        channels = wave_trigger_evts.array_annotations['channels'].astype(int)
 
         trigger_collection = np.empty([dim_x, dim_y]) * np.nan
         trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
 
         kernel = get_kernel(kernel_name)
-        t_x = nan_conv2d(trigger_collection, kernel.x).reshape(-1)
-        t_y = nan_conv2d(trigger_collection, kernel.y).reshape(-1)
+        t_x = nan_conv2d(trigger_collection, kernel.x)[x_coords, y_coords]
+        t_y = nan_conv2d(trigger_collection, kernel.y)[x_coords, y_coords]
 
         ## gradient based local directions:
         angle = np.arctan2(t_x, t_y)
+        # angle = t_x + t_y*1j
+        angle[~np.isfinite(angle)] = np.nan
 
-        channel_idx = np.where(np.isfinite(angle))[0]
+        directions = np.append(directions, angle)
+        channel_ids = np.append(channel_ids, channels)
+        wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channels)))
 
-        directions = np.append(directions, angle[channel_idx])
-        channels = np.append(channels, channel_ids[channel_idx])
-        wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channel_idx)))
-
-    return wave_ids, channels, directions*unit
+    return wave_ids, channel_ids, directions*unit
 
 
 if __name__ == '__main__':
@@ -78,21 +73,17 @@ if __name__ == '__main__':
     imgseq = block.segments[0].imagesequences[0]
     asig = block.segments[0].analogsignals[0]
     evts = block.filter(name=args.event_name, objects="Event")[0]
+    evts = evts[evts.labels != '-1']
 
     dim_t, dim_x, dim_y = np.shape(imgseq)
     wave_ids, channel_ids, directions = calc_local_directions(evts, args.kernel)
 
     # transform to DataFrame
     df = pd.DataFrame(list(zip(wave_ids, directions.magnitude)),
-                      columns=[f'{args.event_name}_id', 'directions_local'],
+                      columns=[f'{args.event_name}_id', 'direction_local'],
                       index=channel_ids)
-    df['directions_local_unit'] = [directions.dimensionality.string]*len(channel_ids)
+    df['direction_local_unit'] = [directions.dimensionality.string]*len(channel_ids)
     df.index.name = 'channel_id'
-
-    annotation_idx = [np.argmax(evts.array_annotations['channels'] == id)
-                                                        for id in channel_ids]
-    for key, value in evts.array_annotations.items():
-        df[key] = value[annotation_idx]
 
     df.to_csv(args.output)
 

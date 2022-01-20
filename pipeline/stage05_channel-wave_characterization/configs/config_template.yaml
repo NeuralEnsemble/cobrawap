@@ -20,10 +20,14 @@ PLOT_FORMAT: 'png'
 EVENT_NAME: 'wavefronts'
 
 # Measures to compute
-# 'velocity_local', 'direction_local', 'inter_wave_interval_local'
-MEASURES: ['velocity_local', 'direction_local', 'inter_wave_interval_local']
+# 'velocity_local', 'direction_local', 'inter_wave_interval_local', 'annotations'
+MEASURES: ['annotations', 'velocity_local', 'direction_local', 'inter_wave_interval_local']
 
 # Velocity/Direction Local
 ################
 # simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
 KERNEL: 'sobel_3x3'
+
+# Annotations
+#############
+IGNORE_KEYS:

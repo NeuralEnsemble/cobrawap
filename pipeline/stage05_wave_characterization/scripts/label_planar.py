@@ -117,6 +117,7 @@ if __name__ == '__main__':
                                  times=asig.times,
                                  threshold=args.alignment_threshold)
     planar_labels.index.name = f'{args.event_name}_id'
+    planar_labels.to_csv(args.output)
 
     dim_t, dim_x, dim_y = optical_flow.shape
     skip_step = int(min([dim_x, dim_y]) / 50) + 1
@@ -134,5 +135,3 @@ if __name__ == '__main__':
         if not i:
             save_plot(args.output_img)
         plt.close()
-
-    planar_labels.to_csv(args.output)

@@ -69,6 +69,7 @@ def detect_transitions(asig, transition_phase):
                     labels=['UP'] * len(up_transitions),
                     name='transitions',
                     array_annotations={'channels':channels[sort_idx]},
+                    trigger_detection='hilbert_phase',
                     hilbert_transition_phase=transition_phase,
                     description='transitions from down to up states. '\
                                +'annotated with the channel id ("channels").')

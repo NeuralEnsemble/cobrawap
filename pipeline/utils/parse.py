@@ -77,6 +77,7 @@ def str2dict(string):
 
 
 def parse_string2dict(kwargs_str, **kwargs):
+
     if kwargs_str is None:
         return None
     my_dict = {}
@@ -89,7 +90,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         my_dict[nested_dict_name] = str2dict(nested_dict)
         kwargs = kwargs.replace(match, '')
     # match entries with word value, list value, or tuple value
-    pattern = re.compile("[\w\s]+:(?:[\w\.\s\/\-]+|\[[^\]]+\]|\([^\)]+\))")
+    pattern = re.compile("[\w\s]+:(?:[\w\.\s\/\-\&]+|\[[^\]]+\]|\([^\)]+\))")
     for match in pattern.findall(kwargs):
         my_dict.update(str2dict(match))
     return my_dict

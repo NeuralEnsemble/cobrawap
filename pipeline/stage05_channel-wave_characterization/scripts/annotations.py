@@ -22,6 +22,8 @@ if __name__ == '__main__':
                      help="name of neo.Event to analyze (must contain waves)")
     CLI.add_argument("--ignore_keys", "--IGNORE_KEYS", nargs='+', type=str, default=[],
                      help="neo.Event annotations keys to not include in dataframe")
+    CLI.add_argument("--profile", "--PROFILE", nargs='?', type=none_or_str, default=None,
+                     help="profile name")
     args, unknown = CLI.parse_known_args()
     args.ignore_keys = [re.sub('[\[\],\s]', '', key) for key in args.ignore_keys]
 
@@ -41,15 +43,25 @@ if __name__ == '__main__':
     remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
     for key, value in evts.annotations.items():
-        df[key] = [value] * len(df)
+        df[key] = value
 
     for key, value in evts.array_annotations.items():
+        if key not in df.columns:
+            df[key] = value
+
+    for key, value in asig.annotations.items():
         if key not in df.columns:
             df[key] = value
 
     for key, value in asig.array_annotations.items():
         if key not in df.columns:
             df[key] = value[df.index]
+
+    df['profile'] = [args.profile] * len(df.index)
+    df['sampling_rate'] = asig.sampling_rate
+    df['recording_length'] = asig.t_stop - asig.t_stop
+    df['dim_x'] = int(max(asig.array_annotations['x_coords']))+1
+    df['dim_y'] = int(max(asig.array_annotations['y_coords']))+1
 
     df.to_csv(args.output)
 

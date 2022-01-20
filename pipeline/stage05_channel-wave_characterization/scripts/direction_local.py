@@ -83,6 +83,7 @@ if __name__ == '__main__':
                       columns=[f'{args.event_name}_id', 'direction_local'],
                       index=channel_ids)
     df['direction_local_unit'] = [directions.dimensionality.string]*len(channel_ids)
+    df['direction_local_kernel'] = [args.kernel]*len(channel_id)
     df.index.name = 'channel_id'
 
     df.to_csv(args.output)

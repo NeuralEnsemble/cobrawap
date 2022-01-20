@@ -47,7 +47,7 @@ def calc_local_velocities(evts, kernel_name):
         velocities = np.append(velocities, v)
         channel_ids = np.append(channel_ids, channels)
         wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channels)))
-        
+
     return wave_ids, channel_ids, velocities*unit
 
 
@@ -82,6 +82,7 @@ if __name__ == '__main__':
                       columns=[f'{args.event_name}_id', 'velocity_local'],
                       index=channel_ids)
     df['velocity_local_unit'] = [velocities.dimensionality.string]*len(channel_ids)
+    df['velocity_local_kernel'] = [args.kernel]*len(channel_id)
     df.index.name = 'channel_id'
 
     df.to_csv(args.output)

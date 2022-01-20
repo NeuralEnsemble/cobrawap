@@ -35,6 +35,7 @@ def threshold(asig, threshold_array):
     evt = neo.Event(times=all_times[sort_idx]*asig.times.units,
                     labels=all_labels[sort_idx],
                     name='transitions',
+                    trigger_detection='threshold',
                     array_annotations={'channels':all_channels[sort_idx]},
                     threshold=threshold_array,
                     description='Transitions between down and up states with '\

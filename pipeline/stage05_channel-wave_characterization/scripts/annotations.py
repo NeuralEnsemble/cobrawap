@@ -43,7 +43,7 @@ if __name__ == '__main__':
     remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
     for key, value in evts.annotations.items():
-        df[key] = value
+        df[key] = [value] * len(df.index)
 
     for key, value in evts.array_annotations.items():
         if key not in df.columns:
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     for key, value in asig.annotations.items():
         if key not in df.columns:
-            df[key] = value
+            df[key] = [value] * len(df.index)
 
     for key, value in asig.array_annotations.items():
         if key not in df.columns:
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     df['profile'] = [args.profile] * len(df.index)
     df['sampling_rate'] = asig.sampling_rate
-    df['recording_length'] = asig.t_stop - asig.t_stop
+    df['recording_length'] = asig.t_stop - asig.t_start
     df['dim_x'] = int(max(asig.array_annotations['x_coords']))+1
     df['dim_y'] = int(max(asig.array_annotations['y_coords']))+1
 

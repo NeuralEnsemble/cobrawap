@@ -77,12 +77,11 @@ if __name__ == '__main__':
     wave_ids, channel_ids, intervals = calc_local_wave_intervals(evts)
 
     # transform to DataFrame
-    df = pd.DataFrame(list(zip(wave_ids, intervals.magnitude)),
+    df = pd.DataFrame(list(zip(wave_ids, channel_ids, intervals.magnitude)),
                       columns=[f'{args.event_name}_id',
-                                'inter_wave_interval_local'],
-                      index=channel_ids)
+                                'channel_id',
+                                'inter_wave_interval_local'])
     df['inter_wave_interval_local_unit'] = [intervals.dimensionality.string]*len(channel_ids)
-    df.index.name = 'channel_id'
 
     df.to_csv(args.output)
 

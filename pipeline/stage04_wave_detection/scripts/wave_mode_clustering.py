@@ -286,8 +286,6 @@ if __name__ == '__main__':
                                     order=0)
     ixs, iys = np.where(interpolated_site_grid)
     n_sites = len(ixs)
-    ix_annotation = np.tile(ixs, n_modes)
-    iy_annotation = np.tile(iys, n_modes)
     mode_trigger = np.empty(n_modes*n_sites)*np.nan
 
     for mode_id in range(n_modes):
@@ -311,8 +309,8 @@ if __name__ == '__main__':
                     pca_dims='None' if args.pca_dims is None else args.pca_dims,
                     **waves.annotations)
     evt.annotations['spatial_scale'] *= args.interpolation_step_size
-    evt.array_annotations['x_coords'] = np.tile(ixs, n_modes)
-    evt.array_annotations['y_coords'] = np.tile(iys, n_modes)
+    evt.array_annotations['x_coords'] = np.tile(ixs, n_modes).astype(int)
+    evt.array_annotations['y_coords'] = np.tile(iys, n_modes).astype(int)
     evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)

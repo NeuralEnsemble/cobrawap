@@ -41,7 +41,7 @@ rule all:
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data],
-        # merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
+        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']#, 'x_coords', 'y_coords']
     output:
         data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
@@ -50,7 +50,8 @@ rule all:
         {ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
-                              --output_img "{output.img}" 
+                              --output_img "{output.img}" \
+                              --merge_key {params.merge_key}
         """
 
 rule check_input:
@@ -68,16 +69,42 @@ rule check_input:
         touch "{output}"
         """
 
+def input(wildcards):
+    spatial_measures = ['velocity_local', 'direction_local']
+    if wildcards.measure in spatial_measures:
+        return rules.spatial_derivative.output.data
+    else:
+        return config.STAGE_INPUT
+
+ruleorder: spatial_derivative > compute_measure
+
 #### CHARACTERIZATION BLOCKS ####
 
 rule compute_measure:
     input:
-        data = config.STAGE_INPUT,
+        data = input,
         script = os.path.join('scripts', '{measure}.py')
     output:
         data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
         img = report(os.path.join('{dir}', '{measure}',
                                   '{measure}.'+config.PLOT_FORMAT))
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              {SCRIPT_ARGS}
+        """
+
+rule spatial_derivative:
+    input:
+        data = config.STAGE_INPUT,
+        script = os.path.join('scripts', 'spatial_derivative.py')
+    output:
+        data = os.path.join('{dir}', 'spatial_derivative', 'spatial_derivative.csv'),
+        img = report(os.path.join('{dir}', 'spatial_derivative',
+                                  'spatial_derivative.'+config.PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}

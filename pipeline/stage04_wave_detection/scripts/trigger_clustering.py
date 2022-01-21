@@ -36,8 +36,8 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
                     labels=clustering.labels_[cluster_idx].astype(str),
                     name='wavefronts',
                     array_annotations={'channels':event.array_annotations['channels'][wave_idx],
-                                       'x_coords':triggers[:,0][cluster_idx],
-                                       'y_coords':triggers[:,1][cluster_idx]},
+                                       'x_coords':triggers[:,0][cluster_idx].astype(int),
+                                       'y_coords':triggers[:,1][cluster_idx].astype(int)},
                     description='transitions from down to up states. '\
                                +'Labels are ids of wavefronts. '
                                +'Annotated with the channel id ("channels") and '\

@@ -33,21 +33,24 @@ if __name__ == '__main__':
     evts = block.filter(name=args.event_name, objects="Event")[0]
 
     remove_annotations(evts, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
+    remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
     ids = np.sort(np.unique(evts.labels).astype(int))
     df = pd.DataFrame(index=ids)
     df.index.name = f'{args.event_name}_id'
 
     for key, value in evts.annotations.items():
-        df[key] = [value] * len(ids)
+        df[key] = [value] * len(df.index)
 
     for key, value in asig.annotations.items():
         if key not in df.columns:
-            df[key] = value
+            df[key] = [value] * len(df.index)
 
     df['profile'] = [args.profile] * len(df.index)
-    df['sampling_rate'] = asig.sampling_rate
-    df['recording_length'] = asig.t_stop - asig.t_stop
+    df['sampling_rate'] = asig.sampling_rate.magnitude
+    df['sampling_rate_unit'] = asig.sampling_rate.dimensionality.string
+    df['recording_length'] = (asig.t_stop - asig.t_start).magnitude
+    df['recording_length_unit'] = asig.t_stop.dimensionality.string
     df['dim_x'] = int(max(asig.array_annotations['x_coords']))+1
     df['dim_y'] = int(max(asig.array_annotations['y_coords']))+1
 

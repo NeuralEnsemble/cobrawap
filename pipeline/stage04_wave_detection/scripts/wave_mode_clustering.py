@@ -130,18 +130,21 @@ def arange_on_grid(df, x_coords, y_coords):
     return grid
 
 def sample_wave_pattern(pattern_func, dim_x, dim_y, step):
-    fx, fy = np.meshgrid(np.arange(0, dim_x-1+step, step),
-                         np.arange(0, dim_y-1+step, step))
+    nx = round((dim_x-1)/step+1)
+    ny = round((dim_y-1)/step+1)
+    fx, fy = np.meshgrid(np.arange(0, nx*step, step),
+                         np.arange(0, ny*step, step),
+                         indexing='ij')
     fcoords = np.stack((fx,fy), axis=-1)
     fdim_x, fdim_y, _ = fcoords.shape
     wave_pattern = pattern_func(fcoords.reshape(-1,2))
     return fx, fy, wave_pattern.reshape(fdim_x, fdim_y)
 
-def interpolate_grid(grid):
+def interpolate_grid(grid, smoothing=0):
     x, y = np.where(np.isfinite(grid))
     rbf_func = RBFInterpolator(np.stack((x,y), axis=-1),
                                grid[x,y],
-                               neighbors=None, smoothing=0.0,
+                               neighbors=None, smoothing=smoothing,
                                kernel='thin_plate_spline', epsilon=None,
                                degree=None)
     return rbf_func
@@ -167,18 +170,27 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
-    CLI.add_argument("--min_trigger_fraction", nargs='?', type=float, default=.5,
+    CLI.add_argument("--min_trigger_fraction", "--MIN_TRIGGER_FRACTION",
+                     nargs='?', type=float, default=.5,
                      help="minimum fraction of channels to be involved in a wave")
-    CLI.add_argument("--num_wave_neighbours", nargs='?', type=int, default=5,
+    CLI.add_argument("--num_wave_neighbours", "--NUM_WAVE_NEIGHBOURS",
+                     nargs='?', type=int, default=5,
                      help="number of similar waves to extrapolate nans from")
-    CLI.add_argument("--wave_outlier_quantile", nargs='?', type=float, default=.95,
+    CLI.add_argument("--wave_outlier_quantile", "--WAVE_OUTLIER_QUANTILE",
+                     nargs='?', type=float, default=.95,
                      help="percentage of similar waves to keep")
-    CLI.add_argument("--pca_dims", nargs='?', type=none_or_int, default=None,
+    CLI.add_argument("--pca_dims", "--PCA_DIMS",
+                     nargs='?', type=none_or_int, default=None,
                      help="reduce wave patterns to n dimensions before kmeans clustering")
-    CLI.add_argument("--num_kmeans_cluster", nargs='?', type=int, default=5,
+    CLI.add_argument("--num_kmeans_cluster", "--NUM_KMEANS_CLUSTER",
+                     nargs='?', type=int, default=5,
                      help="number of wave modes to cluster with kmeans")
-    CLI.add_argument("--interpolation_step_size", nargs='?', type=float, default=.2,
+    CLI.add_argument("--interpolation_step_size", "--INTERPOLATION_STEP_SIZE",
+                     nargs='?', type=float, default=.2,
                      help="grid spacing for interpolation [0,1]")
+    CLI.add_argument("--interpolation_smoothing", "--INTERPOLATION_SMOOTHING",
+                     nargs='?', type=float, default=0,
+                     help="0: no smoothing, >0: more smoothing")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
@@ -225,7 +237,7 @@ if __name__ == '__main__':
 
     # interpolate average mode timelags as pattern on grid
     for i, cluster_grid in enumerate(mode_grids):
-        pattern_func = interpolate_grid(cluster_grid)
+        pattern_func = interpolate_grid(cluster_grid, args.interpolation_smoothing)
         fx, fy, pattern = sample_wave_pattern(pattern_func,
                                               step=args.interpolation_step_size,
                                               dim_x=dim_x, dim_y=dim_y)
@@ -242,11 +254,11 @@ if __name__ == '__main__':
 
     for i, pattern in enumerate(interpolated_mode_grids):
         ax = axes[i]
-        vminmax = np.max(pattern)
+        vminmax = np.nanmax(pattern)
         img = ax.imshow(mode_grids[i], origin='lower', interpolation='nearest',
                         cmap=cmap, alpha=0.5,
                         vmin=-vminmax, vmax=vminmax)
-        ctr = ax.contour(fy, fx, pattern, levels=np.max([dim_x, dim_y]),
+        ctr = ax.contour(fy, fx, pattern, levels=9,
                          cmap=cmap, linewidths=2, alpha=1,
                          vmin=-vminmax, vmax=vminmax)
         for side in ['top','right','bottom','left']:
@@ -274,12 +286,13 @@ if __name__ == '__main__':
         index = np.where(waves.labels.astype(int) == wave_id)[0]
         mode_id_annotations[index] = mode_id
 
+    breakpoint()
     block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
 
     # add clustered wave modes as additional event 'wavemodes'
     n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
-    block = analogsignals_to_imagesequences(block)
-    site_grid = np.isfinite(block.segments[0].imagesequences[0][0].as_array())
+    imgseq = analogsignals_to_imagesequences(block).segments[0].imagesequences[0]
+    site_grid = np.isfinite(imgseq[0].as_array())
     interpolated_site_grid = resize(site_grid,
                                     output_shape=(inter_dim_x, inter_dim_y),
                                     mode='constant', cval=True,
@@ -314,6 +327,6 @@ if __name__ == '__main__':
     evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)
-
+    breakpoint()
     # save output neo object
     write_neo(args.output, block)

@@ -214,7 +214,8 @@ rule wave_mode_clustering:
         wave_outlier_quantile = WAVE_OUTLIER_QUANTILE,
         pca_dims = PCA_DIMS,
         num_kmeans_cluster = NUM_KMEANS_CLUSTER,
-        interpolation_step_size = INTERPOLATION_STEP_SIZE
+        interpolation_step_size = INTERPOLATION_STEP_SIZE,
+        interpolation_smoothing = INTERPOLATION_SMOOTHING
     output:
         data = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+NEO_FORMAT),
         img = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+PLOT_FORMAT)
@@ -229,7 +230,8 @@ rule wave_mode_clustering:
                               --wave_outlier_quantile {params.wave_outlier_quantile} \
                               --pca_dims {params.pca_dims} \
                               --num_kmeans_cluster {params.num_kmeans_cluster} \
-                              --interpolation_step_size {params.interpolation_step_size}
+                              --interpolation_step_size {params.interpolation_step_size} \
+                              --interpolation_smoothing {params.interpolation_smoothing}
         """
 
 #### PLOTTING ####

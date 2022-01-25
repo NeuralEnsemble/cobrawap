@@ -70,7 +70,7 @@ DERIVATIVE_FILTER: 'Simple'
 MIN_TRIGGER_FRACTION: 0.5
 # number of similar waves to use to extrapolate missing trigger from
 NUM_WAVE_NEIGHBOURS: 5
-# percentage of similar waves to keep for the clustering
+# percentage of wave similarity to keep for the clustering
 WAVE_OUTLIER_QUANTILE: 0.95
 # number of pca dims to project the trigger patterns onto before clustering
 # None -> no dimensionality reduction
@@ -79,6 +79,8 @@ PCA_DIMS: 10
 NUM_KMEANS_CLUSTER: 4
 # grid spacing for the interpolation [0,1]
 INTERPOLATION_STEP_SIZE: 0.2
+# smoothing factor (0: no smoothing)
+INTERPOLATION_SMOOTHING: 0
 
 # VIDEO SETTINGS
 ################

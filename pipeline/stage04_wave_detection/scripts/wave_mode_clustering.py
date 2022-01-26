@@ -119,15 +119,25 @@ def build_cluster_timelag_dataframe(timelag_df, cluster_labels):
         cluster_timelag_df.loc[cluster] = avg_timelags
     return cluster_timelag_df
 
-def arange_on_grid(df, x_coords, y_coords):
+def arange_on_grid(df, channels, x_coords, y_coords):
     dim_x, dim_y = np.max(x_coords)+1, np.max(y_coords)+1
     grid = np.empty((df.index.size, dim_x, dim_y)) * np.nan
     for row, wave in enumerate(df.iterrows()):
         wave = wave[1]
         for channel_id, timelag in zip(wave.index, wave):
-            x, y = x_coords[channel_id], y_coords[channel_id]
+            i = np.where(channel_id == channels)[0]
+            x, y = x_coords[i], y_coords[i]
             grid[row,x,y] = timelag
     return grid
+
+def wave_to_grid(wave_evt):
+    timelag_df = build_timelag_dataframe(wave_evt)
+    channels = np.unique(wave_evt.array_annotations['channels']).astype(int)
+    annotation_idx = [np.argmax(wave_evt.array_annotations['channels']==channel) for channel in channels]
+    x_coords = wave_evt.array_annotations['x_coords'][annotation_idx].astype(int)
+    y_coords = wave_evt.array_annotations['y_coords'][annotation_idx].astype(int)
+    grids = arange_on_grid(timelag_df, channels, x_coords, y_coords)
+    return grids
 
 def sample_wave_pattern(pattern_func, dim_x, dim_y, step):
     nx = round((dim_x-1)/step+1)
@@ -160,6 +170,50 @@ def calc_cluster_distortions(feature_matrix, cluster_indices, cluster_centers):
                       metric='euclidean')
         cluster_dists[i] = np.sqrt(np.mean(dists**2))
     return cluster_dists
+
+def plot_wave_modes(wavefronts_evt, wavemodes_evt):
+    cmap = mpl.cm.get_cmap('coolwarm').copy()
+    cmap.set_bad(color='white')
+    n_modes = wavemodes_evt.annotations['n_modes']
+    fig, axes = plt.subplots(ncols=n_modes+1,
+                             figsize=(n_modes*4, 5),
+                             gridspec_kw={'width_ratios':[1]*n_modes+[0.1]})
+
+    int_step_size = wavemodes_evt.annotations['interpolation_step_size']
+
+    for i, mode_id in enumerate(wavemodes_evt.annotations['mode_labels']):
+        mode_count = wavemodes_evt.annotations['mode_counts'][i]
+        mode_dist = wavemodes_evt.annotations['mode_distortions'][i]
+        ax = axes[i]
+
+        waves = wavefronts_evt[wavefronts_evt.array_annotations['mode_ids'] == mode_id]
+        waves_grid = wave_to_grid(waves)
+        wavemode = wavemodes_evt[wavemodes_evt.labels.astype(int) == mode_id]
+        mode_grid = wave_to_grid(wavemode)[0]
+
+        vminmax = np.nanmax(mode_grid)
+        img = ax.imshow(np.nanmean(waves_grid, axis=0), origin='lower',
+                        interpolation='nearest',
+                        cmap=cmap, alpha=0.5,
+                        vmin=-vminmax, vmax=vminmax)
+
+        x, y = np.where(mode_grid)
+        fx = x.reshape(mode_grid.shape) * int_step_size
+        fy = y.reshape(mode_grid.shape) * int_step_size
+        ctr = ax.contour(fy, fx, mode_grid, levels=9,
+                         cmap=cmap, linewidths=2, alpha=1,
+                         vmin=-vminmax, vmax=vminmax)
+        for side in ['top','right','bottom','left']:
+            ax.spines[side].set_visible(False)
+        ax.tick_params(axis='both', which='both',
+                       labelbottom=False, bottom=False, left=False)
+        ax.set_yticklabels([])
+        ax.set_xlabel(f'mode #{mode_id} | {mode_count} waves | var={mode_dist:.2f}')
+
+    cbar = plt.colorbar(img, cax=axes[-1], ticks=[-vminmax/1.5, vminmax/1.5])
+    cbar.ax.set_yticklabels(['wave start', 'wave end'],
+                            rotation=90, va='center')
+    return None
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -232,7 +286,8 @@ if __name__ == '__main__':
     # rearrange average mode timelags onto channel grid
     x_coords = asig.array_annotations['x_coords']
     y_coords = asig.array_annotations['y_coords']
-    mode_grids = arange_on_grid(mode_timelag_df, x_coords, y_coords)
+    channels = np.arange(len(x_coords))
+    mode_grids = arange_on_grid(mode_timelag_df, channels, x_coords, y_coords)
     n_modes, dim_x, dim_y = mode_grids.shape
 
     # interpolate average mode timelags as pattern on grid
@@ -245,38 +300,6 @@ if __name__ == '__main__':
                                                      pattern[np.newaxis,:])) \
                                            if i else pattern[np.newaxis,:]
 
-    # plot average wave modes
-    cmap = mpl.cm.get_cmap('coolwarm').copy()
-    cmap.set_bad(color='white')
-    fig, axes = plt.subplots(ncols=n_modes+1,
-                             figsize=(n_modes*4, 5),
-                             gridspec_kw={'width_ratios':[1]*n_modes+[0.1]})
-
-    for i, pattern in enumerate(interpolated_mode_grids):
-        ax = axes[i]
-        vminmax = np.nanmax(pattern)
-        img = ax.imshow(mode_grids[i], origin='lower', interpolation='nearest',
-                        cmap=cmap, alpha=0.5,
-                        vmin=-vminmax, vmax=vminmax)
-        ctr = ax.contour(fy, fx, pattern, levels=9,
-                         cmap=cmap, linewidths=2, alpha=1,
-                         vmin=-vminmax, vmax=vminmax)
-        for side in ['top','right','bottom','left']:
-            ax.spines[side].set_visible(False)
-        ax.tick_params(axis='both', which='both',
-                       labelbottom=False, bottom=False, left=False)
-        ax.set_yticklabels([])
-        ax.set_xlabel(f'{mode_counts[i]} waves\n Var = {mode_dists[i]:.2f}')
-        ax.set_title(f'mode {mode_labels[i]}')
-
-    cbar = plt.colorbar(img, cax=axes[-1], ticks=[-vminmax/1.5, vminmax/1.5])
-    cbar.ax.set_yticklabels(['wave start', 'wave end'],
-                            rotation=90, va='center')
-
-    # save output image
-    if args.output_img is not None:
-        save_plot(args.output_img)
-
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \
                                          if evt.name=='wavefronts'][0]
@@ -286,7 +309,6 @@ if __name__ == '__main__':
         index = np.where(waves.labels.astype(int) == wave_id)[0]
         mode_id_annotations[index] = mode_id
 
-    breakpoint()
     block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
 
     # add clustered wave modes as additional event 'wavemodes'
@@ -318,6 +340,7 @@ if __name__ == '__main__':
                     mode_labels=mode_labels,
                     mode_counts=mode_counts[mode_labels],
                     mode_distortions=mode_dists,
+                    interpolation_step_size=args.interpolation_step_size,
                     n_modes=n_modes,
                     pca_dims='None' if args.pca_dims is None else args.pca_dims,
                     **waves.annotations)
@@ -327,6 +350,11 @@ if __name__ == '__main__':
     evt.array_annotations['channels'] = np.tile(np.arange(n_sites), n_modes)
 
     block.segments[0].events.append(evt)
-    breakpoint()
     # save output neo object
     write_neo(args.output, block)
+
+    # plot and save output image
+    plot_wave_modes(wavefronts_evt=block.segments[0].events[evt_id],
+                    wavemodes_evt=evt)
+    if args.output_img is not None:
+        save_plot(args.output_img)

@@ -106,7 +106,7 @@ rule spatial_derivative:
     output:
         data = os.path.join('{dir}', 'spatial_derivative', 'spatial_derivative.csv'),
         img = report(os.path.join('{dir}', 'spatial_derivative',
-                                  'spatial_derivative.'+config.PLOT_FORMAT))
+                f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'))
     shell:
         """
         {ADD_UTILS}

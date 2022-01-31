@@ -21,7 +21,8 @@ SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
+    return [os.path.join(config.OUTPUT_DIR, measure,
+                         f'{config.EVENT_NAME}_{measure}.csv')
             for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
@@ -41,7 +42,7 @@ rule all:
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data],
-        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']#, 'x_coords', 'y_coords']
+        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
     output:
         data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
@@ -85,9 +86,10 @@ rule compute_measure:
         data = input,
         script = os.path.join('scripts', '{measure}.py')
     output:
-        data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
+        data = os.path.join('{dir}', '{measure}',
+                            config.EVENT_NAME+'_{measure}.csv'),
         img = report(os.path.join('{dir}', '{measure}',
-                                  '{measure}.'+config.PLOT_FORMAT))
+                     config.EVENT_NAME+'_{measure}.'+config.PLOT_FORMAT))
     shell:
         """
         {ADD_UTILS}

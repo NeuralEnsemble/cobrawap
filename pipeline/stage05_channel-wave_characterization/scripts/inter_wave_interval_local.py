@@ -36,7 +36,6 @@ def calc_local_wave_intervals(evts):
 
         # if this is not the first wave
         if i:
-            ## local intervals:
             intervals = trigger_collection - trigger_collection_pre
             intervals = intervals[x_coords, y_coords]
             intervals[~np.isfinite(intervals)] = np.nan
@@ -77,11 +76,10 @@ if __name__ == '__main__':
     wave_ids, channel_ids, intervals = calc_local_wave_intervals(evts)
 
     # transform to DataFrame
-    df = pd.DataFrame(list(zip(wave_ids, channel_ids, intervals.magnitude)),
-                      columns=[f'{args.event_name}_id',
-                                'channel_id',
-                                'inter_wave_interval_local'])
+    df = pd.DataFrame(intervals.magnitude, columns=['inter_wave_interval_local'])
     df['inter_wave_interval_local_unit'] = [intervals.dimensionality.string]*len(channel_ids)
+    df['channel_id'] = channel_ids
+    df[f'{args.event_name}_id'] = wave_ids
 
     df.to_csv(args.output)
 

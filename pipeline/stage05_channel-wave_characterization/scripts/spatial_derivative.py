@@ -24,7 +24,8 @@ def interpolate_grid(grid):
 
 def sample_wave_pattern(pattern_func, dim_x, dim_y):
     fx, fy = np.meshgrid(np.arange(0, dim_x),
-                         np.arange(0, dim_y))
+                         np.arange(0, dim_y),
+                         indexing='ij')
     fcoords = np.stack((fx,fy), axis=-1)
     wave_pattern = pattern_func(fcoords.reshape(-1,2))
     return wave_pattern.reshape(dim_x, dim_y)
@@ -52,8 +53,11 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False):
                                                      dim_x=dim_x, dim_y=dim_y)
 
         kernel = get_kernel(kernel_name)
-        dt_x = nan_conv2d(trigger_collection, kernel.x)[x_coords, y_coords]
-        dt_y = nan_conv2d(trigger_collection, kernel.y)[x_coords, y_coords]
+        d_vertical = -1 * nan_conv2d(trigger_collection, kernel.y)
+        d_horizont = -1 * nan_conv2d(trigger_collection, kernel.x)
+
+        dt_x = d_vertical[x_coords, y_coords]
+        dt_y = d_horizont[x_coords, y_coords]
 
         df = pd.DataFrame(list(zip(dt_x, dt_y, x_coords, y_coords, channels)),
                           columns=['dt_x', 'dt_y', 'x_coords', 'y_coords', 'channel_id'])
@@ -61,6 +65,24 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False):
 
         spatial_derivative_df = pd.concat([spatial_derivative_df, df],
                                           ignore_index=True)
+
+    fig, ax = plt.subplots(ncols=3, figsize=(15,5))
+    img = ax[0].imshow(trigger_collection, cmap='viridis', origin='lower')
+    plt.colorbar(img, ax=ax[0])
+    vminmax = np.nanmax(abs(d_vertical))
+    img = ax[1].imshow(d_vertical, origin='lower', cmap='coolwarm',
+                       vmin=-vminmax, vmax=vminmax)
+    plt.colorbar(img, ax=ax[1])
+    vminmax = np.nanmax(abs(d_horizont))
+    img = ax[2].imshow(d_horizont, origin='lower', cmap='coolwarm',
+                       vmin=-vminmax, vmax=vminmax)
+    plt.colorbar(img, ax=ax[2])
+    ax[0].set_title(f'wave {wave_id}')
+    ax[1].set_title('dt X (vertical)')
+    ax[2].set_title('dt Y (horizontal)')
+    ax[0].set_axis_off()
+    ax[1].set_axis_off()
+    ax[2].set_axis_off()
 
     return spatial_derivative_df
 

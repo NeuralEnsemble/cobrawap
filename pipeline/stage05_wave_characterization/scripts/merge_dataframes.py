@@ -13,13 +13,13 @@ if __name__ == '__main__':
 
     for i, datafile in enumerate(args.data):
         df = pd.read_csv(datafile)
+        df.drop(df.columns[df.columns.str.contains('unnamed', case=False)],
+                axis=1, inplace=True)
         if i:
             full_df = full_df.merge(df, how='outer', on=None)
         else:
             full_df = deepcopy(df)
         del df
-
-    # checking and transforming inf and nan values?
 
     full_df.to_html(args.output_img)
 

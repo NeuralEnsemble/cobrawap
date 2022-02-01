@@ -25,13 +25,13 @@ if __name__ == '__main__':
 
     df = pd.read_csv(args.data)
 
-    angle = np.arctan2(df.dt_x, df.dt_y)
-    # angle = df.dt_x + df.dt_y*1j
-    angle[~np.isfinite(angle)] = np.nan
+    # angle = np.arctan2(df.dt_x, df.dt_y)
+    # angle[~np.isfinite(angle)] = np.nan
+    angle = df.dt_x + df.dt_y*1j
 
     direction_df = pd.DataFrame(angle, columns=['direction_local'])
     direction_df['channel_id'] = df.channel_id
-    direction_df['direction_local_unit'] = 'rad'
+    # direction_df['direction_local_unit'] = 'rad'
     direction_df[f'{args.event_name}_id'] = df[f'{args.event_name}_id']
 
     direction_df.to_csv(args.output)

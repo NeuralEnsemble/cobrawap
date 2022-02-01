@@ -31,4 +31,6 @@ INTERPOLATE: True
 
 # Annotations
 #############
-IGNORE_KEYS:
+# Use include_keys, if they are empty apply ignore_keys
+INCLUDE_KEYS: []
+IGNORE_KEYS: []

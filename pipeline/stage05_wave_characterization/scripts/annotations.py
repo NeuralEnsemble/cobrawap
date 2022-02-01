@@ -22,10 +22,15 @@ if __name__ == '__main__':
                      help="name of neo.Event to analyze (must contain waves)")
     CLI.add_argument("--ignore_keys", "--IGNORE_KEYS", nargs='+', type=str, default=[],
                      help="neo.Event annotations keys to not include in dataframe")
+    CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='+', type=str, default=[],
+                     help="neo object annotations keys to include in dataframe")
     CLI.add_argument("--profile", "--PROFILE", nargs='?', type=none_or_str, default=None,
                      help="profile name")
     args, unknown = CLI.parse_known_args()
     args.ignore_keys = [re.sub('[\[\],\s]', '', key) for key in args.ignore_keys]
+    args.include_keys = [re.sub('[\[\],\s]', '', key) for key in args.include_keys]
+    if len(args.include_keys):
+        args.ingnore_keys = []
 
     block = load_neo(args.data)
 
@@ -36,15 +41,16 @@ if __name__ == '__main__':
     remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
     ids = np.sort(np.unique(evts.labels).astype(int))
-    df = pd.DataFrame(index=ids)
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(ids, columns=[f'{args.event_name}_id'])
 
     for key, value in evts.annotations.items():
-        df[key] = [value] * len(df.index)
+        if not len(args.include_keys) or key in args.include_keys:
+            df[key] = [value] * len(df.index)
 
     for key, value in asig.annotations.items():
-        if key not in df.columns:
-            df[key] = [value] * len(df.index)
+        if not len(args.include_keys) or key in args.include_keys:
+            if key not in df.columns:
+                df[key] = [value] * len(df.index)
 
     df['profile'] = [args.profile] * len(df.index)
     df['sampling_rate'] = asig.sampling_rate.magnitude

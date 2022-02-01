@@ -186,7 +186,7 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
         mode_dist = wavemodes_evt.annotations['mode_distortions'][i]
         ax = axes[i]
 
-        waves = wavefronts_evt[wavefronts_evt.array_annotations['mode_ids'] == mode_id]
+        waves = wavefronts_evt[wavefronts_evt.array_annotations['wavemode'] == mode_id]
         waves_grid = wave_to_grid(waves)
         wavemode = wavemodes_evt[wavemodes_evt.labels.astype(int) == mode_id]
         mode_grid = wave_to_grid(wavemode)[0]
@@ -252,7 +252,7 @@ if __name__ == '__main__':
     dim_t, num_channels = asig.shape
 
     waves = block.filter(name='wavefronts', objects="Event")[0]
-    waves = waves[waves.labels != '-1']
+    waves = waves[waves.labels.astype(str) != '-1']
 
     timelag_df = build_timelag_dataframe(waves)
 
@@ -304,12 +304,13 @@ if __name__ == '__main__':
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \
                                          if evt.name=='wavefronts'][0]
 
-    mode_id_annotations = np.empty(waves.size) * np.nan
+    mode_annotations = np.ones(waves.size, dtype=int) * (-1)
     for wave_id, mode_id in zip(timelag_df.index, mode_ids):
         index = np.where(waves.labels.astype(int) == wave_id)[0]
-        mode_id_annotations[index] = mode_id
+        mode_annotations[index] = mode_id
 
-    block.segments[0].events[evt_id].array_annotations['mode_ids'] = mode_id_annotations
+    waves.array_annotate(wavemode=mode_annotations)
+    block.segments[0].events[evt_id] = waves
 
     # add clustered wave modes as additional event 'wavemodes'
     n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
@@ -333,6 +334,7 @@ if __name__ == '__main__':
     #                    & (asig.array_annotations['y_coords'] == y))[0][0] \
     #             for x,y in zip(xs,ys)]
 
+    # remove_annotations(block.segments[0].events[evt_id])
     remove_annotations(waves)
     evt = neo.Event(mode_trigger * waves.units,
                     labels=np.repeat(mode_labels, n_sites).astype(str),
@@ -351,6 +353,7 @@ if __name__ == '__main__':
 
     block.segments[0].events.append(evt)
     # save output neo object
+
     write_neo(args.output, block)
 
     # plot and save output image

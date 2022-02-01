@@ -31,7 +31,15 @@ if __name__ == '__main__':
                 waves_block.segments[0].analogsignals.append(asig)
 
         for event in block.segments[0].events:
-            if event.name not in event_names:
+            if event.name in event_names:
+                waves_evt = waves_block.filter(name=event.name, objects="Event")[0]
+                for key, value in event.annotations.items():
+                    if key not in waves_evt.annotations:
+                        waves_evt.annotations[key] = value
+                for key, value in event.array_annotations.items():
+                    if key not in waves_evt.array_annotations:
+                        waves_evt.array_annotations[key] = value
+            else:
                 waves_block.segments[0].events.append(event)
 
         del block

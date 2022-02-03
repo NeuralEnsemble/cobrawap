@@ -75,8 +75,8 @@ def calc_flow_direction(evts, asig):
 
 def plot_directions(dataframe, orientation_top=None, orientation_right=None):
     wave_ids = dataframe.index
-    directions = dataframe.direction
-    directions_std = dataframe.direction_std
+    directions = dataframe.direction_x + 1j*dataframe.direction_y
+    directions_std = dataframe.direction_x_std + 1j*dataframe.direction_y_std
 
     ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
     nrows = int(np.ceil((len(wave_ids)+1)/ncols))
@@ -161,7 +161,8 @@ if __name__ == '__main__':
             args.method = 'trigger_interpolation'
 
     evts = block.filter(name=args.event_name, objects="Event")[0]
-    
+    evts = evts[evts.labels.astype('str') != '-1']
+
     if args.method == 'trigger_interpolation':
         directions = trigger_interpolation(evts)
     elif args.method == 'optical_flow':
@@ -170,10 +171,11 @@ if __name__ == '__main__':
     else:
         raise NameError(f'Method name {args.method} is not recognized!')
 
-    df = pd.DataFrame(directions,
-                      columns=['direction', 'direction_std'],
-                      index=np.unique(evts.labels))
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(np.unique(evts.labels), columns=[f'{args.event_name}_id'])
+    df['direction_x'] = np.real(directions[:,0])
+    df['direction_y'] = np.imag(directions[:,0])
+    df['direction_x_std'] = np.real(directions[:,1])
+    df['direction_y_std'] = np.imag(directions[:,1])
 
     if args.output_img is not None:
         orientation_top = evts.annotations['orientation_top']

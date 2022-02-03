@@ -39,10 +39,9 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
     evts = block.filter(name=args.event_name, objects="Event")[0]
+    evts = evts[evts.labels.astype('str') != '-1']
 
     wave_ids = np.sort(np.unique(evts.labels).astype(int))
-    if wave_ids[0] == -1:
-        wave_ids = np.delete(wave_ids, 0)
 
     time_stamps = np.empty(len(wave_ids), dtype=float)
 
@@ -64,10 +63,8 @@ if __name__ == '__main__':
     save_plot(args.output_img)
 
     # transform to DataFrame
-    df = pd.DataFrame(time_stamps,
-                      columns=['time_stamp'],
-                      index=wave_ids)
-    df['time_stamp_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(time_stamps, columns=['time_stamp'])
+    df['time_stamp_unit'] = t_unit
+    df[f'{args.event_name}_id'] = wave_ids
 
     df.to_csv(args.output)

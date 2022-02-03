@@ -38,10 +38,8 @@ if __name__ == '__main__':
         number_of_triggers[i] = len(evts.times[idx])
 
     # transform to DataFrame
-    df = pd.DataFrame(number_of_triggers,
-                      columns=['number_of_triggers'],
-                      index=wave_ids)
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(number_of_triggers, columns=['number_of_triggers'])
+    df[f'{args.event_name}_id'] = wave_ids
     df.to_csv(args.output)
 
     # ToDo

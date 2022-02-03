@@ -25,19 +25,15 @@ if __name__ == '__main__':
 
     df = pd.read_csv(args.data)
 
-    # angle = np.arctan2(df.dt_x, df.dt_y)
-    # angle[~np.isfinite(angle)] = np.nan
-    angle = df.dt_x + df.dt_y*1j
-
-    direction_df = pd.DataFrame(angle, columns=['direction_local'])
-    direction_df['channel_id'] = df.channel_id
-    # direction_df['direction_local_unit'] = 'rad'
+    direction_df = pd.DataFrame(df.channel_id, columns=['channel_id'])
+    direction_df['direction_local_x'] = df.dt_x
+    direction_df['direction_local_y'] = df.dt_y
     direction_df[f'{args.event_name}_id'] = df[f'{args.event_name}_id']
 
     direction_df.to_csv(args.output)
 
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    ax.hist(angle, bins=36, range=[-np.pi, np.pi])
+    ax.hist(np.angle(df.dt_x*1j + df.dt_y), bins=36, range=[-np.pi, np.pi])
 
     if args.output_img is not None:
         save_plot(args.output_img)

@@ -71,11 +71,9 @@ if __name__ == '__main__':
         save_plot(save_path+'.png')
 
     # transform to DataFrame
-    df = pd.DataFrame(IWIs,
-                      columns=['inter_wave_interval', 'inter_wave_interval_std'],
-                      index=wave_ids)
-    df['inter_wave_interval_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(IWIs, columns=['inter_wave_interval', 'inter_wave_interval_std'])
+    df['inter_wave_interval_unit'] = t_unit
+    df[f'{args.event_name}_id'] = wave_ids
 
     df.to_csv(args.output)
 

@@ -81,11 +81,8 @@ def calc_planar_velocities(evts):
 
     # transform to DataFrame
     df = pd.DataFrame(velocities,
-                      columns=['velocity_planar', 'velocity_planar_std'],
-                      index=wave_ids)
-    df['velocity_unit'] = [v_unit]*len(wave_ids)
-    df.index.name = 'wave_id'
-
+                      columns=['velocity_planar', 'velocity_planar_std'])
+    df['velocity_unit'] = v_unit
     return df
 
 
@@ -105,9 +102,10 @@ if __name__ == '__main__':
     block = load_neo(args.data)
 
     evts = block.filter(name=args.event_name, objects="Event")[0]
+    evts = evts[evts.labels.astype('str') != '-1']
 
     velocities_df = calc_planar_velocities(evts)
-    velocities_df.index.name = f'{args.event_name}_id'
+    velocities_df[f'{args.event_name}_id'] = np.unique(evts.labels)
 
     if args.output_img is not None:
         save_plot(args.output_img)

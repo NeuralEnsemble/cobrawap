@@ -3,11 +3,26 @@ import os
 import argparse
 import numpy as np
 import pandas as pd
+import quantities as pq
 import re
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo import remove_annotations
 
+
+def add_annotations_to_df(df, annotations, include_keys=[]):
+    use_all_keys = not bool(len(include_keys))
+
+    for key, value in annotations.items():
+        key_is_relevant = use_all_keys or key in include_keys
+
+        if key_is_relevant and key not in df.columns:
+            if type(value) == pq.Quantity:
+                df[f'{key}_unit'] = value.dimensionality.string
+                value = value.magnitude
+            df[key] = value
+
+    return df
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
@@ -36,6 +51,7 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
     evts = block.filter(name=args.event_name, objects="Event")[0]
+    evts = evts[evts.labels.astype(str) != '-1']
 
     df = pd.DataFrame(evts.labels, columns=[f'{args.event_name}_id'])
     df['channel_id'] = evts.array_annotations['channels']
@@ -44,28 +60,15 @@ if __name__ == '__main__':
     remove_annotations(evts, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
     remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
-    for key, value in evts.annotations.items():
-        if not len(args.include_keys) or key in args.include_keys:
-            df[key] = [value] * len(df.index)
-
-    for key, value in evts.array_annotations.items():
-        if not len(args.include_keys) or key in args.include_keys:
-            if key not in df.columns:
-                df[key] = value
-
-    for key, value in asig.annotations.items():
-        if not len(args.include_keys) or key in args.include_keys:
-            if key not in df.columns:
-                df[key] = [value] * len(df.index)
-
-    for key, value in asig.array_annotations.items():
-        if not len(args.include_keys) or key in args.include_keys:
-            if key not in df.columns:
-                df[key] = value[df.index]
+    for annotations in [evts.annotations, evts.array_annotations,
+                        asig.annotations, asig.array_annotations]:
+        df = add_annotations_to_df(df, annotations, args.include_keys)
 
     df['profile'] = [args.profile] * len(df.index)
-    df['sampling_rate'] = asig.sampling_rate
-    df['recording_length'] = asig.t_stop - asig.t_start
+    df['sampling_rate'] = asig.sampling_rate.magnitude
+    df['sampling_rate_unit'] = asig.sampling_rate.dimensionality.string
+    df['recording_length'] = (asig.t_stop - asig.t_start).magnitude
+    df['recording_length_unit'] = asig.t_start.dimensionality.string
     df['dim_x'] = int(max(asig.array_annotations['x_coords']))+1
     df['dim_y'] = int(max(asig.array_annotations['y_coords']))+1
 

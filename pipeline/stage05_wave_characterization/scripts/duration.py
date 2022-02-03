@@ -43,11 +43,9 @@ if __name__ == '__main__':
         durations[i] = tmax - tmin
 
     # transform to DataFrame
-    df = pd.DataFrame(durations,
-                      columns=['duration'],
-                      index=wave_ids)
-    df['duration_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = f'{args.event_name}_id'
+    df = pd.DataFrame(durations, columns=['duration'])
+    df['duration_unit'] = t_unit
+    df[f'{args.event_name}_id'] = wave_ids
 
     df.to_csv(args.output)
 

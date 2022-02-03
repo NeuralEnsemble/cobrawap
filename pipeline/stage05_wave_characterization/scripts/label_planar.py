@@ -31,11 +31,8 @@ def label_planar(waves_event, vector_field, times, threshold):
 
     is_planar = planarity > threshold
 
-    df =  pd.DataFrame(data=np.stack((planarity, is_planar), axis=1),
-                       index=labels,
-                       columns=['planarity', 'is_planar'])
-    df['is_planar'] = df['is_planar'].astype(bool)
-    df.index.name = 'wave_id'
+    df = pd.DataFrame(planarity, columns=['planarity'])
+    df['is_planar'] = is_planar
     return df
 
 
@@ -109,6 +106,7 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
 
     wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
+    wavefront_evt = wavefront_evt[wavefront_evt.labels.astype('str') != '-1']
 
     optical_flow = block.filter(name='optical_flow', objects="ImageSequence")[0]
 
@@ -116,7 +114,7 @@ if __name__ == '__main__':
                                  vector_field=optical_flow,
                                  times=asig.times,
                                  threshold=args.alignment_threshold)
-    planar_labels.index.name = f'{args.event_name}_id'
+    planar_labels[f'{args.event_name}_id'] = np.unique(wavefront_evt.labels)
     planar_labels.to_csv(args.output)
 
     dim_t, dim_x, dim_y = optical_flow.shape

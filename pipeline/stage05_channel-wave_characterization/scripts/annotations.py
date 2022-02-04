@@ -61,7 +61,7 @@ if __name__ == '__main__':
     remove_annotations(asig, del_keys=['nix_name', 'neo_name']+args.ignore_keys)
 
     for annotations in [evts.annotations, evts.array_annotations,
-                        asig.annotations, asig.array_annotations]:
+                        asig.annotations]:
         df = add_annotations_to_df(df, annotations, args.include_keys)
 
     df['profile'] = [args.profile] * len(df.index)

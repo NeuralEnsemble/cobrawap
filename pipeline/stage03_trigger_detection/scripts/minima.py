@@ -47,6 +47,7 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
     window_frame = np.int32(maxima_threshold_window*sampling_rate)
     
     min_time_idx = np.array([], dtype=int)
+    max_time_idx = np.array([], dtype=int)
     channel_idx = np.array([], dtype='int32')
 
     minima_order = np.int32(np.max([minima_persistence*sampling_rate, 1]))
@@ -68,6 +69,7 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
         mins = np.intersect1d(mins_distance, mins_persistance)        
 
         clean_mins = np.array([], dtype=int)
+        clean_max = np.array([], dtype=int)
 
         for i, peak in enumerate(peaks):
             distance_to_peak = times[peak] - times[mins]
@@ -75,8 +77,10 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
             if distance_to_peak.size:
                 trans_idx = np.argmin(distance_to_peak)
                 clean_mins = np.append(clean_mins, mins[trans_idx])
+                clean_max = np.append(clean_max,peak)
 
         min_time_idx = np.append(min_time_idx, clean_mins)
+        max_time_idx = np.append(max_time_idx, clean_max)
         channel_idx = np.append(channel_idx, np.ones(len(clean_mins), dtype='int32')*channel)
         
     # compute local minima times.
@@ -108,6 +112,7 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
     ###################################
     sort_idx = np.argsort(minimum_times)
     
+    # save detected minima as transition
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
                     name='transitions',
@@ -123,7 +128,23 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
     remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
     evt.annotations.update(asig.annotations)
 
-    return evt
+    # save detected maxima  as transition
+    maxima_times = times[max_time_idx]
+
+    evt_maxima = neo.Event(times=maxima_times[sort_idx],
+                    labels=['UP'] * len(maxima_times),
+                    name='maxima_transitions',
+                    trigger_detection='maxima',
+                    array_annotations={'channels':channel_idx[sort_idx]})
+
+    for key in asig.array_annotations.keys():
+        evt_ann = {key : asig.array_annotations[key][channel_idx[sort_idx]]}
+        evt_maxima.array_annotations.update(evt_ann)
+
+    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
+    evt_maxima.annotations.update(asig.annotations)
+    
+    return evt, evt_maxima
 
 def plot_minima(asig, event, channel, maxima_threshold_window, maxima_threshold_fraction, min_peak_distance):
 
@@ -190,7 +211,7 @@ if __name__ == '__main__':
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
-    transition_event = detect_minima(asig,
+    transition_event, maxima_event = detect_minima(asig,
                                      interpolation_points=args.num_interpolation_points,
                                      interpolation=args.use_quadtratic_interpolation,
                                      maxima_threshold_fraction=args.maxima_threshold_fraction,
@@ -200,6 +221,7 @@ if __name__ == '__main__':
     
    
     block.segments[0].events.append(transition_event)
+    block.segments[0].events.append(maxima_event)
     write_neo(args.output, block)
 
     if args.plot_channels[0] is not None:

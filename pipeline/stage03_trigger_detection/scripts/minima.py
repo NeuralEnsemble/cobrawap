@@ -161,18 +161,27 @@ def plot_minima(asig, event, channel, maxima_threshold_window, maxima_threshold_
         
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")
-    fig, ax = plt.subplots(figsize=(15,5))
-    ax.plot(asig.times.rescale('s'), signal, label='signal', color = 'blue', linewidth=1.)
-    ax.plot(asig.times.rescale('s'), threshold_func, label='dynamic threshold', color = 'black', linewidth = 0.5)
+    fig, ax = plt.subplots(2, 1, sharex = True)
+    fig.set_size_inches(6,4, forward=True)
+    ax[0].tick_params(axis='both', which='major', labelsize=6)
+    ax[1].tick_params(axis='both', which='major', labelsize=6)
+    
+    ax[0].plot(asig.times.rescale('s'), signal, label='signal', color = 'blue', linewidth=1.)
+    ax[0].plot(asig.times.rescale('s'), threshold_func, label='dynamic threshold', color = 'black', linewidth = 0.5)
 
     idx_ch = np.where(event.array_annotations['channels'] == channel)[0]
     
-    ax.plot(asig.times.rescale('s')[peaks], signal[peaks], 'x', color = 'red', label = 'detected maxima') 
-    ax.plot(event.times[idx_ch], signal[np.int32(event.times[idx_ch]*sampling_rate)], 'x', color = 'green', label = 'selected minima')
+    ax[0].plot(asig.times.rescale('s')[peaks], signal[peaks], 'x', color = 'red', label = 'detected maxima') 
+    ax[0].plot(event.times[idx_ch], signal[np.int32(event.times[idx_ch]*sampling_rate)], 'x', color = 'green', label = 'selected minima')
 
-    ax.set_title('Channel {}'.format(channel))
-    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
-    ax.legend()
+    ax[0].set_title('Channel {}'.format(channel), fontsize = 7.)
+    ax[0].set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string), fontsize = 7.)
+    ax[0].legend(fontsize = 7.)
+    
+    ax[1].plot(event.times, event.array_annotations['channels'], 'o', color = 'black', fillstyle = 'full', markerfacecolor = 'black',  markersize = .02)
+    ax[1].set_ylabel('channel id', fontsize = 7.)
+    ax[1].set_xlabel('time (s)', fontsize = 7.)
+    plt.tight_layout()
     return ax
 
 

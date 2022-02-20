@@ -109,6 +109,8 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
     else:
         minimum_times = asig.times[min_time_idx]
     
+    idx = np.where(minimum_times >= np.max(asig.times))[0]
+    minimum_times[idx] = np.max(asig.times)
     ###################################
     sort_idx = np.argsort(minimum_times)
     

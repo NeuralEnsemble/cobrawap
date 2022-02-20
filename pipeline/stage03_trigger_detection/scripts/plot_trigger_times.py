@@ -82,7 +82,7 @@ if __name__ == '__main__':
     asig = time_slice(asig, args.t_start, args.t_stop)
 
     # get transition events
-    event = block.filter(name='Transitions', objects="Event")[0]
+    event = block.filter(name='transitions', objects="Event")[0]
     event = event.time_slice(args.t_start, args.t_stop)
 
     for channel in args.channels:

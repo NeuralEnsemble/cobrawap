@@ -23,7 +23,7 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
     clustering.fit(triggers)
 
     if len(np.unique(clustering.labels_)) < 1:
-        raise ValueError("No Clusters found, please adapt the parameters!")
+        raise ValueError("No clusters found, please adapt the parameters!")
 
     # remove unclassified trigger points (label == -1)
     cluster_idx = np.where(clustering.labels_ != -2)[0]
@@ -34,11 +34,11 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
 
     evt = neo.Event(times=event.times[wave_idx],
                     labels=clustering.labels_[cluster_idx].astype(str),
-                    name='Wavefronts',
+                    name='wavefronts',
                     array_annotations={'channels':event.array_annotations['channels'][wave_idx],
-                                       'x_coords':triggers[:,0][cluster_idx],
-                                       'y_coords':triggers[:,1][cluster_idx]},
-                    description='Transitions from down to up states. '\
+                                       'x_coords':triggers[:,0][cluster_idx].astype(int),
+                                       'y_coords':triggers[:,1][cluster_idx].astype(int)},
+                    description='transitions from down to up states. '\
                                +'Labels are ids of wavefronts. '
                                +'Annotated with the channel id ("channels") and '\
                                +'its position ("x_coords", "y_coords").',
@@ -71,11 +71,7 @@ if __name__ == '__main__':
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
-    evts = [ev for ev in block.segments[0].events if ev.name== 'Transitions']
-    if len(evts):
-        evts = evts[0]
-    else:
-        raise InputError("The input file does not contain any 'Transitions' events!")
+    evts = block.filter(name='transitions', objects="Event")[0]
 
     wave_evt = cluster_triggers(event=evts,
                                 metric=args.metric,

@@ -18,7 +18,6 @@ def linregress(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
     return slope, stderr, offset
 
-
 def calc_planar_velocities(evts):
     spatial_scale = evts.annotations['spatial_scale']
     v_unit = (spatial_scale.units/evts.times.units).dimensionality.string
@@ -72,7 +71,7 @@ def calc_planar_velocities(evts):
     # plot total velocities
     ax[-1][-1].errorbar(wave_ids, velocities[:,0], yerr=velocities[:,1],
                         linestyle='', marker='+')
-    ax[-1][-1].set_xlabel('wave id')
+    ax[-1][-1].set_xlabel(f'{evts.name} id')
     ax[-1][-1].set_title('velocities [{}]'.format(v_unit))
 
     for i in range(len(wave_ids), nrows*ncols-1):
@@ -82,11 +81,8 @@ def calc_planar_velocities(evts):
 
     # transform to DataFrame
     df = pd.DataFrame(velocities,
-                      columns=['velocity_planar', 'velocity_planar_std'],
-                      index=wave_ids)
-    df['velocity_unit'] = [v_unit]*len(wave_ids)
-    df.index.name = 'wave_id'
-
+                      columns=['velocity_planar', 'velocity_planar_std'])
+    df['velocity_unit'] = v_unit
     return df
 
 
@@ -99,13 +95,17 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                      help="path of output image file")
-    args = CLI.parse_args()
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
-    evts = block.filter(name='Wavefronts', objects="Event")[0]
+    evts = block.filter(name=args.event_name, objects="Event")[0]
+    evts = evts[evts.labels.astype('str') != '-1']
 
     velocities_df = calc_planar_velocities(evts)
+    velocities_df[f'{args.event_name}_id'] = np.unique(evts.labels)
 
     if args.output_img is not None:
         save_plot(args.output_img)

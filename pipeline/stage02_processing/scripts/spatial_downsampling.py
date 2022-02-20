@@ -23,6 +23,7 @@ def spatial_smoothing(imgseq, macro_pixel_dim):
     imgseq_reduced = neo.ImageSequence(images_reduced,
                                    units=imgseq.units,
                                    spatial_scale=imgseq.spatial_scale * macro_pixel_dim,
+                                   macro_pixel_dim=macro_pixel_dim,
                                    sampling_rate=imgseq.sampling_rate,
                                    file_origin=imgseq.file_origin,
                                    t_start=imgseq.t_start)

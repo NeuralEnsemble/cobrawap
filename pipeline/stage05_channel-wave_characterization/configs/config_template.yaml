@@ -15,11 +15,22 @@ PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
-# Measures to compute
-# 'velocity_local'
-MEASURES: ['velocity_local']
+# Wave event name
+# 'wavefronts', 'wavemodes'
+EVENT_NAME: 'wavefronts'
 
-# Velocity Local
+# Measures to compute
+# 'velocity_local', 'direction_local', 'inter_wave_interval_local', 'annotations'
+MEASURES: ['annotations', 'velocity_local', 'direction_local', 'inter_wave_interval_local']
+
+# Velocity/Direction Local
 ################
 # simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
-KERNEL: 'sobol_3x3'
+KERNEL: 'sobel_3x3'
+INTERPOLATE: True
+
+# Annotations
+#############
+# Use include_keys, if they are empty apply ignore_keys
+INCLUDE_KEYS: []
+IGNORE_KEYS: []

@@ -8,7 +8,7 @@ Collection of waves in form of groups of trigger times.
 <!-- and/or ii) a vector field signal with identified critical points -->
 
 <!-- i) -->
-neo.Event object named _'Wavefronts'_
+neo.Event object named _'wavefronts'_
 
     * labels: wavefront id
     * annotations: _'spatial_scale'_

@@ -12,7 +12,7 @@ Signals containing distinguishable states of low and high activity
 Input signals + the Up (and Down) trigger times in for each channel as an Event object in the same neo.Block
 
 * AnalogSignal is identical to the input
-* neo.Event object named _'Transitions'_
+* neo.Event object named _'transitions'_
     * labels: either _'UP'_ or _'DOWN'_
     * annotations: information about the detection methods, copy of AnalogSignal.annotations
     * array_annotations: _'channels'_, AnalogSignal.array_annotations of the respective channel

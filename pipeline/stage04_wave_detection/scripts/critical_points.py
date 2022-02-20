@@ -185,13 +185,13 @@ if __name__ == '__main__':
 
     block = analogsignals_to_imagesequences(block)
 
-    imgseq = [im for im in block.segments[0].imagesequences
-                        if im.name == "Optical Flow"]
+    imgseq = block.filter(name='optical_flow', objects="ImageSequence")
+
     if imgseq:
         imgseq = imgseq[0]
     else:
         raise ValueError("Input does not contain a signal with name " \
-                       + "'Optical Flow'!")
+                       + "'optical_flow'!")
 
 
     crit_point_evt = detect_critical_points(imgseq,

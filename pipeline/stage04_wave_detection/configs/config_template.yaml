@@ -31,8 +31,8 @@ DETECTION_BLOCK: 'trigger_clustering'
 
 # ADDITIONAL PROPERTIES
 #######################
-# Available Blocks: 'optical_flow', 'critical_points'
-ADDITIONAL_PROPERTIES: ['optical_flow'] #, 'critical_points']
+# Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
+ADDITIONAL_PROPERTIES: ['optical_flow']
 
 # Wavefront Clustering
 ######################
@@ -64,6 +64,24 @@ DERIVATIVE_FILTER: 'Simple'
 # Critical Point Clustering
 ###########################
 
+# Wave Mode Clustering
+######################
+# fraction of channels that need to be involved in a wave to be included
+MIN_TRIGGER_FRACTION: 0.5
+# number of similar waves to use to extrapolate missing trigger from
+NUM_WAVE_NEIGHBOURS: 5
+# percentage of wave similarity to keep for the clustering
+WAVE_OUTLIER_QUANTILE: 0.95
+# number of pca dims to project the trigger patterns onto before clustering
+# None -> no dimensionality reduction
+PCA_DIMS: 10
+# number of clusters for the kmeans algorithm
+NUM_KMEANS_CLUSTER: 4
+# grid spacing for the interpolation [0,1]
+INTERPOLATION_STEP_SIZE: 0.2
+# smoothing factor (0: no smoothing)
+INTERPOLATION_SMOOTHING: 0
+
 # VIDEO SETTINGS
 ################
 QUALITY: 5 # 0(good) - 31(bad)
@@ -76,5 +94,5 @@ BITRATE: 20M
 FRAME_RATE: None
 # 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
 COLORMAP: 'twilight'
-PLOT_EVENT: 'Wavefronts' # name of neo event to plot, default is None
+PLOT_EVENT: 'wavefronts' # name of neo event to plot, default is None
 MARKER_COLOR: 'r'

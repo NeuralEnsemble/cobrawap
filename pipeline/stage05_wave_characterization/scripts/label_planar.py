@@ -6,8 +6,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import copy
 import seaborn as sns
-from utils.io import load_neo
+from utils.io import load_neo, save_plot
 from utils.neo import analogsignals_to_imagesequences
+from utils.parse import none_or_str
 
 
 def label_planar(waves_event, vector_field, times, threshold):
@@ -30,11 +31,8 @@ def label_planar(waves_event, vector_field, times, threshold):
 
     is_planar = planarity > threshold
 
-    df =  pd.DataFrame(data=np.stack((planarity, is_planar), axis=1),
-                       index=labels,
-                       columns=['planarity', 'is_planar'])
-    df['is_planar'] = df['is_planar'].astype(bool)
-    df.index.name = 'wave_id'
+    df = pd.DataFrame(planarity, columns=['planarity'])
+    df['is_planar'] = is_planar
     return df
 
 
@@ -94,23 +92,30 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
+    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                     help="path of output image file")
     CLI.add_argument("--alignment_threshold", nargs='?', type=float, default=.85,
                      help="threshold for alignment of velocity vectors at transitions")
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
-    args = CLI.parse_args()
     block = load_neo(args.data)
 
     block = analogsignals_to_imagesequences(block)
     asig = block.segments[0].analogsignals[0]
 
-    wavefront_evt = block.filter(name='Wavefronts', objects="Event")[0]
+    wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
+    wavefront_evt = wavefront_evt[wavefront_evt.labels.astype('str') != '-1']
 
-    optical_flow = block.filter(name='Optical Flow', objects="ImageSequence")[0]
+    optical_flow = block.filter(name='optical_flow', objects="ImageSequence")[0]
 
     planar_labels = label_planar(waves_event=wavefront_evt,
                                  vector_field=optical_flow,
                                  times=asig.times,
                                  threshold=args.alignment_threshold)
+    planar_labels[f'{args.event_name}_id'] = np.unique(wavefront_evt.labels)
+    planar_labels.to_csv(args.output)
 
     dim_t, dim_x, dim_y = optical_flow.shape
     skip_step = int(min([dim_x, dim_y]) / 50) + 1
@@ -123,7 +128,8 @@ if __name__ == '__main__':
                        skip_step=skip_step,
                        wave_id=i,
                        ax=ax)
-        plt.savefig(os.path.join(os.path.dirname(args.output), f'wave_{wave_id}.png'))
+        save_plot(os.path.join(os.path.dirname(args.output),
+                               f'wave_{wave_id}.png'))
+        if not i:
+            save_plot(args.output_img)
         plt.close()
-
-    planar_labels.to_csv(args.output)

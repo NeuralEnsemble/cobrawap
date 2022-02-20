@@ -71,7 +71,7 @@ if __name__ == '__main__':
     block = load_neo(args.data)
 
     evt_idx, evt = [(i,ev) for i, ev in enumerate(block.segments[0].events)
-                    if ev.name== 'Transitions'][0]
+                    if ev.name == 'transitions'][0]
 
 
     if 'DOWN' in evt.labels:

@@ -10,6 +10,7 @@ import pandas as pd
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -17,14 +18,16 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    # CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-    #                  help="path of output image file")
-    args = CLI.parse_args()
+    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                     help="path of output image file")
+    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
+                     help="name of neo.Event to analyze (must contain waves)")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]
-    evts = block.filter(name='Wavefronts', objects="Event")[0]
+    evts = block.filter(name='wavefronts', objects="Event")[0]
     num_nonnan_channels = np.sum(np.isfinite(asig[0]).astype(int))
 
     wave_ids = np.sort(np.unique(evts.labels).astype(int))
@@ -68,10 +71,11 @@ if __name__ == '__main__':
         save_plot(save_path+'.png')
 
     # transform to DataFrame
-    df = pd.DataFrame(IWIs,
-                      columns=['inter_wave_interval', 'inter_wave_interval_std'],
-                      index=wave_ids)
-    df['inter_wave_interval_unit'] = [t_unit]*len(wave_ids)
-    df.index.name = 'wave_id'
+    df = pd.DataFrame(IWIs, columns=['inter_wave_interval', 'inter_wave_interval_std'])
+    df['inter_wave_interval_unit'] = t_unit
+    df[f'{args.event_name}_id'] = wave_ids
 
     df.to_csv(args.output)
+
+    # ToDo
+    save_plot(args.output_img)

@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     block = load_neo(args.data)
 
-    evts = block.filter(name='Wavefronts', objects="Event")[0]
+    evts = block.filter(name='wavefronts', objects="Event")[0]
 
     if args.time_slice is not None:
         asig = block.segments[0].analogsignals[0]

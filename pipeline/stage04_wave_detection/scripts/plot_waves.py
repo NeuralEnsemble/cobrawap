@@ -78,13 +78,12 @@ if __name__ == '__main__':
     block = load_neo(args.data)
     block = analogsignals_to_imagesequences(block)
 
-    waves_event = [ev for ev in block.segments[0].events
-                             if ev.name== 'Wavefronts'][0]
+    waves_event = block.filter(name='wavefronts', objects="Event")[0]
 
     asig = block.segments[0].analogsignals[0]
     frames = block.segments[0].imagesequences[0].as_array()
     vec_frames = [imgseq for imgseq in block.segments[0].imagesequences
-                                    if imgseq.name== 'Optical Flow'][0].as_array()
+                                    if imgseq.name=='optical_flow'][0].as_array()
 
     cmap = plt.get_cmap(args.colormap)
 

@@ -22,14 +22,14 @@ The current prototype includes
 * visualization of the analysis steps and the intermediate results
 * intermediate results curated with annotated metadata and reports
 * guides for execution locally and on the collab
-* showcase Jupyter Notebooks for testbench applications and the visualization of the output
+.. * showcase Jupyter Notebooks for testbench applications and the visualization of the output
 
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/
 
 For further developments see the Issues.
 
 Further Context
-=======
+===============
 
 WaveScalES
 ----------

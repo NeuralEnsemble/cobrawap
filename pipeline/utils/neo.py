@@ -15,8 +15,10 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
         objects = [objects]
     for i, obj in enumerate(objects):
         for k in del_keys:
-            if k in objects[i].annotations:
+            if k in obj.annotations:
                 del objects[i].annotations[k]
+            if hasattr(obj, 'array_annotations') and k in obj.array_annotations:
+                del objects[i].array_annotations[k]
     return None
 
 
@@ -127,7 +129,6 @@ def imagesequences_to_analogsignals(block):
             # asig.channel_index = chidx
             # chidx.analogsignals = [asig] + chidx.analogsignals
             # block.channel_indexes.append(chidx)
-
             if 'array_annotations' in imgseq.annotations.keys():
                 try:
                     asig.array_annotations.update(imgseq.annotations['array_annotations'])
@@ -136,9 +137,9 @@ def imagesequences_to_analogsignals(block):
                                 + "changed the signal shape!")
                 del imgseq.annotations['array_annotations']
 
-            asig.annotations.update(imgseq.annotations)
 
             remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
+            asig.annotations.update(imgseq.annotations)
             block.segments[seg_count].analogsignals.append(asig)
     return block
 
@@ -149,7 +150,6 @@ def analogsignals_to_imagesequences(block):
         for asig_count, asig in enumerate(segment.analogsignals):
             asig_array = asig.as_array()
             dim_t, dim_channels = asig_array.shape
-
             # coords = asig.channel_index.coordinates
             # temporary replacement
             if 'x_coords' not in asig.array_annotations\
@@ -187,7 +187,6 @@ def analogsignals_to_imagesequences(block):
             # array_annotations = {}
             # for k, v in asig.array_annotations.items():
             #     array_annotations[k] = v.reshape((dim_x, dim_y))
-
             imgseq = neo.ImageSequence(image_data=image_data,
                                        units=asig.units,
                                        dtype=asig.dtype,

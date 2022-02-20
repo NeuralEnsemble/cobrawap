@@ -13,20 +13,21 @@ from utils.parse import parse_plot_channels
 from types import SimpleNamespace
 
 config = SimpleNamespace(**config)
-config.ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
-
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
                                            in config.__dict__.items()])
 
 #### Housekeeping ####
 
-def input(wildcards):
-    return config.STAGE_INPUT
-
 def measures_output(wildcards):
-    return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
+    return [os.path.join(config.OUTPUT_DIR, measure,
+                         f'{config.EVENT_NAME}_{measure}.csv')
             for measure in config.MEASURES]
+
+if config.EVENT_NAME == 'wavemodes':
+    config.MEASURES = [m for m in config.MEASURES if m not in
+                        ['inter_wave_interval_local']]
 
 localrules: all, check_input
 
@@ -41,13 +42,13 @@ rule all:
     params:
         data = lambda wildcards, input:
                       ['"{}"'.format(path) for path in input.data],
-        merge_key = 'channel_id'
+        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
     output:
         data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
         img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
     shell:
         """
-        {config.ADD_UTILS}
+        {ADD_UTILS}
         python {input.script} --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
@@ -63,10 +64,20 @@ rule check_input:
         temp(os.path.join('{dir}', 'input.check'))
     shell:
         """
-        {config.ADD_UTILS}
-        python {input.script} --data "{input.data}"
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              {SCRIPT_ARGS}
         touch "{output}"
         """
+
+def input(wildcards):
+    spatial_measures = ['velocity_local', 'direction_local']
+    if wildcards.measure in spatial_measures:
+        return rules.spatial_derivative.output.data
+    else:
+        return config.STAGE_INPUT
+
+ruleorder: spatial_derivative > compute_measure
 
 #### CHARACTERIZATION BLOCKS ####
 
@@ -75,12 +86,31 @@ rule compute_measure:
         data = input,
         script = os.path.join('scripts', '{measure}.py')
     output:
-        data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
+        data = os.path.join('{dir}', '{measure}',
+                            config.EVENT_NAME+'_{measure}.csv'),
         img = report(os.path.join('{dir}', '{measure}',
-                                  '{measure}.'+config.PLOT_FORMAT))
+                     config.EVENT_NAME+'_{measure}.'+config.PLOT_FORMAT))
     shell:
         """
-        {config.ADD_UTILS}
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              {SCRIPT_ARGS}
+        """
+
+rule spatial_derivative:
+    input:
+        data = config.STAGE_INPUT,
+        script = os.path.join('scripts', 'spatial_derivative.py')
+    output:
+        data = os.path.join('{dir}', 'spatial_derivative',
+                           f'{config.EVENT_NAME}_spatial_derivative.csv'),
+        img = report(os.path.join('{dir}', 'spatial_derivative',
+                f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'))
+    shell:
+        """
+        {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \

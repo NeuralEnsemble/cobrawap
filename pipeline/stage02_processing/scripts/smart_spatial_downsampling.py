@@ -188,7 +188,6 @@ if __name__ == '__main__':
         save_plot(args.output_img)
 
     signal = np.empty([len(MacroPixelCoords), dim_t]) #save data as analogsignal
-    print('eheh', np.shape(signal))
     coordinates = np.empty([len(MacroPixelCoords), 3]) #pixel coordinates [x,y,L] to retrieve 
                                                        # original one
     ch_id = np.empty([len(MacroPixelCoords)]) # new channel id
@@ -202,15 +201,11 @@ if __name__ == '__main__':
         coordinates[px_idx] = px
         ch_id[px_idx] = px_idx
         x_coord[px_idx] = (px[0] + px[2]/2.)*imgseq.spatial_scale
-        y_coord[px_idx] = (px[1] + px[1]/2.)*imgseq.spatial_scale
+        y_coord[px_idx] = (px[1] + px[2]/2.)*imgseq.spatial_scale
 
     new_evt_ann = {'x_coords': coordinates.T[0], 'y_coords': coordinates.T[1], 'pixel_coordinates_L': coordinates.T[2], 'x_coord_cm': x_coord, 'y_coord_cm': y_coord, 
                    'channel_id': ch_id}
 
-    print('shape signal', np.shape(signal))
-    print('shape x', np.shape(x_coord))
-    print('shape y', np.shape(coordinates))
-    print('shape ch', np.shape(ch_id))
 
     new_asig = asig.duplicate_with_new_data(signal.T)
     #new_asig.array_annotations = asig.array_annotations

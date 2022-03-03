@@ -20,57 +20,40 @@ def next_power_of_2(n):
 
 # List con x,y,L,flag,x_parent, y_parent, L_parent
 
-def CheckCondition(coords, Input_image):
+def CheckCondition(coords, Input_image, method = 'shapiro'):
     #function to check whether node is compliant with the condition
     value = np.nanmean(Input_image[coords[0]:coords[0]+coords[2], coords[1]:coords[1]+coords[2]], axis = (0,1))
     if np.isnan(np.nanmax(value)):
         return(1)
     else:
-        stat, p = shapiro(value)
-        if p <= 0.05:
-            return(0)
-        else:
-            return(1)
+        if method == 'shapiro':
+            stat, p = shapiro(value)
+            if p <= 0.05:
+                return(0)
+            else:
+                return(1)
 
-def NewLayer(l, Input_image):
-    new_list = [[l[0], l[1], l[2]//2, 
-                 l[3] + CheckCondition([l[0], l[1], l[2]//2], Input_image), 
-                 l[0], l[1], l[2]],
-                
-                [l[0], l[1]+l[2]//2, l[2]//2, 
-                 l[3] + CheckCondition([l[0], l[1]+l[2]//2, l[2]//2], Input_image), 
-                 l[0], l[1], l[2]],
-                
-                [l[0]+l[2]//2, l[1], l[2]//2, 
-                 l[3] + CheckCondition([l[0]+l[2]//2, l[1], l[2]//2], Input_image), 
-                 l[0], l[1], l[2]],
-                
-                [l[0]+l[2]//2, l[1]+l[2]//2, l[2]//2, 
-                 l[3] + CheckCondition([l[0]+l[2]//2, l[1]+l[2]//2, l[2]//2], Input_image), 
-                 l[0], l[1], l[2]]]
-    return(new_list)
-
-def NewLayer_seq(l, Input_image):
+def NewLayer(l, Input_image, evaluation_method):
     new_list = []
     # first leaf
-    cond = CheckCondition([l[0], l[1], l[2]//2], Input_image)
+    cond = CheckCondition([l[0], l[1], l[2]//2], Input_image, evaluation_method)
     new_list.append([l[0], l[1], l[2]//2, (l[3]+cond)*cond, l[0], l[1], l[2]])
 
     # second leaf
-    cond = CheckCondition([l[0], l[1]+l[2]//2, l[2]//2], Input_image)
+    cond = CheckCondition([l[0], l[1]+l[2]//2, l[2]//2], Input_image, evaluation_method)
     new_list.append([l[0], l[1]+l[2]//2, l[2]//2, (l[3]+cond)*cond, l[0], l[1], l[2]])
 
     # third leaf
-    cond = CheckCondition([l[0]+l[2]//2, l[1], l[2]//2], Input_image)
+    cond = CheckCondition([l[0]+l[2]//2, l[1], l[2]//2], Input_image, evaluation_method)
     new_list.append([l[0]+l[2]//2, l[1], l[2]//2, (l[3]+cond)*cond, l[0], l[1], l[2]])
     
     # fourth leaf
-    cond = CheckCondition([l[0]+l[2]//2, l[1]+l[2]//2, l[2]//2], Input_image)
+    cond = CheckCondition([l[0]+l[2]//2, l[1]+l[2]//2, l[2]//2], Input_image, evaluation_method)
     new_list.append([l[0]+l[2]//2, l[1]+l[2]//2, l[2]//2, (l[3]+cond)*cond, l[0], l[1], l[2]])
     
     return(new_list)
 
-def CreateMacroPixel(Input_image, method = 'standard', threshold = 0.5, n_bad = 2):
+def CreateMacroPixel(Input_image, exit_method = 'consecutive', signal_eval_method = 'shapiro', threshold = 0.5, n_bad = 2):
     # initialized node list
     NodeList = []
     MacroPixelCoords = []
@@ -80,14 +63,12 @@ def CreateMacroPixel(Input_image, method = 'standard', threshold = 0.5, n_bad = 
 
     while len(NodeList):
 
-        if method == 'consecutive':
-            Children = NewLayer_seq(NodeList[0], Input_image)
-        else:
-            Children = NewLayer(NodeList[0], Input_image)
-
+        # create node's children
+        Children = NewLayer(NodeList[0], Input_image, evaluation_method = signal_eval_method)
         NodeList.pop(0) # delete investigated node
-        
-        if method == 'Voting':
+       
+        #check wether exit condition is met
+        if exit_method == 'voting':
             # check how many of children are "bad"
             flag_list = [np.int32(f[3]>= n_bad) for f in Children]
             if np.sum(flag_list) > threshold*len(Children):
@@ -128,18 +109,18 @@ def plot_masked_image(original_img, MacroPixelCoords):
     im = axs[0].imshow(np.nanmean(original_img, axis = 2))
     axs[0].set_xticks([])
     axs[0].set_yticks([])
-    axs[0].set_title('Pre downsampling', fontsize = 7.)
+    axs[0].set_title('Original image', fontsize = 7.)
 
     im = axs[1].imshow(NewImage)
     axs[1].set_xticks([])
     axs[1].set_yticks([])
-    axs[1].set_title('Post downsampling', fontsize = 7.)
+    axs[1].set_title('Post sampling', fontsize = 7.)
 
     ls = [macro[2] for macro in MacroPixelCoords]
 
     im = axs[2].hist(ls, bins = np.max(ls))
     axs[2].set_yscale('Log')
-    axs[2].set_xlabel('macro-pixel dimension', fontsize = 7.)
+    axs[2].set_xlabel('macro-pixel size', fontsize = 7.)
 
     plt.tight_layout()
     return axs
@@ -153,12 +134,14 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
                      help="path of output image", default=None)
-    CLI.add_argument("--n_bad_elements",  nargs='?', type=none_or_int,
+    CLI.add_argument("--n_bad_nodes",  nargs='?', type=none_or_int,
                      help="number of non informative macro-pixel to prune branch", default=2)
-    CLI.add_argument("--method",  nargs='?', type=none_or_str,
-                     help="method to define macro-pixel optimal dimension", default='standard')
-    CLI.add_argument("--threshold",  nargs='?', type=none_or_float,
-                     help="bad nodes threshold if voting method is selected", default=0.5)
+    CLI.add_argument("--exit_condition",  nargs='?', type=none_or_str,
+                     help="exit condition in the optimal macro-pixel dimension tree search", default='consecutive')
+    CLI.add_argument("--signal_eval_method",  nargs='?', type=none_or_str,
+                     help="signal to noise ratio evalutaion method", default='shapiro')
+    CLI.add_argument("--voting_threshold",  nargs='?', type=none_or_float,
+                     help="threshold of non informative nodes percentage if voting method is selected", default=0.5)
     CLI.add_argument("--output_array",  nargs='?', type=none_or_str,
                       help="path of output numpy array", default=None)
     args = CLI.parse_args()
@@ -173,7 +156,7 @@ if __name__ == '__main__':
     dim_x, dim_y, dim_t = imgseq_array.shape
 
     # pad image sequences with nans to make it divisible by 2
-    N_pad = next_power_of_2(max(dim_x, dim_y)) #TODO padding should not be necessary squared
+    N_pad = next_power_of_2(max(dim_x, dim_y)) 
     padded_image_seq = np.pad(imgseq_array, 
                          pad_width = [((N_pad-dim_x)//2,(N_pad-dim_x)//2 + (N_pad-dim_x)%2), 
                                       ((N_pad-dim_y)//2, (N_pad-dim_y)//2 + (N_pad-dim_y)%2), 
@@ -181,8 +164,10 @@ if __name__ == '__main__':
     # tree search for the best macro-pixel dimension
     # List con x,y,L,flag,x_parent, y_parent, L_parent
     MacroPixelCoords = CreateMacroPixel(Input_image = padded_image_seq,
-                                        method = args.method,
-                                        n_bad = args.n_bad_elements)
+                                        exit_method = args.exit_condition,
+                                        signal_eval_method = args.signal_eval_method,
+                                        threshold = args.voting_threshold,
+                                        n_bad = args.n_bad_nodes)
     if args.output_img is not None:
         plot_masked_image(padded_image_seq, MacroPixelCoords)
         save_plot(args.output_img)
@@ -203,7 +188,9 @@ if __name__ == '__main__':
         x_coord[px_idx] = (px[0] + px[2]/2.)*imgseq.spatial_scale
         y_coord[px_idx] = (px[1] + px[2]/2.)*imgseq.spatial_scale
 
-    new_evt_ann = {'x_coords': coordinates.T[0], 'y_coords': coordinates.T[1], 'pixel_coordinates_L': coordinates.T[2], 'x_coord_cm': x_coord, 'y_coord_cm': y_coord, 
+    new_evt_ann = {'x_coords': coordinates.T[0], 
+                   'y_coords': coordinates.T[1], 
+                   'pixel_coordinates_L': coordinates.T[2],
                    'channel_id': ch_id}
 
 

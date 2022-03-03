@@ -32,6 +32,6 @@ Other as in other stages, in this stage, all blocks are re-executed with every s
 |__normalization__|divides signals by factor|`NORMALIZE_BY`|
 |__roi_selection__|masks area of low signal intensity|`INTENSITY_THRESHOLD`|
 |__detrending__|removes (linear, quadratic, ..) trends in signals|`DETRENDING_ORDER`|
-|__spatial_downsampling__|non homogeneous spatial smoothing according to macro pixels sigma to noise ratio|`N_BAD_NODES_DOWNSAMPLING`, `BAD_NODES_THRESHOLD_DOWNSAMPLING`, `DOWNSAMPLING_METHOD`|
+|__hierarchical_spatial_downsampling__|non homogeneous spatial smoothing according to macro pixels sigma to noise ratio|`EXIT_CONDITION`, `SIGNAL_EVALUATION_METHOD`, `N_BAD_NODES`, `VOTING_THRESHOLD`|
 
 (_plotting parameters in italic_)

@@ -31,9 +31,10 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
 
-N_BAD_NODES_DOWNSAMPLING = config["N_BAD_NODES_DOWNSAMPLING"]
-BAD_NODES_THRESHOLD_DOWNSAMPLING = config["BAD_NODES_THRESHOLD_DOWNSAMPLING"]
-DOWNSAMPLING_METHOD = config["DOWNSAMPLING_METHOD"]
+N_BAD_NODES = config["N_BAD_NODES"]
+VOTING_THRESHOLD = config["VOTING_THRESHOLD"]
+EXIT_CONDITION = config["EXIT_CONDITION"]
+SIGNAL_EVALUATION_METHOD = config["SIGNAL_EVALUATION_METHOD"]
 
 BLOCK_ORDER = config["BLOCK_ORDER"]
 NORMALIZE_BY = config["NORMALIZE_BY"]
@@ -391,28 +392,30 @@ rule subsampling:
                               --target_rate {params.target_rate}
         """
 
-rule smart_spatial_downsampling:
+rule hierarchical_spatial_sampling:
     input:
         is_clear = os.path.join('{dir}', 'clear.done'),
         data = input_file,
-        script = os.path.join('scripts', 'smart_spatial_downsampling.py')
+        script = os.path.join('scripts', 'hierarchical_spatial_sampling.py')
     output:
         data = os.path.join('{dir}', '{rule_name}',
-                            'smart_spatial_downsampling.'+NEO_FORMAT),
+                            'hierarchical_spatial_sampling.'+NEO_FORMAT),
         img = report(os.path.join('{dir}', '{rule_name}',
-                                  'smart_spatial_downsampling.'+PLOT_FORMAT))
+                                  'hierarchical_spatial_sampling.'+PLOT_FORMAT))
     params:
-        n_bad_elements = N_BAD_NODES_DOWNSAMPLING,
-        threshold = BAD_NODES_THRESHOLD_DOWNSAMPLING,
-        method = DOWNSAMPLING_METHOD
+        n_bad_nodes = N_BAD_NODES,
+        voting_threshold = VOTING_THRESHOLD,
+        exit_condition = EXIT_CONDITION,
+        signal_eval_method = SIGNAL_EVALUATION_METHOD,
     shell:
         """
         {ADD_UTILS}
         python {input.script} --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
-                              --n_bad_elements {params.n_bad_elements} \
-                              --threshold {params.threshold} \
-                              --method "{params.method}"
+                              --n_bad_nodes {params.n_bad_nodes} \
+                              --voting_threshold {params.voting_threshold} \
+                              --exit_condition "{params.exit_condition}" \
+                              --signal_eval_method "{params.signal_eval_method}"
 
         """

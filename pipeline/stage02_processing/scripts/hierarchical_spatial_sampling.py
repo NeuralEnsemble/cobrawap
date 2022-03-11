@@ -17,6 +17,15 @@ def next_power_of_2(n):
         n &= (n - 1)
     return n << 1
 
+def ComputeCenterOfMass(s, scale):
+    # compute the center of mass of a macropixel con nan values
+    mean = np.nanmean(s, axis = 2)
+    idx = np.where(~np.isnan(mean))
+    x_cm = (np.mean(idx[0])+0.5)*scale
+    y_cm = (np.mean(idx[1])+0.5)*scale
+    if np.isnan(x_cm): x_cm = np.shape(mean)[0]/2
+    if np.isnan(y_cm): y_cm = np.shape(mean)[1]/2
+    return(x_cm, y_cm)
 
 # List con x,y,L,flag,x_parent, y_parent, L_parent
 
@@ -178,18 +187,25 @@ if __name__ == '__main__':
     ch_id = np.empty([len(MacroPixelCoords)]) # new channel id
     x_coord = np.empty([len(MacroPixelCoords)]) # new x coord
     y_coord = np.empty([len(MacroPixelCoords)]) # new y coord
+    x_coord_cm = np.empty([len(MacroPixelCoords)]) # new x coord
+    y_coord_cm = np.empty([len(MacroPixelCoords)]) # new y coord
 
     for px_idx, px in enumerate(MacroPixelCoords): # for each new pixel
         signal[px_idx, :] = np.nanmean(padded_image_seq[px[0]:px[0]+px[2], 
                                                      px[1]:px[1]+px[2]], 
                                     axis = (0,1))
+        x_coord_cm[px_idx], y_coord_cm[px_idx] = ComputeCenterOfMass(padded_image_seq[px[0]:px[0]+px[2], px[1]:px[1]+px[2]],
+                                 imgseq.spatial_scale)
+
         coordinates[px_idx] = px
         ch_id[px_idx] = px_idx
         x_coord[px_idx] = (px[0] + px[2]/2.)*imgseq.spatial_scale
         y_coord[px_idx] = (px[1] + px[2]/2.)*imgseq.spatial_scale
 
-    new_evt_ann = {'x_coords': coordinates.T[0], 
-                   'y_coords': coordinates.T[1], 
+    new_evt_ann = {'x_coords': coordinates.T[0],
+                   'y_coords': coordinates.T[1],
+                   'x_coord_cm': x_coord_cm,
+                   'y_coord_cm': y_coord_cm,
                    'pixel_coordinates_L': coordinates.T[2],
                    'channel_id': ch_id}
 

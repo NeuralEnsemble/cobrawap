@@ -28,7 +28,7 @@ PLOT_FORMAT: 'png'
 # The available blocks are:
 # 'background_subtraction', 'frequency_filter', 'normalization', 'detrending',
 # 'spatial_downsampling', 'hierarchical_spatial_sampling', 'roi_selection', 'logMUA_estimation', 'phase_transform',
-# 'zscore', 'subsampling', 'smart_spatial_downsampling'
+# 'zscore', 'subsampling'
 # Default: empty list [] -> it skips any processing blocks and returns the same
 # as input but, different from plot obtained from stage01, here the values on
 # the y-scale are correclty reported

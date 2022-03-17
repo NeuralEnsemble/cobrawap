@@ -24,6 +24,37 @@ def add_annotations_to_df(df, annotations, include_keys=[]):
 
     return df
 
+def get_corresponding_array_values(a, b):
+    '''
+    a -> b
+    '''
+    a_labels = np.unique(a)
+    mapping = {}
+    for i, a_label in enumerate(a_labels):
+        idx = np.where(a_label == a)[0]
+        b_label_values = b[idx]
+        if (b_label_values == b_label_values[0]).all():
+            mapping[a_label] = b_label_values[0]
+        else:
+            return False
+    return mapping
+
+def add_array_annotations_to_df(df, array_annotations, labels, index_name,
+                                include_keys=[]):
+    use_all_keys = not bool(len(include_keys))
+
+    for key, value in array_annotations.items():
+        key_is_relevant = use_all_keys or key in include_keys
+
+        if key_is_relevant and key not in df.columns:
+            mapping = get_corresponding_array_values(labels, value)
+            if not mapping: continue
+
+            annotation_df = pd.DataFrame(mapping.items(),
+                                         columns=[index_name, key])
+            df = df.merge(annotation_df, how='outer', on=index_name)
+    return df
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -61,6 +92,11 @@ if __name__ == '__main__':
 
     for annotations in [evts.annotations, asig.annotations]:
         df = add_annotations_to_df(df, annotations, args.include_keys)
+
+    df = add_array_annotations_to_df(df, evts.array_annotations,
+                                     labels=evts.labels.astype(int),
+                                     index_name=f'{args.event_name}_id',
+                                     include_keys=args.include_keys)
 
     df['profile'] = [args.profile] * len(df.index)
     df['sampling_rate'] = asig.sampling_rate.magnitude

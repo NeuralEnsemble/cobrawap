@@ -154,8 +154,6 @@ if __name__ == '__main__':
                      help="signal to noise ratio evalutaion method", default='shapiro')
     CLI.add_argument("--voting_threshold",  nargs='?', type=none_or_float,
                      help="threshold of non informative nodes percentage if voting method is selected", default=0.5)
-    CLI.add_argument("--output_array",  nargs='?', type=none_or_str,
-                      help="path of output numpy array", default=None)
     args = CLI.parse_args()
 
     block = load_neo(args.data)

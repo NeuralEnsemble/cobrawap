@@ -9,14 +9,6 @@ from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogs
 
 
 def next_power_of_2(n):
-    if n == 0:
-        return 1
-    if n & (n - 1) == 0:
-        return n
-    while n & (n - 1) > 0:
-        n &= (n - 1)
-    return n << 1
-def next_power_of_2(n):
     exponent = np.ceil(np.log2(n))
     return int(2**exponent)
 
@@ -114,7 +106,9 @@ def plot_masked_image(original_img, MacroPixelCoords):
     NewImage = np.empty([np.shape(original_img)[0], np.shape(original_img)[0]])*np.nan
     for macro in MacroPixelCoords:
         # fill pixels belonging to the same macropixel with the same signal
-        NewImage[macro[0]:macro[0] + macro[2], macro[1]:macro[1] + macro[2]] = np.mean(np.nanmean(original_img[macro[0]:macro[0] + macro[2], macro[1]:macro[1]+macro[2]], axis = (0,1)))
+        mean_signal = np.nanmean(original_img[macro[0]:macro[0] + macro[2], macro[1]:macro[1]+macro[2]],
+                                 axis = (0,1))
+        NewImage[macro[0]:macro[0] + macro[2], macro[1]:macro[1] + macro[2]] = np.mean(mean_signal)
 
     fig, axs = plt.subplots(1, 3)
     fig.set_size_inches(6,2, forward=True)

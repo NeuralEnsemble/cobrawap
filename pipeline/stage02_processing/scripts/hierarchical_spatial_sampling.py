@@ -16,6 +16,9 @@ def next_power_of_2(n):
     while n & (n - 1) > 0:
         n &= (n - 1)
     return n << 1
+def next_power_of_2(n):
+    exponent = np.ceil(np.log2(n))
+    return int(2**exponent)
 
 def ComputeCenterOfMass(s, scale):
     # compute the center of mass of a macropixel con nan values

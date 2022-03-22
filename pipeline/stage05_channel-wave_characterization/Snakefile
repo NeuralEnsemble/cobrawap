@@ -27,7 +27,7 @@ def measures_output(wildcards):
 
 if config.EVENT_NAME == 'wavemodes':
     config.MEASURES = [m for m in config.MEASURES if m not in
-                        ['inter_wave_interval_local']]
+                        ['inter_wave_interval_local', 'flow_direction_local']]
 
 localrules: all, check_input
 

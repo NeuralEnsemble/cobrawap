@@ -93,7 +93,7 @@ def get_triu_indices_pos(i, N):
     return np.sort(np.append(idx0, idx1))
 
 def pca_transform(timelag_matrix, dims=None):
-    if dims is not None and dims > len(timlag_df):
+    if dims is not None and dims > len(timelag_df):
         warn(f'Too few waves ({len(timelag_df)}) to peform a pca reduction '
            + f'to {dim} dims. Skipping.')
         dims = None

@@ -4,6 +4,7 @@ import neo
 import numpy as np
 import pandas as pd
 from copy import copy
+from warnings import warn
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 # from sklearn.pipeline import make_pipeline

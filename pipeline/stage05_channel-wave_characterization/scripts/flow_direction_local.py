@@ -31,8 +31,6 @@ if __name__ == '__main__':
 
     df_dict = {f'{args.event_name}_id': evt.labels,
                'channel_id': evt.array_annotations['channels'],
-               'x_coords': evt.array_annotations['x_coords'],
-               'y_coords': evt.array_annotations['y_coords'],
                'flow_direction_local_x': np.empty(len(evt), dtype=float),
                'flow_direction_local_y': np.empty(len(evt), dtype=float),
                }

@@ -82,7 +82,7 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
 
     # remove outlier waves in the quantile of wave distances
     q = np.quantile(neighbourhood_distance, outlier_quantile)
-    keep_rows = np.where(neighbourhood_distance < q)[0]
+    keep_rows = np.where(neighbourhood_distance <= q)[0]
     timelag_df = timelag_df.iloc[keep_rows, :]
     return timelag_df
 

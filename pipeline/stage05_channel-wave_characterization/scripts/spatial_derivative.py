@@ -56,7 +56,8 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False, smoothing=0):
                 trigger_collection = sample_wave_pattern(pattern_func,
                                                          dim_x=dim_x, dim_y=dim_y)
             except ValueError as ve:
-                warn(ve + ' Continuing without interpolation.')
+                warn(ve)
+                warn('Continuing without interpolation.')
 
         kernel = get_kernel(kernel_name)
         d_vertical = -1 * nan_conv2d(trigger_collection, kernel.y)

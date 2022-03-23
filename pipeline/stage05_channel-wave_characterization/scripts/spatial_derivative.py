@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import itertools
-from warning import warn
+from warnings import warn
 from scipy.interpolate import RBFInterpolator
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str

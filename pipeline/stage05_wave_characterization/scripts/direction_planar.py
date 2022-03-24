@@ -22,61 +22,50 @@ def calc_displacement(times, locations):
 
 def trigger_interpolation(evts):
     spatial_scale = evts.annotations['spatial_scale']
-
     wave_ids = np.unique(evts.labels)
-
-    directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
+    dx_avg, dy_avg = np.zeros(len(wave_ids)), np.zeros(len(wave_ids))
+    dx_std, dy_std = np.zeros(len(wave_ids)), np.zeros(len(wave_ids))
 
     # loop over waves
     for i, wave_i in enumerate(wave_ids):
-        if not int(wave_i) == -1:
-            # Fit wave displacement
-            idx = np.where(evts.labels == wave_i)[0]
-            dx, dx_err = calc_displacement(evts.times[idx].magnitude,
-                                       evts.array_annotations['x_coords'][idx]
-                                     * spatial_scale.magnitude)
-            dy, dy_err = calc_displacement(evts.times[idx].magnitude,
-                                       evts.array_annotations['y_coords'][idx]
-                                     * spatial_scale.magnitude)
-            directions[i] = np.array([dx + 1j*dy, dx_err + 1j*dy_err])
-
-    return directions
+        # Fit wave displacement
+        idx = np.where(evts.labels == wave_i)[0]
+        dx_avg[i], dx_std[i] = calc_displacement(evts.times[idx].magnitude,
+                                   evts.array_annotations['x_coords'][idx]
+                                 * spatial_scale.magnitude)
+        dy_avg[i], dy_std[i] = calc_displacement(evts.times[idx].magnitude,
+                                   evts.array_annotations['y_coords'][idx]
+                                 * spatial_scale.magnitude)
+    return dx_avg, dy_avg, dx_std, dy_std
 
 
 def times2ids(time_array, times_selection):
     return np.array([np.argmax(time_array>=t) for t in times_selection])
 
 def calc_flow_direction(evts, asig):
-    wave_ids = np.unique(evts.labels)
-    directions = np.zeros((len(wave_ids), 2), dtype=np.complex_)
+    wave_ids = np.unique(evts.labels.astype(int))
+    dx_avg, dy_avg = np.zeros(len(wave_ids)), np.zeros(len(wave_ids))
+    dx_std, dy_std = np.zeros(len(wave_ids)), np.zeros(len(wave_ids))
     signals = asig.as_array()
 
-    # loop over waves
     for i, wave_i in enumerate(wave_ids):
-        if not int(wave_i) == -1:
-            idx = np.where(evts.labels == str(wave_i))[0]
-            t_idx = times2ids(asig.times, evts.times[idx])
-            x_coords = evts.array_annotations['x_coords'][idx]
-            y_coords = evts.array_annotations['y_coords'][idx]
-            channels = np.empty(len(idx), dtype=int)
-            for c, (x,y) in enumerate(zip(x_coords, y_coords)):
-                channels[c] = np.where((asig.array_annotations['x_coords'] == x) \
-                                     & (asig.array_annotations['y_coords'] == y))[0]
-            # channels = evts.array_annotations['channels'][idx]
-            # ToDo: Normalize vectors?
-            if np.isnan(signals[t_idx, channels]).any():
-                warnings.warn("Signals at trigger points contain nans!")
-            x_avg = np.nanmean(np.real(signals[t_idx, channels]))
-            x_std = np.nanstd(np.real(signals[t_idx, channels]))
-            y_avg = np.nanmean(np.imag(signals[t_idx, channels]))
-            y_std = np.nanstd(np.imag(signals[t_idx, channels]))
-            directions[i] = np.array([x_avg + 1j*y_avg, x_std + 1j*y_std])
-    return directions
+        idx = np.where(evts.labels.astype(int) == wave_i)[0]
+        t_idx = times2ids(asig.times, evts.times[idx])
+        channels = evts.array_annotations['channels'][idx]
+        flow_vectors = signals[t_idx, channels]
+        flow_vectors /= np.abs(flow_vectors)
+        if np.isnan(flow_vectors).any():
+            warnings.warn("Signals at trigger points contain nans!")
+        dx_avg[i] = np.nanmean(np.imag(flow_vectors))
+        dx_std[i] = np.nanstd(np.imag(flow_vectors))
+        dy_avg[i] = np.nanmean(np.real(flow_vectors))
+        dy_std[i] = np.nanstd(np.real(flow_vectors))
+    return dx_avg, dy_avg, dx_std, dy_std
 
-def plot_directions(dataframe, orientation_top=None, orientation_right=None):
-    wave_ids = dataframe.index
-    directions = dataframe.direction_x + 1j*dataframe.direction_y
-    directions_std = dataframe.direction_x_std + 1j*dataframe.direction_y_std
+def plot_directions(dataframe, wave_ids,
+                    orientation_top=None, orientation_right=None):
+    directions = dataframe.direction_x*1j + dataframe.direction_y
+    directions_std = dataframe.direction_x_std*1j + dataframe.direction_y_std
 
     ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
     nrows = int(np.ceil((len(wave_ids)+1)/ncols))
@@ -164,23 +153,25 @@ if __name__ == '__main__':
     evts = evts[evts.labels.astype('str') != '-1']
 
     if args.method == 'trigger_interpolation':
-        directions = trigger_interpolation(evts)
+        dx_avg, dy_avg, dx_std, dy_std = trigger_interpolation(evts)
     elif args.method == 'optical_flow':
         asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
-        directions = calc_flow_direction(evts, asig)
+        dx_avg, dy_avg, dx_std, dy_std = calc_flow_direction(evts, asig)
     else:
         raise NameError(f'Method name {args.method} is not recognized!')
 
-    df = pd.DataFrame(np.unique(evts.labels), columns=[f'{args.event_name}_id'])
-    df['direction_x'] = np.real(directions[:,0])
-    df['direction_y'] = np.imag(directions[:,0])
-    df['direction_x_std'] = np.real(directions[:,1])
-    df['direction_y_std'] = np.imag(directions[:,1])
+    df = pd.DataFrame(np.unique(evts.labels.astype(int)),
+                      columns=[f'{args.event_name}_id'])
+    df['direction_x'] = dx_avg
+    df['direction_y'] = dy_avg
+    df['direction_x_std'] = dx_std
+    df['direction_y_std'] = dy_std
 
     if args.output_img is not None:
-        orientation_top = evts.annotations['orientation_top']
-        orientation_right = evts.annotations['orientation_right']
-        plot_directions(df, orientation_top, orientation_right)
+        plot_directions(df,
+                        wave_ids=np.unique(evts.labels.astype(int)),
+                        orientation_top=evts.annotations['orientation_top'],
+                        orientation_right=evts.annotations['orientation_right'])
         save_plot(args.output_img)
 
     df.to_csv(args.output)

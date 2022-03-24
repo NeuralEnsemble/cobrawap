@@ -56,16 +56,16 @@ def calc_flow_direction(evts, asig):
         flow_vectors /= np.abs(flow_vectors)
         if np.isnan(flow_vectors).any():
             warnings.warn("Signals at trigger points contain nans!")
-        dx_avg[i] = np.nanmean(np.imag(flow_vectors))
-        dx_std[i] = np.nanstd(np.imag(flow_vectors))
-        dy_avg[i] = np.nanmean(np.real(flow_vectors))
-        dy_std[i] = np.nanstd(np.real(flow_vectors))
+        dx_avg[i] = np.nanmean(np.real(flow_vectors))
+        dx_std[i] = np.nanstd(np.real(flow_vectors))
+        dy_avg[i] = np.nanmean(np.imag(flow_vectors))
+        dy_std[i] = np.nanstd(np.imag(flow_vectors))
     return dx_avg, dy_avg, dx_std, dy_std
 
 def plot_directions(dataframe, wave_ids,
                     orientation_top=None, orientation_right=None):
-    directions = dataframe.direction_x*1j + dataframe.direction_y
-    directions_std = dataframe.direction_x_std*1j + dataframe.direction_y_std
+    directions = dataframe.direction_x + dataframe.direction_y*1j
+    directions_std = dataframe.direction_x_std + dataframe.direction_y_std*1j
 
     ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
     nrows = int(np.ceil((len(wave_ids)+1)/ncols))

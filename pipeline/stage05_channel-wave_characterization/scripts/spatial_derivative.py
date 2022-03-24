@@ -60,8 +60,8 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False, smoothing=0):
                 warn('Continuing without interpolation.')
 
         kernel = get_kernel(kernel_name)
-        d_vertical = -1 * nan_conv2d(trigger_collection, kernel.y)
-        d_horizont = -1 * nan_conv2d(trigger_collection, kernel.x)
+        d_vertical = -1 * nan_conv2d(trigger_collection, kernel.x)
+        d_horizont = -1 * nan_conv2d(trigger_collection, kernel.y)
 
         dt_x = d_vertical[x_coords, y_coords]
         dt_y = d_horizont[x_coords, y_coords]

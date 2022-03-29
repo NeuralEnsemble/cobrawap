@@ -156,7 +156,7 @@ if __name__ == '__main__':
     
     # load image sequences at the original spatial resolution
     imgseq = block.segments[0].imagesequences[-1]
-    imgseq_array = np.swapaxis(imgseq.as_array().T, 0, 1)
+    imgseq_array = np.swapaxes(imgseq.as_array().T, 0, 1)
     dim_x, dim_y, dim_t = imgseq_array.shape
 
     # pad image sequences with nans to make it divisible by 2

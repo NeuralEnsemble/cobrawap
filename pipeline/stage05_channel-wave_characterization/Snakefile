@@ -15,7 +15,7 @@ from types import SimpleNamespace
 config = SimpleNamespace(**config)
 config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
+SCRIPT_ARGS = ' '.join([f"--{key} '{value}'" for key, value
                                            in config.__dict__.items()])
 
 #### Housekeeping ####

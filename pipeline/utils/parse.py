@@ -26,8 +26,10 @@ def get_base_type(datatype):
         return 'str'
     elif np.issubdtype(datatype, complex):
         return 'complex'
+    elif np.issubdtype(datatype, bool):
+        return 'bool'
     else:
-        warnings.warn("Did not recognize type {dtype}!")
+        warnings.warn(f"Did not recognize type {datatype}!")
     return None
 
 

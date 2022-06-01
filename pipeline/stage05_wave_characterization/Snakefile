@@ -55,9 +55,9 @@ rule all:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {params.data} \
-                              --output "{output.data}" \
-                              --output_img "{output.img}"
+        python "{input.script}" --data {params.data} \
+                                --output "{output.data}" \
+                                --output_img "{output.img}"
         """
 
 rule check_input:
@@ -70,8 +70,8 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              {SCRIPT_ARGS}
+        python "{input.script}" --data "{input.data}" \
+                                {SCRIPT_ARGS}
         touch "{output}"
         """
 
@@ -89,8 +89,8 @@ rule compute_measure:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              {SCRIPT_ARGS}
+        python "{input.script}" --data "{input.data}" \
+                                --output "{output.data}" \
+                                --output_img "{output.img}" \
+                                {SCRIPT_ARGS}
         """

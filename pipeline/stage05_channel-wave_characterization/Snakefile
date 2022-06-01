@@ -16,7 +16,7 @@ config = SimpleNamespace(**config)
 config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 SCRIPT_ARGS = ' '.join([f"--{key} '{value}'" for key, value
-                                           in config.__dict__.items()])
+                                             in config.__dict__.items()])
 
 #### Housekeeping ####
 
@@ -49,7 +49,7 @@ rule all:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {params.data} \
+        python "{input.script}" --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
                               --merge_key {params.merge_key}
@@ -65,8 +65,8 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              {SCRIPT_ARGS}
+        python "{input.script}" --data "{input.data}" \
+                                {SCRIPT_ARGS}
         touch "{output}"
         """
 
@@ -93,7 +93,7 @@ rule compute_measure:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
+        python "{input.script}" --data "{input.data}" \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
                               {SCRIPT_ARGS}
@@ -111,8 +111,8 @@ rule spatial_derivative:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              {SCRIPT_ARGS}
+        python "{input.script}" --data "{input.data}" \
+                                --output "{output.data}" \
+                                --output_img "{output.img}" \
+                                {SCRIPT_ARGS}
         """

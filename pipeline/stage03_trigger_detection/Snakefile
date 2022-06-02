@@ -106,7 +106,7 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}"
+        python3 "{input.script}" --data "{input.data}"
         touch "{output}"
         """
 
@@ -125,12 +125,12 @@ checkpoint plot_trigger_times:
     shell:
         """
         {ADD_UTILS}
-        python "{input.plot_script}" --data "{input.data}" \
-                                     --output_dir "{output.img_dir}" \
-                                     --filename {params.filename} \
-                                     --t_start {params.tstart} \
-                                     --t_stop {params.tstop} \
-                                     --channels {params.plot_channels} \
+        python3 "{input.plot_script}" --data "{input.data}" \
+                                      --output_dir "{output.img_dir}" \
+                                      --filename {params.filename} \
+                                      --t_start {params.tstart} \
+                                      --t_stop {params.tstop} \
+                                      --channels {params.plot_channels} \
         """
 
 #### DETECTION BLOCKS (choose one) ####
@@ -146,9 +146,9 @@ rule threshold:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --thresholds "{input.thresholds}"
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --thresholds "{input.thresholds}"
         """
 
 rule calc_thresholds_fixed:
@@ -163,9 +163,9 @@ rule calc_thresholds_fixed:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.array}" \
-                                --threshold {params.threshold}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.array}" \
+                                 --threshold {params.threshold}
         """
 
 rule calc_thresholds_fitted:
@@ -187,14 +187,14 @@ rule calc_thresholds_fitted:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.array}" \
-                                --img_dir "{output.img_dir}" \
-                                --img_name {params.img_name} \
-                                --sigma_factor {params.sigma_factor} \
-                                --fit_function {params.fit_function} \
-                                --bin_num {params.bin_num} \
-                                --plot_channels {params.plot_channels}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.array}" \
+                                 --img_dir "{output.img_dir}" \
+                                 --img_name {params.img_name} \
+                                 --sigma_factor {params.sigma_factor} \
+                                 --fit_function {params.fit_function} \
+                                 --bin_num {params.bin_num} \
+                                 --plot_channels {params.plot_channels}
         """
 
 rule hilbert_phase:
@@ -215,14 +215,14 @@ rule hilbert_phase:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --img_dir "{output.img_dir}" \
-                                --img_name {params.img_name} \
-                                --transition_phase {params.transition_phase} \
-                                --plot_channels {params.plot_channels} \
-                                --plot_tstart {params.plot_tstart} \
-                                --plot_tstop {params.plot_tstop}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --img_dir "{output.img_dir}" \
+                                 --img_name {params.img_name} \
+                                 --transition_phase {params.transition_phase} \
+                                 --plot_channels {params.plot_channels} \
+                                 --plot_tstart {params.plot_tstart} \
+                                 --plot_tstop {params.plot_tstop}
         """
 
 rule minima:
@@ -240,13 +240,13 @@ rule minima:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --min_peak_distance {params.min_peak_distance} \
-                                --minima_threshold_fraction {params.minima_threshold_fraction} \
-                                --maxima_threshold_fraction {params.maxima_threshold_fraction} \
-                                --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
-                                --num_interpolation_points {params.num_interpolation_points}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --min_peak_distance {params.min_peak_distance} \
+                                 --minima_threshold_fraction {params.minima_threshold_fraction} \
+                                 --maxima_threshold_fraction {params.maxima_threshold_fraction} \
+                                 --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
+                                 --num_interpolation_points {params.num_interpolation_points}
         """
 
 #### FILTER BLOCKS (choose any) ####
@@ -265,9 +265,9 @@ rule remove_short_states:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --min_up_duration {params.min_up_duration} \
-                                --min_down_duration {params.min_down_duration} \
-                                --remove_down_first {params.remove_down_first} \
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --min_up_duration {params.min_up_duration} \
+                                 --min_down_duration {params.min_down_duration} \
+                                 --remove_down_first {params.remove_down_first} \
         """

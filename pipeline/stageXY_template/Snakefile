@@ -46,9 +46,9 @@ rule all:
     shell:
         """
         {config.ADD_UTILS}
-        python "{input.script}" --data {params.data} \
-                                --output "{output.data}" \
-                                --output_img "{output.img}"
+        python3 "{input.script}" --data {params.data} \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}"
         """
 
 rule check_input:
@@ -61,7 +61,7 @@ rule check_input:
     shell:
         """
         {config.ADD_UTILS}
-        python "{input.script}" --data "{input.data}"
+        python3 "{input.script}" --data "{input.data}"
         touch "{output}"
         """
 
@@ -78,8 +78,8 @@ rule compute_measure:
     shell:
         """
         {config.ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --output_img "{output.img}" \
-                                {SCRIPT_ARGS}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 {SCRIPT_ARGS}
         """

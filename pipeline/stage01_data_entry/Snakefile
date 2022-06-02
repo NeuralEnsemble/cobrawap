@@ -79,7 +79,7 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}"
+        python3 "{input.script}" --data "{input.data}"
         touch "{output}"
         """
 
@@ -96,11 +96,11 @@ rule plot_traces:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.img}" \
-                                --t_start {params.plot_tstart} \
-                                --t_stop {params.plot_tstop} \
-                                --channels {params.plot_channels}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.img}" \
+                                 --t_start {params.plot_tstart} \
+                                 --t_stop {params.plot_tstop} \
+                                 --channels {params.plot_channels}
         """
 
 def curation_script(w):
@@ -130,17 +130,17 @@ rule enter_data:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --data_name {wildcards.data_name} \
-                                --sampling_rate {params.sampling_rate} \
-                                --spatial_scale {params.spatial_scale} \
-                                --t_start {params.t_start} \
-                                --t_stop {params.t_stop} \
-                                --orientation_top {params.orientation_top} \
-                                --orientation_right {params.orientation_right} \
-                                --annotations {params.annotations} \
-                                --array_annotations {params.array_annotations} \
-                                --kwargs {params.kwargs} \
-                                --trial {params.trial}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --data_name {wildcards.data_name} \
+                                 --sampling_rate {params.sampling_rate} \
+                                  --spatial_scale {params.spatial_scale} \
+                                 --t_start {params.t_start} \
+                                 --t_stop {params.t_stop} \
+                                 --orientation_top {params.orientation_top} \
+                                 --orientation_right {params.orientation_right} \
+                                 --annotations {params.annotations} \
+                                 --array_annotations {params.array_annotations} \
+                                 --kwargs {params.kwargs} \
+                                 --trial {params.trial}
         """

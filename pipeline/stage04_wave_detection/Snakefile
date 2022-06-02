@@ -83,7 +83,7 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}"
+        python3 "{input.script}" --data "{input.data}"
         touch "{output}"
         """
 
@@ -104,7 +104,7 @@ rule merge_wave_definitions:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --waves "{input.waves}" \
+        python3 "{input.script}" --waves "{input.waves}" \
                                 --properties "{params.properties}" \
                                 --output "{output.data}"
         """
@@ -129,15 +129,15 @@ rule trigger_clustering:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --metric {params.metric} \
-                                --time_space_ratio {params.time_space_ratio} \
-                                --neighbour_distance {params.neighbour_distance} \
-                                --min_samples {params.min_samples}
-        python "{input.plot_script}" --data "{output.data}" \
-                                     --output "{output.img}" \
-                                     --time_slice {params.plot_time_slice}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --metric {params.metric} \
+                                 --time_space_ratio {params.time_space_ratio} \
+                                 --neighbour_distance {params.neighbour_distance} \
+                                 --min_samples {params.min_samples}
+        python3 "{input.plot_script}" --data "{output.data}" \
+                                      --output "{output.img}" \
+                                      --time_slice {params.plot_time_slice}
         """
 
 #### ADDITIONAL PROPERTIES ####
@@ -159,15 +159,15 @@ rule optical_flow:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --output_img "{output.img}" \
-                                --alpha {params.alpha} \
-                                --max_Niter {params.max_Niter} \
-                                --convergence_limit {params.convergence_limit} \
-                                --gaussian_sigma {params.gaussian_sigma} \
-                                --derivative_filter {params.derivative_filter} \
-                                --use_phases {params.use_phases}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 --alpha {params.alpha} \
+                                 --max_Niter {params.max_Niter} \
+                                 --convergence_limit {params.convergence_limit} \
+                                 --gaussian_sigma {params.gaussian_sigma} \
+                                 --derivative_filter {params.derivative_filter} \
+                                 --use_phases {params.use_phases}
         """
 
 rule critical_points:
@@ -184,12 +184,12 @@ rule critical_points:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                              --output "{output.data}"
-        python {input.plot_script} --data "{output.data}" \
-                                   --output "{output.img}" \
-                                   --frame_id {params.plot_frame} \
-                                   --skip_step {params.skip_step}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}"
+        python3 {input.plot_script} --data "{output.data}" \
+                                    --output "{output.img}" \
+                                    --frame_id {params.plot_frame} \
+                                    --skip_step {params.skip_step}
         """
 
 
@@ -223,16 +223,16 @@ rule wave_mode_clustering:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --output_img "{output.img}" \
-                                --min_trigger_fraction {params.min_trigger_fraction} \
-                                --num_wave_neighbours {params.num_wave_neighbours} \
-                                --wave_outlier_quantile {params.wave_outlier_quantile} \
-                                --pca_dims {params.pca_dims} \
-                                --num_kmeans_cluster {params.num_kmeans_cluster} \
-                                --interpolation_step_size {params.interpolation_step_size} \
-                                --interpolation_smoothing {params.interpolation_smoothing}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 --min_trigger_fraction {params.min_trigger_fraction} \
+                                 --num_wave_neighbours {params.num_wave_neighbours} \
+                                 --wave_outlier_quantile {params.wave_outlier_quantile} \
+                                 --pca_dims {params.pca_dims} \
+                                 --num_kmeans_cluster {params.num_kmeans_cluster} \
+                                 --interpolation_step_size {params.interpolation_step_size} \
+                                 --interpolation_smoothing {params.interpolation_smoothing}
         """
 
 #### PLOTTING ####
@@ -251,11 +251,11 @@ checkpoint plot_waves:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
-                                --output_dir "{output.img}" \
-                                --img_name {params.img_name} \
-                                --time_window {params.time_window} \
-                                --colormap {params.colormap}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output_dir "{output.img}" \
+                                 --img_name {params.img_name} \
+                                 --time_window {params.time_window} \
+                                 --colormap {params.colormap}
         """
 
 #### MOVIE PLOTTING ####
@@ -278,7 +278,7 @@ rule time_slice:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
+        python3 "{input.script}" --data "{input.data}" \
                                 --output "{output.data}" \
                                 --t_start {wildcards.t_start} \
                                 --t_stop {wildcards.t_stop} \
@@ -300,7 +300,7 @@ rule plot_movie_frames:
     shell:
         """
         {ADD_UTILS}
-        python "{input.script}" --data "{input.data}" \
+        python3 "{input.script}" --data "{input.data}" \
                                 --frame_folder "{output.frame_folder}" \
                                 --frame_format {params.frame_format} \
                                 --frame_name {params.frame_name} \

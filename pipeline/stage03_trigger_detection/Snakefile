@@ -25,7 +25,7 @@ if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
 else:
     STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage02_processing',
                                'processed_data.nix')
-
+print('ciao', STAGE_INPUT)
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
@@ -48,6 +48,7 @@ MINIMA_PERSISTENCE = config["MINIMA_PERSISTENCE"]
 MAXIMA_THRESHOLD_FRACTION = config["MAXIMA_THRESHOLD_FRACTION"]
 MAXIMA_THRESHOLD_WINDOW = config["MAXIMA_THRESHOLD_WINDOW"]
 
+print(DETECTION_BLOCK)
 
 MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
@@ -83,6 +84,9 @@ localrules: all, check_input
 
 #### UTILTY BLOCKS ####
 
+data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
+#data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
+print(data)
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
@@ -241,12 +245,11 @@ rule minima:
         plot_channels = PLOT_CHANNELS,
         plot_tstart = PLOT_TSTART,
         plot_tstop = PLOT_TSTOP,
-        img_name = 'minima_channel0'
     output:
         data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
         img_dir = report(directory(os.path.join('{dir}', 'minima',
                                                 'minima_plots')),
-                        patterns=['{img_name}.'+PLOT_FORMAT])
+                        patterns=['minima_channel.'+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
@@ -258,8 +261,8 @@ rule minima:
                                  --plot_tstop {params.plot_tstop} \
                                  --minima_persistence {params.minima_persistence} \
                                  --min_peak_distance {params.min_peak_distance} \
-                                 --minima_threshold_fraction {params.minima_threshold_fraction} \
                                  --maxima_threshold_fraction {params.maxima_threshold_fraction} \
+                                 --maxima_threshold_window {params.maxima_threshold_window} \
                                  --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
                                  --num_interpolation_points {params.num_interpolation_points}
         """

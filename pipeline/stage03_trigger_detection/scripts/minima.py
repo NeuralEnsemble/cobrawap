@@ -208,8 +208,6 @@ if __name__ == '__main__':
     
     CLI.add_argument("--img_dir", nargs='?', type=str,
                      default='None', help="path of figure directory")
-    CLI.add_argument("--img_name", nargs='?', type=str, default='minima_channel0.png',
-                     help='example image filename for channel 0')
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
     CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0.,
@@ -244,5 +242,5 @@ if __name__ == '__main__':
                         maxima_threshold_fraction = args.maxima_threshold_fraction, 
                         min_peak_distance = args.min_peak_distance)
             output_path = os.path.join(args.img_dir,
-                                       args.img_name.replace('_channel0', f'_channel{channel}'))
+                                       f'minima_channel{channel}')
             save_plot(output_path)

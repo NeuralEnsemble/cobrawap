@@ -28,6 +28,8 @@ MEASURES: ['annotations', 'velocity_local', 'direction_local', 'inter_wave_inter
 # simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
 KERNEL: 'sobel_3x3'
 INTERPOLATE: True
+# smoothing factor for the interpolation (0 = no smoothing)
+SMOOTHING: 0
 
 # Annotations
 #############

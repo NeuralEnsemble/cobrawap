@@ -5,7 +5,7 @@ import warnings
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):
     try:
-        io = neo.io.get_io(str(filename), 'ro', *args, **kwargs)
+        io = neo.io.get_io(str(filename), *args, **kwargs)
         if lazy and io.support_lazy:
             block = io.read_block(lazy=lazy)
         # elif lazy and isinstance(io, neo.io.nixio.NixIO):

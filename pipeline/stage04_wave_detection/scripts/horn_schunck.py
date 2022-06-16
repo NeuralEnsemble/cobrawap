@@ -167,9 +167,11 @@ def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
     dim_x, dim_y = vec_frame.shape
     if are_phases:
         cmap = 'twilight'
+        vmin, vmax = -np.pi, np.pi
     else:
         cmap = 'viridis'
-    img = ax.imshow(frame, interpolation='nearest',
+        vmin, vmax = None, None
+    img = ax.imshow(frame, interpolation='nearest', vmin=vmin, vmax=vmax,
                     cmap=plt.get_cmap(cmap), origin='lower')
     plt.colorbar(img, ax=ax)
     if skip_step is None:
@@ -272,8 +274,8 @@ if __name__ == '__main__':
     vec_imgseq.annotations = imgseq.annotations
 
     if args.output_img is not None:
-        ax = plot_opticalflow(frames[0], vector_frames[0],
-                              skip_step=3, are_phases=args.use_phases)
+        ax = plot_opticalflow(frames[10], vector_frames[10],
+                              skip_step=None, are_phases=args.use_phases)
         ax.set_ylabel(f'pixel size: {imgseq.spatial_scale} ')
         ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s').magnitude))
         save_plot(args.output_img)

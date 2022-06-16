@@ -4,6 +4,7 @@ Divides all signals by their max/mean/median value.
 import numpy as np
 import argparse
 import neo
+import quantities as pq
 import os
 import sys
 from utils.io import write_neo, load_neo
@@ -29,10 +30,10 @@ def normalize(asig, normalize_by):
         else:
             print("Normalization factor is {} for channel {} "\
                   .format(norm_value, i) + "and was skipped.")
-    for num in range(dim_t):
-        asig[num] = norm_asig[num]
-    del norm_asig
-    return asig
+
+    new_asig = asig.duplicate_with_new_data(norm_asig, units='dimensionless')
+    new_asig.array_annotations = asig.array_annotations
+    return new_asig
 
 
 if __name__ == '__main__':

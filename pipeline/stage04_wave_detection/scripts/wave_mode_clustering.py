@@ -4,6 +4,7 @@ import neo
 import numpy as np
 import pandas as pd
 from copy import copy
+from warnings import warn
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 # from sklearn.pipeline import make_pipeline
@@ -34,7 +35,9 @@ def build_timelag_dataframe(waves_evt, normalize=True):
     for i, trigger in enumerate(waves_evt):
         wave_id = int(trigger.labels)
         channel_id = waves_evt.array_annotations['channels'][i]
-        timelag_df[channel_id][wave_id] = trigger.magnitude
+        # use only first trigger per channel and wave
+        if np.isnan(timelag_df[channel_id][wave_id]):
+            timelag_df[channel_id][wave_id] = trigger.magnitude
 
     if normalize:
         norm_func = lambda row: row - np.nanmean(row)
@@ -79,7 +82,7 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
 
     # remove outlier waves in the quantile of wave distances
     q = np.quantile(neighbourhood_distance, outlier_quantile)
-    keep_rows = np.where(neighbourhood_distance < q)[0]
+    keep_rows = np.where(neighbourhood_distance <= q)[0]
     timelag_df = timelag_df.iloc[keep_rows, :]
     return timelag_df
 
@@ -91,6 +94,10 @@ def get_triu_indices_pos(i, N):
     return np.sort(np.append(idx0, idx1))
 
 def pca_transform(timelag_matrix, dims=None):
+    if dims is not None and dims > len(timelag_df):
+        warn(f'Too few waves ({len(timelag_df)}) to peform a pca reduction '
+           + f'to {dims} dims. Skipping.')
+        dims = None
     # n_samples x n_features
     if type(timelag_matrix) == pd.DataFrame:
         timelag_matrix = timelag_matrix.to_numpy()
@@ -99,11 +106,11 @@ def pca_transform(timelag_matrix, dims=None):
     return pca_out.transform(x_scaled)
 
 def kmeans_cluster_waves(timelag_matrix, n_cluster=7):
-    kmeans = KMeans(init="random",
+    kmeans = KMeans(init="k-means++",
                     n_clusters=n_cluster,
-                    n_init=10,
-                    max_iter=300,
-                    random_state=42)
+                    tol=1e-10,
+                    random_state=42,
+                    algorithm='full')
 
     return kmeans.fit(timelag_matrix)
 
@@ -275,13 +282,21 @@ if __name__ == '__main__':
     kout = kmeans_cluster_waves(timelag_matrix_transformed,
                                 n_cluster=args.num_kmeans_cluster)
     mode_ids = kout.labels_
+    if len(mode_ids) != len(timelag_df):
+        raise IndexError('Some waves are not assigned to a kmeans cluster!'
+                      + f' {len(mode_ids)} != {len(timelag_df)}')
+
     mode_labels, mode_counts = np.unique(mode_ids, return_counts=True)
+
     mode_dists = calc_cluster_distortions(timelag_matrix_transformed,
                                           cluster_indices=mode_ids,
                                           cluster_centers=kout.cluster_centers_)
 
     # calculate the average timelags per mode
     mode_timelag_df = build_cluster_timelag_dataframe(timelag_df, mode_ids)
+    # mode_timelag_df = pd.DataFrame(kout.cluster_centers_,
+    #                                index=mode_labels,
+    #                                columns=timelag_df.columns)
 
     # rearrange average mode timelags onto channel grid
     x_coords = asig.array_annotations['x_coords']

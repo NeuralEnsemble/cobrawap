@@ -7,18 +7,21 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import itertools
+from warnings import warn
 from scipy.interpolate import RBFInterpolator
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.convolve import nan_conv2d, get_kernel
 
 
-def interpolate_grid(grid):
+def interpolate_grid(grid, smoothing):
     x, y = np.where(np.isfinite(grid))
     rbf_func = RBFInterpolator(np.stack((x,y), axis=-1),
                                grid[x,y],
-                               neighbors=None, smoothing=0.0,
-                               kernel='thin_plate_spline', epsilon=None,
+                               neighbors=None,
+                               smoothing=smoothing,
+                               kernel='thin_plate_spline',
+                               epsilon=None,
                                degree=None)
     return rbf_func
 
@@ -30,7 +33,7 @@ def sample_wave_pattern(pattern_func, dim_x, dim_y):
     wave_pattern = pattern_func(fcoords.reshape(-1,2))
     return wave_pattern.reshape(dim_x, dim_y)
 
-def calc_spatial_derivative(evts, kernel_name, interpolate=False):
+def calc_spatial_derivative(evts, kernel_name, interpolate=False, smoothing=0):
     labels = evts.labels.astype(int)
     dim_x = int(max(evts.array_annotations['x_coords']))+1
     dim_y = int(max(evts.array_annotations['y_coords']))+1
@@ -48,13 +51,17 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False):
         trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
 
         if interpolate:
-            pattern_func = interpolate_grid(trigger_collection)
-            trigger_collection = sample_wave_pattern(pattern_func,
-                                                     dim_x=dim_x, dim_y=dim_y)
+            try:
+                pattern_func = interpolate_grid(trigger_collection, smoothing)
+                trigger_collection = sample_wave_pattern(pattern_func,
+                                                         dim_x=dim_x, dim_y=dim_y)
+            except ValueError as ve:
+                warn(repr(ve))
+                warn('Continuing without interpolation.')
 
         kernel = get_kernel(kernel_name)
-        d_vertical = -1 * nan_conv2d(trigger_collection, kernel.y)
-        d_horizont = -1 * nan_conv2d(trigger_collection, kernel.x)
+        d_vertical = -1 * nan_conv2d(trigger_collection, kernel.x)
+        d_horizont = -1 * nan_conv2d(trigger_collection, kernel.y)
 
         dt_x = d_vertical[x_coords, y_coords]
         dt_y = d_horizont[x_coords, y_coords]
@@ -102,6 +109,8 @@ if __name__ == '__main__':
                      help="name of neo.Event to analyze (must contain waves)")
     CLI.add_argument("--interpolate", "--INTERPOLATE", nargs='?', type=bool, default=False,
                      help="whether to thin-plate-spline interpolate the wave patterns before derivation")
+    CLI.add_argument("--smoothing", "--SMOOTHING", nargs='?', type=float, default=0,
+                     help="smoothing factor for the interpolation")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
@@ -112,7 +121,8 @@ if __name__ == '__main__':
 
     df = calc_spatial_derivative(evts,
                                  kernel_name=args.kernel,
-                                 interpolate=args.interpolate)
+                                 interpolate=args.interpolate,
+                                 smoothing=args.smoothing)
 
     df['kernel'] = args.kernel
     df['spatial_scale'] = evts.annotations['spatial_scale'].magnitude

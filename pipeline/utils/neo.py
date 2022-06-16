@@ -7,7 +7,7 @@ import quantities as pq
 from pathlib import Path
 utils_path = str((Path(__file__).parent / '..').resolve())
 sys.path.append(utils_path)
-from utils.parse import determine_dims
+from utils.parse import determine_dims, get_base_type
 
 
 def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
@@ -20,6 +20,42 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
             if hasattr(obj, 'array_annotations') and k in obj.array_annotations:
                 del objects[i].array_annotations[k]
     return None
+
+def merge_analogsingals(asigs):
+    # ToDo: to be replaced by neo utils functions
+    if len(asigs) == 1:
+        return asigs[0]
+
+    min_length = np.min([len(asig.times) for asig in asigs])
+    max_length = np.max([len(asig.times) for asig in asigs])
+    if min_length != max_length:
+        print('Warning: the length of the analog signals differs '\
+            + 'between {} and {} '.format(min_length, max_length)\
+            + 'All signals will be cut to the same length and merged '\
+            + 'into one AnalogSignal object.')
+
+    if len(np.unique([asig.sampling_rate for asig in asigs])) > 1:
+        raise ValueError('The AnalogSignal objects have different '\
+                       + 'sampling rates!')
+
+    asig_array = np.zeros((min_length, len(asigs)))
+
+    for channel_number, asig in enumerate(asigs):
+        asig_array[:, channel_number] = np.squeeze(asig.as_array()[:min_length])
+
+    merged_asig = neo.AnalogSignal(asig_array*asigs[0].units,
+                                   sampling_rate=asigs[0].sampling_rate,
+                                   t_start=asigs[0].t_start)
+    for key in asigs[0].annotations.keys():
+        annotation_values = np.array([a.annotations[key] for a in asigs])
+        try:
+            if (annotation_values == annotation_values[0]).all():
+                merged_asig.annotations[key] = annotation_values[0]
+            else:
+                merged_asig.array_annotations[key] = annotation_values
+        except:
+            print('Can not merge annotation ', key)
+    return merged_asig
 
 
 def flip_image(imgseq, axis=-1):
@@ -229,7 +265,7 @@ def add_empty_sites_to_analogsignal(asig):
         return asig
     nan_idx -= np.arange(len(nan_idx))
 
-    nan_values = {'int': -1, 'float': np.nan,
+    nan_values = {'int': -1, 'float': np.nan, 'bool': False,
                   'str': 'None', 'complex': np.nan+1j*np.nan}
     for key, values in asig.array_annotations.items():
         nan_value = nan_values[get_base_type(values)]

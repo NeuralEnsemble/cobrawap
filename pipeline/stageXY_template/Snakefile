@@ -4,12 +4,12 @@ import os
 configfile: os.path.join('configs', 'config_template.yaml')
 report: "report.rst"
 
+from pathlib import Path
 import sys
-utils_path = os.path.join('..', 'scripts')
-sys.path.append(os.path.join(os.getcwd(), '..'))
+utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
 from settings import output_path
-from utils import parse_plot_channels
+from utils.parse import parse_plot_channels
 from types import SimpleNamespace
 
 config = SimpleNamespace(**config)
@@ -46,9 +46,9 @@ rule all:
     shell:
         """
         {config.ADD_UTILS}
-        python {input.script} --data {params.data} \
-                              --output "{output.data}" \
-                              --output_img "{output.img}"
+        python3 "{input.script}" --data {params.data} \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}"
         """
 
 rule check_input:
@@ -61,13 +61,13 @@ rule check_input:
     shell:
         """
         {config.ADD_UTILS}
-        python {input.script} --data "{input.data}"
+        python3 "{input.script}" --data "{input.data}"
         touch "{output}"
         """
 
 #### CHARACTERIZATION BLOCKS ####
 
-rule compute_measure:h
+rule compute_measure:
     input:
         data = input,
         script = os.path.join('scripts', '{measure}.py')
@@ -78,8 +78,8 @@ rule compute_measure:h
     shell:
         """
         {config.ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              {SCRIPT_ARGS}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 {SCRIPT_ARGS}
         """

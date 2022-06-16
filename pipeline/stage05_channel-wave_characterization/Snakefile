@@ -15,8 +15,8 @@ from types import SimpleNamespace
 config = SimpleNamespace(**config)
 config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-SCRIPT_ARGS = ' '.join([f"--{key} {value}" for key, value
-                                           in config.__dict__.items()])
+SCRIPT_ARGS = ' '.join([f"--{key} '{value}'" for key, value
+                                             in config.__dict__.items()])
 
 #### Housekeeping ####
 
@@ -27,7 +27,7 @@ def measures_output(wildcards):
 
 if config.EVENT_NAME == 'wavemodes':
     config.MEASURES = [m for m in config.MEASURES if m not in
-                        ['inter_wave_interval_local']]
+                        ['inter_wave_interval_local', 'flow_direction_local']]
 
 localrules: all, check_input
 
@@ -49,7 +49,7 @@ rule all:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data {params.data} \
+        python3 "{input.script}" --data {params.data} \
                               --output "{output.data}" \
                               --output_img "{output.img}" \
                               --merge_key {params.merge_key}
@@ -65,8 +65,8 @@ rule check_input:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              {SCRIPT_ARGS}
+        python3 "{input.script}" --data "{input.data}" \
+                                {SCRIPT_ARGS}
         touch "{output}"
         """
 
@@ -93,10 +93,10 @@ rule compute_measure:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              {SCRIPT_ARGS}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 {SCRIPT_ARGS}
         """
 
 rule spatial_derivative:
@@ -111,8 +111,8 @@ rule spatial_derivative:
     shell:
         """
         {ADD_UTILS}
-        python {input.script} --data "{input.data}" \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              {SCRIPT_ARGS}
+        python3 "{input.script}" --data "{input.data}" \
+                                 --output "{output.data}" \
+                                 --output_img "{output.img}" \
+                                 {SCRIPT_ARGS}
         """

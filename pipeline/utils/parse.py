@@ -81,13 +81,16 @@ def str2dict(string):
 def parse_string2dict(kwargs_str, **kwargs):
     if type(kwargs_str) == list:
         if len(kwargs_str) == 0:
-            return None
+            return {}
         elif len(kwargs_str) == 1:
             kwargs = kwargs_str[0]
         else:
             kwargs = ''.join(kwargs_str)[1:-1]
+    else:
+        kwargs = str(kwargs_str)
     if guess_type(kwargs) is None:
-        return None
+        return {}
+        
     my_dict = {}
     # match all nested dicts
     pattern = re.compile("[\w\s]+:{[^}]*},*")

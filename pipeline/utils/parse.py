@@ -90,7 +90,7 @@ def parse_string2dict(kwargs_str, **kwargs):
         kwargs = str(kwargs_str)
     if guess_type(kwargs) is None:
         return {}
-        
+
     my_dict = {}
     # match all nested dicts
     pattern = re.compile("[\w\s]+:{[^}]*},*")
@@ -133,13 +133,15 @@ str_list = lambda v: s.split(',')
 def parse_plot_channels(channels, input_file):
     channels = channels if isinstance(channels, list) else [channels]
     channels = [none_or_int(channel) for channel in channels]
-    # ToDo: check is channel exsits, even when there is no None
+    # ToDo:
+    #   * check is channel exsits, even when there is no None
+    #   * use annotation channel ids instead of array indices
     if None in channels:
         dim_t, channel_num = load_neo(input_file, object='analogsignal',
                                       lazy=True).shape
         for i, channel in enumerate(channels):
             if channel is None or channel >= channel_num:
-                channels[i] = random.randint(0,channel_num-1)
+                channels[i] = random.randint(0,channel_num)
     return channels
 
 

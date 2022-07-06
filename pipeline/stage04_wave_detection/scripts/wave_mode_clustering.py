@@ -106,6 +106,11 @@ def pca_transform(timelag_matrix, dims=None):
     return pca_out.transform(x_scaled)
 
 def kmeans_cluster_waves(timelag_matrix, n_cluster=7):
+    n_waves = len(timelag_matrix)
+    if n_cluster > n_waves:
+        warn(f'Too few waves {n_waves} to determine {n_cluster} '
+           + f'cluster. Reducing to {n_waves} cluster.')
+        n_cluster = n_waves
     kmeans = KMeans(init="k-means++",
                     n_clusters=n_cluster,
                     tol=1e-10,

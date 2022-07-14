@@ -9,7 +9,7 @@ import sys
 utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
 from settings import output_path
-from utils.parse import parse_plot_channels
+from utils.parse import parse_plot_channels, guess_type
 
 STAGE_NAME = config["STAGE_NAME"]
 STAGE_OUTPUT = config["STAGE_OUTPUT"]
@@ -32,6 +32,7 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
 
 BLOCK_ORDER = config["BLOCK_ORDER"]
+RERUN_MODE = guess_type(config["RERUN_MODE"])
 NORMALIZE_BY = config["NORMALIZE_BY"]
 HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
 LOWPASS_FREQ = config["LOWPASS_FREQ"]
@@ -72,6 +73,12 @@ def input_file(wildcards):
         return os.path.join(OUTPUT_DIR, BLOCK_ORDER[-1],
                             BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
     return os.path.join(STAGE_INPUT)
+
+def is_clear(wildcards):
+    if config.RERUN_MODE:
+        return os.path.join(f'{wildcards.dir}', 'clear.done')
+    else:
+        return []
 
 #### UTILITY BLOCKS ####
 
@@ -166,7 +173,7 @@ rule plot_power_spectrum:
 
 rule background_subtraction:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','background_subtraction.py')
     output:
@@ -187,7 +194,7 @@ rule background_subtraction:
 
 rule spatial_downsampling:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts', 'spatial_downsampling.py')
     output:
@@ -210,7 +217,7 @@ rule spatial_downsampling:
 
 rule normalization:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts', 'normalization.py')
     params:
@@ -228,7 +235,7 @@ rule normalization:
 
 rule detrending:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts', 'detrending.py')
     params:
@@ -254,7 +261,7 @@ rule detrending:
 
 rule frequency_filter:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         img = os.path.join('{dir}', '{rule_name}', f'power_spectrum.{PLOT_FORMAT}'),
         script = os.path.join('scripts', 'frequency_filter.py')
@@ -280,7 +287,7 @@ rule frequency_filter:
 
 rule roi_selection:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','roi_selection.py')
     params:
@@ -303,7 +310,7 @@ rule roi_selection:
 
 rule logMUA_estimation:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','logMUA_estimation.py')
     params:
@@ -343,7 +350,7 @@ rule logMUA_estimation:
 
 rule phase_transform:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','phase_transform.py')
     output:
@@ -358,7 +365,7 @@ rule phase_transform:
 
 rule zscore:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','z_score.py')
     output:
@@ -372,7 +379,7 @@ rule zscore:
 
 rule subsampling:
     input:
-        is_clear = os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
         data = input_file,
         script = os.path.join('scripts','subsampling.py')
     params:

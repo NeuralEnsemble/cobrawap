@@ -34,6 +34,12 @@ PLOT_FORMAT: 'png'
 # the y-scale are correclty reported
 BLOCK_ORDER: []
 
+# To make sure that the processing blocks are always executed in the correct
+# order that results from previous runs don't confound the workflow, all blocks
+# are rerun upon each execution. To turn this off, e.g., because the block order
+# didn't change, set to False (do with care!).
+RERUN_MODE: True
+
 # BLOCK - background_subtraction
 #################################
 # No parameters needed

@@ -35,7 +35,7 @@ if __name__ == '__main__':
                      help="name of neo.Event to analyze (must contain waves)")
     CLI.add_argument("--ignore_keys", "--IGNORE_KEYS", nargs='?', type=lambda s: s.split(), default=[],
                      help="neo object annotations keys to not include in dataframe")
-    CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='+', ttype=lambda s: s.split(), default=[],
+    CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='+', type=lambda s: s.split(), default=[],
                      help="neo object annotations keys to include in dataframe")
     CLI.add_argument("--profile", "--PROFILE", nargs='?', type=none_or_str, default=None,
                      help="profile name")

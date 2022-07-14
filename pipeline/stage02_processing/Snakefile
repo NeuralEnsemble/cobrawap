@@ -75,7 +75,7 @@ def input_file(wildcards):
     return os.path.join(STAGE_INPUT)
 
 def is_clear(wildcards):
-    if config.RERUN_MODE:
+    if RERUN_MODE:
         return os.path.join(f'{wildcards.dir}', 'clear.done')
     else:
         return []

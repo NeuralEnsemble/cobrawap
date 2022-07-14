@@ -35,9 +35,9 @@ if __name__ == '__main__':
                      help="path of output image file")
     CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                      help="name of neo.Event to analyze (must contain waves)")
-    CLI.add_argument("--ignore_keys", "--IGNORE_KEYS", nargs='+', type=str, default=[],
+    CLI.add_argument("--ignore_keys", "--IGNORE_KEYS", nargs='?', type=lambda s: s.split(), default=[],
                      help="neo object annotations keys to not include in dataframe")
-    CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='+', type=str, default=[],
+    CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='+', ttype=lambda s: s.split(), default=[],
                      help="neo object annotations keys to include in dataframe")
     CLI.add_argument("--profile", "--PROFILE", nargs='?', type=none_or_str, default=None,
                      help="profile name")
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     args.ignore_keys = [re.sub('[\[\],\s]', '', key) for key in args.ignore_keys]
     args.include_keys = [re.sub('[\[\],\s]', '', key) for key in args.include_keys]
     if len(args.include_keys):
-        args.ingnore_keys = []
+        args.ignore_keys = []
 
     block = load_neo(args.data)
 

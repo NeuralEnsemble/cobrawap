@@ -47,6 +47,7 @@ def build_timelag_dataframe(waves_evt, normalize=True):
 
 def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
                                       outlier_quantile=0.95):
+    # ToDo: this doesn't work with too few waves!
     ## init arrays
     num_waves = timelag_df.index.size
     pair_indices = np.triu_indices(num_waves, 1)
@@ -98,6 +99,8 @@ def pca_transform(timelag_matrix, dims=None):
         warn(f'Too few waves ({len(timelag_df)}) to peform a pca reduction '
            + f'to {dims} dims. Skipping.')
         dims = None
+    if dims is None:
+        return timelag_matrix
     # n_samples x n_features
     if type(timelag_matrix) == pd.DataFrame:
         timelag_matrix = timelag_matrix.to_numpy()

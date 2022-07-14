@@ -1,5 +1,3 @@
-from builtins import breakpoint
-import os
 import argparse
 import numpy as np
 import pandas as pd
@@ -89,8 +87,6 @@ if __name__ == '__main__':
 
     ids = np.sort(np.unique(evts.labels).astype(int))
     df = pd.DataFrame(ids, columns=[f'{args.event_name}_id'])
-
-    breakpoint()
 
     for annotations in [evts.annotations, asig.annotations]:
         df = add_annotations_to_df(df, annotations, args.include_keys)

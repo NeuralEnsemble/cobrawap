@@ -102,7 +102,7 @@ rule check_input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
     output:
-        temp(os.path.join('{dir}', 'input.check'))
+        os.path.join('{dir}', 'input.check')
     shell:
         """
         {ADD_UTILS}

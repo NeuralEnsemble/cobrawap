@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     block = analogsignals_to_imagesequences(block)
     asig = block.segments[0].analogsignals[0]
-
+    
     wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
     wavefront_evt = wavefront_evt[wavefront_evt.labels.astype('str') != '-1']
 

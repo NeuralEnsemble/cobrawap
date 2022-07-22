@@ -75,7 +75,7 @@ rule check_input:
         data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
         script = os.path.join('scripts', 'check_input.py')
     output:
-        temp(os.path.join('{dir}', '{data_name}.check'))
+        os.path.join('{dir}', '{data_name}.check')
     shell:
         """
         {ADD_UTILS}

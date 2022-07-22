@@ -51,6 +51,7 @@ def calc_planar_velocities(evts):
         row = int(i/ncols)
         if ncols == 1:
             cax = ax[row]
+            col = 0
         else:
             col = i % ncols
             cax = ax[row][col]

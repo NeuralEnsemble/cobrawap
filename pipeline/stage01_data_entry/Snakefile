@@ -11,6 +11,9 @@ sys.path.append(utils_path)
 from settings import output_path, configs_dir
 from utils.snakefile import get_param
 from utils.parse import ordereddict_to_dict
+# from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
+# S3 = S3RemoteProvider(host="https://object.cscs.ch")
+# output_path = 'cobrawap/'
 
 if not bool(config):
     raise FileNotFoundError("Please specify a config file with '--configfile=...'")
@@ -47,18 +50,22 @@ wildcard_constraints:
 localrules: all, check_input
 
 def input_file(wildcards):
+    print(DATA_SETS[wildcards.data_name])
+    # return S3.remote(DATA_SETS[wildcards.data_name])
     return DATA_SETS[wildcards.data_name]
 
 rule all:
     input:
-        data = expand(os.path.join(OUTPUT_DIR, '{data_name}',
-                                   '{data_name}.'+NEO_FORMAT),
-                      data_name = DATA_SETS.keys()),
+        check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
+                       data_name = DATA_SETS.keys()),
         img = expand(os.path.join(OUTPUT_DIR, '{data_name}',
                                    'trace_{data_name}.'+PLOT_FORMAT),
                       data_name = DATA_SETS.keys()),
-        check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
-                       data_name = DATA_SETS.keys()),
+        data = expand(os.path.join(OUTPUT_DIR, '{data_name}',
+                                   '{data_name}.'+NEO_FORMAT),
+                      data_name = DATA_SETS.keys()),
+        # check = S3.remote(expand(os.path.join('cobrawap', '{data_name}.check'),
+        #                          data_name = DATA_SETS.keys()))
         # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
     params:
         command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
@@ -73,9 +80,11 @@ rule check_input:
     priority: 10
     input:
         data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
+        # data = os.path.join(OUTPUT_DIR, '{data_name}', '{data_name}.'+NEO_FORMAT),
         script = os.path.join('scripts', 'check_input.py')
     output:
-        temp(os.path.join('{dir}', '{data_name}.check'))
+        os.path.join('{dir}', '{data_name}.check')
+        # S3.remote(os.path.join('cobrawap', '{data_name}.check'))
     shell:
         """
         {ADD_UTILS}

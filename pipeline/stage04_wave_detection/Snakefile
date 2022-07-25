@@ -79,7 +79,7 @@ rule check_input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
     output:
-        temp(os.path.join('{dir}', 'input.check'))
+        os.path.join('{dir}', 'input.check')
     shell:
         """
         {ADD_UTILS}
@@ -105,8 +105,8 @@ rule merge_wave_definitions:
         """
         {ADD_UTILS}
         python3 "{input.script}" --waves "{input.waves}" \
-                                --properties "{params.properties}" \
-                                --output "{output.data}"
+                                 --properties "{params.properties}" \
+                                 --output "{output.data}"
         """
 
 #### DETECTION BLOCK ####
@@ -121,7 +121,7 @@ rule trigger_clustering:
         time_space_ratio = TIME_SPACE_RATIO,
         neighbour_distance = NEIGHBOUR_DISTANCE,
         min_samples = MIN_SAMPLES_PER_WAVE,
-        plot_time_slice = 10
+        plot_time_slice = PLOT_TSTOP
     output:
         data = os.path.join('{dir}', 'trigger_clustering', STAGE_OUTPUT),
         img = report(os.path.join('{dir}', 'trigger_clustering',

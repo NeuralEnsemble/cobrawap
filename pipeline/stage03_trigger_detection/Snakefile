@@ -25,7 +25,7 @@ if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
 else:
     STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage02_processing',
                                'processed_data.nix')
-
+print('ciao', STAGE_INPUT)
 PLOT_TSTART = config["PLOT_TSTART"]
 PLOT_TSTOP = config["PLOT_TSTOP"]
 PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
@@ -44,8 +44,11 @@ TRANSITION_PHASE = config["TRANSITION_PHASE"]
 USE_QUADRATIC_INTERPOLATION = config["USE_QUADRATIC_INTERPOLATION"]
 NUM_INTERPOLATION_POINTS = config["NUM_INTERPOLATION_POINTS"]
 MIN_PEAK_DISTANCE = config["MIN_PEAK_DISTANCE"]
-MINIMA_THRESHOLD_FRACTION = config["MINIMA_THRESHOLD_FRACTION"]
+MINIMA_PERSISTENCE = config["MINIMA_PERSISTENCE"]
 MAXIMA_THRESHOLD_FRACTION = config["MAXIMA_THRESHOLD_FRACTION"]
+MAXIMA_THRESHOLD_WINDOW = config["MAXIMA_THRESHOLD_WINDOW"]
+
+print(DETECTION_BLOCK)
 
 MIN_UP_DURATION = config["MIN_UP_DURATION"]
 MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
@@ -81,6 +84,9 @@ localrules: all, check_input
 
 #### UTILTY BLOCKS ####
 
+data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
+#data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
+print(data)
 rule all:
     input:
         check = os.path.join(OUTPUT_DIR, 'input.check'),
@@ -102,7 +108,7 @@ rule check_input:
         data = STAGE_INPUT,
         script = os.path.join('scripts', 'check_input.py')
     output:
-        temp(os.path.join('{dir}', 'input.check'))
+        os.path.join('{dir}', 'input.check')
     shell:
         """
         {ADD_UTILS}
@@ -231,20 +237,32 @@ rule minima:
         script = os.path.join('scripts', 'minima.py')
     params:
         min_peak_distance = MIN_PEAK_DISTANCE,
-        minima_threshold_fraction = MINIMA_THRESHOLD_FRACTION,
+        minima_persistence = MINIMA_PERSISTENCE, 
         maxima_threshold_fraction = MAXIMA_THRESHOLD_FRACTION,
+        maxima_threshold_window = MAXIMA_THRESHOLD_WINDOW,
         num_interpolation_points = NUM_INTERPOLATION_POINTS,
         use_quadtratic_interpolation = USE_QUADRATIC_INTERPOLATION,
+        plot_channels = PLOT_CHANNELS,
+        plot_tstart = PLOT_TSTART,
+        plot_tstop = PLOT_TSTOP,
     output:
-        data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT)
+        data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
+        img_dir = report(directory(os.path.join('{dir}', 'minima',
+                                                'minima_plots')),
+                        patterns=['minima_channel.'+PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
         python3 "{input.script}" --data "{input.data}" \
                                  --output "{output.data}" \
+                                 --img_dir "{output.img_dir}" \
+                                 --plot_channels {params.plot_channels} \
+                                 --plot_tstart {params.plot_tstart} \
+                                 --plot_tstop {params.plot_tstop} \
+                                 --minima_persistence {params.minima_persistence} \
                                  --min_peak_distance {params.min_peak_distance} \
-                                 --minima_threshold_fraction {params.minima_threshold_fraction} \
                                  --maxima_threshold_fraction {params.maxima_threshold_fraction} \
+                                 --maxima_threshold_window {params.maxima_threshold_window} \
                                  --use_quadtratic_interpolation {params.use_quadtratic_interpolation} \
                                  --num_interpolation_points {params.num_interpolation_points}
         """

@@ -9,7 +9,7 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--waves", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--properties", nargs='?', type=lambda v: v.split(','), default=None,
+    CLI.add_argument("--properties", nargs='?', type=lambda v: v.split(','), default=[''],
                      help="paths to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     asig_names = [asig.name for asig in waves_block.segments[0].analogsignals]
     event_names = [event.name for event in waves_block.segments[0].events]
 
-    if args.properties is None:
+    if not args.properties or not args.properties[0]:
         args.properties = []
 
     for property in args.properties:

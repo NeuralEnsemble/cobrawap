@@ -1,7 +1,7 @@
 import numpy as np
 import neo
 import warnings
-import itertools
+from itertools import product
 import sys
 import quantities as pq
 from pathlib import Path
@@ -139,7 +139,7 @@ def imagesequences_to_analogsignals(block):
         for imgseq in segment.imagesequences:
             dim_t, dim_x, dim_y = imgseq.as_array().shape
 
-            coords = np.array(list(itertools.product(np.arange(dim_x),
+            coords = np.array(list(product(np.arange(dim_x),
                                                      np.arange(dim_y))))
 
             imgseq_flat = imgseq.as_array().reshape((dim_t, dim_x * dim_y))
@@ -242,38 +242,39 @@ def analogsignals_to_imagesequences(block):
 
 
 def add_empty_sites_to_analogsignal(asig):
-    coords = np.array([(x,y) for x,y in zip(asig.array_annotations['x_coords'],
-                                            asig.array_annotations['y_coords'])],
-                      dtype=int)
+    x_coords = asig.array_annotations['x_coords']
+    y_coords = asig.array_annotations['y_coords']
+    coords = list(zip(x_coords, y_coords))
 
     asig_array = asig.as_array()
     dim_t, dim_channels = asig_array.shape
     dim_x, dim_y = determine_dims(coords)
+    num_grid_channels = dim_x * dim_y
+    num_nan_channels = num_grid_channels - dim_channels
 
-    grid_data = np.empty((dim_t, dim_x, dim_y), dtype=asig.dtype)
-    grid_data.fill(np.nan)
+    nan_signals = np.empty((dim_t, num_nan_channels)) * np.nan
+    new_asig_array = np.append(asig_array, nan_signals, axis=1)
 
-    for channel in range(dim_channels):
-        x, y = coords[channel]
-        grid_data[:, x, y] = asig_array[:, channel]
+    grid_coords = list(product(range(dim_x), range(dim_y)))
+    nan_coords = list(set(grid_coords).difference(coords))
+    x_nan_coords = np.array(nan_coords)[:,0]
+    y_nan_coords = np.array(nan_coords)[:,1]
+    num_nans = len(nan_coords)
 
-    new_asig = asig.duplicate_with_new_data(grid_data.reshape((dim_t, dim_x * dim_y)))
+    new_asig = asig.duplicate_with_new_data(new_asig_array)
 
-    # insert nans into array_annotations for empty sites
-    nan_idx = np.where(np.isnan(new_asig[0]))[0]
-    if not len(nan_idx):
-        return asig
-    nan_idx -= np.arange(len(nan_idx))
-
+    # add nans into array_annotations for empty sites
     nan_values = {'int': -1, 'float': np.nan, 'bool': False,
                   'str': 'None', 'complex': np.nan+1j*np.nan}
+
     for key, values in asig.array_annotations.items():
-        nan_value = nan_values[get_base_type(values)]
-        new_values = np.insert(values, nan_idx, nan_value)
+        nan_value = np.array([nan_values[get_base_type(values)]])
+        new_values = np.append(values, np.repeat(nan_value, num_nans))
         if type(values) == pq.Quantity:
             new_values = new_values.magnitude * values.units
         new_asig.array_annotations[key] = new_values
 
-    coords = np.array(list(itertools.product(np.arange(dim_x), np.arange(dim_y))))
-    new_asig.array_annotate(x_coords=coords[:,0], y_coords=coords[:,1])
+    new_asig.array_annotate(x_coords=np.append(x_coords, x_nan_coords), 
+                            y_coords=np.append(y_coords, y_nan_coords))
+
     return new_asig

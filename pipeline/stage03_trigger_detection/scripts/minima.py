@@ -1,7 +1,7 @@
 import neo
 import numpy as np
 import quantities as pq
-from scipy.signal import find_peaks
+from scipy.signal import find_peaks, argrelmin
 import argparse
 from distutils.util import strtobool
 from utils.io import load_neo, write_neo, save_plot
@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import os
 
 def _boolrelextrema(data, comparator, axis=0, order=1, mode='clip'):
-    
+    # modified numpy function (to be replaced in future version)
     if((int(order) != order) or (order < 1)):
         raise ValueError('Order must be an int >= 1')
 
@@ -37,39 +37,36 @@ def one_side_argrelmin(data, axis=0, order=1, mode='clip'):
 
     return np.nonzero(results)
 
+def moving_threshold(signal, window, fraction):
+    #compute a dynamic threshold function through a sliding window on the signal array
+    strides = np.lib.stride_tricks.sliding_window_view(signal, window)
+    threshold_func = np.min(strides, axis=1) + fraction*np.ptp(strides, axis=1)
 
+    #add elements at the beginning
+    threshold_func = np.append(np.ones(window//2)*threshold_func[0], threshold_func)
+    threshold_func = np.append(threshold_func, np.ones(len(signal)-len(threshold_func))*threshold_func[-1])
+    return threshold_func
 
-def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fraction, maxima_threshold_window, min_peak_distance, minima_persistence):
-        
+def detect_minima(asig, interpolation_points, maxima_threshold_fraction, 
+                  maxima_threshold_window, min_peak_distance, minima_persistence):
     signal = asig.as_array()
-    times = asig.times
+    times = asig.times.rescale('s').magnitude
     sampling_rate = asig.sampling_rate.rescale('Hz').magnitude
-    window_frame = np.int32(maxima_threshold_window*sampling_rate)
+    window_frame = int(maxima_threshold_window*sampling_rate)
     
     min_time_idx = np.array([], dtype=int)
-    max_time_idx = np.array([], dtype=int)
-    channel_idx = np.array([], dtype='int32')
+    channel_idx  = np.array([], dtype=int)
 
-    minima_order = np.int32(np.max([minima_persistence*sampling_rate, 1]))
+    minima_order = int(np.max([minima_persistence*sampling_rate, 1]))
     
     for channel, channel_signal in enumerate(signal.T):
         if np.isnan(channel_signal).any(): continue
 
-        #compute a dynamic treshold function through a sliding window on the signal array
-        strides = np.lib.stride_tricks.sliding_window_view(channel_signal, window_frame)
-        threshold_func = np.min(strides, axis = 1) + maxima_threshold_fraction*np.ptp(strides, axis = 1)
-        #add elements at the beginning
-        threshold_func = np.append(np.ones(window_frame//2)*threshold_func[0], threshold_func)
-        threshold_func = np.append(threshold_func, np.ones(len(channel_signal) - len(threshold_func))*threshold_func[-1])
-
-        peaks, _ = find_peaks(channel_signal, height=threshold_func, distance=np.max([min_peak_distance*sampling_rate, 1]))
-        
-        mins_distance, _ = find_peaks(-channel_signal, distance=np.max([min_peak_distance*sampling_rate, 1]))
-        mins_persistance = one_side_argrelmin(channel_signal, order = minima_order)
-        mins = np.intersect1d(mins_distance, mins_persistance)        
+        threshold_func = moving_threshold(channel_signal, window_frame, maxima_threshold_fraction)
+        peaks, _ = find_peaks(channel_signal, distance=np.max([min_peak_distance*sampling_rate, 1]), height=threshold_func) 
+        mins = one_side_argrelmin(channel_signal, order=minima_order)[0]
 
         clean_mins = np.array([], dtype=int)
-        clean_max = np.array([], dtype=int)
 
         for i, peak in enumerate(peaks):
             distance_to_peak = times[peak] - times[mins]
@@ -77,16 +74,13 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
             if distance_to_peak.size:
                 trans_idx = np.argmin(distance_to_peak)
                 clean_mins = np.append(clean_mins, mins[trans_idx])
-                clean_max = np.append(clean_max,peak)
 
         min_time_idx = np.append(min_time_idx, clean_mins)
-        max_time_idx = np.append(max_time_idx, clean_max)
-        channel_idx = np.append(channel_idx, np.ones(len(clean_mins), dtype='int32')*channel)
+        channel_idx = np.append(channel_idx, np.ones(len(clean_mins), dtype=int)*channel)
         
     # compute local minima times.
-    if interpolation:
+    if interpolation_points:
         # parabolic fit on the right branch of local minima
-        fitted_idx_times = np.zeros([len(min_time_idx)])
         start_arr = min_time_idx - 1
         start_arr = np.where(start_arr > 0, start_arr, 0)
         stop_arr = start_arr + int(interpolation_points)
@@ -119,7 +113,6 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
                     labels=['UP'] * len(minimum_times),
                     name='transitions',
                     trigger_detection='minima',
-                    use_quadtratic_interpolation=interpolation,
                     num_interpolation_points=interpolation_points,
                     array_annotations={'channels':channel_idx[sort_idx]})
 
@@ -127,63 +120,38 @@ def detect_minima(asig, interpolation_points, interpolation, maxima_threshold_fr
         evt_ann = {key : asig.array_annotations[key][channel_idx[sort_idx]]}
         evt.array_annotations.update(evt_ann)
 
-    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
+    remove_annotations(asig)
     evt.annotations.update(asig.annotations)
+   
+    return evt
 
-    # save detected maxima  as transition
-    maxima_times = times[max_time_idx]
-
-    evt_maxima = neo.Event(times=maxima_times[sort_idx],
-                    labels=['UP'] * len(maxima_times),
-                    name='maxima_transitions',
-                    trigger_detection='maxima',
-                    array_annotations={'channels':channel_idx[sort_idx]})
-
-    for key in asig.array_annotations.keys():
-        evt_ann = {key : asig.array_annotations[key][channel_idx[sort_idx]]}
-        evt_maxima.array_annotations.update(evt_ann)
-
-    remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
-    evt_maxima.annotations.update(asig.annotations)
-    
-    return evt, evt_maxima
-
-def plot_minima(asig, event, channel, maxima_threshold_window, maxima_threshold_fraction, min_peak_distance):
-
+def plot_minima(asig, event, channel, maxima_threshold_window, 
+                maxima_threshold_fraction, min_peak_distance):
     signal = asig.as_array().T[channel]
+    times = asig.times.rescale('s')
     sampling_rate = asig.sampling_rate.rescale('Hz').magnitude
-    window_frame = np.int32(maxima_threshold_window*sampling_rate) 
-    strides = np.lib.stride_tricks.sliding_window_view(signal, window_frame)
-    threshold_func = np.min(strides, axis = 1) + maxima_threshold_fraction*np.ptp(strides, axis = 1)
-    threshold_func = np.append(threshold_func, np.ones(len(signal) - len(threshold_func))*threshold_func[-1])
+    window_frame = int(maxima_threshold_window*sampling_rate) 
+    threshold_func = moving_threshold(signal, window_frame, maxima_threshold_fraction)
 
     peaks, _ = find_peaks(signal, height=threshold_func, distance=np.max([min_peak_distance*sampling_rate, 1]))  
         
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")
-    fig, ax = plt.subplots(2, 1, sharex = True)
-    fig.set_size_inches(6,4, forward=True)
-    ax[0].tick_params(axis='both', which='major', labelsize=6)
-    ax[1].tick_params(axis='both', which='major', labelsize=6)
+    fig, ax = plt.subplots()
     
-    ax[0].plot(asig.times.rescale('s'), signal, label='signal', color = 'blue', linewidth=1.)
-    ax[0].plot(asig.times.rescale('s'), threshold_func, label='dynamic threshold', color = 'black', linewidth = 0.5)
+    ax.plot(times, signal, label='signal', color='k')
+    ax.plot(times, threshold_func, label='moving threshold', linestyle=':', color='b')
 
     idx_ch = np.where(event.array_annotations['channels'] == channel)[0]
     
-    ax[0].plot(asig.times.rescale('s')[peaks], signal[peaks], 'x', color = 'red', label = 'detected maxima') 
-    ax[0].plot(event.times[idx_ch], signal[np.int32(event.times[idx_ch]*sampling_rate)], 'x', color = 'green', label = 'selected minima')
+    ax.plot(times[peaks], signal[peaks], 'x', color='r', label='detected maxima') 
+    ax.plot(event.times[idx_ch], signal[(event.times[idx_ch]*sampling_rate).astype(int)], 'x', color='g', label='selected minima')
 
-    ax[0].set_title('Channel {}'.format(channel), fontsize = 7.)
-    ax[0].set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string), fontsize = 7.)
-    ax[0].legend(fontsize = 7.)
+    ax.set_title(f'channel {channel}')
+    ax.set_xlabel('time [s]')
+    ax.legend()
     
-    ax[1].plot(event.times, event.array_annotations['channels'], 'o', color = 'black', fillstyle = 'full', markerfacecolor = 'black',  markersize = .02)
-    ax[1].set_ylabel('channel id', fontsize = 7.)
-    ax[1].set_xlabel('time (s)', fontsize = 7.)
-    plt.tight_layout()
     return ax
-
 
 
 if __name__ == '__main__':
@@ -193,26 +161,26 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output file")
-    CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=5,
-                     help="number of neighbouring points to interpolate")
-    CLI.add_argument("--use_quadtratic_interpolation", nargs='?', type=strtobool, default=False,
-                     help="wether use interpolation or not")
-    CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
-                     help="minimum distance between maxima/minima peaks (s)")
+    CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=0,
+                     help="number of neighboring points to interpolate")
     CLI.add_argument("--minima_persistence", nargs='?', type=float, default=0.200,
                      help="minimum time minima (s)")
-    CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.,
+    CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.5,
                      help="amplitude fraction to set the threshold detecting local maxima")
-    CLI.add_argument("--maxima_threshold_window", nargs='?', type=int, default=None,
-                     help="time window to use to set the threshold detecting local maxima")
-    
+    CLI.add_argument("--maxima_threshold_window", nargs='?', type=int, default=2,
+                     help="time window to use to set the threshold detecting local maxima [s]")
+    CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
+                     help="minimum distance between peaks (s)")
     CLI.add_argument("--img_dir", nargs='?', type=str,
                      default='None', help="path of figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str,
+                     default='minima_channel0.png',
+                     help='example image filename for channel 0')
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
     CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0.,
                      help="start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=40.,
+    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10.,
                      help="stop time in seconds")
 
 
@@ -220,9 +188,8 @@ if __name__ == '__main__':
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
-    transition_event, maxima_event = detect_minima(asig,
+    transition_event = detect_minima(asig,
                                      interpolation_points=args.num_interpolation_points,
-                                     interpolation=args.use_quadtratic_interpolation,
                                      maxima_threshold_fraction=args.maxima_threshold_fraction,
                                      maxima_threshold_window=args.maxima_threshold_window,
                                      min_peak_distance=args.min_peak_distance,
@@ -230,7 +197,7 @@ if __name__ == '__main__':
     
    
     block.segments[0].events.append(transition_event)
-    block.segments[0].events.append(maxima_event)
+
     write_neo(args.output, block)
 
     if args.plot_channels[0] is not None:
@@ -242,5 +209,5 @@ if __name__ == '__main__':
                         maxima_threshold_fraction = args.maxima_threshold_fraction, 
                         min_peak_distance = args.min_peak_distance)
             output_path = os.path.join(args.img_dir,
-                                       f'minima_channel{channel}')
+                            args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)

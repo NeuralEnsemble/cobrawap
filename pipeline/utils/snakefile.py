@@ -165,8 +165,9 @@ def dict_to_cla(arg_dict, quoted=False):
 def params(*args, config=None, **kwargs):
     '''
     creates parameter dictionary to pass to script as `--key value`
-    - if arg[0] is a dict, use it
+    - if args[0] is a dict, use it
     - args are interpreted as keys for the config dict (non case-sensitive)
+        - if config if given, else args are ignored
     - kwargs are interpreted as key-value pairs
     '''
     param_dict = {}  # use default dict?

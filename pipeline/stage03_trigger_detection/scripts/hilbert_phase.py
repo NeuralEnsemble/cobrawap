@@ -10,7 +10,7 @@ import seaborn as sns
 from utils.io import load_neo, write_neo, save_plot
 from utils.neo_utils import time_slice, remove_annotations
 from utils.parse import none_or_int, none_or_float
-import time
+from pathlib import Path
 
 
 def detect_transitions(asig, transition_phase):
@@ -41,7 +41,6 @@ def detect_transitions(asig, transition_phase):
     #                 to > transition_phase, followed by a peak (phase = 0).
 
     peaks = _detect_phase_crossings(0)
-    start = time.time()
     transitions = _detect_phase_crossings(transition_phase)
 
     up_transitions = np.array([])
@@ -108,12 +107,12 @@ def plot_hilbert_phase(asig, event, channel):
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=Path, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
+    CLI.add_argument("--output", nargs='?', type=Path, required=True,
                      help="path of output file")
-    CLI.add_argument("--img_dir", nargs='?', type=str,
-                     default='None', help="path of figure directory")
+    CLI.add_argument("--img_dir", nargs='?', type=Path,
+                     default=None, help="path of figure directory")
     CLI.add_argument("--img_name", nargs='?', type=str,
                      default='hilbert_phase_channel0.png',
                      help='example image filename for channel 0')
@@ -125,7 +124,7 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
                      help="stop time in seconds")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
@@ -145,6 +144,5 @@ if __name__ == '__main__':
             plot_hilbert_phase(asig=time_slice(asig, args.plot_tstart, args.plot_tstop),
                                event=time_slice(transition_event, args.plot_tstart, args.plot_tstop),
                                channel=int(channel))
-            output_path = os.path.join(args.img_dir,
-                                       args.img_name.replace('_channel0', f'_channel{channel}'))
+            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)

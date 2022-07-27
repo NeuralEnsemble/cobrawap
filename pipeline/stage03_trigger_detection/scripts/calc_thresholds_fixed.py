@@ -11,7 +11,7 @@ if __name__ == '__main__':
     CLI.add_argument("--output", nargs='?', type=str, required=True,
                      help="path of output thresholds (numpy array)")
     CLI.add_argument("--threshold", nargs='?', type=float, required=True)
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     asig = load_neo(args.data, 'analogsignal')
 

@@ -1,6 +1,5 @@
 import neo
 import numpy as np
-import random
 import argparse
 import os
 import scipy as sc
@@ -125,8 +124,8 @@ if __name__ == '__main__':
                      help='number of bins for the amplitude histogram')
     CLI.add_argument("--plot_channels", nargs='+', type=none_or_int,
                      default=None, help="list of channels to plot")
-    args = CLI.parse_args()
-
+    args, unknown = CLI.parse_known_args()
+    
     asig = load_neo(args.data, 'analogsignal')
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape

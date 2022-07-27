@@ -16,17 +16,17 @@ if 'STAGE_INPUT' not in config:
 
 config = SimpleNamespace(**config)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
+OUTPUT_DIR = Path(output_path) / config.PROFILE / config.STAGE_NAME
 
 config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, config.STAGE_INPUT)
 
 rule template:
     input:
-        data = 'input.data',
+        data = 'input.data', # replace
         script = Path('scripts') / '{rule_name}.py'
     output:
-        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace with NEO_FORMAT
-        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace with PLOT_FORMAT
+        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
+        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
     params:
         params(),
         additional_outputs
@@ -38,6 +38,24 @@ rule template:
                                  --output {output:q} \
                                  {params} 
         """
+
+# rule template_plot:
+#     input:
+#         data = 'input.data', # replace
+#         script = Path('scripts') / '{rule_name}.py'
+#     output:
+#         img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
+#     params:
+#         params(),
+#         additional_outputs
+#     shell:
+#         """
+#         {ADD_UTILS}
+#         echo "commandline arguments:" {params}
+#         python3 {input.script:q} --data {input.data:q} \
+#                                  --output {output:q} \
+#                                  {params} 
+#         """
 
 rule check_input:
     priority: 10
@@ -53,3 +71,17 @@ rule check_input:
         touch {output:q}
         """
 
+
+rule template_all:
+    input:
+        check = os.path.join(OUTPUT_DIR, 'input.check'),
+        data = 'stage_output.data', # replace
+        img = os.path.join(OUTPUT_DIR, 'results_figure.plot') # replace
+    params:
+        command = 'ln -s' if config.USE_LINK_AS_STAGE_OUTPUT else 'cp'
+    output:
+        data = os.path.join(OUTPUT_DIR, config.STAGE_OUTPUT)
+    shell:
+        """
+        {params.command} "{input.data}" "{output.data}"
+        """

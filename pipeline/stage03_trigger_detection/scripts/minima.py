@@ -9,6 +9,7 @@ from utils.parse import none_or_int, none_or_float, none_or_str
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+from pathlib import Path
 
 
 def filter_minima_order(signal, mins, order=1):
@@ -149,9 +150,9 @@ def plot_minima(asig, event, channel, maxima_threshold_window,
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=Path, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
+    CLI.add_argument("--output", nargs='?', type=Path, required=True,
                      help="path of output file")
     CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=0,
                      help="number of neighboring points to interpolate")
@@ -163,8 +164,8 @@ if __name__ == '__main__':
                      help="time window to use to set the threshold detecting local maxima [s]")
     CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
                      help="minimum distance between peaks (s)")
-    CLI.add_argument("--img_dir", nargs='?', type=none_or_str,
-                     default='None', help="path of figure directory")
+    CLI.add_argument("--img_dir", nargs='?', type=Path,
+                     default=None, help="path of figure directory")
     CLI.add_argument("--img_name", nargs='?', type=str,
                      default='minima_channel0.png',
                      help='example image filename for channel 0')
@@ -198,6 +199,5 @@ if __name__ == '__main__':
                         maxima_threshold_window = args.maxima_threshold_window,
                         maxima_threshold_fraction = args.maxima_threshold_fraction, 
                         min_peak_distance = args.min_peak_distance)
-            output_path = os.path.join(args.img_dir,
-                            args.img_name.replace('_channel0', f'_channel{channel}'))
+            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)

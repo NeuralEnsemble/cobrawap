@@ -179,8 +179,8 @@ def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
 
     ax.quiver(np.arange(dim_y)[::skip_step],
               np.arange(dim_x)[::skip_step],
-              np.real(vec_frame[::skip_step,::skip_step]),
-              -np.imag(vec_frame[::skip_step,::skip_step]))
+              np.imag(vec_frame[::skip_step,::skip_step]),
+              np.real(vec_frame[::skip_step,::skip_step]))
 
     ax.axis('image')
     ax.set_xticks([])

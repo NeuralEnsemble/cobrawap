@@ -1,57 +1,12 @@
 # Stage 03 Trigger Detection
 import os
-
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
-
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels
 
-
-STAGE_NAME = config["STAGE_NAME"]
-STAGE_OUTPUT = config["STAGE_OUTPUT"]
-PROFILE = config["PROFILE"]
-NEO_FORMAT = config["NEO_FORMAT"]
-USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
-
-if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
-    STAGE_INPUT = config["STAGE_INPUT"]
-else:
-    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage02_processing',
-                               'processed_data.nix')
-
-PLOT_TSTART = config["PLOT_TSTART"]
-PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
-PLOT_FORMAT = config["PLOT_FORMAT"]
-
-DETECTION_BLOCK = config["DETECTION_BLOCK"]
-TRIGGER_FILTER = config["TRIGGER_FILTER"]
-
-THRESHOLD_METHOD = config["THRESHOLD_METHOD"]
-FIXED_THRESHOLD = config["FIXED_THRESHOLD"]
-FIT_FUNCTION = config["FIT_FUNCTION"]
-BIN_NUM = config["BIN_NUM"]
-SIGMA_FACTOR = config["SIGMA_FACTOR"]
-TRANSITION_PHASE = config["TRANSITION_PHASE"]
-
-NUM_INTERPOLATION_POINTS = config["NUM_INTERPOLATION_POINTS"]
-MIN_PEAK_DISTANCE = config["MIN_PEAK_DISTANCE"]
-MINIMA_PERSISTENCE = config["MINIMA_PERSISTENCE"]
-MAXIMA_THRESHOLD_FRACTION = config["MAXIMA_THRESHOLD_FRACTION"]
-MAXIMA_THRESHOLD_WINDOW = config["MAXIMA_THRESHOLD_WINDOW"]
-
-MIN_UP_DURATION = config["MIN_UP_DURATION"]
-MIN_DOWN_DURATION = config["MIN_DOWN_DURATION"]
-REMOVE_DOWN_FIRST = config["REMOVE_DOWN_FIRST"]
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
+
 def locate(str_list, string):
     if string in str_list:
         return [i for i, el in enumerate(str_list) if el == string][0]
@@ -60,17 +15,17 @@ def locate(str_list, string):
                           and the config file.".format(string))
 
 def filtered_triggers(wildcards):
-    rule_list = TRIGGER_FILTER
-    default_input = os.path.join(OUTPUT_DIR, DETECTION_BLOCK,
-                                 'transitions.'+NEO_FORMAT),
+    rule_list = config.TRIGGER_FILTER
+    default_input = os.path.join(OUTPUT_DIR, config.DETECTION_BLOCK,
+                                 'transitions.'+config.NEO_FORMAT),
     if hasattr(wildcards, 'rule_name'):
         idx = locate(rule_list, wildcards.rule_name)
         if idx:
             return os.path.join(OUTPUT_DIR, rule_list[idx-1],
-                                rule_list[idx-1]+'.'+NEO_FORMAT)
+                                rule_list[idx-1]+'.'+config.NEO_FORMAT)
     elif len(rule_list):
         return os.path.join(OUTPUT_DIR, rule_list[-1],
-                            rule_list[-1]+'.'+NEO_FORMAT)
+                            rule_list[-1]+'.'+config.NEO_FORMAT)
     return default_input
 
 wildcard_constraints:
@@ -88,40 +43,40 @@ rule all:
         data = filtered_triggers,
         img = os.path.join(OUTPUT_DIR, 'plot_trigger_times')
     params:
-        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
+        command = 'ln -s' if config.USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
+        data = os.path.join(OUTPUT_DIR, config.STAGE_OUTPUT)
     shell:
         """
         {params.command} "{input.data}" "{output.data}"
         """
 
-rule check_input:
-    priority: 10
-    input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', 'input.check')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}"
-        touch "{output}"
-        """
+# rule check_input:
+#     priority: 10
+#     input:
+#         data = config.STAGE_INPUT,
+#         script = os.path.join('scripts', 'check_input.py')
+#     output:
+#         os.path.join('{dir}', 'input.check')
+#     shell:
+#         """
+#         {ADD_UTILS}
+#         python3 "{input.script}" --data "{input.data}"
+#         touch "{output}"
+#         """
 
 checkpoint plot_trigger_times:
     input:
         data = filtered_triggers,
         plot_script = os.path.join('scripts', 'plot_trigger_times.py')
     params:
-        tstart = PLOT_TSTART,
-        tstop = PLOT_TSTOP,
-        plot_channels = PLOT_CHANNELS,
-        filename = 'trigger_times_channel0'+PLOT_FORMAT
+        tstart = config.PLOT_TSTART,
+        tstop = config.PLOT_TSTOP,
+        plot_channels = config.PLOT_CHANNELS,
+        filename = 'trigger_times_channel0'+config.PLOT_FORMAT
     output:
         img_dir = report(directory(os.path.join(OUTPUT_DIR, 'plot_trigger_times')),
-                         patterns=["{img_name}."+PLOT_FORMAT])
+                         patterns=["{img_name}."+config.PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
@@ -137,12 +92,12 @@ checkpoint plot_trigger_times:
 
 rule threshold:
     input:
-        data = STAGE_INPUT,
+        data = config.STAGE_INPUT,
         thresholds = os.path.join('{dir}', 'threshold',
-                                  f'{THRESHOLD_METHOD}_thresholds.npy'),
+                                  f'{config.THRESHOLD_METHOD}_thresholds.npy'),
         script = os.path.join('scripts', 'threshold.py')
     output:
-        data = os.path.join('{dir}', 'threshold', 'transitions.'+NEO_FORMAT)
+        data = os.path.join('{dir}', 'threshold', 'transitions.'+config.NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}
@@ -154,10 +109,10 @@ rule threshold:
 rule calc_thresholds_fixed:
 # sub-rule of threshold
     input:
-        data = STAGE_INPUT,
+        data = config.STAGE_INPUT,
         script = os.path.join('scripts', 'calc_thresholds_fixed.py')
     params:
-        threshold = FIXED_THRESHOLD
+        threshold = config.FIXED_THRESHOLD
     output:
         array = os.path.join('{dir}', 'threshold', 'fixed_thresholds.npy')
     shell:
@@ -171,14 +126,14 @@ rule calc_thresholds_fixed:
 rule calc_thresholds_fitted:
 # sub-rule of threshold
     input:
-        data = STAGE_INPUT,
+        data = config.STAGE_INPUT,
         script = os.path.join('scripts', 'calc_thresholds_fitted.py')
     params:
-        sigma_factor = SIGMA_FACTOR,
-        fit_function = FIT_FUNCTION,
-        bin_num = BIN_NUM,
-        plot_channels = PLOT_CHANNELS,
-        img_name = 'amplitudes_channel0.'+PLOT_FORMAT
+        sigma_factor = config.SIGMA_FACTOR,
+        fit_function = config.FIT_FUNCTION,
+        bin_num = config.BIN_NUM,
+        plot_channels = config.PLOT_CHANNELS,
+        img_name = 'amplitudes_channel0.'+config.PLOT_FORMAT
     output:
         array = os.path.join('{dir}', 'threshold', 'fitted_thresholds.npy'),
         img_dir = report(directory(os.path.join('{dir}', 'threshold',
@@ -199,19 +154,19 @@ rule calc_thresholds_fitted:
 
 rule hilbert_phase:
     input:
-        data = STAGE_INPUT,
+        data = config.STAGE_INPUT,
         script = os.path.join('scripts', 'hilbert_phase.py')
     params:
-        transition_phase = TRANSITION_PHASE,
-        plot_channels = PLOT_CHANNELS,
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        img_name = 'hilbert_phase_channel0.'+PLOT_FORMAT
+        transition_phase = config.TRANSITION_PHASE,
+        plot_channels = config.PLOT_CHANNELS,
+        plot_tstart = config.PLOT_TSTART,
+        plot_tstop = config.PLOT_TSTOP,
+        img_name = 'hilbert_phase_channel0.'+config.PLOT_FORMAT
     output:
-        data = os.path.join('{dir}', 'hilbert_phase', 'transitions.'+NEO_FORMAT),
+        data = os.path.join('{dir}', 'hilbert_phase', 'transitions.'+config.NEO_FORMAT),
         img_dir = report(directory(os.path.join('{dir}', 'hilbert_phase',
                                                 'hilbert_phase_plots')),
-                         patterns=['{img_name}.'+PLOT_FORMAT])
+                         patterns=['{img_name}.'+config.PLOT_FORMAT])
     shell:
         """
         {ADD_UTILS}
@@ -225,41 +180,20 @@ rule hilbert_phase:
                                  --plot_tstop {params.plot_tstop}
         """
 
-rule minima:
+use rule template as minima with:
     input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'minima.py')
-    params:
-        minima_persistence = MINIMA_PERSISTENCE, 
-        min_peak_distance = MIN_PEAK_DISTANCE,
-        maxima_threshold_fraction = MAXIMA_THRESHOLD_FRACTION,
-        maxima_threshold_window = MAXIMA_THRESHOLD_WINDOW,
-        num_interpolation_points = NUM_INTERPOLATION_POINTS,
-        plot_channels = PLOT_CHANNELS,
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        img_name = 'minima_channel0.'+PLOT_FORMAT
+        data = config.STAGE_INPUT,
+        script = Path('scripts') / 'minima.py'
     output:
-        data = os.path.join('{dir}', 'minima', 'transitions.'+NEO_FORMAT),
-        img_dir = report(directory(os.path.join('{dir}', 'minima',
-                                                'minima_plots')),
-                         patterns=['{img_name}'])
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --minima_persistence {params.minima_persistence} \
-                                 --min_peak_distance {params.min_peak_distance} \
-                                 --maxima_threshold_fraction {params.maxima_threshold_fraction} \
-                                 --maxima_threshold_window {params.maxima_threshold_window} \
-                                 --num_interpolation_points {params.num_interpolation_points} \
-                                 --img_dir "{output.img_dir}" \
-                                 --img_name "{params.img_name}" \
-                                 --plot_channels {params.plot_channels} \
-                                 --plot_tstart {params.plot_tstart} \
-                                 --plot_tstop {params.plot_tstop} 
-        """
+        Path('{dir}') / 'minima' / f'transitions.{config.NEO_FORMAT}',
+        img_dir = directory(Path('{dir}') / 'minima' / 'minima_plots')
+    params:
+        params('minima_persistence', 'min_peak_distance', 'maxima_threshold_fraction', 
+               'maxima_threshold_window', 'num_interpolation_points', 
+               'plot_channels', 'plot_tstart', 'plot_tstop',
+                img_name='minima_channel0.'+config.PLOT_FORMAT, config=config),
+        additional_outputs
+
 
 #### FILTER BLOCKS (choose any) ####
 
@@ -268,12 +202,12 @@ rule remove_short_states:
         data = filtered_triggers,
         script = os.path.join('scripts', 'remove_short_states.py')
     params:
-        min_up_duration = MIN_UP_DURATION,
-        min_down_duration = MIN_DOWN_DURATION,
-        remove_down_first = REMOVE_DOWN_FIRST
+        min_up_duration = config.MIN_UP_DURATION,
+        min_down_duration = config.MIN_DOWN_DURATION,
+        remove_down_first = config.REMOVE_DOWN_FIRST
     output:
         data = os.path.join('{dir}', '{rule_name}',
-                            'remove_short_states.'+NEO_FORMAT)
+                            'remove_short_states.'+config.NEO_FORMAT)
     shell:
         """
         {ADD_UTILS}

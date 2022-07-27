@@ -3,7 +3,7 @@ import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
 from utils.io import load_neo, write_neo, save_plot
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 
 
 def plot_frame(frame, ax=None, skip_step=3):

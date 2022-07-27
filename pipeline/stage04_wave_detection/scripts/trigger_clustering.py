@@ -4,7 +4,7 @@ import quantities as pq
 import argparse
 from sklearn.cluster import DBSCAN
 from utils.io import load_neo, write_neo
-from utils.neo import remove_annotations
+from utils.neo_utils import remove_annotations
 
 
 def cluster_triggers(event, metric, neighbour_distance, min_samples,

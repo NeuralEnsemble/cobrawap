@@ -4,7 +4,7 @@ import quantities as pq
 import argparse
 import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,

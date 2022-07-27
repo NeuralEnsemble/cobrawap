@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import copy
 import seaborn as sns
 from utils.io import load_neo, save_plot
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 from utils.parse import none_or_str
 
 

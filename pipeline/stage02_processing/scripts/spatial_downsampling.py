@@ -10,7 +10,7 @@ import quantities as pq
 from skimage import data, io, filters, measure
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
+from utils.neo_utils import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 def spatial_smoothing(imgseq, macro_pixel_dim):

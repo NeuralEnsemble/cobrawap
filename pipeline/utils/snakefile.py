@@ -2,6 +2,7 @@ import os
 import yaml
 import warnings
 from copy import copy
+from types import SimpleNamespace
 from snakemake.logging import logger
 
 
@@ -149,3 +150,52 @@ def get_param(config, param_name):
         return config[param_name]
     else:
         return None
+
+
+def dict_to_cla(arg_dict, quoted=False):
+    for key, value in arg_dict.items():
+        if type(value) == list:
+            arg_dict[key] = ' '.join(str(v) for v in value)
+
+    cla_str = lambda k,v: f'--{k} "{v}"' if quoted else f'--{k} {v}'
+    arg_strings = [cla_str(key, value) for key, value in arg_dict.items()]
+    return ' '.join(arg_strings)
+
+
+def params(*args, config=None, **kwargs):
+    '''
+    creates parameter dictionary to pass to script as `--key value`
+    - if arg[0] is a dict, use it
+    - args are interpreted as keys for the config dict (non case-sensitive)
+    - kwargs are interpreted as key-value pairs
+    '''
+    param_dict = {}  # use default dict?
+
+    if len(args) and type(args[0]) == dict:
+        param_dict = args[0]
+
+    if type(config) == SimpleNamespace:
+        config = vars(config)
+
+    if config is not None:
+        for arg in args:
+            if not type(arg) == str:
+                continue
+            if arg.upper() in config.keys():
+                param_dict[arg.lower()] = config[arg.upper()]
+            else:
+                print(f'Parameter {arg} not found in the config!')
+
+    for key, value in kwargs.items():
+        param_dict[key] = value
+
+    return dict_to_cla(param_dict)
+
+
+def additional_outputs(wildcards, output):
+    out_dict = dict(output.items())
+
+    if 'data' in out_dict.keys():  # legacy, to be removed
+        del out_dict['data']
+
+    return dict_to_cla(out_dict, quoted=True)

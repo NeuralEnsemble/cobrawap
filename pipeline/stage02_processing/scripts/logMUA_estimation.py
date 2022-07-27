@@ -9,7 +9,7 @@ import argparse
 import os
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_float, none_or_int
-from utils.neo import time_slice
+from utils.neo_utils import time_slice
 
 
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,

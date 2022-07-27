@@ -5,7 +5,7 @@ import quantities as pq
 import re
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo import remove_annotations
+from utils.neo_utils import remove_annotations
 
 
 def add_annotations_to_df(df, annotations, include_keys=[]):

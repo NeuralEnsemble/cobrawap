@@ -16,7 +16,7 @@ import seaborn as sns
 import quantities as pq
 import random
 from utils.io import load_neo, save_plot
-from utils.neo import time_slice
+from utils.neo_utils import time_slice
 from utils.parse import parse_plot_channels, none_or_int, determine_dims
 
 

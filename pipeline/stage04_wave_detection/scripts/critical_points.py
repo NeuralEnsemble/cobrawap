@@ -4,7 +4,7 @@ import neo
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
 from utils.io import load_neo, write_neo, save_plot
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 
 
 def detect_critical_points(imgseq, times):

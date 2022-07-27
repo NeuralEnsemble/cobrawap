@@ -7,7 +7,7 @@ import argparse
 import quantities as pq
 import neo
 from utils.parse import parse_string2dict, none_or_float, none_or_int, none_or_str
-from utils.neo import imagesequences_to_analogsignals, flip_image, rotate_image, time_slice
+from utils.neo_utils import imagesequences_to_analogsignals, flip_image, rotate_image, time_slice
 from utils.io import load_neo, write_neo
 
 

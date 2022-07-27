@@ -10,7 +10,7 @@ import neo
 import os
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
+from utils.neo_utils import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 def calculate_contour(img, contour_limit):

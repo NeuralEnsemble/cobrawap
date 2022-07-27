@@ -9,7 +9,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 
 
 def calc_local_wave_intervals(evts):

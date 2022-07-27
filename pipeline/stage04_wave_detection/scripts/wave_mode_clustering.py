@@ -16,7 +16,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str, none_or_int
-from utils.neo import analogsignals_to_imagesequences, remove_annotations
+from utils.neo_utils import analogsignals_to_imagesequences, remove_annotations
 
 
 def build_timelag_dataframe(waves_evt, normalize=True):

@@ -5,7 +5,7 @@ import numpy as np
 import argparse
 import quantities as pq
 from utils.io import load_neo
-from utils.neo import analogsignals_to_imagesequences, imagesequences_to_analogsignals
+from utils.neo_utils import analogsignals_to_imagesequences, imagesequences_to_analogsignals
 
 
 if __name__ == '__main__':
@@ -34,7 +34,7 @@ if __name__ == '__main__':
         raise ValueError("AnalogSignal doesn't include empty grid sites. "
                       + f"Reshape {asig.shape} to {asig2.shape} according to "
                          "x/y_coords. You may use `add_empty_sites_to_analogsignal` "
-                         "from the utils.neo module.")
+                         "from the utils.neo_utils module.")
     del asig2
 
     print('Recording Time:\t\t', asig.t_stop - asig.t_start)

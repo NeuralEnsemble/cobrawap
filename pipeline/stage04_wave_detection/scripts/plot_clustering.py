@@ -10,7 +10,7 @@ import random
 import warnings
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_float
-from utils.neo import time_slice
+from utils.neo_utils import time_slice
 
 
 def plot_clustering(events, ax=None):

@@ -4,7 +4,7 @@ import argparse
 import os
 import random
 from utils.io import load_neo, save_plot
-from utils.neo import time_slice
+from utils.neo_utils import time_slice
 
 
 def plot_traces(original_asig, processed_asig, channel):

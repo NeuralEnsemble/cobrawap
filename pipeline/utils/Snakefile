@@ -1,0 +1,55 @@
+
+from pathlib import Path
+import sys
+from types import SimpleNamespace
+utils_path = str((Path() / '..').resolve())
+print(utils_path)
+sys.path.append(utils_path)
+from settings import output_path
+from utils.parse import parse_plot_channels
+from utils.snakefile import dict_to_cla, params, additional_outputs
+
+if 'STAGE_INPUT' not in config:
+    raise AttributeError('No STAGE_INPUT defined for running the stage individually! '
+                         'You can set it via the command line with '
+                         '`--config STAGE_INPUT=/path/to/file`. ')
+
+config = SimpleNamespace(**config)
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
+
+config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, config.STAGE_INPUT)
+
+rule template:
+    input:
+        data = 'input.data',
+        script = Path('scripts') / '{rule_name}.py'
+    output:
+        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace with NEO_FORMAT
+        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace with PLOT_FORMAT
+    params:
+        params(),
+        additional_outputs
+    shell:
+        """
+        {ADD_UTILS}
+        echo "commandline arguments:" {params}
+        python3 {input.script:q} --data {input.data:q} \
+                                 --output {output:q} \
+                                 {params} 
+        """
+
+rule check_input:
+    priority: 10
+    input:
+        data = config.STAGE_INPUT,
+        script = Path('scripts') / 'check_input.py'
+    output:
+        Path('{dir}') / 'input.check'
+    shell:
+        """
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q}
+        touch {output:q}
+        """
+

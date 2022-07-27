@@ -1,7 +1,7 @@
 import argparse
 import quantities as pq
 from utils.io import load_neo, write_neo
-from utils.neo import time_slice
+from utils.neo_utils import time_slice
 
 
 if __name__ == '__main__':

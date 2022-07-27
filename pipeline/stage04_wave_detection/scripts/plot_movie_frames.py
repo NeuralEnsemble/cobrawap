@@ -7,7 +7,7 @@ import numpy as np
 import random
 import scipy
 from utils.io import load_neo, save_plot
-from utils.neo import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignals_to_imagesequences
 from utils.parse import none_or_str, none_or_float
 
 def get_events(events, frame_times, event_name='transitions'):

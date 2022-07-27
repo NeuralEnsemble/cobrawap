@@ -1,41 +1,28 @@
 import neo
 import numpy as np
 import quantities as pq
-from scipy.signal import find_peaks, argrelmin
+from scipy.signal import find_peaks
 import argparse
-from distutils.util import strtobool
 from utils.io import load_neo, write_neo, save_plot
-from utils.neo import remove_annotations, time_slice
-from utils.parse import none_or_int, none_or_float
+from utils.neo_utils import remove_annotations, time_slice
+from utils.parse import none_or_int, none_or_float, none_or_str
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 
-def _boolrelextrema(data, comparator, axis=0, order=1, mode='clip'):
-    # modified numpy function (to be replaced in future version)
-    if((int(order) != order) or (order < 1)):
-        raise ValueError('Order must be an int >= 1')
 
-    datalen = data.shape[axis]
-    locs = np.arange(0, datalen)
+def filter_minima_order(signal, mins, order=1):
+    filtered_mins = np.array([], dtype=int)
 
-    results = np.ones(data.shape, dtype=bool)
-    main = data.take(locs, axis=axis, mode=mode)
-    for shift in range(1, order + 1):
-        plus = data.take(locs + shift, axis=axis, mode=mode)
-        minus = data.take(locs - 1, axis=axis, mode=mode)
-        results &= comparator(main, plus)
-        results &= comparator(main, minus)
-        if(~results.any()):
-            return results
-    return results
+    for midx in mins:
+        idx = np.arange(midx+1, midx+order, dtype=int)
+        idx = idx[idx < len(signal)]
 
-def one_side_argrelmin(data, axis=0, order=1, mode='clip'):
-    
-    results = _boolrelextrema(data, np.less,
-                              axis, order, mode)
+        if (signal[midx] < signal[idx]).all():
+            filtered_mins = np.append(filtered_mins, midx)
 
-    return np.nonzero(results)
+    return filtered_mins
+
 
 def moving_threshold(signal, window, fraction):
     #compute a dynamic threshold function through a sliding window on the signal array
@@ -46,6 +33,7 @@ def moving_threshold(signal, window, fraction):
     threshold_func = np.append(np.ones(window//2)*threshold_func[0], threshold_func)
     threshold_func = np.append(threshold_func, np.ones(len(signal)-len(threshold_func))*threshold_func[-1])
     return threshold_func
+
 
 def detect_minima(asig, interpolation_points, maxima_threshold_fraction, 
                   maxima_threshold_window, min_peak_distance, minima_persistence):
@@ -58,13 +46,16 @@ def detect_minima(asig, interpolation_points, maxima_threshold_fraction,
     channel_idx  = np.array([], dtype=int)
 
     minima_order = int(np.max([minima_persistence*sampling_rate, 1]))
+    min_distance = np.max([min_peak_distance*sampling_rate, 1])
     
     for channel, channel_signal in enumerate(signal.T):
         if np.isnan(channel_signal).any(): continue
 
         threshold_func = moving_threshold(channel_signal, window_frame, maxima_threshold_fraction)
-        peaks, _ = find_peaks(channel_signal, distance=np.max([min_peak_distance*sampling_rate, 1]), height=threshold_func) 
-        mins = one_side_argrelmin(channel_signal, order=minima_order)[0]
+        peaks, _ = find_peaks(channel_signal, distance=min_distance, height=threshold_func)
+        dmins, _ = find_peaks(-channel_signal)#, distance=min_distance)
+
+        mins = filter_minima_order(channel_signal, dmins, order=minima_order)
 
         clean_mins = np.array([], dtype=int)
 
@@ -125,6 +116,7 @@ def detect_minima(asig, interpolation_points, maxima_threshold_fraction,
    
     return evt
 
+
 def plot_minima(asig, event, channel, maxima_threshold_window, 
                 maxima_threshold_fraction, min_peak_distance):
     signal = asig.as_array().T[channel]
@@ -171,7 +163,7 @@ if __name__ == '__main__':
                      help="time window to use to set the threshold detecting local maxima [s]")
     CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
                      help="minimum distance between peaks (s)")
-    CLI.add_argument("--img_dir", nargs='?', type=str,
+    CLI.add_argument("--img_dir", nargs='?', type=none_or_str,
                      default='None', help="path of figure directory")
     CLI.add_argument("--img_name", nargs='?', type=str,
                      default='minima_channel0.png',
@@ -182,9 +174,8 @@ if __name__ == '__main__':
                      help="start time in seconds")
     CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10.,
                      help="stop time in seconds")
+    args, unknown = CLI.parse_known_args()
 
-
-    args = CLI.parse_args()
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
@@ -194,8 +185,7 @@ if __name__ == '__main__':
                                      maxima_threshold_window=args.maxima_threshold_window,
                                      min_peak_distance=args.min_peak_distance,
                                      minima_persistence=args.minima_persistence)
-    
-   
+                                
     block.segments[0].events.append(transition_event)
 
     write_neo(args.output, block)

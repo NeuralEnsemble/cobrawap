@@ -31,6 +31,11 @@ PLOT_FORMAT = config["PLOT_FORMAT"]
 
 MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
 
+N_BAD_NODES = config["N_BAD_NODES"]
+VOTING_THRESHOLD = config["VOTING_THRESHOLD"]
+EXIT_CONDITION = config["EXIT_CONDITION"]
+SIGNAL_EVALUATION_METHOD = config["SIGNAL_EVALUATION_METHOD"]
+
 BLOCK_ORDER = config["BLOCK_ORDER"]
 RERUN_MODE = guess_type(config["RERUN_MODE"])
 NORMALIZE_BY = config["NORMALIZE_BY"]
@@ -392,4 +397,32 @@ rule subsampling:
         python3 "{input.script}" --data "{input.data}" \
                                  --output "{output.data}" \
                                  --target_rate {params.target_rate}
+        """
+
+rule hierarchical_spatial_sampling:
+    input:
+        is_clear = os.path.join('{dir}', 'clear.done'),
+        data = input_file,
+        script = os.path.join('scripts', 'hierarchical_spatial_sampling.py')
+    output:
+        data = os.path.join('{dir}', '{rule_name}',
+                            'hierarchical_spatial_sampling.'+NEO_FORMAT),
+        img = report(os.path.join('{dir}', '{rule_name}',
+                                  'hierarchical_spatial_sampling.'+PLOT_FORMAT))
+    params:
+        n_bad_nodes = N_BAD_NODES,
+        voting_threshold = VOTING_THRESHOLD,
+        exit_condition = EXIT_CONDITION,
+        signal_eval_method = SIGNAL_EVALUATION_METHOD,
+    shell:
+        """
+        {ADD_UTILS}
+        python {input.script} --data "{input.data}" \
+                              --output "{output.data}" \
+                              --output_img "{output.img}" \
+                              --n_bad_nodes {params.n_bad_nodes} \
+                              --voting_threshold {params.voting_threshold} \
+                              --exit_condition "{params.exit_condition}" \
+                              --signal_eval_method "{params.signal_eval_method}"
+
         """

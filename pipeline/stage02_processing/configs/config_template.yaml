@@ -27,7 +27,7 @@ PLOT_FORMAT: 'png'
 # and in which order. Execution order is from first to last entry.
 # The available blocks are:
 # 'background_subtraction', 'frequency_filter', 'normalization', 'detrending',
-# 'spatial_downsampling', 'roi_selection', 'logMUA_estimation', 'phase_transform',
+# 'spatial_downsampling', 'hierarchical_spatial_sampling', 'roi_selection', 'logMUA_estimation', 'phase_transform',
 # 'zscore', 'subsampling'
 # Default: empty list [] -> it skips any processing blocks and returns the same
 # as input but, different from plot obtained from stage01, here the values on
@@ -47,6 +47,18 @@ RERUN_MODE: True
 # BLOCK - spatial_smoothig
 #################################
 MACRO_PIXEL_DIM: 2
+
+# BLOCK - hierarchical_spatial_sampling 
+#################################
+# method to use for the exit mode: 'consecutive', 'voting', 'standard'
+EXIT_CONDITION: 'voting'
+# method to evaluate the signal to noise ration of a macro pixel
+SIGNAL_EVALUATION_METHOD: 'shapiro'
+# number of bad nodes in the same branch to meet the exit condition
+N_BAD_NODES: 2
+# only for "voting" method: threshold fraction of 
+# "bad children" to keep investigating the tree
+VOTING_THRESHOLD: 0.5
 
 # BLOCK - normalization
 #######################

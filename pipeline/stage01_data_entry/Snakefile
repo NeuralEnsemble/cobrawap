@@ -1,155 +1,72 @@
+"""
 # Stage 01 Data Entry
+"""
+
 import os
 
-# configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
-
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path, configs_dir
-from utils.snakefile import get_param
+# configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
+
 from utils.parse import ordereddict_to_dict
-# from snakemake.remote.S3 import RemoteProvider as S3RemoteProvider
-# S3 = S3RemoteProvider(host="https://object.cscs.ch")
-# output_path = 'cobrawap/'
 
-if not bool(config):
-    raise FileNotFoundError("Please specify a config file with '--configfile=...'")
+# ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
+# ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
+# KWARGS = ordereddict_to_dict(config["KWARGS"])
 
-STAGE_NAME = config["STAGE_NAME"]
-STAGE_OUTPUT = config["STAGE_OUTPUT"]
-PROFILE = config["PROFILE"]
-NEO_FORMAT = config["NEO_FORMAT"]
-USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
-
-PLOT_TSTART = config["PLOT_TSTART"]
-PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNELS = config["PLOT_CHANNELS"]
-PLOT_FORMAT = config["PLOT_FORMAT"]
-
-DATA_SETS = config["DATA_SETS"]
-CURATION_SCRIPT = config["CURATION_SCRIPT"]
-SPATIAL_SCALE = config['SPATIAL_SCALE']
-SAMPLING_RATE = config["SAMPLING_RATE"]
-T_START = config["T_START"]
-T_STOP = config["T_STOP"]
-ORIENTATION_TOP = get_param(config, "ORIENTATION_TOP")
-ORIENTATION_RIGHT = get_param(config, "ORIENTATION_RIGHT")
-ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
-ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
-KWARGS = ordereddict_to_dict(config["KWARGS"])
-TRIAL = get_param(config, "TRIAL")
+config.DATA_NAME = list(config.DATA_SETS.keys())[0]
+config.DATA_PATH = config.DATA_SETS[config.DATA_NAME]
 
 wildcard_constraints:
     data_name = '\w+'
 
 localrules: all, check_input
 
-def input_file(wildcards):
-    print(DATA_SETS[wildcards.data_name])
-    # return S3.remote(DATA_SETS[wildcards.data_name])
-    return DATA_SETS[wildcards.data_name]
-
-rule all:
+use rule template_all as all with:
     input:
-        check = expand(os.path.join(OUTPUT_DIR, '{data_name}.check'),
-                       data_name = DATA_SETS.keys()),
-        img = expand(os.path.join(OUTPUT_DIR, '{data_name}',
-                                   'trace_{data_name}.'+PLOT_FORMAT),
-                      data_name = DATA_SETS.keys()),
-        data = expand(os.path.join(OUTPUT_DIR, '{data_name}',
-                                   '{data_name}.'+NEO_FORMAT),
-                      data_name = DATA_SETS.keys()),
-        # check = S3.remote(expand(os.path.join('cobrawap', '{data_name}.check'),
-        #                          data_name = DATA_SETS.keys()))
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        check = OUTPUT_DIR / f'{config.DATA_NAME}.check',
+        img = OUTPUT_DIR / f'{config.DATA_NAME}' 
+                         / f'trace_{config.DATA_NAME}.{config.PLOT_FORMAT}',
+        data = OUTPUT_DIR / f'{config.DATA_NAME}' 
+                          / f'{config.DATA_NAME}.{config.NEO_FORMAT}',
+        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+
+
+use rule check_input as check_data_entry with:
+    input:
+        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = Path('scripts') / 'check_input.py'
+    output:
+        Path('{dir}') / '{data_name}.check'
+
+
+use rule template as plot_traces with:
+    input:
+        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = Path('scripts') / 'plot_traces.py'
     params:
-        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
+        params(t_start = config.PLOT_TSTART,
+               t_stop = config.PLOT_TSTOP,
+               channels = config.PLOT_CHANNELS)
     output:
-        os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
-    shell:
-        """
-        {params.command} "{input.data[0]}" "{output}"
-        """
+        img = Path('{dir}') / '{data_name}' / f'trace_{{data_name}}.{config.PLOT_FORMAT}'
 
-rule check_input:
-    priority: 10
-    input:
-        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
-        # data = os.path.join(OUTPUT_DIR, '{data_name}', '{data_name}.'+NEO_FORMAT),
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', '{data_name}.check')
-        # S3.remote(os.path.join('cobrawap', '{data_name}.check'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}"
-        touch "{output}"
-        """
-
-rule plot_traces:
-    input:
-        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT),
-        script = os.path.join('scripts', 'plot_traces.py')
-    params:
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        plot_channels = PLOT_CHANNELS
-    output:
-        img = report(os.path.join('{dir}', '{data_name}', 'trace_{data_name}.'+PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.img}" \
-                                 --t_start {params.plot_tstart} \
-                                 --t_stop {params.plot_tstop} \
-                                 --channels {params.plot_channels}
-        """
 
 def curation_script(w):
     if configs_dir is None:
-        prefix = ''
+        prefix = Path()
     else:
-        prefix = os.path.join(configs_dir, STAGE_NAME)
-    return os.path.join(prefix, 'scripts', CURATION_SCRIPT)
+        prefix = Path(configs_dir) / config.STAGE_NAME
+    return prefix / 'scripts' / config.CURATION_SCRIPT
 
-rule enter_data:
+
+use rule template as enter_data with:
     input:
-        data = input_file,
+        data = config.DATA_PATH,
         script = curation_script,
     params:
-        spatial_scale = SPATIAL_SCALE,
-        sampling_rate = SAMPLING_RATE,
-        t_start = T_START,
-        t_stop = T_STOP,
-        orientation_top = ORIENTATION_TOP,
-        orientation_right = ORIENTATION_RIGHT,
-        annotations = ANNOTATIONS,
-        array_annotations = ARRAY_ANNOTATIONS,
-        kwargs = KWARGS,
-        trial = TRIAL
+        params('spatial_scale', 'sampling_rate', 't_start', 't_stop',
+               'orientation_top', 'orientation_right', 'annotations',
+               'array_annotations', 'kwargs', 'trial', config=config)
     output:
-        data = os.path.join('{dir}', '{data_name}', '{data_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --data_name {wildcards.data_name} \
-                                 --sampling_rate {params.sampling_rate} \
-                                  --spatial_scale {params.spatial_scale} \
-                                 --t_start {params.t_start} \
-                                 --t_stop {params.t_stop} \
-                                 --orientation_top {params.orientation_top} \
-                                 --orientation_right {params.orientation_right} \
-                                 --annotations {params.annotations} \
-                                 --array_annotations {params.array_annotations} \
-                                 --kwargs {params.kwargs} \
-                                 --trial {params.trial}
-        """
+        os.path.join('{dir}', '{data_name}', '{data_name}.'+config.NEO_FORMAT)

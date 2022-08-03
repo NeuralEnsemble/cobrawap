@@ -1,6 +1,5 @@
 import numpy as np
 import warnings
-import random
 import re
 from pathlib import Path
 import sys
@@ -141,7 +140,7 @@ def parse_plot_channels(channels, input_file):
                                       lazy=True).shape
         for i, channel in enumerate(channels):
             if channel is None or channel >= channel_num:
-                channels[i] = random.randint(0,channel_num)
+                channels[i] = np.random.randint(0,channel_num)
     return channels
 
 

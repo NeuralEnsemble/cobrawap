@@ -12,7 +12,7 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output",  nargs='?', type=str, required=True,
                      help="path of output file")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]

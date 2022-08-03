@@ -15,7 +15,7 @@ if __name__ == '__main__':
                      help="new starting time in s")
     CLI.add_argument("--t_stop", nargs='?', type=float, default=10,
                      help="new stopping time in s")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

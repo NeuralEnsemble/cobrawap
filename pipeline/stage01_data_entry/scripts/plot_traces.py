@@ -13,8 +13,6 @@ import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
-import quantities as pq
-import random
 from utils.io import load_neo, save_plot
 from utils.neo_utils import time_slice
 from utils.parse import parse_plot_channels, none_or_int, determine_dims
@@ -64,7 +62,7 @@ if __name__ == '__main__':
                      help="stop time in seconds")
     CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
                      help="list of channels to plot")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     asig = load_neo(args.data, 'analogsignal', lazy=True)
 

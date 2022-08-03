@@ -3,6 +3,7 @@ import yaml
 import warnings
 from copy import copy
 from types import SimpleNamespace
+from warnings import warn
 from snakemake.logging import logger
 
 
@@ -121,8 +122,11 @@ def update_configfile(config_path, update_dict):
 
 
 def set_stage_inputs(stages, output_dir, config_file='temp_config.yaml',
-                     intput_namespace="STAGE_INPUT"):
+                     input_namespace="STAGE_INPUT"):
     update_dict = {}
+    update_configfile(config_path=os.path.join(output_dir, stages[0], config_file),
+                              update_dict={input_namespace:None})
+
     for i, stage in enumerate(stages[:-1]):
         output_name = read_stage_output(stage,
                                         config_dir=output_dir,
@@ -131,7 +135,7 @@ def set_stage_inputs(stages, output_dir, config_file='temp_config.yaml',
             warnings.warn(f'Could not read stage output for {stage}! '
                            'Skipping setting input for subsequent stage.')
         else:
-            update_dict[intput_namespace] = os.path.join(output_dir, stage, output_name)
+            update_dict[input_namespace] = os.path.join(output_dir, stage, output_name)
             update_configfile(config_path=os.path.join(output_dir, stages[i+1], config_file),
                               update_dict=update_dict)
     return None
@@ -152,14 +156,18 @@ def get_param(config, param_name):
         return None
 
 
-def dict_to_cla(arg_dict, quoted=False):
+def dict_to_cla(arg_dict):
     for key, value in arg_dict.items():
         if type(value) == list:
             arg_dict[key] = ' '.join(str(v) for v in value)
 
-    cla_str = lambda k,v: f'--{k} "{v}"' if quoted else f'--{k} {v}'
+    cla_str = lambda k,v: f'--{k} "{v}"' if is_path(v) else f'--{k} {v}'
     arg_strings = [cla_str(key, value) for key, value in arg_dict.items()]
     return ' '.join(arg_strings)
+
+
+def is_path(object):
+    return '/' in str(object) or '\\' in str(object)
 
 
 def params(*args, config=None, **kwargs):
@@ -182,21 +190,41 @@ def params(*args, config=None, **kwargs):
         for arg in args:
             if not type(arg) == str:
                 continue
-            if arg.upper() in config.keys():
-                param_dict[arg.lower()] = config[arg.upper()]
+            if arg in config.keys():
+                param_dict[arg] = config[arg]
+            elif arg.upper() in config.keys():
+                param_dict[arg] = config[arg.upper()]
             else:
-                print(f'Parameter {arg} not found in the config!')
+                print(f'Parameter {arg} not found in the config! Set to None!')
+                param_dict[arg] = None
 
-    for key, value in kwargs.items():
-        param_dict[key] = value
+    param_dict.update(dict(kwargs.items()))
 
-    return dict_to_cla(param_dict)
+    def add_output_and_wildcards_to_args(wildcards, output):
+        for items in [wildcards, output]:
+            item_dict = dict(items.items())
+            if 'data' in item_dict.keys():
+                warn("wildcards or outputs name 'data' are being ignored!")
+                del item_dict['data']
+
+            duplicates = [key for key in item_dict.keys() if key in param_dict.keys()]
+            
+            for key in duplicates:
+                if param_dict[key] != item_dict[key]:
+                    warn("The keyword {key} is used multiple times "
+                         "in the rule's params, wildcards, or output! \n"
+                        f"{key}: '{param_dict[key]}' is ignored "
+                        f"in favor of '{item_dict[key]}'")
+
+            param_dict.update(item_dict)
+        return dict_to_cla(param_dict) 
+
+    return add_output_and_wildcards_to_args
 
 
-def additional_outputs(wildcards, output):
-    out_dict = dict(output.items())
-
-    if 'data' in out_dict.keys():  # legacy, to be removed
-        del out_dict['data']
-
-    return dict_to_cla(out_dict, quoted=True)
+def locate_str_in_list(str_list, string):
+    if string in str_list:
+        return [i for i, el in enumerate(str_list) if el == string][0]
+    else:
+        raise ValueError(f"Can't find rule '{string}'! Please check the spelling"
+                          "and the config file.")

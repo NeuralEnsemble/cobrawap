@@ -58,7 +58,7 @@ if __name__ == '__main__':
     CLI.add_argument("--macro_pixel_dim",  nargs='?', type=int,
                      help="smoothing factor", default=2)
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
     block = analogsignals_to_imagesequences(block)
     imgseq = block.segments[0].imagesequences[0]

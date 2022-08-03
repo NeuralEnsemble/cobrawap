@@ -20,8 +20,8 @@ USE_LINK_AS_STAGE_OUTPUT: True
 # Datasets which should be processed with identical settings.
 # To set as key-value pairs
 # Name_of_dataset: /path/to/data/files/
-DATA_SETS:
-    Data_name: '/path/to/data/'
+DATA_SETS: # Note that only the first entry will be used for the pipeline!
+    data_name: '/path/to/data/'
 
 # Name of script in scripts/ folder, handling the loadig and curation
 CURATION_SCRIPT: 'curate_dataset_key.py'

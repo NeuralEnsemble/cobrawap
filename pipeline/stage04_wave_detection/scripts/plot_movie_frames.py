@@ -106,7 +106,7 @@ if __name__ == '__main__':
     CLI.add_argument("--event",       nargs='?', type=none_or_str, default=None)
     CLI.add_argument("--markercolor",       nargs='?', type=str, default='k')
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     blk = load_neo(args.data)
     blk = analogsignals_to_imagesequences(blk)

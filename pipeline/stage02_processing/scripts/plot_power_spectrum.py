@@ -43,7 +43,7 @@ if __name__ == '__main__':
                      help="frequency resolution of the power spectrum in Hz")
     CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
                      help="overlap parameter for Welch's algorithm [0-1]")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     asig = load_neo(args.data, 'analogsignal')
 

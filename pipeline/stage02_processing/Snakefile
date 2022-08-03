@@ -1,53 +1,10 @@
+"""
 # Stage 02 Processing
-import os
-
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
+"""
 
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels, guess_type
-
-STAGE_NAME = config["STAGE_NAME"]
-STAGE_OUTPUT = config["STAGE_OUTPUT"]
-PROFILE = config["PROFILE"]
-NEO_FORMAT = config["NEO_FORMAT"]
-USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
-
-if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
-    STAGE_INPUT = config["STAGE_INPUT"]
-else:
-    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage01_data_entry', 'data.nix')
-
-PLOT_TSTART = config["PLOT_TSTART"]
-PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
-PLOT_FORMAT = config["PLOT_FORMAT"]
-
-MACRO_PIXEL_DIM = config["MACRO_PIXEL_DIM"]
-
-BLOCK_ORDER = config["BLOCK_ORDER"]
-RERUN_MODE = guess_type(config["RERUN_MODE"])
-NORMALIZE_BY = config["NORMALIZE_BY"]
-HIGHPASS_FREQ = config["HIGHPASS_FREQ"]
-LOWPASS_FREQ = config["LOWPASS_FREQ"]
-FILTER_ORDER = config["FILTER_ORDER"]
-FILTER_FUNCTION = config["FILTER_FUNCTION"]
-PSD_FREQ_RES = config["PSD_FREQ_RES"]
-PSD_OVERLAP = config["PSD_OVERLAP"]
-DETRENDING_ORDER = config["DETRENDING_ORDER"]
-INTENSITY_THRESHOLD = config["INTENSITY_THRESHOLD"]
-CROP_TO_SELECTION = config["CROP_TO_SELECTION"]
-MUA_HIGHPASS_FREQ = config["MUA_HIGHPASS_FREQ"]
-MUA_LOWPASS_FREQ = config["MUA_LOWPASS_FREQ"]
-logMUA_RATE = config["logMUA_RATE"]
-FFT_SLICE = config["FFT_SLICE"]
-TARGET_RATE = config["TARGET_RATE"]
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
@@ -56,340 +13,177 @@ wildcard_constraints:
 
 localrules: all, check_input
 
-def locate(str_list, string):
-    if string in str_list:
-        return [i for i, el in enumerate(str_list) if el == string][0]
-    else:
-        raise ValueError("Can't find rule '{}'! Please check the spelling \
-                          and the config file.".format(string))
-
 def input_file(wildcards):
-    if hasattr(wildcards, 'rule_name'):
-        idx = locate(BLOCK_ORDER, wildcards.rule_name)
-        if idx:
-            return os.path.join(OUTPUT_DIR, BLOCK_ORDER[idx-1],
-                                BLOCK_ORDER[idx-1]+'.'+NEO_FORMAT)
-    elif len(BLOCK_ORDER):
-        return os.path.join(OUTPUT_DIR, BLOCK_ORDER[-1],
-                            BLOCK_ORDER[-1]+'.'+NEO_FORMAT)
-    return os.path.join(STAGE_INPUT)
+    return prev_rule_output(wildcards, rule_list=config.BLOCK_ORDER)
 
 def is_clear(wildcards):
-    if RERUN_MODE:
-        return os.path.join(f'{wildcards.dir}', 'clear.done')
+    if config.RERUN_MODE:
+        return Path(f'{wildcards.dir}') / 'clear.done'
     else:
         return []
 
 #### UTILITY BLOCKS ####
 
-rule all:
+use rule template_all as all with:
     input:
-        check = os.path.join(OUTPUT_DIR, 'input.check'),
+        check = OUTPUT_DIR / 'input.check',
         data = input_file,
-        img = os.path.join(OUTPUT_DIR, f'processed_traces_{PLOT_TSTART}-{PLOT_TSTOP}s'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
-    params:
-        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
-    output:
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT),
-    shell:
-        """
-        {params.command} "{input.data}" "{output.data}"
-        """
-
-rule check_input:
-    priority: 10
-    input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', 'input.check')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}"
-        touch "{output}"
-        """
+        img = OUTPUT_DIR / f'processed_traces_{config.PLOT_TSTART}-{config.PLOT_TSTOP}s',
+        # configfile = Path('configs') / f'config_{PROFILE}.yaml'
 
 rule clear:
     output:
-        temp(os.path.join('{path}', 'clear.done'))
+        temp(Path('{path}') / 'clear.done')
     params:
-        block_folder = ['"'+os.path.join('{path}', block)+'"'
-                        for block in BLOCK_ORDER]
+        block_folder = [Path('{path}') / f'{block}' for block in config.BLOCK_ORDER]
     shell:
         """
-        rm -rf {params.block_folder}
-        touch "{output}"
+        rm -rf {params.block_folder:q}
+        touch {output:q}
         """
+ 
 
-checkpoint plot_processed_traces:
-    input:
-        stage_input = STAGE_INPUT,
-        stage_output = input_file,
-        script = os.path.join('scripts', 'plot_processed_trace.py')
-    params:
-        img_name = 'processed_trace_{t_start}-{t_stop}s_channel0.'+PLOT_FORMAT,
-        channels = PLOT_CHANNELS
-    output:
-        img_dir = report(directory(os.path.join(OUTPUT_DIR,
-                                  'processed_traces_{t_start}-{t_stop}s')),
-                         patterns=["{img_name}."+PLOT_FORMAT])
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --original_data "{input.stage_input}" \
-                                 --processed_data "{input.stage_output}" \
-                                 --img_dir "{output.img_dir}" \
-                                 --img_name {params.img_name} \
-                                 --t_start {wildcards.t_start} \
-                                 --t_stop {wildcards.t_stop} \
-                                 --channels {params.channels}
-        """
-
-rule plot_power_spectrum:
+use rule template as plot_processed_traces with:
     input:
         data = input_file,
-        script = os.path.join('scripts','plot_power_spectrum.py')
+        script = Path('scripts') / 'plot_processed_trace.py'
     params:
-        highpass_freq = HIGHPASS_FREQ,
-        lowpass_freq = LOWPASS_FREQ,
-        psd_freq_res = PSD_FREQ_RES,
-        psd_overlap = PSD_OVERLAP
+        params(channels=config.PLOT_CHANNELS,
+               img_name='processed_trace_channel0.'+config.PLOT_FORMAT,
+               original_data=config.STAGE_INPUT)
     output:
-        img = report(os.path.join('{dir}', '{rule_name}', 'power_spectrum.'+PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.img}" \
-                                 --highpass_freq {params.highpass_freq} \
-                                 --lowpass_freq {params.lowpass_freq} \
-                                 --psd_freq_res {params.psd_freq_res} \
-                                 --psd_overlap {params.psd_overlap} \
-        """
+        img_dir = directory(OUTPUT_DIR / 'processed_traces_{t_start}-{t_stop}s')
+
+
+use rule template as plot_power_spectrum with:
+    input:
+        data = input_file,
+        script = Path('scripts') / 'plot_power_spectrum.py'
+    output:
+        Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}'
+    params:
+        params('highpass_freq', 'lowpass_freq', 'psd_freq_res', 'psd_overlap',
+                config=config)
 
 #### PROCESSING BLOCKS (choose any)####
 
-rule background_subtraction:
+use rule template as background_subtraction with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        script = os.path.join('scripts','background_subtraction.py')
-    output:
-        data = os.path.join('{dir}', 'background_subtraction',
-                            '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', '{rule_name}',
-                                  'background.'+PLOT_FORMAT)),
-        array = os.path.join('{dir}', '{rule_name}',
-                             'background.npy')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 --output_array "{output.array}"
-        """
-
-rule spatial_downsampling:
-    input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
-        data = input_file,
-        script = os.path.join('scripts', 'spatial_downsampling.py')
-    output:
-        data = os.path.join('{dir}', '{rule_name}',
-                            'spatial_downsampling.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', '{rule_name}',
-                                  'spatial_downsampling.'+PLOT_FORMAT))
+        script = Path('scripts') / 'background_subtraction.py'
     params:
-        macro_pixel_dim = MACRO_PIXEL_DIM
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --output_img "{output.img}" \
-				                --macro_pixel_dim {params.macro_pixel_dim}
-
-        """
+        params()
+    output:
+        Path('{dir}') / 'background_subtraction' / f'{{rule_name}}.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / '{rule_name}' / f'background.{config.PLOT_FORMAT}',
+        output_array = Path('{dir}') / '{rule_name}' / 'background.npy'
 
 
-rule normalization:
+use rule template as spatial_downsampling with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear, 
         data = input_file,
-        script = os.path.join('scripts', 'normalization.py')
+        script = Path('scripts') / 'spatial_downsampling.py'
+    output:
+        Path('{dir}') / '{rule_name}' / f'spatial_downsampling.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / '{rule_name}' / f'spatial_downsampling.{config.PLOT_FORMAT}'
     params:
-        normalize_by = NORMALIZE_BY
-    output:
-        data = os.path.join('{dir}', 'normalization',
-                            '{rule_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --normalize_by {params.normalize_by}
-        """
+        params(macro_pixel_dim=config.MACRO_PIXEL_DIM)
 
-rule detrending:
+
+use rule template as normalization with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        script = os.path.join('scripts', 'detrending.py')
+        script = Path('scripts') / 'normalization.py'
     params:
-        order = DETRENDING_ORDER,
-        plot_channels = PLOT_CHANNELS,
-        img_name = 'detrending_channel0.'+PLOT_FORMAT,
+        params('normalize_by', config=config)
     output:
-        data = os.path.join('{dir}', 'detrending',
-                            '{rule_name}.'+NEO_FORMAT),
-        img_dir = report(directory(os.path.join('{dir}', '{rule_name}',
-                                                'detrending_plots')),
-                         patterns=["{img_name}."+PLOT_FORMAT])
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --order {params.order} \
-                                 --img_dir "{output.img_dir}" \
-                                 --img_name {params.img_name} \
-                                 --channels {params.plot_channels}
-        """
+        Path('{dir}') / 'normalization' / f'{{rule_name}}.{config.NEO_FORMAT}'
 
-rule frequency_filter:
+
+use rule template as detrending with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        img = os.path.join('{dir}', '{rule_name}', f'power_spectrum.{PLOT_FORMAT}'),
-        script = os.path.join('scripts', 'frequency_filter.py')
+        script = Path('scripts') / 'detrending.py'
     params:
-        highpass_freq = HIGHPASS_FREQ,
-        lowpass_freq = LOWPASS_FREQ,
-        order = FILTER_ORDER,
-        filter_function = FILTER_FUNCTION,
+        params(order = config.DETRENDING_ORDER,
+               plot_channels = config.PLOT_CHANNELS,
+               img_name = 'detrending_channel0.'+config.PLOT_FORMAT)
     output:
-        data = os.path.join('{dir}', 'frequency_filter',
-                            '{rule_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --highpass_freq {params.highpass_freq} \
-                                --lowpass_freq {params.lowpass_freq} \
-                                --order {params.order} \
-                                --filter_function {params.filter_function}
-        """
+        Path('{dir}') / '{rule_name}' / f'detrending.{config.NEO_FORMAT}',
+        img_dir = directory(Path('{dir}') / '{rule_name}' / 'detrending_plots')
 
 
-rule roi_selection:
+use rule template as frequency_filter with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        script = os.path.join('scripts','roi_selection.py')
+        img = Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}',
+        script = Path('scripts') / 'frequency_filter.py'
     params:
-        intensity_threshold = INTENSITY_THRESHOLD,
-        crop_to_selection = CROP_TO_SELECTION
+        params('highpass_freq', 'lowpass_freq', 'filter_function',
+                order=config.FILTER_ORDER, config=config)
     output:
-        data = os.path.join('{dir}', 'roi_selection',
-                            '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', 'roi_selection',
-                                    '{rule_name}.'+PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 --intensity_threshold {params.intensity_threshold} \
-                                 --crop_to_selection {params.crop_to_selection}
-        """
+       Path('{dir}') / '{rule_name}' /  f'frequency_filter.{config.NEO_FORMAT}'
 
-rule logMUA_estimation:
+
+use rule template as roi_selection with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        script = os.path.join('scripts','logMUA_estimation.py')
+        script = Path('scripts') / 'roi_selection.py'
     params:
-        highpass_freq = MUA_HIGHPASS_FREQ,
-        lowpass_freq = MUA_LOWPASS_FREQ,
-        logMUA_rate = logMUA_RATE,
-        fft_slice = FFT_SLICE,
-        psd_overlap = PSD_OVERLAP,
-        plot_tstart = PLOT_TSTART,
-        plot_tstop = PLOT_TSTOP,
-        plot_channels = PLOT_CHANNELS,
-        img = ','.join([os.path.join('{dir}', 'logMUA_estimation',
-                                     f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
-                                    +f'_channel{channel}.{PLOT_FORMAT}')
-                                     for channel in PLOT_CHANNELS]),
+        params('intensity_threshold', 'crop_to_selection', config=config)
     output:
-        data = os.path.join('{dir}', 'logMUA_estimation',
-                            '{rule_name}.'+NEO_FORMAT),
-        img = report(os.path.join('{dir}', '{rule_name}',
-                                  f'logMUA_trace_{PLOT_TSTART}-{PLOT_TSTOP}s'
-                                 +f'_channel{PLOT_CHANNELS[0]}.{PLOT_FORMAT}'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{params.img}" \
-                                 --highpass_freq {params.highpass_freq} \
-                                 --lowpass_freq {params.lowpass_freq} \
-                                 --logMUA_rate {params.logMUA_rate} \
-                                 --fft_slice {params.fft_slice} \
-                                 --psd_overlap {params.psd_overlap} \
-                                 --t_start {params.plot_tstart} \
-                                 --t_stop {params.plot_tstop} \
-                                 --channels {params.plot_channels}
-        """
+        Path('{dir}') / '{rule_name}' / f'roi_selection.{config.NEO_FORMAT}',
+        output_img =  Path('{dir}') / '{rule_name}' / f'roi_selection.{config.PLOT_FORMAT}'
 
-rule phase_transform:
-    input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
-        data = input_file,
-        script = os.path.join('scripts','phase_transform.py')
-    output:
-        data = os.path.join('{dir}', 'phase_transform',
-                            '{rule_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}"
-        """
 
-rule zscore:
+use rule template as logMUA_estimation with:
     input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
+        is_clear = is_clear,
         data = input_file,
-        script = os.path.join('scripts','z_score.py')
-    output:
-        data = os.path.join('{dir}', 'zscore', '{rule_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                --output "{output.data}"
-        """
-
-rule subsampling:
-    input:
-        is_clear = is_clear, #os.path.join('{dir}', 'clear.done'),
-        data = input_file,
-        script = os.path.join('scripts','subsampling.py')
+        script = Path('scripts') / 'logMUA_estimation.py'
     params:
-        target_rate = TARGET_RATE
+        params('logMUA_rate', 'fft_slice', 'psd_overlap', 'plot_tstart', 'plot_tstop',
+               'plot_channels', config=config,
+               highpass_freq = config.MUA_HIGHPASS_FREQ,
+               lowpass_freq = config.MUA_LOWPASS_FREQ,
+               img_name = 'logMUA_trace_channel0.'+config.PLOT_FORMAT)
     output:
-        data = os.path.join('{dir}', 'subsampling', '{rule_name}.'+NEO_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --target_rate {params.target_rate}
-        """
+        Path('{dir}') / '{rule_name}' / f'logMUA_estimation.{config.NEO_FORMAT}',
+        img_dir =  directory(Path('{dir}') / '{rule_name}' / 'logMUA_estimation_plots')
+
+
+use rule template as phase_transform with:
+    input:
+        is_clear = is_clear,
+        data = input_file,
+        script = Path('scripts') / 'phase_transform.py'
+    params:
+    output:
+        Path('{dir}') / '{rule_name}' /  f'phase_transform.{config.NEO_FORMAT}'
+
+
+use rule template as z_score with:
+    input:
+        is_clear = is_clear,
+        data = input_file,
+        script = Path('scripts') / 'z_score.py'
+    params:
+    output:
+        Path('{dir}') / '{rule_name}' / f'zscore.{config.NEO_FORMAT}'
+
+
+use rule template as subsampling with:
+    input:
+        is_clear = is_clear,
+        data = input_file,
+        script = Path('scripts') / 'subsampling.py'
+    params:
+        params(target_rate = config.TARGET_RATE)
+    output:
+        Path('{dir}') / '{rule_name}' / f'subsampling.{config.NEO_FORMAT}'

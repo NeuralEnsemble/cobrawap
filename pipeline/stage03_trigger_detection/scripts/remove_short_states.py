@@ -66,7 +66,7 @@ if __name__ == '__main__':
     CLI.add_argument("--remove_down_first", nargs='?', type=strtobool, default=True,
                      help="If True, remove short down states first")
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

@@ -1,30 +1,17 @@
+""" 
 # Stage 03 Trigger Detection
-import os
-from pathlib import Path
+"""
 
+from pathlib import Path
 configfile: Path('configs') / 'config_template.yaml'
 include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
-def locate(str_list, string):
-    if string in str_list:
-        return [i for i, el in enumerate(str_list) if el == string][0]
-    else:
-        raise ValueError("Can't find rule '{}'! Please check the spelling \
-                          and the config file.".format(string))
-
 def filtered_triggers(wildcards):
-    rule_list = config.TRIGGER_FILTER
     default_input = OUTPUT_DIR / config.DETECTION_BLOCK / config.STAGE_OUTPUT
-    output = lambda i: OUTPUT_DIR / rule_list[i-1] / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
-    if hasattr(wildcards, 'rule_name'):
-        idx = locate(rule_list, wildcards.rule_name)
-        if idx:
-            return output(idx)
-    elif len(rule_list):
-        return output(0)
-    return default_input
+    return prev_rule_output(wildcards, rule_list=config.TRIGGER_FILTER,
+                            default_input=default_input)
 
 localrules: all, check_input
 
@@ -33,7 +20,7 @@ localrules: all, check_input
 use rule template_all as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
+        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
         data = filtered_triggers,
         img = OUTPUT_DIR / 'plot_trigger_times'
 
@@ -61,10 +48,11 @@ rule threshold:
     shell:
         """
         {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --thresholds "{input.thresholds}"
+        python3 {input.script:q} --data {input.data:q} \
+                                  --output {output.data:q} \
+                                  --thresholds {input.thresholds:q}
         """
+
 
 use rule template as calc_threshold_fixed with:
     # subrule of threshold
@@ -87,8 +75,7 @@ use rule template as calc_threshold_fitted with:
         img_dir = directory(Path('{dir}') / 'threshold' / 'fitted_thresholds')
     params:
         params('sigma_factor', 'fit_function', 'bin_num', 'plot_channels',
-               img_name='amplitudes_channel0.'+config.PLOT_FORMAT, config=config),
-        additional_outputs
+               img_name='amplitudes_channel0.'+config.PLOT_FORMAT, config=config)
 
 
 use rule template as hilbert_phase with:
@@ -101,8 +88,7 @@ use rule template as hilbert_phase with:
     params:
         params('transition_phase', 'plot_channels', 'plot_tstart', 
                'plot_tstop', config=config,
-                img_name='hilbert_phase_channel0.'+config.PLOT_FORMAT),
-        additional_outputs
+                img_name='hilbert_phase_channel0.'+config.PLOT_FORMAT)
 
 
 use rule template as minima with:
@@ -116,14 +102,13 @@ use rule template as minima with:
         params('minima_persistence', 'min_peak_distance', 'maxima_threshold_fraction', 
                'maxima_threshold_window', 'num_interpolation_points', 
                'plot_channels', 'plot_tstart', 'plot_tstop',
-                img_name='minima_channel0.'+config.PLOT_FORMAT, config=config),
-        additional_outputs
+                img_name='minima_channel0.'+config.PLOT_FORMAT, config=config)
 
 #### FILTER BLOCKS (choose any) ####
 
 use rule template as remove_short_states with:
     input:
-        data = config.STAGE_INPUT,
+        data = filtered_triggers,
         script = Path('scripts') / 'remove_short_states.py'
     output:
         Path('{dir}') / '{rule_name}' / f'remove_short_states.{config.NEO_FORMAT}'

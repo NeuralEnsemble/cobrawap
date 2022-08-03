@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
+from pathlib import Path
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_float, none_or_int
 from utils.neo_utils import time_slice
@@ -124,12 +125,15 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=Path, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
+    CLI.add_argument("--output", nargs='?', type=Path, required=True,
                      help="path of output file")
-    CLI.add_argument("--output_img", nargs='?', type=lambda v: v.split(','), default=None,
-                     help="path of output image files")
+    CLI.add_argument("--img_dir", nargs='?', type=Path,
+                     default=None, help="path of figure directory")
+    CLI.add_argument("--img_name", nargs='?', type=str,
+                     default='minima_channel0.png',
+                     help='example image filename for channel 0')
     CLI.add_argument("--highpass_freq", nargs='?', type=float, default=200,
                      help="lower bound of frequency band in Hz")
     CLI.add_argument("--lowpass_freq", nargs='?', type=float, default=1500,
@@ -140,13 +144,13 @@ if __name__ == '__main__':
                      help="overlap parameter for Welch's algorithm [0-1]")
     CLI.add_argument("--fft_slice", nargs='?', type=none_or_float, default=None,
                      help="time window length used for power spectrum estimate, in s")
-    CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+    CLI.add_argument("--plot_tstart", nargs='?', type=float, default=0,
                      help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+    CLI.add_argument("--plot_tstop",  nargs='?', type=float, default=10,
                      help="stop time in seconds")
-    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=None,
+    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                      help="list of channels to plot")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 
@@ -163,25 +167,17 @@ if __name__ == '__main__':
                              psd_overlap=args.psd_overlap,
                              fft_slice=fft_slice)
 
-#    if args.channels[0] is not None:
-# WARNING! TypeError: 'NoneType' object is not subscriptable if it is None
-# (the condition args.channel[0] cannot be evaluated)
-
-    if args.channels is not None:
-        if not len(args.output_img) == len(args.channels):
-            raise InputError("The number of plotting channels must "\
-                           + "correspond to the number of image output paths!")
-        for output_img, channel in zip(args.output_img, args.channels):
-            #[output_img] = output_img
-            # otherwise... "TypeError: expected str, bytes or os.PathLike object, not list"
+    if args.plot_channels is not None:
+        for channel in args.plot_channels:
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
                                    logMUA_asig=asig,
                                    highpass_freq=args.highpass_freq*pq.Hz,
                                    lowpass_freq=args.lowpass_freq*pq.Hz,
-                                   t_start=args.t_start,
-                                   t_stop=args.t_stop,
+                                   t_start=args.plot_tstart,
+                                   t_stop=args.plot_tstop,
                                    channel=channel)
-            save_plot(output_img)
+            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
+            save_plot(output_path)
 
     asig.name += ""
     asig.description += "Estimated logMUA signal [{}, {}] Hz ({}). "\

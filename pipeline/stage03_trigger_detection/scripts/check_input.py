@@ -12,7 +12,7 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--data",    nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

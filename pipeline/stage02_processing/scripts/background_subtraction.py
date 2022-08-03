@@ -36,7 +36,7 @@ if __name__ == '__main__':
                      help="path of output image", default=None)
     CLI.add_argument("--output_array",  nargs='?', type=none_or_str,
                       help="path of output numpy array", default=None)
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]

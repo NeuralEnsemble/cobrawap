@@ -129,7 +129,7 @@ if __name__ == '__main__':
                      help="threshold for mask [0,1]", default=0.5)
     CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
                      help="discard frame outside of ROI", default=True)
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     block = analogsignals_to_imagesequences(block)

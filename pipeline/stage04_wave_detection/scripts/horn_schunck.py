@@ -226,7 +226,7 @@ if __name__ == '__main__':
     CLI.add_argument("--use_phases", nargs='?', type=strtobool, default=False,
                      help='whether to use signal phase instead of amplitude')
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 
     block = analogsignals_to_imagesequences(block)

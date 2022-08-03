@@ -38,7 +38,7 @@ if __name__ == '__main__':
     CLI.add_argument("--frame_id", nargs='?', type=int, default=0,
                      help="number of the frame to plot")
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 
     block = analogsignals_to_imagesequences(block)

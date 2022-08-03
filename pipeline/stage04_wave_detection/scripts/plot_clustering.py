@@ -44,7 +44,7 @@ if __name__ == '__main__':
     CLI.add_argument("--data",      nargs='?', type=str)
     CLI.add_argument("--time_slice", nargs='?', type=none_or_float, default=None,
                      help="length of time_slice in seconds.")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

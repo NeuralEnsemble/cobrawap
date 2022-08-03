@@ -45,7 +45,7 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
                      help="division factor: 'max', 'mean', or 'median'")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
-import random
 from utils.io import load_neo, save_plot
 from utils.neo_utils import time_slice
 
@@ -36,7 +35,7 @@ if __name__ == '__main__':
                    formatter_class=argparse.RawDescriptionHelpFormatter)
     CLI.add_argument("--original_data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--processed_data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=str, required=True,
                      help="path to input data in neo format")
     CLI.add_argument("--img_dir",  nargs='?', type=str, required=True,
                      help="path of output figure directory")
@@ -49,13 +48,13 @@ if __name__ == '__main__':
                      help="stop time in seconds")
     CLI.add_argument("--channels", nargs='+', type=int, default=0,
                      help="channel to plot")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     orig_asig = load_neo(args.original_data, 'analogsignal', lazy=False)
     orig_asig = time_slice(orig_asig, t_start=args.t_start, t_stop=args.t_stop,
                            lazy=False, channel_indexes=args.channels)
 
-    proc_asig = load_neo(args.processed_data, 'analogsignal', lazy=False)
+    proc_asig = load_neo(args.data, 'analogsignal', lazy=False)
     proc_asig = time_slice(proc_asig, t_start=args.t_start, t_stop=args.t_stop,
                            lazy=False, channel_indexes=args.channels)
 

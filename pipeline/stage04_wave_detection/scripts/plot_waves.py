@@ -73,7 +73,7 @@ if __name__ == '__main__':
                      help="size of the ploted windown in seconds.")
     CLI.add_argument("--colormap",    nargs='?', type=str, default='viridis')
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     block = analogsignals_to_imagesequences(block)

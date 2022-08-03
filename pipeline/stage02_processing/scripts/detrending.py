@@ -4,12 +4,11 @@ ToDo
 import numpy as np
 import scipy
 import matplotlib.pyplot as plt
-import neo
 import argparse
 import os
-from copy import copy
 import warnings
 from utils.io import load_neo, write_neo, save_plot
+from utils.parse import none_or_int
 
 ## REPLACED BY SCIPY FUNCTION
 # def detrending(signal, order):
@@ -99,20 +98,21 @@ if __name__ == '__main__':
     CLI.add_argument("--img_name", nargs='?', type=str,
                      default='processed_trace_channel0.png',
                      help='example filename for channel 0')
-    CLI.add_argument("--channels", nargs='+', type=int, default=0,
-                     help="channel to plot")
-    args = CLI.parse_args()
+    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
+                     help="list of channels to plot")
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
     detrend_asig = detrend(asig, args.order)
 
-    for channel in args.channels:
-        plot_detrend(asig, detrend_asig, channel)
-        output_path = os.path.join(args.img_dir,
-                                   args.img_name.replace('_channel0', f'_channel{channel}'))
-        save_plot(output_path)
+    if args.plot_channels[0] is not None:
+        for channel in args.plot_channels:
+            plot_detrend(asig, detrend_asig, channel)
+            output_path = os.path.join(args.img_dir,
+                                    args.img_name.replace('_channel0', f'_channel{channel}'))
+            save_plot(output_path)
 
     detrend_asig.name += ""
     detrend_asig.description += "Detrended by order {} ({}). "\

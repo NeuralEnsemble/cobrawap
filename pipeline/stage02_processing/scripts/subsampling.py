@@ -15,7 +15,7 @@ if __name__ == '__main__':
     CLI.add_argument("--target_rate",  nargs='?', type=float, required=True,
                      help="rate to subsample to in Hz")
 
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]

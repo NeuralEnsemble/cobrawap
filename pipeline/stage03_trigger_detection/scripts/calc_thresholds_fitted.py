@@ -129,22 +129,17 @@ if __name__ == '__main__':
     asig = load_neo(args.data, 'analogsignal')
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape
-    non_nan_channels = [i for i in range(dim_channels) if np.isfinite(signal[:,i]).all()]
 
     thresholds = np.empty(dim_channels)
     thresholds.fill(np.nan)
 
-    for channel in non_nan_channels:
-        if channel in args.plot_channels:
-            plot_channel = channel
-        else:
-            plot_channel = False
-        thresholds[channel] = fit_amplitude_distribution(signal[:,channel],
-                                                         args.sigma_factor,
-                                                         args.fit_function,
-                                                         args.bin_num,
-                                                         plot_channel)
-        if plot_channel:
+    if args.plot_channels[0] is not None:
+        for channel in args.plot_channels:
+            thresholds[channel] = fit_amplitude_distribution(signal[:,channel],
+                                                            args.sigma_factor,
+                                                            args.fit_function,
+                                                            args.bin_num,
+                                                            channel)
             output_path = os.path.join(args.img_dir,
                                        args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)

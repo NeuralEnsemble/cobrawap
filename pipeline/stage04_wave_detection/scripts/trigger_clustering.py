@@ -66,7 +66,7 @@ if __name__ == '__main__':
                      help="eps parameter in sklearn.cluster.DBSCAN")
     CLI.add_argument("--min_samples", nargs='?', type=int, default=10,
                      help="minimum number of trigger times to form a wavefront")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]

@@ -60,7 +60,7 @@ if __name__ == '__main__':
                      help="path of output file")
     CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
                      help="path of thresholds (numpy array)")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

@@ -25,7 +25,7 @@ if __name__ == '__main__':
                      help="order of the filter function")
     CLI.add_argument("--filter_function", nargs='?', type=str, default='filtfilt',
                      help="filterfunction used in the scipy backend")
-    args = CLI.parse_args()
+    args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
 

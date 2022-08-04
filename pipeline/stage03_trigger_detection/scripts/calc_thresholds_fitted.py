@@ -1,4 +1,3 @@
-import neo
 import numpy as np
 import argparse
 import os
@@ -51,7 +50,7 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
 
         # Second fit -> determine spread s0
         try:
-            (_, s0), _ = sc.optimize.curve_fit(fit_func, xvalues2, peakhist, p0=(0, np.std(peakhist)))
+            (_, s0), _ = sc.optimize.curve_fit(fit_function, xvalues2, peakhist, p0=(0, np.std(peakhist)))
         except OptimizeWarning:
             print('Could not perform second fit. Using std to determine spread of downstate signal amplitudes.')
             s0 = np.std(peakhist)
@@ -63,7 +62,7 @@ def fit_amplitude_distribution(signal, sigma_factor, fit_function,
             fig, ax = plt.subplots(figsize=(7, 7))
             ax.bar(xvalues, hist, width=np.diff(xvalues)[0], color='r')
             left_right_ratio = len(signal_leftpeak) * 2. / len(signal)
-            ax.plot(xvalues, [left_right_ratio * fit_func(x, 0, s0) for x in xvalues], c='k')
+            ax.plot(xvalues, [left_right_ratio * fit_function(x, 0, s0) for x in xvalues], c='k')
             ax.set_xlabel('signal')
             ax.set_ylabel('sample density')
             ax.set_title('Amplitude distribution (channel {})'.format(plot_channel))
@@ -129,17 +128,22 @@ if __name__ == '__main__':
     asig = load_neo(args.data, 'analogsignal')
     signal = asig.as_array()
     dim_t, dim_channels = signal.shape
+    non_nan_channels = [i for i in range(dim_channels) if np.isfinite(signal[:,i]).all()]
 
     thresholds = np.empty(dim_channels)
     thresholds.fill(np.nan)
 
-    if args.plot_channels[0] is not None:
-        for channel in args.plot_channels:
-            thresholds[channel] = fit_amplitude_distribution(signal[:,channel],
-                                                            args.sigma_factor,
-                                                            args.fit_function,
-                                                            args.bin_num,
-                                                            channel)
+    for channel in non_nan_channels:
+        if channel in args.plot_channels:
+            plot_channel = channel
+        else:
+            plot_channel = False
+        thresholds[channel] = fit_amplitude_distribution(signal[:,channel],
+                                                         args.sigma_factor,
+                                                         args.fit_function,
+                                                         args.bin_num,
+                                                         plot_channel)
+        if plot_channel:
             output_path = os.path.join(args.img_dir,
                                        args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)

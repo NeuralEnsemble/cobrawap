@@ -149,13 +149,6 @@ def set_global_configs(stages, output_dir, config_dict,
     return None
 
 
-def get_param(config, param_name):
-    if param_name in config:
-        return config[param_name]
-    else:
-        return None
-
-
 def dict_to_cla(arg_dict):
     for key, value in arg_dict.items():
         if type(value) == list:

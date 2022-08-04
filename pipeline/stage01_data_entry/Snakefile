@@ -2,17 +2,9 @@
 # Stage 01 Data Entry
 """
 
-import os
-
 from pathlib import Path
 # configfile: Path('configs') / 'config_template.yaml'
 include: Path() / '..' / 'utils' / 'Snakefile'
-
-from utils.parse import ordereddict_to_dict
-
-# ANNOTATIONS = ordereddict_to_dict(config["ANNOTATIONS"])
-# ARRAY_ANNOTATIONS = ordereddict_to_dict(config["ARRAY_ANNOTATIONS"])
-# KWARGS = ordereddict_to_dict(config["KWARGS"])
 
 config.DATA_NAME = list(config.DATA_SETS.keys())[0]
 config.DATA_PATH = config.DATA_SETS[config.DATA_NAME]
@@ -69,4 +61,4 @@ use rule template as enter_data with:
                'orientation_top', 'orientation_right', 'annotations',
                'array_annotations', 'kwargs', 'trial', config=config)
     output:
-        os.path.join('{dir}', '{data_name}', '{data_name}.'+config.NEO_FORMAT)
+        Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}'

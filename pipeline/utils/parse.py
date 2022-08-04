@@ -105,14 +105,14 @@ def parse_string2dict(kwargs_str, **kwargs):
     return my_dict
 
 
-def ordereddict_to_dict(input_dict):
-    if isinstance(input_dict, dict):
-        for k, v in input_dict.items():
-            if isinstance(v, dict):
-                input_dict[k] = ordereddict_to_dict(v)
-        return dict(input_dict)
-    else:
-        return input_dict
+# def ordereddict_to_dict(input_dict):
+#     if isinstance(input_dict, dict):
+#         for k, v in input_dict.items():
+#             if isinstance(v, dict):
+#                 input_dict[k] = ordereddict_to_dict(v)
+#         return dict(input_dict)
+#     else:
+#         return input_dict
 
 
 def none_or_X(value, dtype):

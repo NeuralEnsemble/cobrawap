@@ -1,5 +1,4 @@
 import argparse
-import itertools
 from scipy.ndimage import gaussian_filter
 from scipy.signal import hilbert
 import neo
@@ -225,7 +224,6 @@ if __name__ == '__main__':
                      help='Filter kernel to use for calculating spatial derivatives')
     CLI.add_argument("--use_phases", nargs='?', type=strtobool, default=False,
                      help='whether to use signal phase instead of amplitude')
-
     args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 

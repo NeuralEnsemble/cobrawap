@@ -20,6 +20,13 @@ OUTPUT_DIR = Path(output_path) / config.PROFILE / config.STAGE_NAME
 if config.STAGE_INPUT is not None:
     config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, config.STAGE_INPUT)
 
+localrules: all, check_input
+
+wildcard_constraints:
+    data_name = '\w+',
+    dir = '.*',
+    rule_name = '\w+',
+
 def prev_rule_output(wildcards, rule_list, 
                      default_input=config.STAGE_INPUT):
     output = lambda i: OUTPUT_DIR / rule_list[i-1] / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
@@ -40,14 +47,47 @@ rule template:
     output:
         Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
         img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
+    message:
+        "rule {rule}:\n"
+        "    input: {input}\n"
+        "    output: {output}\n"
+        "    jobid: {jobid}\n"
+        "    wildcards: {wildcards}\n"
+        "    threads: {threads}\n"
+        "    resources: {resources}\n"
+        "    commandline arguments: "
+        "--data {input.data:q} --output {output:q} {params}\n"
     shell:
         """
         {ADD_UTILS}
-        echo "commandline arguments:" --data {input.data:q} --output {output:q} {params}
-        echo ""
         python3 {input.script:q} --data {input.data:q} \
                                  --output {output:q} \
                                  {params} 
+        """
+
+
+rule template_plus_plot_script:
+    input:
+        data = 'input.data', # replace
+        script = Path('scripts') / '{rule_name}.py',
+        plot_script = Path('scripts') / 'plot_{rule_name}.py'
+    params:
+        params()
+    output:
+        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
+        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
+    message:
+        "\ncommandline arguments:\n"
+        "--data {input.data:q} --output {output:q} {params}\n"
+    shell:
+        """
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q} \
+                                 --output {output:q} \
+                                 {params} 
+        python3 {input.plot_script:q} --data {output:q} \
+                                      --output {output.img:q} \
+                                      {params} 
         """
 
 

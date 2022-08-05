@@ -1,367 +1,199 @@
+"""
 # Stage 04 Wave Detection
-import os
-
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
+"""
 
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels
-
-STAGE_NAME = config["STAGE_NAME"]
-STAGE_OUTPUT = config["STAGE_OUTPUT"]
-PROFILE = config["PROFILE"]
-NEO_FORMAT = config["NEO_FORMAT"]
-USE_LINK_AS_STAGE_OUTPUT = config["USE_LINK_AS_STAGE_OUTPUT"]
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-OUTPUT_DIR = os.path.join(output_path, PROFILE, STAGE_NAME)
-
-if 'STAGE_INPUT' in config and config['STAGE_INPUT'] is not None:
-    STAGE_INPUT = config["STAGE_INPUT"]
-else:
-    STAGE_INPUT = os.path.join(output_path, PROFILE, 'stage03_trigger_detection',
-                               'trigger_times.nix')
-
-PLOT_TSTART = config["PLOT_TSTART"]
-PLOT_TSTOP = config["PLOT_TSTOP"]
-PLOT_CHANNELS = parse_plot_channels(config["PLOT_CHANNELS"], STAGE_INPUT)
-PLOT_FORMAT = config["PLOT_FORMAT"]
-
-DETECTION_BLOCK = config['DETECTION_BLOCK']
-ADDITIONAL_PROPERTIES = config['ADDITIONAL_PROPERTIES']
-
-METRIC = config["METRIC"]
-TIME_SPACE_RATIO = config["TIME_SPACE_RATIO"]
-NEIGHBOUR_DISTANCE = config["NEIGHBOUR_DISTANCE"]
-MIN_SAMPLES_PER_WAVE = config["MIN_SAMPLES_PER_WAVE"]
-
-USE_PHASES = config["USE_PHASES"]
-ALPHA = config["ALPHA"]
-MAX_NITER = config["MAX_NITER"]
-CONVERGENCE_LIMIT = config["CONVERGENCE_LIMIT"]
-GAUSSIAN_SIGMA = config["GAUSSIAN_SIGMA"]
-DERIVATIVE_FILTER = config["DERIVATIVE_FILTER"]
-
-MIN_TRIGGER_FRACTION = config['MIN_TRIGGER_FRACTION']
-NUM_WAVE_NEIGHBOURS = config['NUM_WAVE_NEIGHBOURS']
-WAVE_OUTLIER_QUANTILE = config['WAVE_OUTLIER_QUANTILE']
-PCA_DIMS = config['PCA_DIMS']
-NUM_KMEANS_CLUSTER = config['NUM_KMEANS_CLUSTER']
-INTERPOLATION_STEP_SIZE = config['INTERPOLATION_STEP_SIZE']
-INTERPOLATION_SMOOTHING = config['INTERPOLATION_SMOOTHING']
-
-localrules: all, check_input
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### UTILITY BLOCKS ####
 
-rule all:
+use rule template_all as all with:
     input:
-        check = os.path.join(OUTPUT_DIR, 'input.check'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml'),
-        data = os.path.join(OUTPUT_DIR, 'merge_wave_definitions', STAGE_OUTPUT),
-        # img = os.path.join(OUTPUT_DIR, 'wave_plots')
-    params:
-        command = 'ln -s' if USE_LINK_AS_STAGE_OUTPUT else 'cp'
-    output:
-        data = os.path.join(OUTPUT_DIR, STAGE_OUTPUT)
-    shell:
-        """
-        {ADD_UTILS}
-        {params.command} "{input.data}" "{output.data}"
-        """
+        check = OUTPUT_DIR / 'input.check',
+        data = OUTPUT_DIR / 'merge_wave_definitions' / config.STAGE_OUTPUT,
+        # img = OUTPUT_DIR / 'wave_plots'
+        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 
-rule check_input:
-    priority: 10
-    input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', 'input.check')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}"
-        touch "{output}"
-        """
 
 def additional_properties(wildcards):
-    return [os.path.join(wildcards.dir, prop, f'{prop}.{NEO_FORMAT}')
-            for prop in ADDITIONAL_PROPERTIES]
+    return [Path(wildcards.dir) / prop / f'{prop}.{config.NEO_FORMAT}'
+            for prop in config.ADDITIONAL_PROPERTIES]
 
 rule merge_wave_definitions:
     input:
-        waves = os.path.join('{dir}', DETECTION_BLOCK, STAGE_OUTPUT),
-        additional_properties = additional_properties,
-        script = os.path.join('scripts', 'merge_wave_definitions.py')
-    params:
-        properties = ','.join([os.path.join('{dir}', prop, f'{prop}.{NEO_FORMAT}')
-                for prop in ADDITIONAL_PROPERTIES])
+        data = Path('{dir}') / config.DETECTION_BLOCK / config.STAGE_OUTPUT,
+        additional_data = additional_properties,
+        script = Path('scripts') / 'merge_wave_definitions.py'
     output:
-        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT)
+        Path('{dir}') / 'merge_wave_definitions' / config.STAGE_OUTPUT
     shell:
         """
         {ADD_UTILS}
-        python3 "{input.script}" --waves "{input.waves}" \
-                                 --properties "{params.properties}" \
-                                 --output "{output.data}"
+        python3 {input.script:q} --data {input.data:q} \
+                                 --properties {input.additional_data:q} \
+                                 --output {output:q}
         """
 
 #### DETECTION BLOCK ####
 
-rule trigger_clustering:
+use rule template_plus_plot_script as trigger_clustering with:
     input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'trigger_clustering.py'),
-        plot_script = os.path.join('scripts', 'plot_clustering.py')
+        data = config.STAGE_INPUT,
+        script = Path('scripts')  / 'trigger_clustering.py',
+        plot_script = Path('scripts') / 'plot_clustering.py'
     params:
-        metric = METRIC,
-        time_space_ratio = TIME_SPACE_RATIO,
-        neighbour_distance = NEIGHBOUR_DISTANCE,
-        min_samples = MIN_SAMPLES_PER_WAVE,
-        plot_time_slice = PLOT_TSTOP
+        params('metric', 'time_space_ratio', 'neighbour_distance',
+               config=config, time_slice=config.PLOT_TSTOP,
+               min_samples=config.MIN_SAMPLES_PER_WAVE)
     output:
-        data = os.path.join('{dir}', 'trigger_clustering', STAGE_OUTPUT),
-        img = report(os.path.join('{dir}', 'trigger_clustering',
-                                  f'wave_cluster.{PLOT_FORMAT}'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --metric {params.metric} \
-                                 --time_space_ratio {params.time_space_ratio} \
-                                 --neighbour_distance {params.neighbour_distance} \
-                                 --min_samples {params.min_samples}
-        python3 "{input.plot_script}" --data "{output.data}" \
-                                      --output "{output.img}" \
-                                      --time_slice {params.plot_time_slice}
-        """
+        Path('{dir}') / 'trigger_clustering' / config.STAGE_OUTPUT,
+        img = Path('{dir}') / 'trigger_clustering' 
+                            / f'wave_cluster.{config.PLOT_FORMAT}'
 
 #### ADDITIONAL PROPERTIES ####
 
-rule optical_flow:
+use rule template as optical_flow with:
     input:
-        data = STAGE_INPUT,
-        script = os.path.join('scripts', 'horn_schunck.py')
+        data = config.STAGE_INPUT,
+        script = Path('scripts') / 'horn_schunck.py'
     params:
-        alpha = ALPHA,
-        max_Niter = MAX_NITER,
-        convergence_limit = CONVERGENCE_LIMIT,
-        gaussian_sigma = GAUSSIAN_SIGMA,
-        derivative_filter = DERIVATIVE_FILTER,
-        use_phases = USE_PHASES
+        params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
+               'derivative_filter', 'use_phases', config=config)
     output:
-        data = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+NEO_FORMAT),
-        img = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+PLOT_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 --alpha {params.alpha} \
-                                 --max_Niter {params.max_Niter} \
-                                 --convergence_limit {params.convergence_limit} \
-                                 --gaussian_sigma {params.gaussian_sigma} \
-                                 --derivative_filter {params.derivative_filter} \
-                                 --use_phases {params.use_phases}
-        """
+        Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.PLOT_FORMAT}'
 
-rule critical_points:
+
+use rule template_plus_plot_script as critical_points with:
     input:
-        data = os.path.join('{dir}', 'optical_flow', 'optical_flow.'+NEO_FORMAT),
-        script = os.path.join('scripts', 'critical_points.py'),
-        plot_script = os.path.join('scripts', 'plot_critical_points.py')
+        data = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
+        script = Path('scripts') / 'critical_points.py',
+        plot_script = Path('scripts') / 'plot_critical_points.py',
     params:
-        plot_frame = 0,
-        skip_step = 3
+        params(frame_id = 0, skip_step = 3)
     output:
-        data = os.path.join('{dir}', 'critical_points', 'critical_points.'+NEO_FORMAT),
-        img = os.path.join('{dir}', 'critical_points', 'critical_points.'+PLOT_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}"
-        python3 {input.plot_script} --data "{output.data}" \
-                                    --output "{output.img}" \
-                                    --frame_id {params.plot_frame} \
-                                    --skip_step {params.skip_step}
-        """
+        Path('{dir}') / 'critical_points' / f'critical_points.{config.NEO_FORMAT}',
+        img = Path('{dir}') / 'critical_points' / f'critical_points.{config.PLOT_FORMAT}'
 
 
-rule critical_points_clustering:
-    # ToDo
+# use rule template as critical_points_clustering with:
+#     # ToDo
+#     input:
+#         data = Path('{dir}') / 'critical_points' / config.STAGE_OUTPUT
+#     params:
+#     output:
+#         Path('{dir}') / 'critical_points_clustering' / config.STAGE_OUTPUT
+#     shell:
+#         """
+#         {ADD_UTILS}
+#         cp {input.data:q} {output.data:q}
+#         """
+
+
+use rule template as wave_mode_clustering with:
     input:
-        data = os.path.join('{dir}', 'critical_points', STAGE_OUTPUT)
-    output:
-        data = os.path.join('{dir}', 'critical_points_clustering', STAGE_OUTPUT)
-    shell:
-        """
-        {ADD_UTILS}
-        cp "{input.data}" "{output.data}"
-        """
-
-rule wave_mode_clustering:
-    input:
-        data = rules.trigger_clustering.output.data,
-        script = os.path.join('scripts', 'wave_mode_clustering.py')
+        data = rules.trigger_clustering.output,
+        script = Path('scripts') / 'wave_mode_clustering.py'
     params:
-        min_trigger_fraction = MIN_TRIGGER_FRACTION,
-        num_wave_neighbours = NUM_WAVE_NEIGHBOURS,
-        wave_outlier_quantile = WAVE_OUTLIER_QUANTILE,
-        pca_dims = PCA_DIMS,
-        num_kmeans_cluster = NUM_KMEANS_CLUSTER,
-        interpolation_step_size = INTERPOLATION_STEP_SIZE,
-        interpolation_smoothing = INTERPOLATION_SMOOTHING
+        params('min_trigger_fraction', 'num_wave_neighbours', 'pca_dims',
+               'wave_outlier_quantile', 'num_kmeans_cluster', 
+               'interpolation_step_size', 'interpolation_smoothing', config=config)
     output:
-        data = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+NEO_FORMAT),
-        img = os.path.join('{dir}', 'wave_mode_clustering', 'wave_mode_clustering.'+PLOT_FORMAT)
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 --min_trigger_fraction {params.min_trigger_fraction} \
-                                 --num_wave_neighbours {params.num_wave_neighbours} \
-                                 --wave_outlier_quantile {params.wave_outlier_quantile} \
-                                 --pca_dims {params.pca_dims} \
-                                 --num_kmeans_cluster {params.num_kmeans_cluster} \
-                                 --interpolation_step_size {params.interpolation_step_size} \
-                                 --interpolation_smoothing {params.interpolation_smoothing}
-        """
+        Path('{dir}') / 'wave_mode_clustering' / f'wave_mode_clustering.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / 'wave_mode_clustering' / f'wave_mode_clustering.{config.PLOT_FORMAT}'
 
 #### PLOTTING ####
 
-checkpoint plot_waves:
+use rule template as plot_waves with:
     input:
-        data = os.path.join('{dir}', 'merge_wave_definitions', STAGE_OUTPUT),
-        script = os.path.join('scripts', 'plot_waves.py')
+        data = Path('{dir}') / 'merge_wave_definitions' / config.STAGE_OUTPUT,
+        script = Path('scripts') / 'plot_waves.py'
     params:
-        time_window = 0.4,  # in s
-        colormap='viridis',
-        img_name = 'wave_plot_id0.'+PLOT_FORMAT
+        params(time_window = 0.4,  # in s
+               colormap='viridis',
+               img_name = 'wave_plot_id0.'+config.PLOT_FORMAT)
     output:
-        img = report(directory(os.path.join('{dir}', 'wave_plots')),
-                    patterns=["{img_name}."+PLOT_FORMAT])
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output_dir "{output.img}" \
-                                 --img_name {params.img_name} \
-                                 --time_window {params.time_window} \
-                                 --colormap {params.colormap}
-        """
+        directory(Path('{dir}') / 'wave_plots')
+
 
 #### MOVIE PLOTTING ####
-FRAME_RATE = config["FRAME_RATE"]
-QUALITY = config["QUALITY"]
-SCALE_X = config["SCALE_X"]
-SCALE_Y = config["SCALE_Y"]
-FPS = config["FPS"]
-BITRATE = config["BITRATE"]
-COLORMAP = config["COLORMAP"]
-PLOT_EVENT = config["PLOT_EVENT"]
-MARKER_COLOR = config["MARKER_COLOR"]
 
-rule time_slice:
+use rule template as time_slice with:
     input:
-        data = '{file_path}.' + NEO_FORMAT,
-        script = os.path.join('scripts', 'time_slice.py')
-    output:
-        data = '{file_path}_{t_start, [0-9]+}-{t_stop, [0-9]+}s.' + NEO_FORMAT
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                --output "{output.data}" \
-                                --t_start {wildcards.t_start} \
-                                --t_stop {wildcards.t_stop} \
-        """
-
-rule plot_movie_frames:
-    input:
-        data = os.path.join('{path}', '{file}.'+NEO_FORMAT),
-        script = os.path.join('scripts', 'plot_movie_frames.py')
+        data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = Path('scripts') / 'time_slice.py'
     params:
-        frame_name = 'frame',
-        frame_format = PLOT_FORMAT,
-        colormap = COLORMAP,
-        frame_rate = FRAME_RATE,
-        event = PLOT_EVENT,
-        markercolor = MARKER_COLOR
+        params()
     output:
-        frame_folder = directory(os.path.join('{path}', '{file}_frames')),
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                --frame_folder "{output.frame_folder}" \
-                                --frame_format {params.frame_format} \
-                                --frame_name {params.frame_name} \
-                                --frame_rate {params.frame_rate} \
-                                --colormap {params.colormap} \
-                                --event {params.event} \
-                                --markercolor {params.markercolor}
-        """
+        Path('{dir}') / f'{{data_name}}_{{t_start, [0-9]+}}-{{t_stop, [0-9]+}}s.{config.NEO_FORMAT}'
+ 
+
+use rule template as plot_movie_frames with:
+    input:
+        data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = Path('scripts') / 'plot_movie_frames.py'
+    params:
+        params('colormap', 'frame_rate', 'marker_color', 'plot_event',
+                config=config, frame_name = 'frame')
+    output:
+        frame_folder = directory(Path('{dir}') / '{data_name}_frames'),
+
 
 rule plot_movie:
     input:
-        os.path.join('{path}', '{file}_frames')
+        Path('{dir}') / '{data_name}_frames'
     output:
-        os.path.join('{path}', '{file}.mp4')
+        Path('{dir}') / '{data_name}.mp4'
     params:
-        frame_path = lambda wildcards, input: os.path.join(input[0],
+        frame_path = lambda wildcards, input: Path(input[0],
                                                 'frame_%05d.{}'\
-                                                .format(PLOT_FORMAT)),
-        quality = QUALITY,
-        scale_x = SCALE_X,
-        scale_y = SCALE_Y,
-        bitrate = BITRATE,
-        fps = FPS
+                                                .format(config.PLOT_FORMAT)),
+        quality = config.QUALITY,
+        scale_x = config.SCALE_X,
+        scale_y = config.SCALE_Y,
+        bitrate = config.BITRATE,
+        fps = config.FPS
     shell:
         """
         ffmpeg -y -framerate {params.fps} \
-               -i "{params.frame_path}" \
+               -i {params.frame_path:q} \
                -crf {params.quality} \
                -vb {params.bitrate} \
                -vcodec libx264 \
                -vf scale={params.scale_x}:{params.scale_y} \
-               "{output}"
+               {output:q}
         """
 
 rule mp4_to_webm:
     input:
-        '{path}.mp4'
+        Path('{path}.mp4')
     params:
-        quality = QUALITY,
-        scale_x = SCALE_X,
-        scale_y = SCALE_Y,
-        bitrate = BITRATE
+        quality = config.QUALITY,
+        scale_x = config.SCALE_X,
+        scale_y = config.SCALE_Y,
+        bitrate = config.BITRATE
     output:
-        '{path}.webm'
+        Path('{path}.webm')
     shell:
         """
-        ffmpeg -i "{input}" \
+        ffmpeg -i {input:q} \
                -vcodec libvpx \
                -acodec libvorbis \
                -crf {params.quality} \
                -vb {params.bitrate} \
                -vf scale={params.scale_x}:{params.scale_y} \
-               "{output}"
+               {output:q}
         """
 
 rule mp4_to_gif:
     input:
-        '{path}.mp4'
+        Path('{path}.mp4')
     output:
-        '{path}_{scale}px.gif'
+        Path('{path}_{scale}px.gif')
     shell:
         """
-        ffmpeg -i "{input}" -vf "scale={wildcards.scale}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 {output}
+        ffmpeg -i {input:q} \
+        -vf "scale={wildcards.scale}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+        -loop 0 {output:q}
         """

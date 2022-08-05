@@ -2,10 +2,7 @@ import os
 import sys
 import argparse
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import random
-import scipy
 from utils.io import load_neo, save_plot
 from utils.neo_utils import analogsignals_to_imagesequences
 from utils.parse import none_or_str, none_or_float
@@ -103,8 +100,8 @@ if __name__ == '__main__':
     CLI.add_argument("--frame_format",nargs='?', type=str)
     CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
     CLI.add_argument("--colormap",    nargs='?', type=str)
-    CLI.add_argument("--event",       nargs='?', type=none_or_str, default=None)
-    CLI.add_argument("--markercolor",       nargs='?', type=str, default='k')
+    CLI.add_argument("--plot_event",  nargs='?', type=none_or_str, default=None)
+    CLI.add_argument("--marker_color",nargs='?', type=str, default='k')
 
     args, unknown = CLI.parse_known_args()
 
@@ -120,10 +117,10 @@ if __name__ == '__main__':
 
     optical_flow = get_opticalflow(blk.segments[0].imagesequences)
 
-    if args.event is not None:
+    if args.plot_event is not None:
         up_coords = get_events(blk.segments[0].events,
                                frame_times=times,
-                               event_name=args.event)
+                               event_name=args.plot_event)
 
     # prepare plotting
     frame_idx = stretch_to_framerate(t_start=t_start,
@@ -148,9 +145,9 @@ if __name__ == '__main__':
 
         if optical_flow is not None:
             plot_vectorfield(optical_flow[frame_num], skip_step=skip_step)
-        if args.event is not None and up_coords is not None:
+        if args.plot_event is not None and up_coords is not None:
             plot_transitions(up_coords[frame_num], markersize=markersize,
-                             markercolor=args.markercolor)
+                             markercolor=args.marker_color)
         ax.set_ylabel('pixel size: {:.2f} mm'.format(imgseq.spatial_scale.rescale('mm').magnitude))
         ax.set_xlabel('{:.3f} s'.format(times[frame_num].rescale('s').magnitude))
 

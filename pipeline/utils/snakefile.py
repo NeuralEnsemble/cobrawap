@@ -1,9 +1,7 @@
 import os
 import yaml
-import warnings
 from copy import copy
 from types import SimpleNamespace
-from warnings import warn
 from snakemake.logging import logger
 
 
@@ -17,14 +15,15 @@ def read_stage_output(stage, config_dir, config_name,
     with open(os.path.join(config_dir, stage, config_name), 'r') as f:
         config_dict = yaml.safe_load(f)
     if config_dict is None:
-        warnings.warn(f'config file {os.path.join(config_dir, stage, config_name)} '
+        logger.warning('config file '
+                      f'{os.path.join(config_dir, stage, config_name)} '
                        'can not be loaded! Skipping reading stage output.')
         return None
     elif output_namespace in config_dict.keys():
         return config_dict[output_namespace]
     else:
-        raise ValueError(f"config file of stage {stage} "
-                       + f"does not define {output_namespace}!")
+        logger.error(f"config file of stage {stage} "
+                     f"does not define {output_namespace}!")
 
 
 def load_config_file(config_path):
@@ -87,7 +86,7 @@ def get_config(config_dir, config_name):
                     name, ext = os.path.splitext(config_name)
                     try_config_name = name.split('|')[0] + ext
                 else:
-                    raise FileNotFoundError("No corresponding config file found!")
+                    logger.error("No corresponding config file found!")
 
     return config_dict
 
@@ -112,7 +111,7 @@ def update_configfile(config_path, update_dict):
             logger.info(e)
             config_dict = None
     if config_dict is None:
-        warnings.warn(f'config file {config_path} can not be loaded! '
+        logger.warning(f'config file {config_path} can not be loaded! '
                        'Skipping updating config.')
         return None
     config_dict.update(**update_dict)
@@ -132,7 +131,7 @@ def set_stage_inputs(stages, output_dir, config_file='temp_config.yaml',
                                         config_dir=output_dir,
                                         config_name=config_file)
         if output_name is None:
-            warnings.warn(f'Could not read stage output for {stage}! '
+            logger.warning(f'Could not read stage output for {stage}! '
                            'Skipping setting input for subsequent stage.')
         else:
             update_dict[input_namespace] = os.path.join(output_dir, stage, output_name)
@@ -197,17 +196,17 @@ def params(*args, config=None, **kwargs):
         for items in [wildcards, output]:
             item_dict = dict(items.items())
             if 'data' in item_dict.keys():
-                warn("wildcards or outputs name 'data' are being ignored!")
+                logger.warning("wildcards or outputs named 'data' are being ignored!")
                 del item_dict['data']
 
             duplicates = [key for key in item_dict.keys() if key in param_dict.keys()]
             
             for key in duplicates:
                 if param_dict[key] != item_dict[key]:
-                    warn("The keyword {key} is used multiple times "
-                         "in the rule's params, wildcards, or output! \n"
-                        f"{key}: '{param_dict[key]}' is ignored "
-                        f"in favor of '{item_dict[key]}'")
+                    logger.warning("The keyword {key} is used multiple times "
+                                   "in the rule's params, wildcards, or output! \n"
+                                  f"{key}: '{param_dict[key]}' is ignored "
+                                  f"in favor of '{item_dict[key]}'")
 
             param_dict.update(item_dict)
         return dict_to_cla(param_dict) 
@@ -219,5 +218,5 @@ def locate_str_in_list(str_list, string):
     if string in str_list:
         return [i for i, el in enumerate(str_list) if el == string][0]
     else:
-        raise ValueError(f"Can't find rule '{string}'! Please check the spelling"
-                          "and the config file.")
+        logger.error(f"Can't find rule '{string}'! Please check the spelling "
+                      "and the config file.")

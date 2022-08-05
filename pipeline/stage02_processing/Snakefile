@@ -8,11 +8,6 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
-wildcard_constraints:
-    rule_name = '\w+'
-
-localrules: all, check_input
-
 def input_file(wildcards):
     return prev_rule_output(wildcards, rule_list=config.BLOCK_ORDER)
 

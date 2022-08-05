@@ -9,7 +9,7 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake == 5.15.0
+  - snakemake == 7.9.0
   - h5py
   - pip:
     - elephant >= 0.10.0

@@ -1,85 +1,60 @@
-# Stage 05 Channel-wise Wave Characterization
-import os
-
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
+"""
+# Stage XY Doing Something
+<description of stage purpose>
+Input:
+Output:
+"""
 
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels
-from types import SimpleNamespace
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
-config = SimpleNamespace(**config)
-config.ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
-
-SCRIPT_ARGS = ' '.join()[f"--{key} {value}"for key, value
-                                           in config.__dict__.items()])
 #### Housekeeping ####
 
-def input(wildcards):
+def final_rule_output(wildcards):
+    # you can use the wildcards and config
+    # to select the output of a rule that
+    # yields the final output of the stage
     return config.STAGE_INPUT
-
-def measures_output(wildcards):
-    return [os.path.join(config.OUTPUT_DIR, measure, measure+'.csv')
-            for measure in config.MEASURES]
-
-localrules: all, check_input
 
 #### UTILITY BLOCKS ####
 
-rule all:
+use rule template_all as all with:
     input:
-        check = os.path.join(config.OUTPUT_DIR, 'input.check'),
-        data = measures_output,
-        script = os.path.join('scripts', 'merge_dataframes.py'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
-    params:
-        data = lambda wildcards, input:
-                      ['"{}"'.format(path) for path in input.data]
-    output:
-        data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
-        img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
-    shell:
-        """
-        {config.ADD_UTILS}
-        python3 "{input.script}" --data {params.data} \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}"
-        """
+        check = OUTPUT_DIR / 'input.check',
+        data = final_rule_output,
+        img = OUTPUT_DIR / '<some_result_plot>'
+        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 
-rule check_input:
-    priority: 10
+#### <OTHER> BLOCKS ####
+
+use rule template as standard_rule with: # (recommended)
     input:
         data = config.STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
+        script = Path('scripts', '{measure}.py')
     output:
-        temp(os.path.join('{dir}', 'input.check'))
-    shell:
-        """
-        {config.ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}"
-        touch "{output}"
-        """
+        Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
+        img_dir = directory(OUTPUT_DIR / '{measure}')
+    params:
+        params('plot_tstart', 'plot_tstop', 'plot_channels',
+                a=20, config=config,
+                img_name='result_channel0'+config.PLOT_FORMAT)
 
-#### CHARACTERIZATION BLOCKS ####
 
-rule compute_measure:
+rule classic_rule:
     input:
-        data = input,
-        script = os.path.join('scripts', '{measure}.py')
+        data = config.STAGE_INPUT,
+        script = Path('scripts', '{measure}.py')
+    params:
+        a = 20
     output:
-        data = os.path.join('{dir}', '{measure}', '{measure}.csv'),
-        img = report(os.path.join('{dir}', '{measure}',
-                                  '{measure}.'+config.PLOT_FORMAT))
+        Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
+        img = Path('{dir}') / '{measure}' / f'{{measure}}.{config.PLOT_FORMAT}'
     shell:
         """
-        {config.ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 {SCRIPT_ARGS}
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q} \
+                                 --output {output:q}" \
+                                 --output_img {output.img:q} \
+                                 --a {params.a}
         """

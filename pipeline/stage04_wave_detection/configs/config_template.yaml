@@ -34,7 +34,7 @@ DETECTION_BLOCK: 'trigger_clustering'
 # Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
 ADDITIONAL_PROPERTIES: ['optical_flow']
 
-# Wavefront Clustering
+# Trigger Clustering
 ######################
 # Using sklearn.cluster.DBSCAN
 METRIC: 'euclidean'

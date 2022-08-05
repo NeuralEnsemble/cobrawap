@@ -67,7 +67,7 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser()
     CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--output_dir", nargs='?', type=str)
+    CLI.add_argument("--output", nargs='?', type=str)
     CLI.add_argument("--img_name",    nargs='?', type=str)
     CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
                      help="size of the ploted windown in seconds.")
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                            time_window=args.time_window*pq.s,
                            cmap=cmap)
 
-            output_path = os.path.join(args.output_dir,
+            output_path = os.path.join(args.output,
                                 args.img_name.replace('id0', f'id{wave_id}'))
             save_plot(output_path)
             plt.close()

@@ -13,8 +13,6 @@ def filtered_triggers(wildcards):
     return prev_rule_output(wildcards, rule_list=config.TRIGGER_FILTER,
                             default_input=default_input)
 
-localrules: all, check_input
-
 #### UTILTY BLOCKS ####
 
 use rule template_all as all with:

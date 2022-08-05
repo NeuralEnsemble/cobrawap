@@ -9,11 +9,6 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 config.DATA_NAME = list(config.DATA_SETS.keys())[0]
 config.DATA_PATH = config.DATA_SETS[config.DATA_NAME]
 
-wildcard_constraints:
-    data_name = '\w+'
-
-localrules: all, check_input
-
 use rule template_all as all with:
     input:
         check = OUTPUT_DIR / f'{config.DATA_NAME}.check',

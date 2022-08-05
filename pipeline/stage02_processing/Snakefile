@@ -159,6 +159,7 @@ use rule template as phase_transform with:
         data = input_file,
         script = SCRIPTS / 'phase_transform.py'
     params:
+        params()
     output:
         Path('{dir}') / '{rule_name}' /  f'phase_transform.{config.NEO_FORMAT}'
 
@@ -169,6 +170,7 @@ use rule template as z_score with:
         data = input_file,
         script = SCRIPTS / 'z_score.py'
     params:
+        params()
     output:
         Path('{dir}') / '{rule_name}' / f'zscore.{config.NEO_FORMAT}'
 

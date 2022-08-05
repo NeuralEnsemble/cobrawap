@@ -26,7 +26,7 @@ use rule template_all as all with:
 use rule template as plot_trigger_times with:
     input:
         data = filtered_triggers,
-        script = Path('scripts') / 'plot_trigger_times.py'
+        script = SCRIPTS / 'plot_trigger_times.py'
     output:
         directory(OUTPUT_DIR / 'plot_trigger_times')
     params:
@@ -40,7 +40,7 @@ rule threshold:
     input:
         data = config.STAGE_INPUT,
         thresholds = Path('{dir}') / 'threshold' / f'{config.THRESHOLD_METHOD}_thresholds.npy',
-        script = Path('scripts') / 'threshold.py'
+        script = SCRIPTS / 'threshold.py'
     output:
         data = Path('{dir}') / 'threshold' / config.STAGE_OUTPUT
     shell:
@@ -56,7 +56,7 @@ use rule template as calc_threshold_fixed with:
     # subrule of threshold
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'calc_thresholds_fixed.py'
+        script = SCRIPTS / 'calc_thresholds_fixed.py'
     output:
         Path('{dir}') / 'threshold' / 'fixed_thresholds.npy',
     params:
@@ -67,7 +67,7 @@ use rule template as calc_threshold_fitted with:
     # subrule of threshold
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'calc_thresholds_fitted.py'
+        script = SCRIPTS / 'calc_thresholds_fitted.py'
     output:
         Path('{dir}') / 'threshold' / 'fitted_thresholds.npy',
         img_dir = directory(Path('{dir}') / 'threshold' / 'fitted_thresholds')
@@ -79,7 +79,7 @@ use rule template as calc_threshold_fitted with:
 use rule template as hilbert_phase with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'hilbert_phase.py'
+        script = SCRIPTS / 'hilbert_phase.py'
     output:
         Path('{dir}') / 'hilbert_phase' / config.STAGE_OUTPUT,
         img_dir = directory(Path('{dir}') / 'hilbert_phase' / 'hilbert_phase_plots')
@@ -92,7 +92,7 @@ use rule template as hilbert_phase with:
 use rule template as minima with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'minima.py'
+        script = SCRIPTS / 'minima.py'
     output:
         Path('{dir}') / 'minima' / config.STAGE_OUTPUT,
         img_dir = directory(Path('{dir}') / 'minima' / 'minima_plots')
@@ -107,7 +107,7 @@ use rule template as minima with:
 use rule template as remove_short_states with:
     input:
         data = filtered_triggers,
-        script = Path('scripts') / 'remove_short_states.py'
+        script = SCRIPTS / 'remove_short_states.py'
     output:
         Path('{dir}') / '{rule_name}' / f'remove_short_states.{config.NEO_FORMAT}'
     params:

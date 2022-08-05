@@ -41,7 +41,7 @@ rule clear:
 use rule template as plot_processed_traces with:
     input:
         data = input_file,
-        script = Path('scripts') / 'plot_processed_trace.py'
+        script = SCRIPTS / 'plot_processed_trace.py'
     params:
         params(channels=config.PLOT_CHANNELS,
                img_name='processed_trace_channel0.'+config.PLOT_FORMAT,
@@ -53,7 +53,7 @@ use rule template as plot_processed_traces with:
 use rule template as plot_power_spectrum with:
     input:
         data = input_file,
-        script = Path('scripts') / 'plot_power_spectrum.py'
+        script = SCRIPTS / 'plot_power_spectrum.py'
     output:
         Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}'
     params:
@@ -66,7 +66,7 @@ use rule template as background_subtraction with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'background_subtraction.py'
+        script = SCRIPTS / 'background_subtraction.py'
     params:
         params()
     output:
@@ -79,7 +79,7 @@ use rule template as spatial_downsampling with:
     input:
         is_clear = is_clear, 
         data = input_file,
-        script = Path('scripts') / 'spatial_downsampling.py'
+        script = SCRIPTS / 'spatial_downsampling.py'
     output:
         Path('{dir}') / '{rule_name}' / f'spatial_downsampling.{config.NEO_FORMAT}',
         output_img = Path('{dir}') / '{rule_name}' / f'spatial_downsampling.{config.PLOT_FORMAT}'
@@ -91,7 +91,7 @@ use rule template as normalization with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'normalization.py'
+        script = SCRIPTS / 'normalization.py'
     params:
         params('normalize_by', config=config)
     output:
@@ -102,7 +102,7 @@ use rule template as detrending with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'detrending.py'
+        script = SCRIPTS / 'detrending.py'
     params:
         params(order = config.DETRENDING_ORDER,
                plot_channels = config.PLOT_CHANNELS,
@@ -117,7 +117,7 @@ use rule template as frequency_filter with:
         is_clear = is_clear,
         data = input_file,
         img = Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}',
-        script = Path('scripts') / 'frequency_filter.py'
+        script = SCRIPTS / 'frequency_filter.py'
     params:
         params('highpass_freq', 'lowpass_freq', 'filter_function',
                 order=config.FILTER_ORDER, config=config)
@@ -129,7 +129,7 @@ use rule template as roi_selection with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'roi_selection.py'
+        script = SCRIPTS / 'roi_selection.py'
     params:
         params('intensity_threshold', 'crop_to_selection', config=config)
     output:
@@ -141,7 +141,7 @@ use rule template as logMUA_estimation with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'logMUA_estimation.py'
+        script = SCRIPTS / 'logMUA_estimation.py'
     params:
         params('logMUA_rate', 'fft_slice', 'psd_overlap', 'plot_tstart', 'plot_tstop',
                'plot_channels', config=config,
@@ -157,7 +157,7 @@ use rule template as phase_transform with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'phase_transform.py'
+        script = SCRIPTS / 'phase_transform.py'
     params:
         params()
     output:
@@ -168,7 +168,7 @@ use rule template as z_score with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'z_score.py'
+        script = SCRIPTS / 'z_score.py'
     params:
         params()
     output:
@@ -179,7 +179,7 @@ use rule template as subsampling with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = Path('scripts') / 'subsampling.py'
+        script = SCRIPTS / 'subsampling.py'
     params:
         params(target_rate = config.TARGET_RATE)
     output:

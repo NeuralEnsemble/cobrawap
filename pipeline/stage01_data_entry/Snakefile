@@ -22,7 +22,7 @@ use rule template_all as all with:
 use rule check_input as check_data_entry with:
     input:
         data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
-        script = Path('scripts') / 'check_input.py'
+        script = SCRIPTS / 'check_input.py'
     output:
         Path('{dir}') / '{data_name}.check'
 
@@ -30,7 +30,7 @@ use rule check_input as check_data_entry with:
 use rule template as plot_traces with:
     input:
         data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
-        script = Path('scripts') / 'plot_traces.py'
+        script = SCRIPTS / 'plot_traces.py'
     params:
         params(t_start = config.PLOT_TSTART,
                t_stop = config.PLOT_TSTOP,

@@ -1,118 +1,65 @@
+"""
 # Stage 05 Channel-wise Wave Characterization
-import os
-
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
+"""
 
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels
-from types import SimpleNamespace
-
-config = SimpleNamespace(**config)
-config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-SCRIPT_ARGS = ' '.join([f"--{key} '{value}'" for key, value
-                                             in config.__dict__.items()])
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [os.path.join(config.OUTPUT_DIR, measure,
-                         f'{config.EVENT_NAME}_{measure}.csv')
+    return [OUTPUT_DIR / measure / f'{config.EVENT_NAME}_{measure}.csv'
             for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
     config.MEASURES = [m for m in config.MEASURES if m not in
                         ['inter_wave_interval_local', 'flow_direction_local']]
 
-localrules: all, check_input
-
-#### UTILITY BLOCKS ####
-
-rule all:
-    input:
-        check = os.path.join(config.OUTPUT_DIR, 'input.check'),
-        data = measures_output,
-        script = os.path.join('scripts', 'merge_dataframes.py'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
-    params:
-        data = lambda wildcards, input:
-                      ['"{}"'.format(path) for path in input.data],
-        merge_key = ['channel_id', f'{config.EVENT_NAME}_id']
-    output:
-        data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
-        img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data {params.data} \
-                              --output "{output.data}" \
-                              --output_img "{output.img}" \
-                              --merge_key {params.merge_key}
-        """
-
-rule check_input:
-    priority: 10
-    input:
-        data = config.STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', 'input.check')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                {SCRIPT_ARGS}
-        touch "{output}"
-        """
-
 def input(wildcards):
     spatial_measures = ['velocity_local', 'direction_local']
     if wildcards.measure in spatial_measures:
-        return rules.spatial_derivative.output.data
+        return rules.spatial_derivative.output
     else:
         return config.STAGE_INPUT
 
 ruleorder: spatial_derivative > compute_measure
 
+
+#### UTILITY BLOCKS ####
+
+use rule template as all with:
+    input:
+        check = OUTPUT_DIR / 'input.check',
+        data = measures_output,
+        script = SCRIPTS / 'merge_dataframes.py',
+        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+    params:
+        params(merge_key = ['channel_id', f'{config.EVENT_NAME}_id'])
+    output:
+        OUTPUT_DIR / config.STAGE_OUTPUT,
+        output_img = OUTPUT_DIR / 'overview_measures.html'
+
 #### CHARACTERIZATION BLOCKS ####
 
-rule compute_measure:
+use rule template as compute_measure with:
     input:
         data = input,
-        script = os.path.join('scripts', '{measure}.py')
+        script = SCRIPTS / '{measure}.py'
+    params:
+        params(config.__dict__)
     output:
-        data = os.path.join('{dir}', '{measure}',
-                            config.EVENT_NAME+'_{measure}.csv'),
-        img = report(os.path.join('{dir}', '{measure}',
-                     config.EVENT_NAME+'_{measure}.'+config.PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 {SCRIPT_ARGS}
-        """
+        Path('{dir}') / '{measure}' / f'{config.EVENT_NAME}_{{measure}}.csv',
+        output_img = Path('{dir}') / '{measure}' 
+                      / f'{config.EVENT_NAME}_{{measure}}.{config.PLOT_FORMAT}'
 
-rule spatial_derivative:
+
+use rule compute_measure as spatial_derivative with:
     input:
         data = config.STAGE_INPUT,
-        script = os.path.join('scripts', 'spatial_derivative.py')
+        script = SCRIPTS / 'spatial_derivative.py'
     output:
-        data = os.path.join('{dir}', 'spatial_derivative',
-                           f'{config.EVENT_NAME}_spatial_derivative.csv'),
-        img = report(os.path.join('{dir}', 'spatial_derivative',
-                f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 {SCRIPT_ARGS}
-        """
+        Path('{dir}') / 'spatial_derivative'
+                      / f'{config.EVENT_NAME}_spatial_derivative.csv',
+        output_img = Path('{dir}') / 'spatial_derivative'
+               / f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'

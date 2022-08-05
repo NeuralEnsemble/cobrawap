@@ -203,10 +203,10 @@ def params(*args, config=None, **kwargs):
             
             for key in duplicates:
                 if param_dict[key] != item_dict[key]:
-                    logger.warning("The keyword {key} is used multiple times "
-                                   "in the rule's params, wildcards, or output! \n"
-                                  f"{key}: '{param_dict[key]}' is ignored "
-                                  f"in favor of '{item_dict[key]}'")
+                    logger.warning(f"The keyword {key} is used multiple times "
+                                    "in the rule's params, wildcards, or output! \n"
+                                   f"{key}: '{param_dict[key]}' is ignored "
+                                   f"in favor of '{item_dict[key]}'")
 
             param_dict.update(item_dict)
         return dict_to_cla(param_dict) 

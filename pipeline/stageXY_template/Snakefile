@@ -11,7 +11,7 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
-def final_rule_output(wildcards):
+def _final_rule_output(wildcards):
     # you can use the wildcards and config
     # to select the output of a rule that
     # yields the final output of the stage
@@ -22,7 +22,7 @@ def final_rule_output(wildcards):
 use rule template_all as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
-        data = final_rule_output,
+        data = _final_rule_output,
         img = OUTPUT_DIR / '<some_result_plot>'
         # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 

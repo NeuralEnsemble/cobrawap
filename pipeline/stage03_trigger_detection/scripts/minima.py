@@ -125,20 +125,24 @@ def plot_minima(asig, event, channel, maxima_threshold_window,
     sampling_rate = asig.sampling_rate.rescale('Hz').magnitude
     window_frame = int(maxima_threshold_window*sampling_rate) 
     threshold_func = moving_threshold(signal, window_frame, maxima_threshold_fraction)
+    event = time_slice(event, asig.times[0], asig.times[-1])
 
-    peaks, _ = find_peaks(signal, height=threshold_func, distance=np.max([min_peak_distance*sampling_rate, 1]))  
-        
+    peaks, _ = find_peaks(signal, height=threshold_func, 
+                          distance=np.max([min_peak_distance*sampling_rate, 1]))  
+    
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()
     
     ax.plot(times, signal, label='signal', color='k')
-    ax.plot(times, threshold_func, label='moving threshold', linestyle=':', color='b')
+    ax.plot(times, threshold_func, label='moving threshold', 
+            linestyle=':', color='b')
 
     idx_ch = np.where(event.array_annotations['channels'] == channel)[0]
     
     ax.plot(times[peaks], signal[peaks], 'x', color='r', label='detected maxima') 
-    ax.plot(event.times[idx_ch], signal[(event.times[idx_ch]*sampling_rate).astype(int)], 'x', color='g', label='selected minima')
+    ax.plot(event.times[idx_ch], signal[(event.times[idx_ch]*sampling_rate).astype(int)], 
+            'x', color='g', label='selected minima')
 
     ax.set_title(f'channel {channel}')
     ax.set_xlabel('time [s]')

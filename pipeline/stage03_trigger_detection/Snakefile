@@ -31,7 +31,7 @@ use rule template as plot_trigger_times with:
         directory(OUTPUT_DIR / 'plot_trigger_times')
     params:
         params('plot_tstart', 'plot_tstop', 'plot_channels',
-                filename='trigger_times_channel0'+config.PLOT_FORMAT,
+                filename='trigger_times_channel0.'+config.PLOT_FORMAT,
                 config=config)
 
 #### DETECTION BLOCKS (choose one) ####

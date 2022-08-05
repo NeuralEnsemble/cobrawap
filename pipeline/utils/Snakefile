@@ -62,12 +62,12 @@ rule template:
         "    threads: {threads}\n"
         "    resources: {resources}\n"
         "    commandline arguments: "
-        "--data {input.data:q} --output {output:q} {params}\n"
+        "--data {input.data:q} --output {output[0]:q} {params}\n"
     shell:
         """
         {ADD_UTILS}
         python3 {input.script:q} --data {input.data:q} \
-                                 --output {output:q} \
+                                 --output {output[0]:q} \
                                  {params} 
         """
 

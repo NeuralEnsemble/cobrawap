@@ -164,12 +164,23 @@ def is_path(object):
 
 def params(*args, config=None, **kwargs):
     '''
-    creates parameter dictionary to pass to script as `--key value`
-    - if args[0] is a dict, use it
-    - args are interpreted as keys for the config dict (non case-sensitive)
-        - if config if given, else args are ignored
-    - kwargs are interpreted as key-value pairs
+    Creates a parameter dictionary that is returned as a string as
+    command line argument as `--key value` for each key-value pair in the dict.
+    
+    args:
+        - if args[0] is a dict, it is added to the parameter dict
+        - if args are strings and config is a dict, args (and args.upper()) 
+          are interpreted as keys of config dict and the corresponding elements 
+          are added to the parameter dict
+    config:
+        dict from which elements (keys given by args) are selected
+    kwargs:
+        kwargs are added as key-value pairs are to the parameter dict
+
+    Additionally, all wildcards and named outputs of the current rule are added 
+    as key-value pairs to the parameter dict.
     '''
+    
     param_dict = {}  # use default dict?
 
     if len(args) and type(args[0]) == dict:
@@ -178,7 +189,7 @@ def params(*args, config=None, **kwargs):
     if type(config) == SimpleNamespace:
         config = vars(config)
 
-    if config is not None:
+    if type(config) == dict:
         for arg in args:
             if not type(arg) == str:
                 continue

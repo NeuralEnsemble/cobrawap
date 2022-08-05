@@ -19,9 +19,11 @@ if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
 config = SimpleNamespace(**config)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 OUTPUT_DIR = Path(output_path) / config.PROFILE / config.STAGE_NAME
+SCRIPTS = Path('scripts')
 
 if config.STAGE_INPUT is not None:
-    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, config.STAGE_INPUT)
+    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 
+                                               config.STAGE_INPUT)
 
 localrules: all, check_input
 
@@ -32,7 +34,8 @@ wildcard_constraints:
 
 def prev_rule_output(wildcards, rule_list, 
                      default_input=config.STAGE_INPUT):
-    output = lambda i: OUTPUT_DIR / rule_list[i-1] / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
+    output = lambda i: OUTPUT_DIR / rule_list[i-1] \
+                                  / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
     if hasattr(wildcards, 'rule_name'):
         idx = locate_str_in_list(rule_list, wildcards.rule_name)
         if idx:
@@ -44,7 +47,7 @@ def prev_rule_output(wildcards, rule_list,
 rule template:
     input:
         data = 'input.data', # replace
-        script = Path('scripts') / '{rule_name}.py'
+        script = SCRIPTS / '{rule_name}.py'
     params:
         params()
     output:
@@ -72,8 +75,8 @@ rule template:
 rule template_plus_plot_script:
     input:
         data = 'input.data', # replace
-        script = Path('scripts') / '{rule_name}.py',
-        plot_script = Path('scripts') / 'plot_{rule_name}.py'
+        script = SCRIPTS / '{rule_name}.py',
+        plot_script = SCRIPTS / 'plot_{rule_name}.py'
     params:
         params()
     output:
@@ -98,7 +101,7 @@ rule check_input:
     priority: 10
     input:
         data = '' if config.STAGE_INPUT is None else config.STAGE_INPUT,
-        script = Path('scripts') / 'check_input.py'
+        script = SCRIPTS / 'check_input.py'
     output:
         Path('{dir}') / 'input.check'
     shell:

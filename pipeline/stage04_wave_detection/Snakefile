@@ -24,7 +24,7 @@ rule merge_wave_definitions:
     input:
         data = Path('{dir}') / config.DETECTION_BLOCK / config.STAGE_OUTPUT,
         additional_data = additional_properties,
-        script = Path('scripts') / 'merge_wave_definitions.py'
+        script = SCRIPTS / 'merge_wave_definitions.py'
     output:
         Path('{dir}') / 'merge_wave_definitions' / config.STAGE_OUTPUT
     shell:
@@ -40,8 +40,8 @@ rule merge_wave_definitions:
 use rule template_plus_plot_script as trigger_clustering with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts')  / 'trigger_clustering.py',
-        plot_script = Path('scripts') / 'plot_clustering.py'
+        script = SCRIPTS  / 'trigger_clustering.py',
+        plot_script = SCRIPTS / 'plot_clustering.py'
     params:
         params('metric', 'time_space_ratio', 'neighbour_distance',
                config=config, time_slice=config.PLOT_TSTOP,
@@ -56,7 +56,7 @@ use rule template_plus_plot_script as trigger_clustering with:
 use rule template as optical_flow with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'horn_schunck.py'
+        script = SCRIPTS / 'horn_schunck.py'
     params:
         params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
                'derivative_filter', 'use_phases', config=config)
@@ -68,8 +68,8 @@ use rule template as optical_flow with:
 use rule template_plus_plot_script as critical_points with:
     input:
         data = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
-        script = Path('scripts') / 'critical_points.py',
-        plot_script = Path('scripts') / 'plot_critical_points.py',
+        script = SCRIPTS / 'critical_points.py',
+        plot_script = SCRIPTS / 'plot_critical_points.py',
     params:
         params(frame_id = 0, skip_step = 3)
     output:
@@ -94,7 +94,7 @@ use rule template_plus_plot_script as critical_points with:
 use rule template as wave_mode_clustering with:
     input:
         data = rules.trigger_clustering.output,
-        script = Path('scripts') / 'wave_mode_clustering.py'
+        script = SCRIPTS / 'wave_mode_clustering.py'
     params:
         params('min_trigger_fraction', 'num_wave_neighbours', 'pca_dims',
                'wave_outlier_quantile', 'num_kmeans_cluster', 
@@ -108,7 +108,7 @@ use rule template as wave_mode_clustering with:
 use rule template as plot_waves with:
     input:
         data = Path('{dir}') / 'merge_wave_definitions' / config.STAGE_OUTPUT,
-        script = Path('scripts') / 'plot_waves.py'
+        script = SCRIPTS / 'plot_waves.py'
     params:
         params(time_window = 0.4,  # in s
                colormap='viridis',
@@ -122,7 +122,7 @@ use rule template as plot_waves with:
 use rule template as time_slice with:
     input:
         data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
-        script = Path('scripts') / 'time_slice.py'
+        script = SCRIPTS / 'time_slice.py'
     params:
         params()
     output:
@@ -132,7 +132,7 @@ use rule template as time_slice with:
 use rule template as plot_movie_frames with:
     input:
         data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
-        script = Path('scripts') / 'plot_movie_frames.py'
+        script = SCRIPTS / 'plot_movie_frames.py'
     params:
         params('colormap', 'frame_rate', 'marker_color', 'plot_event',
                 config=config, frame_name = 'frame')

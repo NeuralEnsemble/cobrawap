@@ -2,8 +2,6 @@
 # Stage 05 Wave Characterization
 """
 
-import os
-
 from pathlib import Path
 configfile: Path('configs') / 'config_template.yaml'
 include: Path() / '..' / 'utils' / 'Snakefile'
@@ -24,7 +22,7 @@ use rule template as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
         data = measures_output,
-        script = Path('scripts') / 'merge_dataframes.py',
+        script = SCRIPTS / 'merge_dataframes.py',
         # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
     params:
         params()
@@ -37,7 +35,7 @@ use rule template as all with:
 use rule template as compute_measure with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / '{measure}.py'
+        script = SCRIPTS / '{measure}.py'
     params:
         params(config.__dict__)
     output:

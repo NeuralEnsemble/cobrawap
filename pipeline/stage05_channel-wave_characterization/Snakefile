@@ -32,7 +32,7 @@ use rule template as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
         data = measures_output,
-        script = Path('scripts') / 'merge_dataframes.py',
+        script = SCRIPTS / 'merge_dataframes.py',
         # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
     params:
         params(merge_key = ['channel_id', f'{config.EVENT_NAME}_id'])
@@ -45,7 +45,7 @@ use rule template as all with:
 use rule template as compute_measure with:
     input:
         data = input,
-        script = Path('scripts') / '{measure}.py'
+        script = SCRIPTS / '{measure}.py'
     params:
         params(config.__dict__)
     output:
@@ -57,7 +57,7 @@ use rule template as compute_measure with:
 use rule compute_measure as spatial_derivative with:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts') / 'spatial_derivative.py'
+        script = SCRIPTS / 'spatial_derivative.py'
     output:
         Path('{dir}') / 'spatial_derivative'
                       / f'{config.EVENT_NAME}_spatial_derivative.csv',

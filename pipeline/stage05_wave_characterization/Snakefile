@@ -1,96 +1,46 @@
+"""
 # Stage 05 Wave Characterization
+"""
+
 import os
 
-configfile: os.path.join('configs', 'config_template.yaml')
-report: "report.rst"
-
 from pathlib import Path
-import sys
-utils_path = str((Path() / '..').resolve())
-sys.path.append(utils_path)
-from settings import output_path
-from utils.parse import parse_plot_channels
-from types import SimpleNamespace
-
-if 'STAGE_INPUT' not in config:
-    raise ValueError('No input to the stage defined! '
-                     'Either manually specify a path when executing the stage: '
-                     '`snakemake --config STAGE_INPUT=path/to/inputfile.nix` '
-                     'or run the full pipeline.')
-
-config = SimpleNamespace(**config)
-config.ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
-config.OUTPUT_DIR = os.path.join(output_path, config.PROFILE, config.STAGE_NAME)
-SCRIPT_ARGS = ' '.join([f"--{key} '{value}'" for key, value
-                                             in config.__dict__.items()])
+configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [os.path.join(config.OUTPUT_DIR, measure,
-                         f'{config.EVENT_NAME}_{measure}.csv')
+    return [OUTPUT_DIR / measure / f'{config.EVENT_NAME}_{measure}.csv'
             for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
     config.MEASURES = [m for m in config.MEASURES if m not in
                        ['label_planar', 'time_stamp', 'inter_wave_interval']]
 
-localrules: all, check_input
-
 #### UTILITY BLOCKS ####
 
-rule all:
+use rule template as all with:
     input:
-        check = os.path.join(config.OUTPUT_DIR, 'input.check'),
+        check = OUTPUT_DIR / 'input.check',
         data = measures_output,
-        script = os.path.join('scripts', 'merge_dataframes.py'),
-        # configfile = os.path.join('configs', f'config_{PROFILE}.yaml')
+        script = Path('scripts') / 'merge_dataframes.py',
+        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
     params:
-        data = lambda wildcards, input:
-                      ['"{}"'.format(path) for path in input.data],
-        # merge_key = f'{config.EVENT_NAME}_id'
+        params()
     output:
-        data = os.path.join(config.OUTPUT_DIR, config.STAGE_OUTPUT),
-        img = report(os.path.join(config.OUTPUT_DIR, 'overview_measures.html'))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data {params.data} \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}"
-        """
-
-rule check_input:
-    priority: 10
-    input:
-        data = config.STAGE_INPUT,
-        script = os.path.join('scripts', 'check_input.py')
-    output:
-        os.path.join('{dir}', 'input.check')
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 {SCRIPT_ARGS}
-        touch "{output}"
-        """
+        OUTPUT_DIR / config.STAGE_OUTPUT,
+        output_img = OUTPUT_DIR / 'overview_measures.html'
 
 #### CHARACTERIZATION BLOCKS ####
 
-rule compute_measure:
+use rule template as compute_measure with:
     input:
         data = config.STAGE_INPUT,
-        script = os.path.join('scripts', '{measure}.py')
+        script = Path('scripts') / '{measure}.py'
+    params:
+        params(config.__dict__)
     output:
-        data = os.path.join('{dir}', '{measure}',
-                            config.EVENT_NAME+'_{measure}.csv'),
-        img = report(os.path.join('{dir}', '{measure}',
-                     config.EVENT_NAME+'_{measure}.'+config.PLOT_FORMAT))
-    shell:
-        """
-        {ADD_UTILS}
-        python3 "{input.script}" --data "{input.data}" \
-                                 --output "{output.data}" \
-                                 --output_img "{output.img}" \
-                                 {SCRIPT_ARGS}
-        """
+        Path('{dir}') / '{measure}' / f'{config.EVENT_NAME}_{{measure}}.csv',
+        output_img = Path('{dir}') / '{measure}' 
+                      / f'{config.EVENT_NAME}_{{measure}}.{config.PLOT_FORMAT}'

@@ -5,13 +5,16 @@ from types import SimpleNamespace
 utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
 from settings import output_path, configs_dir
+from snakemake.logging import logger
 from utils.parse import parse_plot_channels
 from utils.snakefile import dict_to_cla, params, locate_str_in_list
 
 if 'STAGE_INPUT' not in config:
-    raise AttributeError('No STAGE_INPUT defined for running the stage individually! '
-                         'You can set it via the command line with '
-                         '`--config STAGE_INPUT=/path/to/file`. ')
+    logger.error('No STAGE_INPUT defined for running the stage individually! '
+                 'You can set it via the command line with '
+                 '`--config STAGE_INPUT=/path/to/file`. ')
+if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
+    config['USE_LINK_AS_STAGE_OUTPUT'] = True
 
 config = SimpleNamespace(**config)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"

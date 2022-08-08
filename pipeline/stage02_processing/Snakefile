@@ -143,10 +143,11 @@ use rule template as logMUA_estimation with:
         data = input_file,
         script = SCRIPTS / 'logMUA_estimation.py'
     params:
-        params('logMUA_rate', 'fft_slice', 'psd_overlap', 'plot_tstart', 'plot_tstop',
+        params('fft_slice', 'psd_overlap', 'plot_tstart', 'plot_tstop',
                'plot_channels', config=config,
                highpass_freq = config.MUA_HIGHPASS_FREQ,
                lowpass_freq = config.MUA_LOWPASS_FREQ,
+               logMUA_rate = config.logMUA_RATE,
                img_name = 'logMUA_trace_channel0.'+config.PLOT_FORMAT)
     output:
         Path('{dir}') / '{rule_name}' / f'logMUA_estimation.{config.NEO_FORMAT}',

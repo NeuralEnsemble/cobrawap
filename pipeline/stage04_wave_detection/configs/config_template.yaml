@@ -32,7 +32,8 @@ DETECTION_BLOCK: 'trigger_clustering'
 # ADDITIONAL PROPERTIES
 #######################
 # Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
-ADDITIONAL_PROPERTIES: ['optical_flow']
+# use empty list [] for selecting none
+ADDITIONAL_PROPERTIES: ['wave_mode_clustering', 'optical_flow']
 
 # Trigger Clustering
 ######################

@@ -153,13 +153,15 @@ def dict_to_cla(arg_dict):
         if type(value) == list:
             arg_dict[key] = ' '.join(str(v) for v in value)
 
-    cla_str = lambda k,v: f'--{k} "{v}"' if is_path(v) else f'--{k} {v}'
+    cla_str = lambda k,v: f'--{k} "{v}"' if in_quotes(v) else f'--{k} {v}'
     arg_strings = [cla_str(key, value) for key, value in arg_dict.items()]
     return ' '.join(arg_strings)
 
 
-def is_path(object):
-    return '/' in str(object) or '\\' in str(object)
+def in_quotes(object):
+    char = ['\s', '|']  # when these characters are in an argument str
+                        # they need to be put in quotes to be passed as cla
+    return any([c in str(object) for c in char])
 
 
 def params(*args, config=None, **kwargs):
@@ -180,7 +182,7 @@ def params(*args, config=None, **kwargs):
     Additionally, all wildcards and named outputs of the current rule are added 
     as key-value pairs to the parameter dict.
     '''
-    
+
     param_dict = {}  # use default dict?
 
     if len(args) and type(args[0]) == dict:

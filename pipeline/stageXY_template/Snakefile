@@ -31,7 +31,7 @@ use rule template_all as all with:
 use rule template as standard_rule with: # (recommended)
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts', '{measure}.py')
+        script = SCRIPTS / '{measure}.py'
     output:
         Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
         img_dir = directory(OUTPUT_DIR / '{measure}')
@@ -44,7 +44,7 @@ use rule template as standard_rule with: # (recommended)
 rule classic_rule:
     input:
         data = config.STAGE_INPUT,
-        script = Path('scripts', '{measure}.py')
+        script = SCRIPTS / '{measure}.py'
     params:
         a = 20
     output:

@@ -2,10 +2,17 @@ import os
 import neo
 import matplotlib.pyplot as plt
 import warnings
+from snakemake.logging import logger
+from pathlib import Path
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):
     try:
-        io = neo.io.get_io(str(filename), *args, **kwargs)
+        filename = Path(filename)
+        if filename.suffix == '.nix':
+            kwargs.update(mode='ro')
+
+        io = neo.io.get_io(filename, *args, **kwargs)
+
         if lazy and io.support_lazy:
             block = io.read_block(lazy=lazy)
         # elif lazy and isinstance(io, neo.io.nixio.NixIO):
@@ -13,6 +20,7 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         #         block = nio.read_block(lazy=lazy)
         else:
             block = io.read_block()
+            
     except Exception as e:
         # io.close()
         raise e

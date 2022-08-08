@@ -11,7 +11,7 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         if filename.suffix == '.nix':
             kwargs.update(mode='ro')
 
-        io = neo.io.get_io(filename, *args, **kwargs)
+        io = neo.io.get_io(str(filename), *args, **kwargs)
 
         if lazy and io.support_lazy:
             block = io.read_block(lazy=lazy)
@@ -20,7 +20,7 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         #         block = nio.read_block(lazy=lazy)
         else:
             block = io.read_block()
-            
+
     except Exception as e:
         # io.close()
         raise e

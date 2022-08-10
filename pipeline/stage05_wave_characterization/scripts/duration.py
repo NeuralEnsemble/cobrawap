@@ -2,10 +2,7 @@ import neo
 import numpy as np
 import quantities as pq
 import matplotlib.pyplot as plt
-import seaborn as sns
-import os
 import argparse
-import scipy
 import pandas as pd
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str

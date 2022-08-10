@@ -200,7 +200,8 @@ def params(*args, config=None, **kwargs):
             elif arg.upper() in config.keys():
                 param_dict[arg] = config[arg.upper()]
             else:
-                print(f'Parameter {arg} not found in the config! Set to None!')
+                logger.info(f'Parameter "{arg}" not found in the config! ' 
+                             'Set to None!')
                 param_dict[arg] = None
 
     param_dict.update(dict(kwargs.items()))

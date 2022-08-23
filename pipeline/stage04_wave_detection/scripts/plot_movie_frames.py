@@ -155,3 +155,4 @@ if __name__ == '__main__':
                                args.frame_name + '_{}.{}'.format(str(i).zfill(5),
                                args.frame_format)))
         plt.close()
+ 

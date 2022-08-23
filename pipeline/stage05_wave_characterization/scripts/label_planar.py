@@ -66,7 +66,7 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
         yi = y[frame_i]
         ti = t_idx[frame_i]
         frame = vector_field[ti, xi.astype(int), yi.astype(int)].magnitude
-        ax.quiver(yi, xi, np.imag(frame), np.real(frame),
+        ax.quiver(yi, xi, np.real(frame), np.imag(frame),
                   # units='width', scale=max(frame.shape)/(10*skip_step),
                   # width=0.15/max(frame.shape),
                   color=palette[i], alpha=0.8,

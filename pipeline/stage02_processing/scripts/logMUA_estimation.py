@@ -64,7 +64,7 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
         freqs, psd = welch_psd(asig_slice,
                                freq_res=highpass_freq,
                                overlap=psd_overlap,
-                               window='hanning',
+                               window='hann',
                                detrend='linear',
                                nfft=None)
 

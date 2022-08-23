@@ -135,7 +135,7 @@ use rule template as plot_movie_frames with:
         script = SCRIPTS / 'plot_movie_frames.py'
     params:
         params('colormap', 'frame_rate', 'marker_color', 'plot_event',
-                config=config, frame_name = 'frame')
+                config=config, frame_name='frame', frame_format='png')
     output:
         frame_folder = directory(Path('{dir}') / '{data_name}_frames'),
 

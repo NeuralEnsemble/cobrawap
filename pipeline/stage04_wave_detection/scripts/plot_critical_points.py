@@ -2,8 +2,8 @@ import argparse
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
-from utils.io import load_neo, write_neo, save_plot
-from utils.neo_utils import analogsignals_to_imagesequences
+from utils.io import load_neo, save_plot
+from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def plot_frame(frame, ax=None, skip_step=3):
@@ -41,17 +41,15 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 
-    block = analogsignals_to_imagesequences(block)
+    asigs = block.filter(name='optical_flow', objects="AnalogSignal")
 
-    asig = block.segments[0].analogsignals[0]
-
-    imgseq = block.filter(name='optical_flow', objects="ImageSequence")
-
-    if imgseq:
-        imgseq = imgseq[0]
+    if asigs:
+        asig = asigs[0]
     else:
         raise ValueError("Input does not contain a signal with name " \
                        + "'optical_flow'!")
+   
+    imgseq = analogsignal_to_imagesequence(asig)
 
     crit_point_evt = [evt for evt in block.segments[0].events
                       if evt.name == "Critical Points"]

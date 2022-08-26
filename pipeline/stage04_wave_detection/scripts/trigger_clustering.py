@@ -15,11 +15,11 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
     triggers[:,0] = event.array_annotations['x_coords'][up_idx]
     triggers[:,1] = event.array_annotations['y_coords'][up_idx]
     triggers[:,2] = event.times[up_idx].rescale('s') \
-                    * sampling_rate.rescale('Hz') * args.time_space_ratio
+                    * sampling_rate.rescale('Hz') * time_space_ratio
 
-    clustering = DBSCAN(eps=args.neighbour_distance,
-                        min_samples=args.min_samples,
-                        metric=args.metric)
+    clustering = DBSCAN(eps=neighbour_distance,
+                        min_samples=min_samples,
+                        metric=metric)
     clustering.fit(triggers)
 
     if len(np.unique(clustering.labels_)) < 1:
@@ -43,9 +43,9 @@ def cluster_triggers(event, metric, neighbour_distance, min_samples,
                                +'Annotated with the channel id ("channels") and '\
                                +'its position ("x_coords", "y_coords").',
                     cluster_algorithm='sklearn.cluster.DBSCAN',
-                    cluster_eps=args.neighbour_distance,
-                    cluster_metric=args.metric,
-                    cluster_min_samples=args.min_samples)
+                    cluster_eps=neighbour_distance,
+                    cluster_metric=metric,
+                    cluster_min_samples=min_samples)
 
     remove_annotations(event, del_keys=['nix_name', 'neo_name'])
     evt.annotations.update(event.annotations)

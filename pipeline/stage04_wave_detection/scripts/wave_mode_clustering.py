@@ -14,7 +14,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str, none_or_int
-from utils.neo_utils import analogsignals_to_imagesequences, remove_annotations
+from utils.neo_utils import analogsignal_to_imagesequence, remove_annotations
 
 
 def build_timelag_dataframe(waves_evt, normalize=True):
@@ -140,7 +140,7 @@ def arange_on_grid(df, channels, x_coords, y_coords):
         for channel_id, timelag in zip(wave.index, wave):
             i = np.where(channel_id == channels)[0]
             x, y = x_coords[i], y_coords[i]
-            grid[row,x,y] = timelag
+            grid[row,y,x] = timelag
     return grid
 
 def wave_to_grid(wave_evt):
@@ -155,18 +155,18 @@ def wave_to_grid(wave_evt):
 def sample_wave_pattern(pattern_func, dim_x, dim_y, step):
     nx = round((dim_x-1)/step+1)
     ny = round((dim_y-1)/step+1)
-    fx, fy = np.meshgrid(np.arange(0, nx*step, step),
-                         np.arange(0, ny*step, step),
+    fy, fx = np.meshgrid(np.arange(0, ny*step, step),
+                         np.arange(0, nx*step, step),
                          indexing='ij')
-    fcoords = np.stack((fx,fy), axis=-1)
-    fdim_x, fdim_y, _ = fcoords.shape
+    fcoords = np.stack((fy,fx), axis=-1)
+    fdim_y, fdim_x, _ = fcoords.shape
     wave_pattern = pattern_func(fcoords.reshape(-1,2))
-    return fx, fy, wave_pattern.reshape(fdim_x, fdim_y)
+    return fx, fy, wave_pattern.reshape(fdim_y, fdim_x)
 
 def interpolate_grid(grid, smoothing=0):
-    x, y = np.where(np.isfinite(grid))
-    rbf_func = RBFInterpolator(np.stack((x,y), axis=-1),
-                               grid[x,y],
+    y, x = np.where(np.isfinite(grid))
+    rbf_func = RBFInterpolator(np.stack((y,x), axis=-1),
+                               grid[y,x],
                                neighbors=None, smoothing=smoothing,
                                kernel='thin_plate_spline', epsilon=None,
                                degree=None)
@@ -210,10 +210,10 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
                         cmap=cmap, alpha=0.5,
                         vmin=-vminmax, vmax=vminmax)
 
-        x, y = np.where(mode_grid)
+        y, x = np.where(mode_grid)
         fx = x.reshape(mode_grid.shape) * int_step_size
         fy = y.reshape(mode_grid.shape) * int_step_size
-        ctr = ax.contour(fy, fx, mode_grid, levels=9,
+        ctr = ax.contour(fx, fy, mode_grid, levels=9,
                          cmap=cmap, linewidths=2, alpha=1,
                          vmin=-vminmax, vmax=vminmax)
         for side in ['top','right','bottom','left']:
@@ -309,7 +309,7 @@ if __name__ == '__main__':
     y_coords = asig.array_annotations['y_coords']
     channels = np.arange(len(x_coords))
     mode_grids = arange_on_grid(mode_timelag_df, channels, x_coords, y_coords)
-    n_modes, dim_x, dim_y = mode_grids.shape
+    n_modes, dim_y, dim_x = mode_grids.shape
 
     # interpolate average mode timelags as pattern on grid
     for i, cluster_grid in enumerate(mode_grids):
@@ -334,21 +334,22 @@ if __name__ == '__main__':
     block.segments[0].events[evt_id] = waves
 
     # add clustered wave modes as additional event 'wavemodes'
-    n_modes, inter_dim_x, inter_dim_y = interpolated_mode_grids.shape
-    imgseq = analogsignals_to_imagesequences(block).segments[0].imagesequences[0]
+    n_modes, inter_dim_y, inter_dim_x = interpolated_mode_grids.shape
+    imgseq = analogsignal_to_imagesequence(asig)
+
     site_grid = np.isfinite(imgseq[0].as_array())
     interpolated_site_grid = resize(site_grid,
-                                    output_shape=(inter_dim_x, inter_dim_y),
+                                    output_shape=(inter_dim_y, inter_dim_x),
                                     mode='constant', cval=True,
                                     order=0)
-    ixs, iys = np.where(interpolated_site_grid)
+    iys, ixs = np.where(interpolated_site_grid)
     n_sites = len(ixs)
     mode_trigger = np.empty(n_modes*n_sites)*np.nan
 
     for mode_id in range(n_modes):
         for site_id, (ix, iy) in enumerate(zip(ixs, iys)):
             mode_trigger[mode_id*n_sites + site_id] \
-                                    = interpolated_mode_grids[mode_id, ix, iy]
+                                    = interpolated_mode_grids[mode_id, iy, ix]
 
     # modes, xs, ys = np.where(np.isfinite(mode_grids))
     # channels = [np.where((asig.array_annotations['x_coords'] == x) \

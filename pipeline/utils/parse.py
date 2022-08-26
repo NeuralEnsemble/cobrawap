@@ -28,9 +28,14 @@ def get_base_type(datatype):
     elif np.issubdtype(datatype, bool):
         return 'bool'
     else:
-        warnings.warn(f"Did not recognize type {datatype}!")
-    return None
+        warnings.warn(f"Did not recognize type {datatype}! returning 'object'")
+    return 'object'
 
+nan_values = {'int': -1, 'float': np.nan, 'bool': False, 'a5': 'None',
+              'str': 'None', 'complex': np.nan+1j*np.nan, 'object': None}
+
+def get_nan_value(type_string):
+    return nan_values[type_string]
 
 def guess_type(string):
     try:
@@ -149,11 +154,3 @@ def determine_spatial_scale(coords):
     dists = np.diff(coords[:,0])
     dists = dists[np.nonzero(dists)]
     return np.min(dists)
-
-
-def determine_dims(coords):
-    # spatial_scale = determine_spatial_scale(coords)
-    # int_coords = np.round(np.array(coords)/spatial_scale).astype(int)
-    int_coords = np.round(np.array(coords)).astype(int)
-    dim_x, dim_y = np.max(int_coords[:,0])+1, np.max(int_coords[:,1])+1
-    return dim_x, dim_y

@@ -7,14 +7,15 @@ import argparse
 import os
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
+from utils.neo_utils import analogsignal_to_imagesequence
 
 
-def shape_frame(value_array, coords):
-    dim_x = np.max(coords[:,0]) + 1
-    dim_y = np.max(coords[:,1]) + 1
-    frame = np.empty((dim_x, dim_y)) * np.nan
-    for pixel, xy in zip(value_array, coords):
-        frame[int(xy[0]), int(xy[1])] = pixel
+def shape_frame(value_array, xy_coords):
+    dim_x = np.max(xy_coords[:,0]) + 1
+    dim_y = np.max(xy_coords[:,1]) + 1
+    frame = np.empty((dim_y, dim_x)) * np.nan
+    for pixel, (x,y) in zip(value_array, xy_coords):
+        frame[int(y), int(x)] = pixel
     return frame
 
 def plot_frame(frame):
@@ -45,11 +46,11 @@ if __name__ == '__main__':
     signal -= background
 
     if args.output_img or args.output_array is not None:
-        coords = np.array([(x,y) for x,y in
+        xy_coords = np.array([(x,y) for x,y in
                            zip(asig.array_annotations['x_coords'],
                                asig.array_annotations['y_coords'])],
-                          dtype=int)
-        frame = shape_frame(background, coords)
+                           dtype=int)
+        frame = shape_frame(background, xy_coords)
         if args.output_array is not None:
             np.save(args.output_array, frame)
         if args.output_img is not None:

@@ -18,7 +18,7 @@ def normalize(asig, normalize_by):
     elif normalize_by == 'mean':
         norm_function = np.mean
     else:
-        raise InputError("The method to normalize by is not recognized. "\
+        raise ValueError("The method to normalize by is not recognized. "\
                        + "Please choose either 'mean', 'median', or 'max'.")
 
     dim_t, num_channels = asig.shape

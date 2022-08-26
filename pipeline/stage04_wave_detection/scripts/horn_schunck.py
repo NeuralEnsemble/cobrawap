@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from distutils.util import strtobool
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo_utils import imagesequences_to_analogsignals, analogsignals_to_imagesequences
+from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
 from utils.convolve import phase_conv2d, get_kernel, conv, norm_angle
 
 def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
@@ -103,29 +103,29 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
 def interpolate_empty_sites(frames, are_phases=False):
     if np.isfinite(frames).all():
         return frames
-    dim_x, dim_y = frames[0].shape
-    grid = np.meshgrid([-1,0,1],[-1,0,1])
+    dim_y, dim_x = frames[0].shape
+    grid_y, grid_x = np.meshgrid([-1,0,1],[-1,0,1], indexing='ij')
 
     for i, frame in enumerate(frames):
         new_frame = copy(frame)
         while not np.isfinite(new_frame).all():
-            x, y = np.where(np.bitwise_not(np.isfinite(new_frame)))
+            y, x = np.where(np.bitwise_not(np.isfinite(new_frame)))
             # loop over nan-sites
             for xi, yi in zip(x,y):
                 neighbours = []
                 # collect neighbours of each site
-                for dx, dy in zip(grid[0].flatten(), grid[1].flatten()):
+                for dx, dy in zip(grid_x.flatten(), grid_y.flatten()):
                     xn = xi+dx
                     yn = yi+dy
                     if (0 <= xn) & (xn < dim_x) & (0 <= yn) & (yn < dim_y):
-                        neighbours.append(frames[i, xn, yn])
+                        neighbours.append(frames[i, yn, xn])
                 # average over neihbour values
                 if np.isfinite(neighbours).any():
                     if are_phases:
                         vectors = np.exp(1j*np.array(neighbours))
-                        new_frame[xi,yi] = np.angle(np.nansum(vectors))
+                        new_frame[yi,xi] = np.angle(np.nansum(vectors))
                     else:
-                        new_frame[xi,yi] = np.nansum(neighbours)
+                        new_frame[yi,xi] = np.nansum(neighbours)
             frames[i] = new_frame
     return frames
 
@@ -163,7 +163,7 @@ def smooth_frames(frames, sigma):
 def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
     # Every <skip_step> point in each direction.
     fig, ax = plt.subplots()
-    dim_x, dim_y = vec_frame.shape
+    dim_y, dim_x = vec_frame.shape
     if are_phases:
         cmap = 'twilight'
         vmin, vmax = -np.pi, np.pi
@@ -176,10 +176,10 @@ def plot_opticalflow(frame, vec_frame, skip_step=None, are_phases=False):
     if skip_step is None:
         skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
-    ax.quiver(np.arange(dim_y)[::skip_step],
-              np.arange(dim_x)[::skip_step],
-              np.imag(vec_frame[::skip_step,::skip_step]),
-              np.real(vec_frame[::skip_step,::skip_step]))
+    ax.quiver(np.arange(dim_x)[::skip_step],
+              np.arange(dim_y)[::skip_step],
+              np.real(vec_frame[::skip_step,::skip_step]),
+              np.imag(vec_frame[::skip_step,::skip_step]))
 
     ax.axis('image')
     ax.set_xticks([])
@@ -227,9 +227,8 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 
-    block = analogsignals_to_imagesequences(block)
-    imgseq = block.segments[0].imagesequences[-1]
-    asig = block.segments[0].analogsignals[-1]
+    asig = block.segments[0].analogsignals[0]
+    imgseq = analogsignal_to_imagesequence(asig)
 
     frames = imgseq.as_array()
     # frames /= np.nanmax(np.abs(frames))
@@ -279,5 +278,7 @@ if __name__ == '__main__':
         save_plot(args.output_img)
 
     block.segments[0].imagesequences = [vec_imgseq]
-    block = imagesequences_to_analogsignals(block)
+    vec_asig = imagesequence_to_analogsignal(vec_imgseq)
+    block.segments[0].analogsignals.append(vec_asig)
+
     write_neo(args.output, block)

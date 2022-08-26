@@ -49,6 +49,7 @@ if __name__ == '__main__':
 
     freqs, psd = welch_psd(asig,
                            freq_res=args.psd_freq_res*pq.Hz,
+                           window='hann',
                            overlap=args.psd_overlap)
 
     plot_psd(freqs=freqs,

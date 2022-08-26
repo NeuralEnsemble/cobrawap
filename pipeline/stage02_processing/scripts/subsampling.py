@@ -1,7 +1,6 @@
 import argparse
 import quantities as pq
 import numpy as np
-from elephant.signal_processing import zscore
 from utils.io import load_neo, write_neo
 
 

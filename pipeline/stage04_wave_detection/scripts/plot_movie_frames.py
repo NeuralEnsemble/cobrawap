@@ -4,7 +4,7 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 from utils.io import load_neo, save_plot
-from utils.neo_utils import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignal_to_imagesequence
 from utils.parse import none_or_str, none_or_float
 
 def get_events(events, frame_times, event_name='transitions'):
@@ -35,11 +35,11 @@ def get_events(events, frame_times, event_name='transitions'):
         return None
 
 
-def get_opticalflow(imagesequences, imgseq_name="optical_flow"):
-    imgseqs = [im for im in imagesequences if im.name == imgseq_name]
-    if len(imgseqs):
+def get_opticalflow(block, imgseq_name="optical_flow"):
+    asigs = block.filter(name=imgseq_name, objects="AnalogSignal")
+    if len(asigs):
         # Normalize?
-        return imgseqs[0].as_array()
+        return analogsignal_to_imagesequence(asigs[0])
     else:
         return None
 
@@ -52,8 +52,7 @@ def stretch_to_framerate(t_start, t_stop, num_frames, frame_rate=None):
                         * frame_rate
         return np.linspace(0, num_frames-1, int(new_num_frames), dtype=int)
 
-def plot_frame(frame, up_coords=None, cmap=plt.cm.gray, vmin=None, vmax=None,
-               markersize=1):
+def plot_frame(frame, cmap=plt.cm.gray, vmin=None, vmax=None):
     fig, ax = plt.subplots()
     img = ax.imshow(frame, interpolation='nearest',
                     cmap=cmap, vmin=vmin, vmax=vmax, origin='lower')
@@ -71,7 +70,7 @@ def plot_transitions(up_coords, markersize=1, markercolor='k', ax=None):
         if ax is None:
             ax = plt.gca()
 
-        ax.plot(up_coords[:,1], up_coords[:,0],
+        ax.plot(up_coords[:,0], up_coords[:,1],
                 marker='D', color=markercolor, markersize=markersize,
                 linestyle='None', alpha=0.6)
         # if len(pixels[0]) > 0.005*pixel_num:
@@ -84,12 +83,11 @@ def plot_vectorfield(frame, skip_step=3, ax=None):
     # Every <skip_step> point in each direction.
     if ax is None:
         ax = plt.gca()
-    dim_x, dim_y = frame.shape
-    x_idx, y_idx = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='xy')
-    ax.quiver(x_idx[::skip_step,::skip_step],
-              y_idx[::skip_step,::skip_step],
-              np.real(frame[::skip_step,::skip_step]),
-              np.imag(frame[::skip_step,::skip_step]))
+    dim_y, dim_x = frame.shape
+    y_idx, x_idx = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='ij')
+    xi = x_idx[::skip_step,::skip_step].flatten()
+    yi = y_idx[::skip_step,::skip_step].flatten()
+    ax.quiver(xi, yi, np.real(frame[yi,xi]), np.imag(frame[yi,xi]))
     return ax
 
 if __name__ == '__main__':
@@ -106,16 +104,16 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     blk = load_neo(args.data)
-    blk = analogsignals_to_imagesequences(blk)
+    asig = blk.segments[0].analogsignals[0]
+    imgseq = analogsignal_to_imagesequence(asig)
+    
+    optical_flow = get_opticalflow(blk)
 
     # get data
-    imgseq = blk.segments[0].imagesequences[0]
     times = blk.segments[0].analogsignals[0].times  # to be replaced
     t_start = blk.segments[0].analogsignals[0].t_start  # to be replaced
     t_stop = blk.segments[0].analogsignals[0].t_stop  # to be replaced
-    dim_t, dim_x, dim_y = imgseq.shape
-
-    optical_flow = get_opticalflow(blk.segments[0].imagesequences)
+    dim_t, dim_y, dim_x = imgseq.shape
 
     if args.plot_event is not None:
         up_coords = get_events(blk.segments[0].events,
@@ -144,7 +142,8 @@ if __name__ == '__main__':
         ax = plot_frame(frames[frame_num], cmap=cmap, vmin=vmin, vmax=vmax)
 
         if optical_flow is not None:
-            plot_vectorfield(optical_flow[frame_num], skip_step=skip_step)
+            plot_vectorfield(optical_flow[frame_num].as_array(), 
+                             skip_step=skip_step)
         if args.plot_event is not None and up_coords is not None:
             plot_transitions(up_coords[frame_num], markersize=markersize,
                              markercolor=args.marker_color)

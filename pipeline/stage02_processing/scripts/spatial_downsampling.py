@@ -6,11 +6,10 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 import neo
-import quantities as pq
-from skimage import data, io, filters, measure
+from skimage import measure
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo_utils import analogsignals_to_imagesequences, imagesequences_to_analogsignals
+from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 
 def spatial_smoothing(imgseq, macro_pixel_dim):
@@ -19,7 +18,6 @@ def spatial_smoothing(imgseq, macro_pixel_dim):
                                           func=np.nanmean,
                                           cval=np.nan) #np.nanmedian(imgseq.as_array()))
 
-    dim_t, dim_x, dim_y = images_reduced.shape
     imgseq_reduced = neo.ImageSequence(images_reduced,
                                    units=imgseq.units,
                                    spatial_scale=imgseq.spatial_scale * macro_pixel_dim,
@@ -60,8 +58,8 @@ if __name__ == '__main__':
 
     args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
-    block = analogsignals_to_imagesequences(block)
-    imgseq = block.segments[0].imagesequences[0]
+    asig = block.segments[0].analogsignals[0]
+    imgseq = analogsignal_to_imagesequence(asig)
 
     imgseq_reduced = spatial_smoothing(imgseq, args.macro_pixel_dim)
 
@@ -72,8 +70,8 @@ if __name__ == '__main__':
     new_segment = neo.Segment()
     new_block.segments.append(new_segment)
     new_block.segments[0].imagesequences.append(imgseq_reduced)
-    new_block = imagesequences_to_analogsignals(new_block)
+    new_asig = imagesequence_to_analogsignal(imgseq_reduced)
 
-    block.segments[0].analogsignals[0] = new_block.segments[0].analogsignals[0]
+    block.segments[0].analogsignals[0] = new_asig
 
     write_neo(args.output, block)

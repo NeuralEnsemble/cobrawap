@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import copy
 import seaborn as sns
 from utils.io import load_neo, save_plot
-from utils.neo_utils import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignal_to_imagesequence
 from utils.parse import none_or_str
 
 
@@ -23,7 +23,7 @@ def label_planar(waves_event, vector_field, times, threshold):
         x = waves_event.array_annotations['x_coords'][idx]
         y = waves_event.array_annotations['y_coords'][idx]
 
-        wave_directions = vector_field[t_idx, x.astype(int), y.astype(int)]
+        wave_directions = vector_field[t_idx, y.astype(int), x.astype(int)]
         norm = np.array([np.linalg.norm(w) for w in wave_directions])
         wave_directions /= norm
 
@@ -46,7 +46,7 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
     x = waves_event.array_annotations['x_coords'][idx]
     y = waves_event.array_annotations['y_coords'][idx]
 
-    wave_directions = vector_field[t_idx, x.astype(int), y.astype(int)]
+    wave_directions = vector_field[t_idx, y.astype(int), x.astype(int)]
     norm = np.array([np.linalg.norm(w) for w in wave_directions])
     wave_directions /= norm
 
@@ -65,14 +65,13 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
         xi = x[frame_i]
         yi = y[frame_i]
         ti = t_idx[frame_i]
-        frame = vector_field[ti, xi.astype(int), yi.astype(int)].magnitude
-        ax.quiver(yi, xi, np.real(frame), np.imag(frame),
+        frame = vector_field[ti, yi.astype(int), xi.astype(int)].magnitude
+        ax.quiver(xi, yi, np.real(frame), np.imag(frame),
                   # units='width', scale=max(frame.shape)/(10*skip_step),
                   # width=0.15/max(frame.shape),
                   color=palette[i], alpha=0.8,
                   label='{:.3f} s'.format(times[frame_t].rescale('s').magnitude))
 
-    dim_t, dim_x, dim_y = vector_field.as_array().shape
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
@@ -101,14 +100,14 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-
-    block = analogsignals_to_imagesequences(block)
     asig = block.segments[0].analogsignals[0]
+
+    vec_asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
+    optical_flow = analogsignal_to_imagesequence(vec_asig)
     
     wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
     wavefront_evt = wavefront_evt[wavefront_evt.labels.astype('str') != '-1']
 
-    optical_flow = block.filter(name='optical_flow', objects="ImageSequence")[0]
 
     planar_labels = label_planar(waves_event=wavefront_evt,
                                  vector_field=optical_flow,
@@ -117,7 +116,7 @@ if __name__ == '__main__':
     planar_labels[f'{args.event_name}_id'] = np.unique(wavefront_evt.labels)
     planar_labels.to_csv(args.output)
 
-    dim_t, dim_x, dim_y = optical_flow.shape
+    dim_t, dim_y, dim_x = optical_flow.shape
     skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
     for i, wave_id in enumerate(np.unique(wavefront_evt.labels)):

@@ -10,7 +10,7 @@ import neo
 import os
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo_utils import analogsignals_to_imagesequences, imagesequences_to_analogsignals
+from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 
 def calculate_contour(img, contour_limit):
@@ -73,8 +73,8 @@ def calculate_contour(img, contour_limit):
 
 
 def close_contour(contour, num):
-    dx = contour[-1][0] - contour[0][0]
-    dy = contour[-1][1] - contour[0][1]
+    dx = contour[-1][1] - contour[0][1]
+    dy = contour[-1][0] - contour[0][0]
     avg_d = np.mean(np.append(np.abs(np.diff(contour[:,0])),
                               np.abs(np.diff(contour[:,1]))))
     num = int(np.sqrt(dx**2 + dy**2) / avg_d)
@@ -87,22 +87,22 @@ def close_contour(contour, num):
 
 
 def contour2mask(contour, dim_x, dim_y):
-    mask = np.zeros((dim_x, dim_y), dtype=bool)
+    mask = np.zeros((dim_y, dim_x), dtype=bool)
     polygon = geo.polygon.Polygon(contour)
     for x in range(dim_x):
         for y in range(dim_y):
             point = geo.Point(x,y)
             if polygon.contains(point):
-                mask[x,y] = 1
+                mask[y,x] = 1
     return mask
 
 
 def crop_to_selection(frames):
     frame = frames[0]
-    x, y = np.where(np.isfinite(frame))
+    y, x = np.where(np.isfinite(frame))
     x0, x1 = np.min(x), np.max(x)
     y0, y1 = np.min(y), np.max(y)
-    return frames[:, x0:x1+1, y0:y1+1]
+    return frames[:, y0:y1+1, x0:x1+1]
 
 
 def plot_roi(img, contour):
@@ -111,7 +111,7 @@ def plot_roi(img, contour):
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.plot(contour[:, 1], contour[:, 0], linewidth=2)
+    ax.plot(contour[:, 0], contour[:, 1], linewidth=2)
     plt.draw()
     return ax
 
@@ -132,12 +132,12 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    block = analogsignals_to_imagesequences(block)
+    asig = block.segments[0].analogsignals[0]
+    imgseq = analogsignal_to_imagesequence(asig)
 
     # get average image
-    imgseq = block.segments[0].imagesequences[-1]
     imgseq_array = imgseq.as_array()
-    dim_t, dim_x, dim_y = imgseq_array.shape
+    dim_t, dim_y, dim_x = imgseq_array.shape
     avg_img = np.mean(imgseq_array, axis=0)
 
     # calculate mask
@@ -159,8 +159,7 @@ if __name__ == '__main__':
     tmp_imgseq = imgseq.duplicate_with_new_data(imgseq_array)
     tmp_blk.segments.append(tmp_seg)
     tmp_blk.segments[0].imagesequences.append(tmp_imgseq)
-    tmp_blk = imagesequences_to_analogsignals(tmp_blk)
-    new_asig = tmp_blk.segments[0].analogsignals[0]
+    new_asig = imagesequence_to_analogsignal(tmp_imgseq)
 
     asig = block.segments[0].analogsignals[0].duplicate_with_new_data(new_asig.as_array())
     if not args.crop_to_selection:

@@ -7,7 +7,7 @@ import argparse
 import quantities as pq
 import neo
 from utils.parse import parse_string2dict, none_or_float, none_or_int, none_or_str
-from utils.neo_utils import imagesequences_to_analogsignals, flip_image, rotate_image, time_slice
+from utils.neo_utils import imagesequence_to_analogsignal, flip_image, rotate_image, time_slice
 from utils.io import load_neo, write_neo
 
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     # In case the dataset is imagaging data and therefore stored as an
     # ImageSequence object, it needs to be transformed into an AnalogSignal
-    # object. To do this use the function imagesequences_to_analogsignals in utils/neo.py
+    # object. To do this use the function imagesequence_to_analogsignal in utils/neo.py
 
     asig = block.segments[0].analogsignals[0]
 

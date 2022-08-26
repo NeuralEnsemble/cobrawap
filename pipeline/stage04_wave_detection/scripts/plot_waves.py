@@ -4,7 +4,7 @@ import quantities as pq
 import argparse
 import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
-from utils.neo_utils import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
@@ -16,8 +16,8 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
     t = waves_event.times[idx]
     time_steps = np.unique(t)
 
-    dim_t, dim_x, dim_y = frames.shape
-    x_idx, y_idx = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='xy')
+    dim_t, dim_y, dim_x = frames.shape
+    y_idx, x_idx = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='ij')
     markersize = 50 / max([dim_x, dim_y])
     skip_step = int(min([dim_x, dim_y]) / 50) + 1
 
@@ -76,14 +76,14 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    block = analogsignals_to_imagesequences(block)
-
-    waves_event = block.filter(name='wavefronts', objects="Event")[0]
 
     asig = block.segments[0].analogsignals[0]
-    frames = block.segments[0].imagesequences[0].as_array()
-    vec_frames = [imgseq for imgseq in block.segments[0].imagesequences
-                                    if imgseq.name=='optical_flow'][0].as_array()
+    vec_asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
+
+    frames = analogsignal_to_imagesequence(asig).as_array()
+    vec_frames = analogsignal_to_imagesequence(vec_asig).as_array()
+
+    waves_event = block.filter(name='wavefronts', objects="Event")[0]
 
     cmap = plt.get_cmap(args.colormap)
 

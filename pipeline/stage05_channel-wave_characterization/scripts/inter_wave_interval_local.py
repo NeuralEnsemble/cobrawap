@@ -3,13 +3,11 @@
 
 import argparse
 import numpy as np
-import quantities as pq
-import itertools
 import pandas as pd
 import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo_utils import analogsignals_to_imagesequences
+from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def calc_local_wave_intervals(evts):
@@ -31,13 +29,13 @@ def calc_local_wave_intervals(evts):
         y_coords = wave_trigger_evts.array_annotations['y_coords'].astype(int)
         channels = wave_trigger_evts.array_annotations['channels'].astype(int)
 
-        trigger_collection = np.empty([dim_x, dim_y]) * np.nan
-        trigger_collection[x_coords, y_coords] = wave_trigger_evts.times
+        trigger_collection = np.empty([dim_y, dim_x]) * np.nan
+        trigger_collection[y_coords, x_coords] = wave_trigger_evts.times
 
         # if this is not the first wave
         if i:
             intervals = trigger_collection - trigger_collection_pre
-            intervals = intervals[x_coords, y_coords]
+            intervals = intervals[y_coords, x_coords]
             intervals[~np.isfinite(intervals)] = np.nan
 
             intervals_collection = np.append(intervals_collection, intervals)
@@ -65,14 +63,12 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    block = analogsignals_to_imagesequences(block)
-
-    imgseq = block.segments[0].imagesequences[0]
     asig = block.segments[0].analogsignals[0]
+    imgseq = analogsignal_to_imagesequence(asig)
+
     evts = block.filter(name=args.event_name, objects="Event")[0]
     evts = evts[evts.labels != '-1']
 
-    dim_t, dim_x, dim_y = np.shape(imgseq)
     wave_ids, channel_ids, intervals = calc_local_wave_intervals(evts)
 
     # transform to DataFrame

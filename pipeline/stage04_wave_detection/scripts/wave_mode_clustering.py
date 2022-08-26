@@ -134,7 +134,7 @@ def build_cluster_timelag_dataframe(timelag_df, cluster_labels):
 
 def arange_on_grid(df, channels, x_coords, y_coords):
     dim_x, dim_y = np.max(x_coords)+1, np.max(y_coords)+1
-    grid = np.empty((df.index.size, dim_x, dim_y)) * np.nan
+    grid = np.empty((df.index.size, dim_y, dim_x)) * np.nan
     for row, wave in enumerate(df.iterrows()):
         wave = wave[1]
         for channel_id, timelag in zip(wave.index, wave):

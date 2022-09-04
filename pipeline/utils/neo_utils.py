@@ -3,6 +3,7 @@ import neo
 import warnings
 from itertools import product
 import sys
+from copy import copy
 import quantities as pq
 from pathlib import Path
 from snakemake.logging import logger
@@ -155,9 +156,12 @@ def imagesequence_to_analogsignal(imgseq):
                                                'y_coords': y_coords},
                             spatial_scale=imgseq.spatial_scale)
 
-    if 'array_annotations' in imgseq.annotations.keys():
+    remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
+    annotations = copy(imgseq.annotations)
+
+    if 'array_annotations' in annotations.keys():
         try:
-            for key, value in imgseq.annotations['array_annotations'].items():
+            for key, value in annotations['array_annotations'].items():
                 asig.array_annotations[key] = value.reshape(dim_x*dim_y)
 
             if not (x_coords == asig.array_annotations['x_coords']).all() \
@@ -167,11 +171,9 @@ def imagesequence_to_analogsignal(imgseq):
         except ValueError:
             warnings.warn("ImageSequence <-> AnalogSignal transformation "
                         + "changed the signal shape!")
-        del imgseq.annotations['array_annotations']
+        del annotations['array_annotations']
 
-
-    remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
-    asig.annotations.update(imgseq.annotations)
+    asig.annotations.update(annotations)
 
     return asig
 
@@ -212,10 +214,9 @@ def analogsignal_to_imagesequence(asig):
     grid_array_annotations = {}
     for key, value in asig.array_annotations.items():
         dtype = get_base_type(value[0])
-        dtype = 'a5' if dtype == 'str' else dtype
         nan_value = get_nan_value(dtype)
 
-        grid_value = np.empty((dim_y, dim_x), dtype=dtype)
+        grid_value = np.empty((dim_y, dim_x), dtype=value.dtype)
         grid_value.fill(nan_value)
 
         for channel, (x,y) in enumerate(zip(x_coords, y_coords)):
@@ -230,9 +231,7 @@ def analogsignal_to_imagesequence(asig):
                        + "imagesequence went wrong!")
 
     imgseq.annotate(array_annotations=grid_array_annotations)
-
     remove_annotations(imgseq, del_keys=['nix_name', 'neo_name'])
-
     return imgseq
 
 

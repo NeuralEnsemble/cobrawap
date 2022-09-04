@@ -268,7 +268,8 @@ if __name__ == '__main__':
                                    name='optical_flow',
                                    description='Horn-Schunck estimation of optical flow',
                                    file_origin=imgseq.file_origin)
-    vec_imgseq.annotations = imgseq.annotations
+   
+    vec_imgseq.annotations = copy(imgseq.annotations)
 
     if args.output_img is not None:
         ax = plot_opticalflow(frames[10], vector_frames[10],
@@ -277,8 +278,9 @@ if __name__ == '__main__':
         ax.set_xlabel('{:.3f} s'.format(asig.times[0].rescale('s').magnitude))
         save_plot(args.output_img)
 
-    block.segments[0].imagesequences = [vec_imgseq]
+    # block.segments[0].imagesequences = [vec_imgseq]
     vec_asig = imagesequence_to_analogsignal(vec_imgseq)
+
     block.segments[0].analogsignals.append(vec_asig)
 
     write_neo(args.output, block)

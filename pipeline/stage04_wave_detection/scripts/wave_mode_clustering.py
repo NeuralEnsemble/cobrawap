@@ -116,7 +116,7 @@ def kmeans_cluster_waves(timelag_matrix, n_cluster=7):
                     n_clusters=n_cluster,
                     tol=1e-10,
                     random_state=42,
-                    algorithm='full')
+                    algorithm='lloyd')
 
     return kmeans.fit(timelag_matrix)
 
@@ -177,7 +177,7 @@ def calc_cluster_distortions(feature_matrix, cluster_indices, cluster_centers):
     cluster_dists = np.zeros(len(cluster_labels), dtype=float)
 
     for i, cluster_id in enumerate(cluster_labels):
-        cluster_points = feature_matrix[np.where(cluster_indices==i)[0]]
+        cluster_points = feature_matrix.iloc[np.where(cluster_indices==i)[0]]
         dists = cdist(cluster_points,
                       cluster_centers[i][np.newaxis,:],
                       metric='euclidean')

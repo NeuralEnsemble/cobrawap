@@ -24,7 +24,7 @@ def calc_planar_velocities(evts):
 
     wave_ids = np.unique(evts.labels)
 
-    velocities = np.zeros((len(wave_ids), 2))
+    velocities = np.zeros((len(wave_ids), 2)) * np.nan
 
     ncols = int(np.round(np.sqrt(len(wave_ids)+1)))
     nrows = int(np.ceil((len(wave_ids)+1)/ncols))
@@ -35,10 +35,13 @@ def calc_planar_velocities(evts):
     for i, wave_i in enumerate(wave_ids):
         # Fit wave displacement
         idx = np.where(evts.labels == wave_i)[0]
-        x_times, x_locations = center_points(evts.times[idx].magnitude,
+        times = evts.times[idx].magnitude
+        if (times == times[0]).all():
+            continue
+        x_times, x_locations = center_points(times,
                                         evts.array_annotations['x_coords'][idx]
                                         * spatial_scale.magnitude)
-        y_times, y_locations = center_points(evts.times[idx].magnitude,
+        y_times, y_locations = center_points(times,
                                         evts.array_annotations['y_coords'][idx]
                                         * spatial_scale.magnitude)
         vx, vx_err, dx = linregress(x_times, x_locations)

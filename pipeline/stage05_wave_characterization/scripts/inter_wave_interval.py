@@ -53,29 +53,17 @@ if __name__ == '__main__':
         IWIs[wave_id, 0] = np.nanmean(inter_wave_intervals)
         IWIs[wave_id, 1] = np.nanstd(inter_wave_intervals)
 
-        save_path = os.path.splitext(args.output)[0] + f'_wave{wave_id}'
-        np.save(save_path+'.npy', inter_wave_intervals)
-
-        fig, ax = plt.subplots()
-        num_intervals = np.sum(np.isfinite(inter_wave_intervals).astype(int))
-        if np.isfinite(inter_wave_intervals).any():
-            bin_width = asig.sampling_period.rescale(t_unit).magnitude
-            bins = np.arange(np.nanmin(inter_wave_intervals)-bin_width/2,
-                             np.nanmax(inter_wave_intervals)+bin_width/2, bin_width)
-        else:
-            bins = 'auto'
-        sns.histplot(inter_wave_intervals, kde=False, ax=ax, bins=bins)
-        ax.set_title(f'wave {wave_id}; {num_intervals}/{num_nonnan_channels} channels')
-        ax.set_xlabel(f'time until next wave (UP transition) [{t_unit}]')
-        ax.set_ylabel('')
-        save_plot(save_path+'.png')
-
     # transform to DataFrame
     df = pd.DataFrame(IWIs, columns=['inter_wave_interval', 'inter_wave_interval_std'])
     df['inter_wave_interval_unit'] = t_unit
     df[f'{args.event_name}_id'] = wave_ids
 
+    
+
     df.to_csv(args.output)
 
     # ToDo
+    fig, ax = plt.subplots()
+    ax.hist(IWIs[:,0])
+    ax.set_xlabel('inter-wave interval [s]')
     save_plot(args.output_img)

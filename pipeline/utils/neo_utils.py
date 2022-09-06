@@ -23,7 +23,7 @@ def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):
                 del objects[i].array_annotations[k]
     return None
 
-def merge_analogsingals(asigs):
+def merge_analogsignals(asigs):
     # ToDo: to be replaced by neo utils functions
     if len(asigs) == 1:
         return asigs[0]
@@ -40,7 +40,7 @@ def merge_analogsingals(asigs):
         raise ValueError('The AnalogSignal objects have different '\
                        + 'sampling rates!')
 
-    asig_array = np.zeros((min_length, len(asigs)))
+    asig_array = np.empty((min_length, len(asigs)), dtype=float) * np.nan
 
     for channel_number, asig in enumerate(asigs):
         asig_array[:, channel_number] = np.squeeze(asig.as_array()[:min_length])
@@ -48,6 +48,14 @@ def merge_analogsingals(asigs):
     merged_asig = neo.AnalogSignal(asig_array*asigs[0].units,
                                    sampling_rate=asigs[0].sampling_rate,
                                    t_start=asigs[0].t_start)
+
+    for asig in asigs:
+        for key, value in asig.array_annotations.items():
+            if len(value) > 1:
+                warnings.warn('Unexpected length of array annotations!')
+                continue
+            asig.annotations[key] = value[0]
+
     for key in asigs[0].annotations.keys():
         annotation_values = np.array([a.annotations[key] for a in asigs])
         try:
@@ -56,7 +64,7 @@ def merge_analogsingals(asigs):
             else:
                 merged_asig.array_annotations[key] = annotation_values
         except:
-            print('Can not merge annotation ', key)
+            warnings.warn(f'Can not merge annotation {key}!')
     return merged_asig
 
 

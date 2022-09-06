@@ -94,11 +94,11 @@ def get_triu_indices_pos(i, N):
 
 def pca_transform(timelag_matrix, dims=None):
     if dims is not None and dims > len(timelag_df):
-        warn(f'Too few waves ({len(timelag_df)}) to peform a pca reduction '
+        warn(f'Too few waves ({len(timelag_df)}) to perform a pca reduction '
            + f'to {dims} dims. Skipping.')
         dims = None
     if dims is None:
-        return timelag_matrix
+        return timelag_matrix.to_numpy()
     # n_samples x n_features
     if type(timelag_matrix) == pd.DataFrame:
         timelag_matrix = timelag_matrix.to_numpy()
@@ -177,7 +177,7 @@ def calc_cluster_distortions(feature_matrix, cluster_indices, cluster_centers):
     cluster_dists = np.zeros(len(cluster_labels), dtype=float)
 
     for i, cluster_id in enumerate(cluster_labels):
-        cluster_points = feature_matrix.iloc[np.where(cluster_indices==i)[0]]
+        cluster_points = feature_matrix[np.where(cluster_indices==i)[0]]
         dists = cdist(cluster_points,
                       cluster_centers[i][np.newaxis,:],
                       metric='euclidean')

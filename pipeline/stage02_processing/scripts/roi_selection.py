@@ -23,6 +23,7 @@ def calculate_contour(img, contour_limit):
     max_index = np.argmax([len(c) for c in contour_fake])
 
     contour = contour_fake[max_index]
+    contour = np.flip(contour, 1) # x,y
 
     def border_intercepts(contour):
         intercept_left = False
@@ -33,11 +34,11 @@ def calculate_contour(img, contour_limit):
         if not np.all(contour[:,0]):
             intercept_left = True
         if not np.all(contour[:,1]):
-            intercept_top = True
+            intercept_bot = True
         if not np.all(contour[:,0]-len(img[0])+1):
             intercept_right = True
         if not np.all(contour[:,1]-len(img[1])+1):
-            intercept_bot = True
+            intercept_top = True
         return {'left': intercept_left, 'right': intercept_right,
                 'top': intercept_top, 'bottom' : intercept_bot}
 
@@ -49,19 +50,20 @@ def calculate_contour(img, contour_limit):
         # include secondary connecting contour
         connected = False
         for snd_contour in contour_fake:
+            snd_contour = np.flip(snd_contour, 1) # x,y
             if border_intercepts(snd_contour) == contour_intercepts:
                 contour = np.append(contour, snd_contour, axis=0)
                 connected = True
         # or include corner
         if not connected:
             snd_contour = []
-            if contour_intercepts['left'] and contour_intercepts['top']:
+            if contour_intercepts['left'] and contour_intercepts['bottom']:
                 snd_contour += [0,0]
-            elif contour_intercepts['top'] and contour_intercepts['right']:
+            elif contour_intercepts['bottom'] and contour_intercepts['right']:
                 snd_contour += [len(img[0])-1,0]
             elif contour_intercepts['left'] and contour_intercepts['bottom']:
                 snd_contour += [0,len(img[1]-1)]
-            elif contour_intercepts['bottom'] and contour_intercepts['right']:
+            elif contour_intercepts['top'] and contour_intercepts['right']:
                 snd_contour += [len(img[0])-1,len(img[1])-1]
             else:
                 raise ValueError('The contour is to large, and can not be determined unambigously!')
@@ -73,8 +75,8 @@ def calculate_contour(img, contour_limit):
 
 
 def close_contour(contour, num):
-    dx = contour[-1][1] - contour[0][1]
-    dy = contour[-1][0] - contour[0][0]
+    dx = contour[-1][0] - contour[0][0]
+    dy = contour[-1][1] - contour[0][1]
     avg_d = np.mean(np.append(np.abs(np.diff(contour[:,0])),
                               np.abs(np.diff(contour[:,1]))))
     num = int(np.sqrt(dx**2 + dy**2) / avg_d)
@@ -156,23 +158,16 @@ if __name__ == '__main__':
     # replace analogsingal
     tmp_blk = neo.Block()
     tmp_seg = neo.Segment()
-    tmp_imgseq = imgseq.duplicate_with_new_data(imgseq_array)
     tmp_blk.segments.append(tmp_seg)
-    tmp_blk.segments[0].imagesequences.append(tmp_imgseq)
+    tmp_imgseq = imgseq.duplicate_with_new_data(imgseq_array)
     new_asig = imagesequence_to_analogsignal(tmp_imgseq)
 
-    asig = block.segments[0].analogsignals[0].duplicate_with_new_data(new_asig.as_array())
-    if not args.crop_to_selection:
-        asig.array_annotate(**block.segments[0].analogsignals[0].array_annotations)
-    else:
-        asig.array_annotate(**new_asig.array_annotations)
-
     # save data and figure
-    asig.name += ""
-    asig.description += "Border regions with mean intensity below "\
-                      + "{args.intensity_threshold} were discarded. "\
-                      + "({})".format(os.path.basename(__file__))
-    block.segments[0].analogsignals[0] = asig
+    new_asig.name += ""
+    new_asig.description += "Border regions with mean intensity below "\
+                         + "{args.intensity_threshold} were discarded. "\
+                         + "({})".format(os.path.basename(__file__))
+    block.segments[0].analogsignals = [new_asig]
 
     plot_roi(avg_img, contour)
     save_plot(args.output_img)

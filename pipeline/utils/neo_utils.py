@@ -78,7 +78,17 @@ def flip_image(imgseq, axis=-1):
 
     flipped = np.flip(imgseq.as_array(), axis=axis)
 
-    return imgseq.duplicate_with_new_data(flipped)
+    flipped_imgseq = imgseq.duplicate_with_new_data(flipped)
+
+    if 'array_annotations' in imgseq.annotations.keys():
+        flipped_imgseq.annotations['array_annotations'] = {}
+        for key, value in imgseq.annotations['array_annotations'].items():
+            flipped_imgseq.annotations['array_annotations'][key] \
+                        = np.flip(value, axis=axis)
+        flipped_imgseq.annotations['array_annotations']['y_coords'] \
+                        = imgseq.annotations['array_annotations']['y_coords']
+
+    return flipped_imgseq
 
 
 def rotate_image(imgseq, rotation=0):
@@ -101,8 +111,20 @@ def rotate_image(imgseq, rotation=0):
                        k=nbr_of_rot90,
                        axes=(-2,-1))
 
-    return imgseq.duplicate_with_new_data(rotated)
+    rotated_imgseq = imgseq.duplicate_with_new_data(rotated)
+    dim_t, dim_y, dim_x = rotated_imgseq.shape
 
+    if 'array_annotations' in imgseq.annotations.keys():
+        rotated_imgseq.annotations['array_annotations'] = {}
+        for key, value in imgseq.annotations['array_annotations'].items():
+            rotated_imgseq.annotations['array_annotations'][key] \
+                    = np.rot90(value, k=nbr_of_rot90, axes=(-2,-1))
+
+        y_coords, x_coords = np.meshgrid(range(dim_y),range(dim_x), indexing='ij')
+        rotated_imgseq.annotations['array_annotations']['y_coords'] = y_coords
+        rotated_imgseq.annotations['array_annotations']['x_coords'] = x_coords
+
+    return rotated_imgseq
 
 def robust_t(neo_obj, t_value=None, t_name='t_start', unit='s'):
     if t_value is None:
@@ -233,6 +255,7 @@ def analogsignal_to_imagesequence(asig):
         grid_array_annotations[key] = grid_value
 
     ys, xs = np.meshgrid(range(dim_y),range(dim_x), indexing='ij')
+    # check if -1 in xy_coords
     if not (xs == grid_array_annotations['x_coords']).all() \
     or not (ys == grid_array_annotations['y_coords']).all():
         raise ValueError("Transformation of array_annotations for the "
@@ -272,8 +295,8 @@ def add_empty_sites_to_analogsignal(asig):
         if type(values) == pq.Quantity:
             new_values = new_values.magnitude * values.units
         new_asig.array_annotations[key] = new_values
+    
 
     new_asig.array_annotate(x_coords=np.append(x_coords, x_nan_coords), 
                             y_coords=np.append(y_coords, y_nan_coords))
-
     return new_asig

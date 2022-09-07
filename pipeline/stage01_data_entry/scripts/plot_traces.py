@@ -33,7 +33,7 @@ def plot_traces(asig, channels):
                         for k,v in asig.array_annotations.items()]
 
     x_coords = asig.array_annotations['x_coords']
-    y_coords = asig.array_annotations['x_coords']
+    y_coords = asig.array_annotations['y_coords']
     dim_x, dim_y = np.max(x_coords)+1, np.max(y_coords)+1
 
     ax.text(ax.get_xlim()[1]*1.05, ax.get_ylim()[0],

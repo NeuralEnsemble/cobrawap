@@ -11,40 +11,32 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def calc_local_wave_intervals(evts):
-    labels = evts.labels.astype(int)
-    dim_x = int(max(evts.array_annotations['x_coords']))+1
-    dim_y = int(max(evts.array_annotations['y_coords']))+1
+    wave_labels = np.sort(evts.labels.astype(int))
+    unique_labels = np.unique(wave_labels)
+    unique_channels = np.sort(np.unique(evts.array_annotations['channels'].astype(int)))
 
-    scale = evts.annotations['spatial_scale'].magnitude
-    unit = evts.times.units
+    channel_idx_map = np.empty(np.max(unique_channels)+1) * np.nan
+    for i, channel in enumerate(unique_channels):
+        channel_idx_map[channel] = i
 
-    intervals_collection = np.array([], dtype=float)
-    wave_ids = np.array([], dtype=int)
-    channel_ids = np.array([], dtype=int)
+    trigger_collection = np.empty((len(unique_labels),len(unique_channels)),
+                                  dtype=float) * np.nan
+                          
+    for (i, wave_id) in enumerate(unique_labels):
+        wave_trigger_evts = evts[wave_labels == wave_id]
 
-    for (i, wave_id) in enumerate(np.unique(labels)):
-        wave_trigger_evts = evts[labels == wave_id]
-
-        x_coords = wave_trigger_evts.array_annotations['x_coords'].astype(int)
-        y_coords = wave_trigger_evts.array_annotations['y_coords'].astype(int)
         channels = wave_trigger_evts.array_annotations['channels'].astype(int)
+        
+        channel_idx = channel_idx_map[channels].astype(int)
+        trigger_collection[i, channel_idx] = wave_trigger_evts.times
 
-        trigger_collection = np.empty([dim_y, dim_x]) * np.nan
-        trigger_collection[y_coords, x_coords] = wave_trigger_evts.times
+    intervals = np.diff(trigger_collection, axis=0)
+    intervals = intervals.reshape((len(unique_labels)-1)*len(unique_channels))
+    channel_ids = np.tile(unique_channels, len(unique_labels)-1)
+    wave_ids = np.repeat(unique_labels[:-1], len(unique_channels))
 
-        # if this is not the first wave
-        if i:
-            intervals = trigger_collection - trigger_collection_pre
-            intervals = intervals[y_coords, x_coords]
-            intervals[~np.isfinite(intervals)] = np.nan
+    return wave_ids, channel_ids, intervals*evts.times.units
 
-            intervals_collection = np.append(intervals_collection, intervals)
-            channel_ids = np.append(channel_ids, channels)
-            wave_ids = np.append(wave_ids, np.repeat(wave_id, len(channels)))
-
-        trigger_collection_pre = trigger_collection.copy()
-
-    return wave_ids, channel_ids, intervals_collection*unit
 
 
 if __name__ == '__main__':

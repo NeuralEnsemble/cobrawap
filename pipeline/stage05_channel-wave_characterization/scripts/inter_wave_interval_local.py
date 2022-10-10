@@ -32,8 +32,12 @@ def calc_local_wave_intervals(evts):
 
     intervals = np.diff(trigger_collection, axis=0)
     intervals = intervals.reshape((len(unique_labels)-1)*len(unique_channels))
-    channel_ids = np.tile(unique_channels, len(unique_labels)-1)
-    wave_ids = np.repeat(unique_labels[:-1], len(unique_channels))
+
+    mask = np.isfinite(intervals)
+    intervals = intervals[mask]
+    
+    channel_ids = np.tile(unique_channels, len(unique_labels)-1)[mask]
+    wave_ids = np.repeat(unique_labels[:-1], len(unique_channels))[mask]
 
     return wave_ids, channel_ids, intervals*evts.times.units
 

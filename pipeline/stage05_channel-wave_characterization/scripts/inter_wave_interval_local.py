@@ -11,15 +11,15 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def calc_local_wave_intervals(evts):
-    wave_labels = np.sort(evts.labels.astype(int))
-    unique_labels = np.unique(wave_labels)
+    wave_labels = evts.labels.astype(int)
+    unique_labels = np.sort(np.unique(wave_labels))
     unique_channels = np.sort(np.unique(evts.array_annotations['channels'].astype(int)))
 
     channel_idx_map = np.empty(np.max(unique_channels)+1) * np.nan
     for i, channel in enumerate(unique_channels):
         channel_idx_map[channel] = i
 
-    trigger_collection = np.empty((len(unique_labels),len(unique_channels)),
+    trigger_collection = np.empty((len(unique_labels), len(unique_channels)),
                                   dtype=float) * np.nan
                           
     for (i, wave_id) in enumerate(unique_labels):

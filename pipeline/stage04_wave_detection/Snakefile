@@ -71,7 +71,7 @@ use rule template_plus_plot_script as critical_points with:
         script = SCRIPTS / 'critical_points.py',
         plot_script = SCRIPTS / 'plot_critical_points.py',
     params:
-        params(frame_id = 0, skip_step = 3)
+        params(frame_id = 0, skip_step = 1)
     output:
         Path('{dir}') / 'critical_points' / f'critical_points.{config.NEO_FORMAT}',
         img = Path('{dir}') / 'critical_points' / f'critical_points.{config.PLOT_FORMAT}'

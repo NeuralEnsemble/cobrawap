@@ -26,7 +26,7 @@ def detect_critical_points(imgseq, times):
 
     for i in range(dim_t):
         # ToDo: parallelize
-        X, Y = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='xy')
+        Y, X = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='ij')
         ZR = np.real(frames[i])
         ZI = np.imag(frames[i])
         contourR = plt.contour(X, Y, ZR, levels=[0])
@@ -49,32 +49,34 @@ def detect_critical_points(imgseq, times):
             extend = np.append(extend, extend_i)
             winding_number = np.append(winding_number, winding_number_i)
 
-    evt = neo.Event(name='Critical Points',
+    evt = neo.Event(name='critical_points',
                     times=times[frame_ids],
                     labels=labels)
-    evt.array_annotations.update({'x':x, 'y':y, 'trace':trace, 'det':det,
-                                  'extend':extend, 'winding_number':winding_number})
+    evt.array_annotations.update({'x':x, 'y':y, 
+                                  'trace':trace, 'det':det,
+                                  'extend':extend, 
+                                  'winding_number':winding_number})
     return evt
 
 
 def jacobian(xy, fA, fB):
-    # dA/dx  dA/dy
-    # dB/dx  dB/dy
+    # dA/dy  dA/dx
+    # dB/dy  dB/dx
     x, y = int(np.round(xy[0])), int(np.round(xy[1]))
     J = np.zeros((2,2))
-    dim_x, dim_y = fA.shape
-    if x+1 < dim_x:
-        J[0,0] = fA[x+1, y] - fA[x, y]
-        J[1,0] = fB[x+1, y] - fB[x, y]
-    else:
-        J[0,0] = fA[x, y] - fA[x-1, y]
-        J[1,0] = fB[x, y] - fB[x-1, y]
+    dim_y, dim_x = fA.shape
     if y+1 < dim_y:
-        J[0,1] = fA[x, y+1] - fA[x, y]
-        J[1,1] = fB[x, y+1] - fB[x, y]
+        J[0,0] = fA[y+1, x] - fA[y, x]
+        J[1,0] = fB[y+1, x] - fB[y, x]
     else:
-        J[0,1] = fA[x, y] - fA[x, y-1]
-        J[1,1] = fB[x, y] - fB[x, y-1]
+        J[0,0] = fA[y, x] - fA[y-1, x]
+        J[1,0] = fB[y, x] - fB[y-1, x]
+    if x+1 < dim_x:
+        J[0,1] = fA[y, x+1] - fA[y, x]
+        J[1,1] = fB[y, x+1] - fB[y, x]
+    else:
+        J[0,1] = fA[y, x] - fA[y, x-1]
+        J[1,1] = fB[y, x] - fB[y, x-1]
     return J
 
 
@@ -96,7 +98,7 @@ def classify_critical_point(det, trace):
 
 def calc_winding_number(xy, frame):
     px, py = int(np.round(xy[0])), int(np.round(xy[1]))
-    dim_x, dim_y = frame.shape
+    dim_y, dim_x = frame.shape
     max_r = np.ceil(min([dim_x, dim_y])/2)
     prev_winding_number = 0
     for r in range(1, int(max_r)):
@@ -106,8 +108,8 @@ def calc_winding_number(xy, frame):
         elif py + r >= dim_y or py - r <= 0:
             break
         else:
-            X, Y = np.indices((dim_x, dim_y))
-            circle = np.abs(np.hypot(px-X, py-Y) - r) < 0.5
+            Y, X = np.indices((dim_y, dim_x))
+            circle = np.abs(np.hypot(py-Y,px-X) - r) < 0.5
 
         # extracting counter-clock-wise indices of circle with radius r
         ccw = np.array([], dtype=[('x',int), ('y',int)])
@@ -118,13 +120,13 @@ def calc_winding_number(xy, frame):
                                   [px, -1, -1, px],
                                   [0 ,  0, py, py],
                                   [py, py, -1, -1]):
-            circle_xi, circle_yi = np.where(circle[x0:x1, y0:y1])
+            circle_yi, circle_xi = np.where(circle[y0:y1, x0:x1])
             circle_xi += x0
             circle_yi += y0
-            circle_idx = np.array([(np.sign(y1)*xi, -np.sign(x1)*yi)
+            circle_idx = np.array([(-np.sign(x1)*yi, np.sign(y1)*xi)
                                     for xi,yi in zip(circle_xi, circle_yi)],
                                   dtype=[('x', int), ('y', int)])
-            ccw = np.append(ccw, np.sort(circle_idx, order=['x', 'y']))
+            ccw = np.append(ccw, np.sort(circle_idx, order=['y', 'x']))
 
         # sum differences of subsequent vector angles around circle
         circle_values = frame[np.abs(ccw['y']), np.abs(ccw['x'])]
@@ -185,13 +187,6 @@ if __name__ == '__main__':
 
     asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
     imgseq = analogsignal_to_imagesequence(asig)
-
-    if imgseq:
-        imgseq = imgseq[0]
-    else:
-        raise ValueError("Input does not contain a signal with name " \
-                       + "'optical_flow'!")
-
 
     crit_point_evt = detect_critical_points(imgseq,
                                     block.segments[0].analogsignals[0].times)

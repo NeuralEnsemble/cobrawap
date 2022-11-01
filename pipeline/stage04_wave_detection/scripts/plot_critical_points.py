@@ -7,22 +7,21 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def plot_frame(frame, ax=None, skip_step=3):
-    dim_x, dim_y = frame.shape
-
+    dim_y, dim_x = frame.shape
 
     if ax is None:
         fig, ax = plt.subplots()
 
     ax.quiver(np.arange(dim_x)[::skip_step],
               np.arange(dim_y)[::skip_step],
-              np.real(frame[::skip_step,::skip_step]).T,
-              -np.imag(frame[::skip_step,::skip_step]).T)
+              np.real(frame[::skip_step,::skip_step]),
+              np.imag(frame[::skip_step,::skip_step]))
 
-    X, Y = np.meshgrid(np.arange(dim_x), np.arange(dim_y), indexing='ij')
+    Y, X = np.meshgrid(np.arange(dim_y), np.arange(dim_x), indexing='ij')
     ZR = np.real(frame)
     ZI = np.imag(frame)
-    contourR = ax.contour(X,Y, ZR, levels=[0], color='b', label='x = 0')
-    contourI = ax.contour(X,Y, ZI, levels=[0], color='g', label='y = 0')
+    contourR = ax.contour(X, Y, ZR, levels=[0], colors='b', label='x = 0')
+    contourI = ax.contour(X, Y, ZI, levels=[0], colors='g', label='y = 0')
     return ax
 
 
@@ -52,14 +51,18 @@ if __name__ == '__main__':
     imgseq = analogsignal_to_imagesequence(asig)
 
     crit_point_evt = [evt for evt in block.segments[0].events
-                      if evt.name == "Critical Points"]
+                      if evt.name == "critical_points"]
     if crit_point_evt:
         crit_point_evt = crit_point_evt[0]
     else:
         raise ValueError("Input does not contain an event with name " \
-                       + "'Critical Points'!")
+                       + "'critical_points'!")
 
-    ax = plot_frame(imgseq.as_array()[args.frame_id], skip_step=3)
+    fig, ax = plt.subplots()
+    
+    ax = plot_frame(imgseq.as_array()[args.frame_id], 
+                    skip_step=args.skip_step, 
+                    ax=ax)
 
     start_id = np.argmax(crit_point_evt.times >= asig.times[args.frame_id])
     stop_id = np.argmax(crit_point_evt.times >= asig.times[args.frame_id+1])
@@ -68,6 +71,8 @@ if __name__ == '__main__':
                crit_point_evt.array_annotations['y'][start_id:stop_id],
                color='r')
 
-    ax.set_title(asig.times[args.frame_id])
+    ax.set_title(f"{asig.times[args.frame_id]:.2f}")
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
 
     save_plot(args.output)

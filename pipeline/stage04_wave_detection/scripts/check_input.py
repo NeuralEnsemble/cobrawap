@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import quantities as pq
 from utils.io import load_neo
+from snakemake.logging import logger
 
 
 if __name__ == '__main__':
@@ -36,7 +37,8 @@ if __name__ == '__main__':
     evt = evts[0]
 
     if not 'UP' in evt.labels:
-        raise KeyError("No transitions labeled 'UP' found!")
+        logger.warning("No transitions labeled 'UP' found!")
+        # raise KeyError("No transitions labeled 'UP' found!")
 
     up_channels = np.unique(evt.array_annotations['channels'])
     num_channels = np.count_nonzero(~np.isnan(np.sum(asig, axis=0)))

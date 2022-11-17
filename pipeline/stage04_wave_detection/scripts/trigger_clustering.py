@@ -73,12 +73,17 @@ if __name__ == '__main__':
 
     evts = block.filter(name='transitions', objects="Event")[0]
 
-    wave_evt = cluster_triggers(event=evts,
-                                metric=args.metric,
-                                neighbour_distance=args.neighbour_distance,
-                                min_samples=args.min_samples,
-                                time_space_ratio=args.time_space_ratio,
-                                sampling_rate=asig.sampling_rate)
+    if len(evts):
+        wave_evt = cluster_triggers(event=evts,
+                                    metric=args.metric,
+                                    neighbour_distance=args.neighbour_distance,
+                                    min_samples=args.min_samples,
+                                    time_space_ratio=args.time_space_ratio,
+                                    sampling_rate=asig.sampling_rate)
+
+    else:
+        wave_evt = neo.Event(name='wavefronts', 
+                             times=np.array([])*pq.s, labels=[])
 
     block.segments[0].events.append(wave_evt)
 

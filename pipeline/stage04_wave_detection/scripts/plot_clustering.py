@@ -50,11 +50,13 @@ if __name__ == '__main__':
 
     evts = block.filter(name='wavefronts', objects="Event")[0]
 
-    if args.time_slice is not None:
-        asig = block.segments[0].analogsignals[0]
-        t_stop = asig.t_start.rescale('s') + args.time_slice*pq.s
-        evts = time_slice(evts, t_start=asig.t_start, t_stop=t_stop)
+    if len(evts):
 
-    ax, cmap = plot_clustering(evts)
+        if args.time_slice is not None:
+            asig = block.segments[0].analogsignals[0]
+            t_stop = asig.t_start.rescale('s') + args.time_slice*pq.s
+            evts = time_slice(evts, t_start=asig.t_start, t_stop=t_stop)
+
+        ax, cmap = plot_clustering(evts)
 
     save_plot(args.output)

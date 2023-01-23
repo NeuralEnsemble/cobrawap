@@ -1,4 +1,5 @@
 import argparse
+import sys
 import neo
 import numpy as np
 import pandas as pd
@@ -81,8 +82,10 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
 
     # remove outlier waves in the quantile of wave distances
     q = np.quantile(neighbourhood_distance, outlier_quantile)
-    keep_rows = np.where(neighbourhood_distance <= q)[0]
-    timelag_df = timelag_df.iloc[keep_rows, :]
+    if np.isfinite(q):
+        keep_rows = np.where(neighbourhood_distance <= q)[0]
+        timelag_df = timelag_df.iloc[keep_rows, :]
+
     return timelag_df
 
 def get_triu_indices_pos(i, N):
@@ -228,6 +231,22 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
                             rotation=90, va='center')
     return None
 
+def clean_timelag_dataframe(df, min_trigger_fraction=.5, 
+                            num_wave_neighbours=5, wave_outlier_quantile=1):
+    # remove nan channels
+    df.dropna(axis='columns', how='all', inplace=True)
+ 
+    # remove small waves
+    min_trigger_num = int(min_trigger_fraction * df.columns.size)
+    df.dropna(axis='rows', thresh=min_trigger_num, inplace=True)
+
+    # fill in nan sites with timelags from similar waves
+    df = fill_nan_sites_from_similar_waves(df,
+                                num_neighbours=num_wave_neighbours,
+                                outlier_quantile=wave_outlier_quantile)
+    return df
+
+
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -264,23 +283,27 @@ if __name__ == '__main__':
     asig = block.segments[0].analogsignals[0]
     dim_t, num_channels = asig.shape
 
+    ## BUILD TIMELAG MATRIX
     waves = block.filter(name='wavefronts', objects="Event")[0]
     waves = waves[waves.labels.astype(str) != '-1']
 
     timelag_df = build_timelag_dataframe(waves)
 
-    # remove nan channels
-    timelag_df.dropna(axis='columns', how='all', inplace=True)
+    ## CLEAN TIMELAG MATRIX
+    timelag_df = clean_timelag_dataframe(timelag_df,
+                            min_trigger_fraction=args.min_trigger_fraction,
+                            num_wave_neighbours=args.num_wave_neighbours,
+                            wave_outlier_quantile=args.wave_outlier_quantile)
 
-    # remove small waves
-    min_trigger_num = int(args.min_trigger_fraction * timelag_df.columns.size)
-    timelag_df.dropna(axis='rows', thresh=min_trigger_num, inplace=True)
+    if not len(timelag_df):
+        write_neo(args.output, block)
+        if args.output_img is not None:
+            save_plot(args.output_img)
+        sys.exit(1)
 
-    # fill in nan sites with timelags from similar waves
-    timelag_df = fill_nan_sites_from_similar_waves(timelag_df,
-                                num_neighbours=args.num_wave_neighbours,
-                                outlier_quantile=args.wave_outlier_quantile)
-
+    ## CLUSTER WAVE MODES
+    # def cluster_wave_modes(df, asig, pca_dims=None, num_kmeans_cluster=4, 
+    #                     interpolation_smoothing=0, interpolation_step_size=.2):
     # PCA transform the timelag_matrix
     timelag_matrix_transformed = pca_transform(timelag_df, dims=args.pca_dims)
 
@@ -290,19 +313,16 @@ if __name__ == '__main__':
     mode_ids = kout.labels_
     if len(mode_ids) != len(timelag_df):
         raise IndexError('Some waves are not assigned to a kmeans cluster!'
-                      + f' {len(mode_ids)} != {len(timelag_df)}')
+                    + f' {len(mode_ids)} != {len(timelag_df)}')
 
     mode_labels, mode_counts = np.unique(mode_ids, return_counts=True)
 
     mode_dists = calc_cluster_distortions(timelag_matrix_transformed,
-                                          cluster_indices=mode_ids,
-                                          cluster_centers=kout.cluster_centers_)
+                                        cluster_indices=mode_ids,
+                                        cluster_centers=kout.cluster_centers_)
 
     # calculate the average timelags per mode
     mode_timelag_df = build_cluster_timelag_dataframe(timelag_df, mode_ids)
-    # mode_timelag_df = pd.DataFrame(kout.cluster_centers_,
-    #                                index=mode_labels,
-    #                                columns=timelag_df.columns)
 
     # rearrange average mode timelags onto channel grid
     x_coords = asig.array_annotations['x_coords']
@@ -315,15 +335,15 @@ if __name__ == '__main__':
     for i, cluster_grid in enumerate(mode_grids):
         pattern_func = interpolate_grid(cluster_grid, args.interpolation_smoothing)
         fx, fy, pattern = sample_wave_pattern(pattern_func,
-                                              step=args.interpolation_step_size,
-                                              dim_x=dim_x, dim_y=dim_y)
+                                            step=args.interpolation_step_size,
+                                            dim_x=dim_x, dim_y=dim_y)
         interpolated_mode_grids = np.concatenate((interpolated_mode_grids,
-                                                     pattern[np.newaxis,:])) \
-                                           if i else pattern[np.newaxis,:]
+                                                    pattern[np.newaxis,:])) \
+                                        if i else pattern[np.newaxis,:]
 
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \
-                                         if evt.name=='wavefronts'][0]
+                                        if evt.name=='wavefronts'][0]
 
     mode_annotations = np.ones(waves.size, dtype=int) * (-1)
     for wave_id, mode_id in zip(timelag_df.index, mode_ids):
@@ -351,12 +371,6 @@ if __name__ == '__main__':
             mode_trigger[mode_id*n_sites + site_id] \
                                     = interpolated_mode_grids[mode_id, iy, ix]
 
-    # modes, xs, ys = np.where(np.isfinite(mode_grids))
-    # channels = [np.where((asig.array_annotations['x_coords'] == x) \
-    #                    & (asig.array_annotations['y_coords'] == y))[0][0] \
-    #             for x,y in zip(xs,ys)]
-
-    # remove_annotations(block.segments[0].events[evt_id])
     remove_annotations(waves)
     evt = neo.Event(mode_trigger * waves.units,
                     labels=np.repeat(mode_labels, n_sites).astype(str),

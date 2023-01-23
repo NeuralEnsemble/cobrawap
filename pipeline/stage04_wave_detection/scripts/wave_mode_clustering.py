@@ -81,7 +81,12 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
             timelag_df.iloc[row, channel] = trigger_estimate
 
     # remove outlier waves in the quantile of wave distances
-    if np.isfinite(neighbourhood_distance) and outlier_quantile < 1:
+    breakpoint()
+    if np.isnan(neighbourhood_distance).any():
+        warn('Unexpected nan value in wave triggers!')
+        return timelag_df
+    
+    if outlier_quantile < 1:
         q = np.quantile(neighbourhood_distance, outlier_quantile)
         keep_rows = np.where(neighbourhood_distance <= q)[0]
         timelag_df = timelag_df.iloc[keep_rows, :]

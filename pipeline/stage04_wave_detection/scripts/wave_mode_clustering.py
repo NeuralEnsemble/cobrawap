@@ -81,7 +81,6 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
             timelag_df.iloc[row, channel] = trigger_estimate
 
     # remove outlier waves in the quantile of wave distances
-    breakpoint()
     if np.isnan(neighbourhood_distance).any():
         warn('Unexpected nan value in wave triggers!')
         return timelag_df
@@ -90,7 +89,6 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
         q = np.quantile(neighbourhood_distance, outlier_quantile)
         keep_rows = np.where(neighbourhood_distance <= q)[0]
         timelag_df = timelag_df.iloc[keep_rows, :]
-
     return timelag_df
 
 def get_triu_indices_pos(i, N):

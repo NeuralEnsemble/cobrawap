@@ -299,11 +299,9 @@ if __name__ == '__main__':
         write_neo(args.output, block)
         if args.output_img is not None:
             save_plot(args.output_img)
-        sys.exit(1)
+        sys.exit(2)
 
     ## CLUSTER WAVE MODES
-    # def cluster_wave_modes(df, asig, pca_dims=None, num_kmeans_cluster=4, 
-    #                     interpolation_smoothing=0, interpolation_step_size=.2):
     # PCA transform the timelag_matrix
     timelag_matrix_transformed = pca_transform(timelag_df, dims=args.pca_dims)
 

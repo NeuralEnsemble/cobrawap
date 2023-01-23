@@ -287,19 +287,23 @@ if __name__ == '__main__':
     waves = block.filter(name='wavefronts', objects="Event")[0]
     waves = waves[waves.labels.astype(str) != '-1']
 
-    timelag_df = build_timelag_dataframe(waves)
+    if len(waves):
+        timelag_df = build_timelag_dataframe(waves)
 
-    ## CLEAN TIMELAG MATRIX
-    timelag_df = clean_timelag_dataframe(timelag_df,
-                            min_trigger_fraction=args.min_trigger_fraction,
-                            num_wave_neighbours=args.num_wave_neighbours,
-                            wave_outlier_quantile=args.wave_outlier_quantile)
+        ## CLEAN TIMELAG MATRIX
+        timelag_df = clean_timelag_dataframe(timelag_df,
+                                min_trigger_fraction=args.min_trigger_fraction,
+                                num_wave_neighbours=args.num_wave_neighbours,
+                                wave_outlier_quantile=args.wave_outlier_quantile)
+    else:
+        timelag_df = []
 
     if not len(timelag_df):
+        warn("No waves found to cluster!")
         write_neo(args.output, block)
         if args.output_img is not None:
             save_plot(args.output_img)
-        sys.exit(2)
+        quit()
 
     ## CLUSTER WAVE MODES
     # PCA transform the timelag_matrix

@@ -29,6 +29,9 @@ def read_stage_output(stage, config_dir, config_name,
 def load_config_file(config_path):
     with open(config_path, 'r') as f:
         config_dict = yaml.safe_load(f)
+    if not config_dict:
+        logger.error(f"config file is empty: {config_path}")
+        raise FileNotFoundError
     return config_dict
 
 
@@ -38,17 +41,16 @@ def get_parent_config_name(config_name):
     keeping a trailing '|<anything>'
     """
     name, ext = os.path.splitext(config_name)
-    if '|' in name:
-        main, variant = name.split('|')
-    else:
-        main, variant = name, ''
+    main, *variant = name.split('|')
+    variant = variant[0] if variant else ''
+
     parent = "_".join(main.split('_')[:-1])
     if not parent:
         return False
-    elif '|' in name:
-        return '|'.join([parent,variant]) + ext
-    else:
-        return parent + ext
+    elif variant:
+        parent = '|'.join([parent, variant])
+
+    return parent + ext
 
 
 def get_config(config_dir, config_name):
@@ -75,22 +77,25 @@ def get_config(config_dir, config_name):
             config_dict = load_config_file(os.path.join(config_dir,
                                                         try_config_name))
         except FileNotFoundError:
-            parent_config_name = get_parent_config_name(try_config_name)
+            prev_try_config_name = try_config_name
 
+            parent_config_name = get_parent_config_name(try_config_name)
             if parent_config_name:
-                logger.info(f"{try_config_name} not found, "
-                            f"trying {parent_config_name}")
                 try_config_name = parent_config_name
             else:
-                if keep_variant:
+                if keep_variant and '|' in try_config_name:
                     name, ext = os.path.splitext(config_name)
                     try_config_name = name.split('|')[0] + ext
+                    keep_variant = False
                 else:
                     logger.error("No corresponding config file found!")
+                    return {}
 
+            logger.info(f"'{prev_try_config_name}' not found, "
+                        f"trying '{try_config_name}'.")
     return config_dict
 
-
+ 
 def create_temp_configs(stages, configs_dir, config_name, output_dir,
                         temp_name='temp_config.yaml'):
     for i, stage in enumerate(stages):

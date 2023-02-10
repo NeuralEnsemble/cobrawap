@@ -58,11 +58,21 @@ use rule template as optical_flow with:
         data = config.STAGE_INPUT,
         script = SCRIPTS / 'horn_schunck.py'
     params:
-        params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
-               'derivative_filter', 'use_phases', config=config)
+        params('alpha', 'max_Niter', 'convergence_limit', gaussian_sigma=config.FLOW_GAUSSIAN_SIGMA, derivative_filter=config.FLOW_DERIVATIVE_FILTER, use_phases=config.FLOW_USE_PHASES, config=config)
     output:
         Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
         output_img = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.PLOT_FORMAT}'
+
+
+use rule template as gradient with:
+    input:
+        data = config.STAGE_INPUT,
+        script = SCRIPTS / 'gradient.py'
+    params:
+        params(gaussian_sigma=config.GRADIENT_GAUSSIAN_SIGMA, derivative_filter=config.GRADIENT_DERIVATIVE_FILTER, use_phases=config.GRADIENT_USE_PHASES)
+    output:
+        Path('{dir}') / 'gradient' / f'gradient.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / 'gradient' / f'gradient.{config.PLOT_FORMAT}'
 
 
 use rule template_plus_plot_script as critical_points with:

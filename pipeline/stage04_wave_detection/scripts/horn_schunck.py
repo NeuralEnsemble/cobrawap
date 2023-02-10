@@ -267,6 +267,7 @@ if __name__ == '__main__':
                                    sampling_rate=imgseq.sampling_rate,
                                    name='optical_flow',
                                    description='Horn-Schunck estimation of optical flow',
+                                   kernel_type=args.derivative_filter,
                                    file_origin=imgseq.file_origin)
    
     vec_imgseq.annotations = copy(imgseq.annotations)

@@ -31,7 +31,7 @@ DETECTION_BLOCK: 'trigger_clustering'
 
 # ADDITIONAL PROPERTIES
 #######################
-# Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
+# Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering', 'gradient'
 # use empty list [] for selecting none
 ADDITIONAL_PROPERTIES: ['wave_mode_clustering', 'optical_flow']
 
@@ -47,7 +47,7 @@ TIME_SPACE_RATIO: 1 # i.e. distance between 2 frames corresponds to X pixel
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############
-USE_PHASES: True
+FLOW_USE_PHASES: True
 # weight of the smoothness constraint over the brightness constancy constraint
 ALPHA: 0.1
 # maximum number of iterations optimizing the vector field
@@ -57,10 +57,20 @@ MAX_NITER: 100
 CONVERGENCE_LIMIT: 0.0001
 # standard deviations for the Gaussian filter applied on the vector field
 # [t_std, x_std, y_std]. [0,0,0] for no filter
-GAUSSIAN_SIGMA: [0,3,3]
+FLOW_GAUSSIAN_SIGMA: [0,3,3]
 # Kernel filter to use to calculate the spatial derivatives.
 # simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
-DERIVATIVE_FILTER: 'scharr_3x3'
+FLOW_DERIVATIVE_FILTER: 'scharr_3x3'
+
+# gradient
+##############
+GRADIENT_USE_PHASES: True
+# standard deviations for the Gaussian filter applied on the vector field
+# [t_std, x_std, y_std]. [0,0,0] for no filter
+GRADIENT_GAUSSIAN_SIGMA: [0,3,3]
+# Kernel filter to use to calculate the spatial derivatives.
+# simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
+GRADIENT_DERIVATIVE_FILTER: 'scharr_3x3'
 
 # Critical Point Clustering
 ###########################

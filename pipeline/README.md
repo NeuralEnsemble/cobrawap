@@ -18,7 +18,7 @@ The individual processing and analysis steps, __Blocks__, are organized in seque
     * __config_\<PROFILE\>.yaml__ ... with different settings for different profiles
   * __README__ describes the stage's funtionality
 
-![Folder Structure](../docs/images/folder_structure.png "Folder Structure")
+![Folder Structure](../doc/images/folder_structure.png "Folder Structure")
 ***Figure: Folder Structure.*** *The pipeline structure if reflected in the organisation of the folders. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and block is stored the same hierachy (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 ## Configuration

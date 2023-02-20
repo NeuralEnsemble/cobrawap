@@ -3,7 +3,7 @@ The design of the pipeline aims at interfacing a variety of general and specific
 The individual processing and analysis steps, __Blocks__, are organized in sequential __Stages__. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
 ![Pipeline structure in stages and blocks](../doc/images/pipeline_illustration.png "Pipeline Structure")
-*Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
+***Figure: Pipeline Structure.*** *Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 ## Basic Structure
 * __Snakefile__ defines how the stages are executed within the full pipeline

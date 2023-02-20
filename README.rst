@@ -1,32 +1,84 @@
 =====================================================
-Collaborative Brain Wave Analysis Pipeline (CobraWAP)
+Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
-This repository aims at developing reusable and modular pipelines for a multi-scale, multi-methodology analysis of cortical wave activity, brain states and their complexity.
+.. container:: twocol
 
-`Link to introductive video <https://www.youtube.com/watch?v=uuAiY6HScM0>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_ | `Link to pipeline README <https://github.com/INM-6/wavescalephant/tree/master/pipeline>`_
+   .. container:: leftside
+
+      This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
+
+   .. container:: rightside
+
+      ..figure:: doc/images/cobrawap_logo.png
+           :scale: 50 %
+           :alt: Cobrawap Logo
+           :align: right
+
+
+`Link to pipeline README <https://github.com/INM-6/cobrawap/tree/master/pipeline>`_ | `Link to introductive video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
 
 Concept
 =======
-For researchers to be able to effectively reproduce results and build on each other's progress, it is important to not only make results openly accessible and to facilitate data sharing but also to build the analysis workflows, to get the former from the latter, in a shareable and reusable manner.
 
-Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows in a manner that they are general and flexible enough so that they can actually be reused in further research. Within the rich diversity of analyses there is no one-size-fit-all solution for this. However, there is a lot of existing work that can help with the challenges of developing a general, adaptable, reusable analysis pipeline.
+.. figure:: doc/images/cobrawap_pipeline_approach.png
+   :height: 100px
+   :width: 200 px
+   :scale: 50 %
+   :alt: alternate text
+   :align: center
 
-Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
+
+For researchers to be able to effectively reproduce results and build on each other's progress, it is important to not only make results openly accessible and to facilitate data sharing but also to build the analysis workflows in a shareable and reusable manner.
+
+Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows in a manner that they are general and flexible enough so that they can be reused in further research. Within the rich diversity of analyses there is no one-size-fit-all solution for this. However, there is a lot of existing work that can help with the challenges of developing a general, adaptable, reusable analysis pipeline.
+
+Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of cortical wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
+
 
 The current prototype includes
 ------------------------------
-* a hierarchical and modular pipeline framework based on Snakemake_
-* reusable blocks and stages for standalone application or integration into workflows
+* a hierarchical and modular pipeline framework based on the Snakemake_ workflow management tool
+* reusable method implementations (blocks and stages) for standalone applications or integration into workflows
 * analysis methods for electrophysiological and optical data on the characterization of cortical wave activity and local oscillations
 * visualization of the analysis steps and the intermediate results
-* intermediate results curated with annotated metadata and reports
+* intermediate results curated with annotated metadata
 * guides for execution locally and on the collab
-.. * showcase Jupyter Notebooks for testbench applications and the visualization of the output
 
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/
 
-For further developments see the Issues.
+For further developments and feature requests refer to the `Github Issues <https://github.com/INM-6/cobrawap/issues>_`.
+
+
+Citation
+========
+Please cite our preprint if you use Cobrawap or its components in your work, and add the Research Resource Identifier: *RRID:SCR_022966*
+
+* Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2022). *Comparing apples to apples—Using a modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets* (arXiv:2211.08527). arXiv. `https://doi.org/10.48550/arXiv.2211.08527 <https://doi.org/10.48550/arXiv.2211.08527>`_
+
+License
+=======
+The Collaborative Brain Wave Analysis Pipeline (Cobrawap) project is open-source software and is licensed under the GNU General Public License v3 or later.
+
+
+Involved partners
+=================
+This collaboration was originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
+
+- **Forschungszentrum Jülich, Germany:** Robin Gutzen, Michael Denker
+
+- **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca, Cosimo Lupo, Irene Bernava
+
+- **Istituto Superiore di Sanità (ISS), Roma, Italy:** Maurizio Mattia, Antonio Pazienti.
+
+- **Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain:** Arnau Manasanch, Miguel Dasilva, Maria V. Sanchez-Vives.
+
+- **European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy:** Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
+
+- **University of Milano (UniMi), Italy:** Andrea Pigorini, Thierry Nieus, Marcello Massimini
+
+- **Unité de Neurosciences, Neuroinformatics Group, CNRS, France:** Andrew Davison
+
 
 Further Context
 ===============
@@ -49,55 +101,3 @@ The Electrophysiology Analysis Toolkit, Elephant_, is an open-source Python libr
 
 .. _Neo: https://github.com/NeuralEnsemble/python-neo
 .. _Elephant: https://github.com/NeuralEnsemble/elephant
-
-HBP Deliverables
-----------------
-*Releases planned by 2020-03-31 (HBP-SGA2-M24)*
-
-* *Component C2051* (SOAP r1 - Slow Oscillation Analysis Pipeline). Snakemake integration of the Slow Wave Analysis Pipeline Component capable of extracting the local features of oscillations, a necessary prerequisite for the analysis of slow waves performed at multi-area level by the SWAP analysis. See RelatedRepositories.rst
-* *Component C2053* (SWAP r1 - Slow Wave Analysis Pipeline). Snakemake workflow for a modular slow wave analysis pipeline that can be applied to both optical calcium imaging recordings (GECI technique) and multi-electrode recordings (ECoG) in mouse.
-
-Showcase notebooks
-==================
-`Showcase in EBRAINS Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
-
-... additional demos coming soon.
-
-
-Involved partners
-=================
-This collaboration was originally started by HBP-SGA2-(WP3.2 and WP5.7) and extended to other HBP members and partners as SP3 UseCase002.
-
-- **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Pier Stanislao Paolucci, Elena Pastorelli, Francesco Simula, Cristiano Capone, Chiara De Luca.
-
-- **Forschungszentrum Jülich, Germany:** Michael Denker, Robin Gutzen, Alper Yegenoglu.
-
-- **Istituto Superiore di Sanità (ISS), Roma, Italy:** Maurizio Mattia, Antonio Pazienti.
-
-- **Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain:** Miguel Dasilva, Maria V. Sanchez-Vives.
-
-- **European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy:** Anna Letizia Allegra Mascaro, Francesco Resta, Francesco Pavone.
-
-- **University of Milano (UniMi), Italy:** Andrea Pigorini, Thierry Nieus, Marcello Massimini
-
-- **Unité de Neurosciences, Neuroinformatics Group, CNRS, France:** Andrew Davison
-
-References
-==========
-Papers
-------
-* `De Bonis, Giulia, et al. "Analysis pipeline for extracting features of cortical slow oscillations." Frontiers in Systems Neuroscience 13 (2019): 70. <https://doi.org/10.3389/fnsys.2019.00070>`_
-* `Celotto, Marco, et al. "Analysis and Model of Cortical Slow Waves Acquired with Optical Techniques." Methods and Protocols 3.1 (2020): 14. <https://doi.org/10.3390/mps3010014>`_
-
-Repositories
-------------
-* `gulpgiulia/ElePhySWAPandSOAP <https://github.com/gulpgiulia/ElePhySWAP_SOAP>`_
-* `gulpgiulia/CaImanSWAP <https://github.com/gulpgiulia/CaImanSWAP>`_
-
-Citation
-========
-Please cite this repository if you use it in your work.
-
-License
-=======
-The Modular-Wave-Analysis-Pipeline project is open-source software and is licensed under the GNU General Public License v3 or later.

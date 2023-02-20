@@ -32,7 +32,7 @@ release = '0.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinxarg.ext'
+    # 'sphinxarg.ext'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

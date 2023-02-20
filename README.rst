@@ -10,8 +10,9 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
             :alt: Cobrawap Logo
             :align: top
 
-.. |text| replace:: This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
-            :align: top
+.. |text| replace:: .. class:: right 
+        This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
+            
 
 
 ..     :widths: auto

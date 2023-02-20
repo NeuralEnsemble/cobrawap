@@ -1,6 +1,9 @@
-# Modular Wave Analysis Pipeline
+# Collaborative Brain Wave Analysis Pipeline
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, __Blocks__, are organized in sequential __Stages__. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
+
+![Pipeline structure in stages and blocks](../doc/images/pipeline_illustration.png "Pipeline Structure")
+*Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 ## Basic Structure
 * __Snakefile__ defines how the stages are executed within the full pipeline
@@ -21,7 +24,7 @@ Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the con
 
 To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
 
-[see pipeline config](configs/config_template.yaml)
+[see pipeline config template](configs/config_template.yaml)
 
 ## Execution
 The required Python packages are defined in the _environment.yaml_ file. We suggest to use [conda](https://docs.conda.io/en/latest/) for the environment management.

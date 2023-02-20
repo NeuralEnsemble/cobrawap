@@ -1,89 +1,130 @@
 # Collaborative Brain Wave Analysis Pipeline
+
+## Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, __Blocks__, are organized in sequential __Stages__. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
 ![Pipeline structure in stages and blocks](../doc/images/pipeline_illustration.png "Pipeline Structure")
 ***Figure: Pipeline Structure.*** *Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
-## Basic Structure
-* __Snakefile__ defines how the stages are executed within the full pipeline
-* __configs__
-    * __config.yaml__ defines the global parameter settings
-* __settings.py__ defines the `output_path` and `configs_dir`
-* __scripts/__ contains general utility scripts
-* __\<stageXY\>/__
-  * __Snakefile__ defines the blocks (=rules) and organizes their interaction
-  * __scripts/__ contains the analysis and plotting scripts (~1 script per block)
-  * __configs/__ contains the parameter settings for this stage
-    * __config_\<PROFILE\>.yaml__ ... with different settings for different profiles
-  * __README__ describes the stage's funtionality
+## Pipeline Organisation
+* __`Snakefile`__ defines how the stages are executed within the full pipeline
+* __`configs/`__
+    * __`config.yaml`__ defines the global parameter settings
+* __`settings.py`__ defines the `output_path` and `configs_dir`
+* __`scripts/`__ contains general utility scripts
+* __`stageXY/`__ each stage is a separate folder
+  * __`Snakefile`__ defines the blocks (=rules) and organizes their interaction
+  * __`scripts/`__ contains the analysis and plotting scripts (~1 script per block)
+  * __`configs/`__ contains the parameter settings for this stage
+    * __`config_{profile}.yaml`__ ... with different settings for different profiles
+  * __`README`__ describes the stage's funtionality
 
 ![Folder Structure](../doc/images/folder_structure.png "Folder Structure")
 ***Figure: Folder Structure.*** *The pipeline structure if reflected in the organisation of the folders. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and block is stored the same hierachy (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 ## Configuration
-All config files are given as templates. So, in order to get started you need to copy (and edit to your needs)
-_config_template.yaml_ to _config.yaml_ in the _pipeline/_ folder.
-Similarly, _settings_template.py_ needs to be copied to _setting.py_ and the containing `output_path` set fit your local system.
 
-To organize configurations for different datasets or applications over all stages, you can specify profiles. The `PROFILE` parameter in the pipeline config file selects the stage config files (*\<stage\>/configs/config_\<PROFILE\>.yaml*). The results of different profiles are also stored in separate locations (*output_path/\<PROFILE\>/...*)
+#### Config Files
+There is one config file per stage, and one additional top-level config file that selects the stages and defines pipeline-wide parameters.
+All config files are given as templates. So, in order to get started you need to copy/rename _`config_template.yaml`_ to _`config.yaml`_ in the corresponding folders, and edit to your needs.
+See pipeline config template: [_`config/config_template.yanml`_](configs/config_template.yaml)
 
-[see pipeline config template](configs/config_template.yaml)
+#### Local Config Directory
+Similarly, you need to rename _`settings_template.py`_ to _`settings.py`_ and edit the containing `output_path` to fit your local system.
+In the setting file, you can also optionally set a `configs_dir` path to define an alternative directory containing the config files. This alternative config directory mirror the stage folder structure of the pipeline and can be used to configure the pipeline for specific projects without touching the cobrawap folder itself.
+
+#### Config Profiles
+Config profiles make it possible to group specific parameter configurations for different datasets or applications across stages, and easily switch between them. You can set the `PROFILE` parameter in the top-level config file (or via the command line when running the pipeline). The corresponding pipeline output will be stored in _`{output_path}/{profile}/`_, and for each stage the specific config file _`{stage}/configs/config_{profile}.yaml`_ is used. 
+
+To reduce redundancy and the number of config files, profiles use a hierachical naming convention where each subgroup is seperated with an underscore `_`, for example, `config_ecog_session1_trial7.yaml`. When a stage does not contain this exact file name, it falls back onto the parent group (`config_ecog_session1.yaml`) and when it also doesn't exist onto its parent group (`config_ecog.yaml`) and so on. Thus, config specialization is only applied in the stages where it is needed. Furthermore, you can add variants to the profile name with a `|` delimiter to additionally switch analysis types, for example, _`config_caimg_session1|subsampled.yaml`_.
+The selection order is the following:
+
+```python
+    config_some_profile|variant.yaml
+    config_some|variant.yaml
+    config|variant.yaml
+    config_some_profile.yaml
+    config_some.yaml
+    config.yaml
+```
+
+#### Config Priority
+[_stage config < pipeline config < command line config_]
+
+Generally, all parameters are specified in the corresponding stage config files. However, any parameters can also be set in the top-level pipeline config. These then have priority and overwrite the values in all stages. This is useful, in particular, to specify the file formats (`NEO_FORMAT`, `PLOT_FORMAT`) and plotting parameters (`PLOT_TSTART`, `PLOT_TSTOP`, `PLOT_CHANNELS`). Additionally, you can set parameters via the command line when executing the pipeline with the flag `--config`. This is especially recommended for setting the profile (e.g. `--config PROFILE="ecog_session1_trial7|highbeta"`).
+
+
+## Installation
+
+#### Cloning The Repository
+
+```
+git clone git@github.com:INM-6/cobrawap.git
+```
+
+#### Environment
+The required Python packages are defined in the _`environment.yaml`_ file. 
+We suggest using [conda](https://docs.conda.io/en/latest/) for the environment management.
+
+```bash
+conda env create --file environment.yaml
+conda activate cobrawap
+```
+
 
 ## Execution
-The required Python packages are defined in the _environment.yaml_ file. We suggest to use [conda](https://docs.conda.io/en/latest/) for the environment management.
 
+Cobrawap relies on the functionality of Snakemake to execute the pipeline, and therefore supports its additional features and command line arguments (see its [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html).
+
+#### Running The Full Pipeline
+Make sue all paths are set (_`settings.py`_) and the pipeline and stage configs are specified.
+Then navigate to the _`cobrawap/pipeline/`_.
+When `PROFILE` is set accordingly in the pipeline config, the execution is a simple snakemake call:
+
+```bash
+snakemake --cores=1
 ```
-conda env create --file environment.yaml
-conda activate mowap
+
+Otherwise, the profile (and other parameters) can be directly set via the command line:
+
+```bash
+snakemake --config PROFILE={profile} --cores=1
 ```
 
-#### Full Pipeline
-Navigate to the _pipeline/configs_ folder. The _config.yaml_ file defines the global parameters.
-Most importantly here, the `STAGES` parameter defines which stages are executed, and the `PROFILE` parameter sets which configs files are used in the stages.
-For parameters that are defined in the global and the stage configs, the global configs have priority. So, parameters, e.g. for plotting, can be set for all stages.
-Once the configurations are handled the execution is a simple snakemake call:
+#### Running Specific Stages
+Navigate to the stage folder _`cobrawap/pipeline/<stage>/`_. As each stage is a subworkflow it can be executed with the same snakemake calls as the full pipline. However, you need to manually specify the config file and stage input:
 
-`snakemake --cores=1`
+```bash
+snakemake --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
+```
 
-Optionally, parameters can also be directly set via the command line (e.g to quickly change profiles):
+#### Running Specific Blocks
+Each block is represented by a snakemake rule. To run a specific rule you can explicitly request its output file:
 
-`snakemake --config PROFILE=<PROFILE> --cores=1`
+```bash
+snakemake /path/to/specific/file --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
+```
 
-#### Single Stage
-Navigate to the stage folder. As each stage is a subworkflow it can be executed with the same snakemake calls as the full pipline. Only the config file needs to be explicitly specified:
+Keep in mind that snakemake keeps track of the timestamps of scripts, input, and output files. So, a rule will only be run again if any of its inputs has changed, and if something in the creation of the input changed this might also trigger the re-execution of other blocks.
 
-`snakemake --configfile='configs/config_<PROFILE>.yaml' --cores=1`
-
-In case the `STAGE_INPUT` file is not found, it needs to be set manually either by adding the full path to the config file or via the command line:
-
-`snakemake --configfile='configs/config_<PROFILE>.yaml' --config STAGE_INPUT=/path/to/input/file --cores=1`
-
-#### Single Blocks
-Each block is represented by a snakemake rule. To run a specific rule you can request its output file (for multiple output files any one will do):
-
-`snakemake /path/to/specific/file --configfile='configs/config_<PROFILE>.yaml' --cores=1`
-
-However, keep in mind that snakemake keeps track of the timestamps of scripts, in- and output files. So, a rule will only be run again if any of its inputs has changed, and if something in the creation of the input changed this might trigger also other rules to be re-executed.
-
-_See the snakemake [documentation](https://snakemake.readthedocs.io/en/stable/executing/cli.html) for additional command line arguments_
 
 ## Interfaces
-#### Stage inputs
-The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs of the previous stage, respectively.
-Details on the input requirements for each stage are specified in the corresponding Readme.
 
-#### Stage outputs
-The stage output file is stored as _output_path/PROFILE/STAGE_NAME/STAGE_OUTPUT_, with `PROFILE`, `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from *settings.py*.
-Details on the output content and format for each stage are specified in the corresponding Readme.
+#### Stage Inputs
+The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs of the previous stage, respectively. Details on the input requirements for each stage are specified in the corresponding stage _`README`_ files.
 
-#### Block inputs
+#### Stage Outputs
+The stage output file is stored as _`{output_path}/{profile}/{STAGE_NAME}/{STAGE_OUTPUT}/`_, with `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from _`settings.py`_.
+Details on the output content and format for each stage are specified in the corresponding stage _`README`_ files.
+
+#### Block Inputs
 Input dependencies to blocks are handled by the corresponding rule in the *Snakefile* and are arranged according on the mechanics of the respective stage.
 
-#### Block outputs
-All output from blocks (data and figures) is stored hierarchically in _output_path/PROFILE/STAGE_NAME/\<block name\>/_.
+#### Block Outputs
+All output from blocks (data and figures) is stored in _`{output_path}/{profile}/{STAGE_NAME}/{block_name}/`_.
 
-## Reports
+<!-- ## Reports
 [*currently disabled because it creates performance issues on clusters*]
 
 Reports are summaries (html page) about the execution of a Snakefile containing the rule execution order, run-time statistics, parameter configurations, and all plotting outputs tagged with `report()` in the Snakefile.
@@ -92,4 +133,4 @@ When the whole pipeline is executed, the reports for each stage are automaticall
 To create a report for an individual stage, you can use the `report` flag.
 `snakemake --configfile='configs/config_XY.yaml' --report /path/to/report.html`
 
-Note that when using the option of setting `PLOT_CHANNELS` to `None` to plot a random channel, the report function might request a different plot than was previously created and will thus fail.
+Note that when using the option of setting `PLOT_CHANNELS` to `None` to plot a random channel, the report function might request a different plot than was previously created and will thus fail. -->

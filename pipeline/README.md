@@ -9,13 +9,17 @@ The individual processing and analysis steps, __Blocks__, are organized in seque
 * __Snakefile__ defines how the stages are executed within the full pipeline
 * __configs__
     * __config.yaml__ defines the global parameter settings
-* __settings.py__ defines the `output_path`
+* __settings.py__ defines the `output_path` and `configs_dir`
 * __scripts/__ contains general utility scripts
 * __\<stageXY\>/__
   * __Snakefile__ defines the blocks (=rules) and organizes their interaction
   * __scripts/__ contains the analysis and plotting scripts (~1 script per block)
   * __configs/__ contains the parameter settings for this stage
-    * __config_\<PROFILE\>.yaml__ with different settings for different profiles
+    * __config_\<PROFILE\>.yaml__ ... with different settings for different profiles
+  * __README__ describes the stage's funtionality
+
+![Folder Structure](../docs/images/folder_structure.png "Folder Structure")
+***Figure: Folder Structure.*** *The pipeline structure if reflected in the organisation of the folders. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and block is stored the same hierachy (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 ## Configuration
 All config files are given as templates. So, in order to get started you need to copy (and edit to your needs)

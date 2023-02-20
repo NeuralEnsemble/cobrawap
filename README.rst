@@ -8,7 +8,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 .. |logo| image:: doc/images/cobrawap_logo.png
             :height: 150px
             :alt: Cobrawap Logo
-            :align: top
+            :align: middle
 
 ..     :widths: auto
 

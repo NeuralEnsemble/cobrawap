@@ -10,7 +10,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 
    .. container:: rightside
 
-      ..figure:: doc/images/cobrawap_logo.png
+      .. figure:: doc/images/cobrawap_logo.png
            :scale: 50 %
            :alt: Cobrawap Logo
            :align: right
@@ -22,10 +22,8 @@ Concept
 =======
 
 .. figure:: doc/images/cobrawap_pipeline_approach.png
-   :height: 100px
-   :width: 200 px
-   :scale: 50 %
-   :alt: alternate text
+   :scale: 30 %
+   :alt: Schematic Pipeline Approach
    :align: center
 
 

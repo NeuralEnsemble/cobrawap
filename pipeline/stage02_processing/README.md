@@ -6,8 +6,8 @@
 ### Input
 Simultaneous neural activity recordings from electrodes/pixels, spatially arranged on a grid.
 
-* A `neo.Block`  and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored) with
-    * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the electrode/pixel grid of the channels;
+* A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored) with
+    * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the channel grid;
     * `annotations`: `spatial_scale` specifying the distance between electrodes/pixels as `quantities.Quantity` object.
 
 [_`check_input.py`_](scripts/check_input.py)

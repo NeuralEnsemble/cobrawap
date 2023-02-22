@@ -7,7 +7,7 @@
 ### Input
 <Describe type and format of the minmally required data and metadata.>
 
-[_`check_input.py`_](https://github.com/INM-6/cobrawap/blob/master/pipeline/stageXY_template/scripts/check_input.py)
+[should pass [_`check_input.py`_](scripts/check_input.py)]
 
 ### Output
 <Describe type and format of the stage output data and metadata, eventual intermediate output, and where it is stored.>

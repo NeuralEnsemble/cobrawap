@@ -10,11 +10,11 @@ Furthermore it requires a (custom) loading script to load the dataset and bring 
 
 ### Output
 * The input data and metadata represented in the [Neo](https://github.com/INM-6/python-neo) format. Concretely, a `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored) with at least
-    * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the electrode/pixel grid of the channels;
+    * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the channel grid;
     * `annotations`: `spatial_scale` specifying the distance between electrodes/pixels as `quantities.Quantity` object.
 * Any additional metadata and neo objects in the `neo.Block` passed along through the pipeline and may complement the final pipeline output.
-    
-[_`check_input.py`_](scripts/check_input.py)
+
+[should pass [_`check_input.py`_](scripts/check_input.py)]
 
 ### Required Data Capabilities
 _What kind of data can go into the pipeline?_

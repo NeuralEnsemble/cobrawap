@@ -6,7 +6,7 @@
 
 ### Input
 
-* A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored).
+A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored).
 
 [should pass [_`check_input.py`_](scripts/check_input.py)]
 

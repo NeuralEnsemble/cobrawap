@@ -6,15 +6,15 @@
 ### Input
 Simultaneous neural activity recordings from electrodes/pixels, spatially arranged on a grid.
 
-* A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored) with
-    * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the channel grid;
-    * `annotations`: `spatial_scale` specifying the distance between electrodes/pixels as `quantities.Quantity` object.
+A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored) with
+* `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the channel grid;
+   * `annotations`: `spatial_scale` specifying the distance between electrodes/pixels as `quantities.Quantity` object.
 
 [_`check_input.py`_](scripts/check_input.py)
 
 ### Output
 * The same structured `neo.Block` object containging an `AnalogSignal` object. The channel signals in `AnalogSignal` are processed by the specified blocks and parameters.
-* The respective block parameters are added as metadata to the annotations of the `AnalogSignal`.
+    * The respective block parameters are added as metadata to the annotations of the `AnalogSignal`.
 * The output `neo.Block` is stored in _`{output_path}/{profile}/stage02_processing/processed_data.{NEO_FORMAT}`_
 * The intermediate results and plots of each processing block are stored in the _`{output_path}/{profile}/stage02_processing/{block_name}/`_
 

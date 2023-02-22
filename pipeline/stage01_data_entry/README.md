@@ -3,12 +3,12 @@ This stage handles the loading and transformation of a dataset into the standard
 
 __INPUT__: A dataset of raw data of any recording modality and any format, along with information on the data acquisition and the experimental context.
 
-__OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, saved as a [Nix](https://github.com/G-Node/nix) file, containing one Segment with one AnalogSignal object and the minimal required metadata. _(Details down below)_
+__OUTPUT__: A curated dataset in [Neo](https://github.com/INM-6/python-neo) format, containing one Segment with one AnalogSignal object and the minimal required metadata. _(Details down below)_
 
 __BLOCKS__: Custom data curation specific to the dataset; check of the data format, metadata, and namespace
 
 ## Required Data Capabilities
-_What kind of data can go into the SWAP pipeline?_
+_What kind of data can go into the pipeline?_
 * It needs to exhibit propagating UP and DOWN states
 * Electrodes/Pixels must be regularly spaced on a rectangular grid (can include empty sites)
 

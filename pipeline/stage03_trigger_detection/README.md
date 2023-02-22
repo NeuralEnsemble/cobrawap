@@ -4,13 +4,13 @@
 
 [config template](configs/config_template.yaml)
 
-#### Input
+### Input
 
 * A `neo.Block` and `Segment` object containing an `AnalogSignal` object containing all signal channels (additional `AnalogSignal` objects are ignored).
 
 [should pass [_`check_input.py`_](scripts/check_input.py)]
 
-#### Output
+### Output
 
 * The same input data object, but extended with a `neo.Event` object named _'transitions'_, containing
     * times: time stamps where a potential wavefront, i.e., state transition, was detected,
@@ -20,7 +20,7 @@
 * The output `neo.Block` is stored in _`{output_path}/{profile}/stage03_trigger_detection/trigger_times.{NEO_FORMAT}`_
 * The intermediate results and plots of each processing block are stored in the _`{output_path}/{profile}/stage03_trigger_detection/{block_name}/`_
 
-## Usage
+### Usage
 In this stage offers alternative trigger detection methods (_choose one_), which can be selected via the `DETECTION_BLOCK` parameter.
 There are additional filter blocks to post-process the detected triggers, they can be selected (_choose any_) via the `TRIGGER_FILTER` parameter.
 

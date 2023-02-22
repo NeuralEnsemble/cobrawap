@@ -4,7 +4,7 @@
 
 [config template](configs/config_template.yaml)
 
-#### Input
+### Input
 A `neo.Block` and `Segment` object containing
 * an `AnalogSignal` object with all signal channels with
     * `array_annotations`: `x_coords` and `y_coords` specifying the integer position on the channel grid;
@@ -13,7 +13,7 @@ A `neo.Block` and `Segment` object containing
     * labels: `UP` (`DOWN` or other are ignored),
     * array_annotations: `channels`, `x_coords`, `y_coords`
 
-#### Output
+### Output
 * The same input data object, but extended with a `neo.Event` object named _'wavefronts'_, containing
     * times: `UP` transitions times from 'transitions' event,
     * labels: wave ids,
@@ -24,7 +24,7 @@ A `neo.Block` and `Segment` object containing
 * The output `neo.Block` is stored in _`{output_path}/{profile}/stage04_wave_detection/waves.{NEO_FORMAT}`_
 * The intermediate results and plots of each processing block are stored in the _`{output_path}/{profile}/stage04_wave_detection/{block_name}/`_
 
-## Usage
+### Usage
 In this stage offers alternative wave detection methods (_choose one_), which can be selected via the `DETECTION_BLOCK` parameter.
 There are blocks to add additional properties, to be selected (_choose any_) via the `ADDITIONAL_PROPERTIES` parameter.
 

@@ -197,7 +197,7 @@ def imagesequence_to_analogsignal(imgseq):
             if not (x_coords == asig.array_annotations['x_coords']).all() \
             or not (y_coords == asig.array_annotations['y_coords']).all():
                 raise IndexError("Transformation of array_annotations for the " 
-                               + "analogsignal went wrong!")
+                               + "AnalogSignal went wrong!")
         except ValueError:
             warnings.warn("ImageSequence <-> AnalogSignal transformation "
                         + "changed the signal shape!")

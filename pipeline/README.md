@@ -63,7 +63,7 @@ In particular, you need to configure entry of your dataset into pipeline, by edi
   * __`README`__ describes the stage's funtionality
 
 ![Folder Structure](../doc/images/folder_structure.png "Folder Structure")
-***Figure: Folder Structure.*** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and block is stored the same hierachy (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
+***Figure: Folder Structure.*** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierachy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 ## Configuration
 
@@ -110,7 +110,7 @@ When `PROFILE` is set accordingly in the pipeline config, the execution is a sim
 snakemake --cores=1
 ```
 
-Otherwise, the profile (and other parameters) can be directly set via the command line:
+Otherwise, the profile (and other parameters) can be set directly via the command line:
 
 ```bash
 snakemake --config PROFILE={profile} --cores=1
@@ -133,7 +133,12 @@ snakemake /path/to/specific/file --configfile='configs/config_{profile}.yaml' --
 Keep in mind that snakemake keeps track of the timestamps of scripts, input, and output files. So, a rule will only be run again if any of its inputs has changed, and if something in the creation of the input changed this might also trigger the re-execution of other blocks.
 
 
-## Interfaces
+## Pipeline Interfaces
+
+#### Pipeline Inputs
+
+#### Pipeline Outputs
+
 
 #### Stage Inputs
 The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs )`STAGE_OUTPUT`) of the previous stage, respectively. Details on the input requirements for each stage are specified in the corresponding stage _`README`_ files and checked automatically via a _`check_input`_ block in each stage.

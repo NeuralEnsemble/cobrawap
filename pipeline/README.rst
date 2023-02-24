@@ -7,13 +7,11 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
-.. image:: ../doc/images/pipeline_illustration.png
+.. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :align: center
   :width: 60%
-  :height: 60%
-
-  .. :caption: **Figure: Pipeline Structure.** *Each column represents a __stage__ and each bullet represents a __block__. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
+  :caption: **Figure: Pipeline Structure.** *Each column represents a __stage__ and each bullet represents a __block__. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 Installation
 ============
@@ -25,15 +23,15 @@ Getting The Repository
 ======================
 You can either clone cobrawap directly to your local machine,
 
-```
-git clone git@github.com:INM-6/cobrawap.git
-```
+.. code-block:: bash
+  git clone git@github.com:INM-6/cobrawap.git
+
 
 or fork it to your own Github space, to be able to make version-controled changes to the pipeline implementation.
 
-```
-git clone git@github.com:<your-github-handle>/cobrawap.git
-```
+.. code-block:: bash
+  git clone git@github.com:<your-github-handle>/cobrawap.git
+
 
 However, idenpendently of whether you are working with the origin or a forked version, we recommend to add the Cobrawap repository as a [submodule](https://github.blog/2016-02-01-working-with-submodules/) to the project repository in which it the pipeline (or pipeline components) are employed and configured.
 

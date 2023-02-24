@@ -24,10 +24,11 @@ Getting The Repository
 You can either clone cobrawap directly to your local machine,
 
 .. code-block:: bash
-  git clone git@github.com:INM-6/cobrawap.git
+  
+    git clone git@github.com:INM-6/cobrawap.git
 
 
-or fork it to your own Github space, to be able to make version-controled changes to the pipeline implementation.
+or fork it to your own Github space, to be able to make version-controlled changes to the pipeline implementation.
 
 .. code-block:: bash
   git clone git@github.com:<your-github-handle>/cobrawap.git

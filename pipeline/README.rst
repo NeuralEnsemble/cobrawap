@@ -31,26 +31,28 @@ You can either clone cobrawap directly to your local machine,
 or fork it to your own Github space, to be able to make version-controlled changes to the pipeline implementation.
 
 .. code-block:: bash
-  git clone git@github.com:<your-github-handle>/cobrawap.git
+
+    git clone git@github.com:<your-github-handle>/cobrawap.git
 
 
 However, idenpendently of whether you are working with the origin or a forked version, we recommend to add the Cobrawap repository as a [submodule](https://github.blog/2016-02-01-working-with-submodules/) to the project repository in which it the pipeline (or pipeline components) are employed and configured.
 
-```
-cd <your-wave-analysis-project>
 
-git submodule add git@github.com:<your-github-handle>/cobrawap.git
-```
+.. code-block:: bash
+
+    cd <your-wave-analysis-project>
+    git submodule add git@github.com:<your-github-handle>/cobrawap.git
 
 Creating The Environment
 ========================
 The required Python packages are defined in the _`environment.yaml`_ file. 
 We suggest using [conda](https://docs.conda.io/en/latest/) for the environment management.
 
-```
-conda env create --file environment.yaml
-conda activate cobrawap
-```
+.. code-block:: bash
+
+    conda env create --file environment.yaml
+    conda activate cobrawap
+
 
 Setting Up The Pipeline
 =======================
@@ -98,14 +100,15 @@ Config profiles make it possible to group specific parameter configurations for 
 To reduce redundancy and the number of config files, profiles use a hierachical naming convention where each subgroup is seperated with an underscore `_`, for example, `config_ecog_session1_trial7.yaml`. When a stage does not contain this exact file name, it falls back onto the parent group (`config_ecog_session1.yaml`) and when it also doesn't exist onto its parent group (`config_ecog.yaml`) and so on. Thus, config specialization is only applied in the stages where it is needed. Furthermore, you can add variants to the profile name with a `|` delimiter to additionally switch analysis types, for example, _`config_caimg_session1|subsampled.yaml`_.
 The selection order is the following:
 
-```
+.. code-block:: bash
+
     config_some_profile|variant.yaml
     config_some|variant.yaml
     config|variant.yaml
     config_some_profile.yaml
     config_some.yaml
     config.yaml
-```
+
 
 Config Priority
 ---------------
@@ -124,31 +127,35 @@ Make sue all paths are set (_`settings.py`_) and the pipeline and stage configs 
 Then navigate to the _`cobrawap/pipeline/`_.
 When `PROFILE` is set accordingly in the pipeline config, the execution is a simple snakemake call:
 
-```
-snakemake --cores=1
-```
+.. code-block:: bash
+
+    snakemake --cores=1
+
 
 Otherwise, the profile (and other parameters) can be set directly via the command line:
 
-```
-snakemake --config PROFILE={profile} --cores=1
-```
+.. code-block:: bash
+
+    snakemake --config PROFILE={profile} --cores=1
+
 
 Running Specific Stages
 -----------------------
 Navigate to the stage folder _`cobrawap/pipeline/<stage>/`_. As each stage is a subworkflow it can be executed with the same snakemake calls as the full pipline. However, you need to manually specify the config file and stage input:
 
-```
-snakemake --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
-```
+.. code-block:: bash
+
+    snakemake --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
+
 
 Running Specific Blocks
 -----------------------
 Each block is represented by a snakemake rule. To run a specific rule you can explicitly request its output file:
 
-```
-snakemake /path/to/specific/file --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
-```
+.. code-block:: bash
+
+    snakemake /path/to/specific/file --configfile='configs/config_{profile}.yaml' --config PROFILE={profile} STAGE_INPUT=/path/to/stage/input/file --cores=1
+
 
 Keep in mind that snakemake keeps track of the timestamps of scripts, input, and output files. So, a rule will only be run again if any of its inputs has changed, and if something in the creation of the input changed this might also trigger the re-execution of other blocks.
 

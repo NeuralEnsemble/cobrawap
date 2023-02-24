@@ -9,16 +9,17 @@ The individual processing and analysis steps, **Blocks**, are organized in seque
 
 .. image:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
-  :figclass: align-center
+  :align: center
   :width: 60%
   :height: 60%
-  :caption: **Figure: Pipeline Structure.** *Each column represents a __stage__ and each bullet represents a __block__. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
+
+  .. :caption: **Figure: Pipeline Structure.** *Each column represents a __stage__ and each bullet represents a __block__. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 Installation
 ============
 Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
 
-*Other install options and online execution via* `*EBRAINS* <https://ebrains.eu/>`_ *will follow.*
+*Other install options and online execution via* `EBRAINS <https://ebrains.eu/>`_ *will follow.*
 
 Getting The Repository
 ======================

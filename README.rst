@@ -3,14 +3,13 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
 .. image:: doc/images/cobrawap_logo.png
-            :height: 150px
-            :alt: Cobrawap Logo
-            :align: left
+   :height: 150px
+   :alt: Cobrawap Logo
+   :align: left
 
  This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
-        
 
-`Link to pipeline README <https://github.com/INM-6/cobrawap/tree/master/pipeline>`_ | `Link to introductive video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
+`Link to pipeline README <./pipeline/README.md>`_ | `Link to introduction video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
 
 Concept
 =======
@@ -39,7 +38,7 @@ The current prototype includes
 
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/
 
-For further developments and feature requests refer to the `Github Issues <https://github.com/INM-6/cobrawap/issues>_`.
+For further developments and feature requests refer to the `Github Issues <https://github.com/INM-6/cobrawap/issues>`_.
 
 
 Citation

@@ -1,0 +1,2 @@
+
+.. include:: ../../pipeline/README.rst

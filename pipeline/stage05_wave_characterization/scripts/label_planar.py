@@ -1,3 +1,9 @@
+"""
+Label Planar
+------------
+Calculate the planarity each waves.
+"""
+
 import argparse
 import os
 import numpy as np

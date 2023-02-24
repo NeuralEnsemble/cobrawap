@@ -15,7 +15,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 Concept
 =======
 
-.. figure:: doc/images/cobrawap_pipeline_approach.png
+.. image:: doc/images/cobrawap_pipeline_approach.png
    :height: 300px
    :alt: Schematic Pipeline Approach
    :align: center

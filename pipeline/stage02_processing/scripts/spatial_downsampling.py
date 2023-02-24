@@ -1,6 +1,9 @@
 """
-Spatial downsampling of the input dataset
+Spatial downsampling
+--------------------
+Downsample the input data by combining and averaging neighboring channels.
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse

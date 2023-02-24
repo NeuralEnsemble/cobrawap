@@ -18,7 +18,6 @@ if __name__ == '__main__':
                      help="path to input data in neo format")
     CLI.add_argument("--output",  nargs='?', type=Path, required=True,
                      help="path of output file")
-
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

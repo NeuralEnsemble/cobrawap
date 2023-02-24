@@ -17,8 +17,8 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Modular Wave Analysis Pipeline'
-copyright = '2021, Robin Gutzen'
+project = 'Collaborative Brain Wave Analaysis Pipeline (Cobrawap)'
+copyright = '2023, Robin Gutzen'
 author = 'Robin Gutzen'
 
 # The full version, including alpha/beta/rc tags
@@ -32,7 +32,8 @@ release = '0.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    # 'sphinxarg.ext'
+    'sphinx.ext.autosummary',
+    # 'sphinxarg.ext',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -54,7 +55,7 @@ html_theme = 'alabaster'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 html_sidebars = {
    '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],

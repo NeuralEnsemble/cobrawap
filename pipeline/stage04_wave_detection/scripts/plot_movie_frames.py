@@ -1,3 +1,9 @@
+"""
+Plot Movie Frames
+-----------------
+Create frames showing the input data on the spatial grid for each time step.
+"""
+
 import os
 import sys
 import argparse

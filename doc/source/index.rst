@@ -3,14 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to the Collaborative Brain Wave Analysis Pipeline's documentation!
-==========================================================================
+Cobrawap - Collaborative Brain Wave Analysis Pipeline
+=====================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   stage01_data_entry
 
 Indices and tables
 ==================
@@ -18,5 +16,10 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. :doc: stages
+..    stages.rst
+..    toctrees
+..       block.rst
 
 .. include:: ../../README.rst

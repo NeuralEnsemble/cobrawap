@@ -1,16 +1,12 @@
 """
 Plot traces
 -----------
-
-description...
-
-Input: neo.Block with ...
-
-Output: neo.Block + ...
-
+Plots excerpts of the input data with its corresponding metadata.
 """
+
 import numpy as np
 import argparse
+from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 from utils.io import load_neo, save_plot
@@ -53,9 +49,9 @@ def plot_traces(asig, channels):
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
+    CLI.add_argument("--data",    nargs='?', type=Path, required=True,
                      help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=str, required=True,
+    CLI.add_argument("--output",  nargs='?', type=Path, required=True,
                      help="path of output figure")
     CLI.add_argument("--t_start", nargs='?', type=float, default=0,
                      help="start time in seconds")

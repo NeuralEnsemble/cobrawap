@@ -21,6 +21,9 @@ ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 OUTPUT_DIR = Path(output_path) / config.PROFILE / config.STAGE_NAME
 SCRIPTS = Path('scripts')
 
+if not '.' in config.STAGE_OUTPUT:
+        config.STAGE_OUTPUT += config.NEO_FORMAT
+
 if config.STAGE_INPUT is not None:
     config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 
                                                config.STAGE_INPUT)
@@ -44,6 +47,7 @@ def prev_rule_output(wildcards, rule_list,
         return output(0)
     return default_input
 
+
 rule template:
     input:
         data = 'input.data', # replace
@@ -54,15 +58,17 @@ rule template:
         Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
         img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
     message:
-        "rule {rule}:\n"
+        "RULE {rule}:\n"
         "    input: {input}\n"
         "    output: {output}\n"
         "    jobid: {jobid}\n"
         "    wildcards: {wildcards}\n"
         "    threads: {threads}\n"
         "    resources: {resources}\n"
-        "    commandline arguments: "
-        "--data {input.data:q} --output {output[0]:q} {params}\n"
+        "SHELL COMMAND: \n"
+        "python3 {input.script:q} --data {input.data:q}\n"
+        "                         --output {output[0]:q}\n"
+        "                         {params}\n"
     shell:
         """
         {ADD_UTILS}
@@ -83,8 +89,20 @@ rule template_plus_plot_script:
         Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
         img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
     message:
-        "\ncommandline arguments:\n"
-        "--data {input.data:q} --output {output:q} {params}\n"
+        "RULE {rule}:\n"
+        "    input: {input}\n"
+        "    output: {output}\n"
+        "    jobid: {jobid}\n"
+        "    wildcards: {wildcards}\n"
+        "    threads: {threads}\n"
+        "    resources: {resources}\n"
+        "SHELL COMMAND: \n"
+        "python3 {input.script:q} --data {input.data:q}\n"
+        "                         --output {output:q}\n"
+        "                         {params}\n"
+        "python3 {input.plot_script:q} --data {input.data:q}\n"
+        "                              --output {output.img:q}\n"
+        "                              {params}\n"
     shell:
         """
         {ADD_UTILS}
@@ -114,13 +132,13 @@ rule check_input:
 
 rule template_all:
     input:
-        check = os.path.join(OUTPUT_DIR, 'input.check'),
+        check = OUTPUT_DIR / 'input.check',
         data = 'stage_output.data', # replace
-        img = os.path.join(OUTPUT_DIR, 'results_figure.plot') # replace
+        img = OUTPUT_DIR / 'results_figure.plot' # replace
     params:
         command = 'ln -s' if config.USE_LINK_AS_STAGE_OUTPUT else 'cp'
     output:
-        data = os.path.join(OUTPUT_DIR, config.STAGE_OUTPUT)
+        data = OUTPUT_DIR / config.STAGE_OUTPUT
     shell:
         """
         {params.command} "{input.data}" "{output.data}"

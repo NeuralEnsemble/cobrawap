@@ -1,6 +1,10 @@
-import neo
+"""
+Velocity
+--------
+Calculate the wave propagation velocity for each wave.
+"""
+
 import numpy as np
-import quantities as pq
 import matplotlib.pyplot as plt
 import os
 import argparse

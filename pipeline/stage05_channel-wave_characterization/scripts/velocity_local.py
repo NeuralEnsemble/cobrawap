@@ -1,5 +1,7 @@
 """
-Docstring
+Velocity Local
+--------------
+Calculate the wave propagation velocity for each wave and channel.
 """
 
 import argparse

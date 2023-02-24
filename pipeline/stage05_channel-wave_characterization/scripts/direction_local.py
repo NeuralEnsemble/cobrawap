@@ -1,5 +1,8 @@
 """
-Docstring
+Direction Local
+---------------
+Calculate the wave directions per wave and channel, 
+based on the spatial gradient of wave trigger times.
 """
 
 import argparse

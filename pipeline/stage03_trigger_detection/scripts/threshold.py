@@ -1,3 +1,10 @@
+"""
+Threshold
+---------
+Detect trigger times (i.e., state transition / local wavefronts onsets) 
+by applying a threshold to each channel signal.
+"""
+
 import neo
 import numpy as np
 import argparse

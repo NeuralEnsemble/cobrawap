@@ -1,6 +1,9 @@
 """
-Selects a region of interest (ROI) by threshold the intensity signal.
+ROI Selection
+-------------
+Select a region of interest (ROI) by thresholding the intensity signal.
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import measure

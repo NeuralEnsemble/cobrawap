@@ -1,12 +1,18 @@
+"""
+Wave Mode Clustering
+--------------------
+Cluster similar waves into modes. 
+
+Adapted from [Ruiz-Mejias et al. (2011)](https://doi.org/10.1523/JNEUROSCI.2517-15.2016)
+"""
+
 import argparse
-import sys
 import neo
 import numpy as np
 import pandas as pd
 from warnings import warn
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-# from sklearn.pipeline import make_pipeline
 from sklearn.cluster import KMeans
 from skimage.transform import resize
 from scipy.interpolate import RBFInterpolator

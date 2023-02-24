@@ -1,3 +1,10 @@
+"""
+Calc Threshdold fitted
+----------------------
+Determine the threshold between Up and Down states for each channel
+by fitting the respective amplitude distributions.
+"""
+
 import numpy as np
 import argparse
 import os

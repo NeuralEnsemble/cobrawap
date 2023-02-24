@@ -1,3 +1,9 @@
+"""
+Plot Critical Points
+--------------------
+Plot the critical points in the optical flow vector field.
+"""
+
 import argparse
 import numpy as np
 from copy import copy

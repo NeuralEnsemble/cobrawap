@@ -1,9 +1,12 @@
 """
+Check whether the input data representation adheres to the stage's requirements.
 
+Additionally prints a short summary of the data attributes.
 """
+
 import numpy as np
 import argparse
-import quantities as pq
+from pathlib import Path
 from utils.io import load_neo
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
@@ -11,7 +14,7 @@ from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_anal
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
                    formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=Path, required=True,
                      help="path to input data in neo format")
     args, unknown = CLI.parse_known_args()
 

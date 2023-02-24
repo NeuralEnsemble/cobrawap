@@ -7,7 +7,7 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
-.. figure:: ../doc/images/pipeline_illustration.png
+.. image:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :figclass: align-center
   :width: 60%
@@ -18,7 +18,7 @@ Installation
 ============
 Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
 
-*Other install options and online execution via `EBRAINS <https://ebrains.eu/>`_ will follow.*
+*Other install options and online execution via* `*EBRAINS* <https://ebrains.eu/>`_ *will follow.*
 
 Getting The Repository
 ======================

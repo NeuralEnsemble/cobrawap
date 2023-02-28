@@ -7,7 +7,7 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical calcium imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
-
+.. _fig pipeline_structure:
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :name: fig:pipeline_structure
@@ -79,10 +79,10 @@ Pipeline Organisation
       - ``config_{profile}.yaml`` ... with different settings for different profiles
    - ``README`` describes the stage's functionality
 
+.. _fig folder_structure:
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
     :name: fig:folder_structure
-
 
 **Figure: Folder Structure.** *The pipeline structure is reflected in the organization of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierarchy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
@@ -179,7 +179,7 @@ The data input to the pipeline is the input to stage01_data_entry. The path to t
 
 Pipeline Outputs
 ----------------
-The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see `Figure: Folder Structure <fig:folder_structure>`_).
+The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref: `Figure: Folder Structure <fig folder_structure>`).
 
 Stage Inputs
 ------------

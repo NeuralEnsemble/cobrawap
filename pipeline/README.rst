@@ -79,10 +79,10 @@ Pipeline Organization
       - ``config_{profile}.yaml`` ... with different settings for different profiles
    - ``README`` describes the stage's functionality
 
-.. _fig folder_structure:
+.. _fig-folder_structure:
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
-    :name: fig folder_structure
+    :name: fig-folder_structure
 
 **Figure: Folder Structure.** *The pipeline structure is reflected in the organization of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierarchy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
@@ -179,9 +179,9 @@ The data input to the pipeline is the input to stage01_data_entry. The path to t
 
 Pipeline Outputs
 ----------------
-The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<fig folder_structure>`).
+The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<fig-folder_structure>`).
 
-:ref:`Pipeline Organization`
+`Pipeline Organization <./pipeline#pipeline-organization>`
 
 Stage Inputs
 ------------

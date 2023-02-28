@@ -7,11 +7,13 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical Calcium Imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
+.. image:: ../doc/images/pipeline_illustration.png
+
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :align: center
   :width: 60%
-  :caption: **Figure: Pipeline Structure.** *Each column represents a __stage__ and each bullet represents a __block__. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
+  :caption: **Figure: Pipeline Structure.** _Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset._
 
 Installation
 ============
@@ -35,7 +37,7 @@ or fork it to your own Github space, to be able to make version-controlled chang
     git clone git@github.com:<your-github-handle>/cobrawap.git
 
 
-However, idenpendently of whether you are working with the origin or a forked version, we recommend to add the Cobrawap repository as a [submodule](https://github.blog/2016-02-01-working-with-submodules/) to the project repository in which it the pipeline (or pipeline components) are employed and configured.
+However, idenpendently of whether you are working with the origin or a forked version, we recommend to add the Cobrawap repository as a `submodule <https://github.blog/2016-02-01-working-with-submodules/>`_ to the project repository in which it the pipeline (or pipeline components) are employed and configured.
 
 
 .. code-block:: bash
@@ -46,7 +48,7 @@ However, idenpendently of whether you are working with the origin or a forked ve
 Creating The Environment
 ========================
 The required Python packages are defined in the _`environment.yaml`_ file. 
-We suggest using [conda](https://docs.conda.io/en/latest/) for the environment management.
+We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment management.
 
 .. code-block:: bash
 
@@ -56,25 +58,27 @@ We suggest using [conda](https://docs.conda.io/en/latest/) for the environment m
 
 Setting Up The Pipeline
 =======================
-To set up the pipeline for use you first need to set your path information in _`cobrawap/settings_template.py`_ and rename it to _`settings.py`_.
-Then you need to set up the pipeline and stage configuration from the respective _`config_template.yaml`_ files, by editing and renaming them to _`config.yaml`_, either within the cobrawap folder or a config separate folder (`configs_dir` in _`settings.py`_). Details on the pipeline configuration can be found below.
+To set up the pipeline for use you first need to set your path information in *`cobrawap/settings_template.py`* and rename it to *`settings.py`*.
+Then you need to set up the pipeline and stage configuration from the respective *`config_template.yaml`* files, by editing and renaming them to *`config.yaml`*, either within the cobrawap folder or a config separate folder (`configs_dir` in *`settings.py`*). Details on the pipeline configuration can be found below.
 
-In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the [stage01 README](https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md).
+In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
 
 
 Pipeline Organisation
 =====================
-* __`Snakefile`__ defines how the stages are executed within the full pipeline
-* __`configs/`__
-    * __`config.yaml`__ defines the global parameter settings
-* __`settings.py`__ defines the `output_path` and `configs_dir`
-* __`scripts/`__ contains general utility scripts
-* __`stageXY/`__ each stage is a separate folder
-  * __`Snakefile`__ defines the blocks (=rules) and organizes their interaction
-  * __`scripts/`__ contains the analysis and plotting scripts (~1 script per block)
-  * __`configs/`__ contains the parameter settings for this stage
-    * __`config_{profile}.yaml`__ ... with different settings for different profiles
-  * __`README`__ describes the stage's funtionality
+* **`Snakefile`** defines how the stages are executed within the full pipeline
+* **`configs/`**
+    * **`config.yaml`** defines the global parameter settings
+* **`settings.py`** defines the `output_path` and `configs_dir`
+* **`scripts/`** contains general utility scripts
+* **`stageXY/`** each stage is a separate folder
+  * **`Snakefile`** defines the blocks (=rules) and organizes their interaction
+  * **`scripts/`** contains the analysis and plotting scripts (~1 script per block)
+  * **`configs/`** contains the parameter settings for this stage
+    * **`config_{profile}.yaml`** ... with different settings for different profiles
+  * **`README`** describes the stage's funtionality
+
+.. image:: ../doc/images/folder_structure.png
 
 ![Folder Structure](../doc/images/folder_structure.png "Folder Structure")
 ***Figure: Folder Structure.*** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierachy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
@@ -170,12 +174,12 @@ Pipeline Outputs
 
 Stage Inputs
 ------------
-The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs )`STAGE_OUTPUT`) of the previous stage, respectively. Details on the input requirements for each stage are specified in the corresponding stage _`README`_ files and checked automatically via a _`check_input`_ block in each stage.
+The path to the input file for each stage is defined in the config parameter `STAGE_INPUT`. When executing the full pipeline the stage inputs are automatically set to the outputs (`STAGE_OUTPUT`) of the previous stage, respectively. Details on the input requirements for each stage are specified in the corresponding stage _`README`_ files and checked automatically via a *`check_input`* block in each stage.
 
 Stage Outputs
 -------------
-The stage output file is stored as _`{output_path}/{profile}/{STAGE_NAME}/{STAGE_OUTPUT}/`_, with `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from _`settings.py`_.
-Details on the output content and format for each stage are specified in the corresponding stage _`README`_ files.
+The stage output file is stored as *`{output_path}/{profile}/{STAGE_NAME}/{STAGE_OUTPUT}/`*, with `STAGE_NAME`, and `STAGE_OUTPUT` taken from the corresponding config file and `output_path` from *`settings.py`*.
+Details on the output content and format for each stage are specified in the corresponding stage *`README`* files.
 
 Block Inputs
 ------------
@@ -183,7 +187,7 @@ Input dependencies to blocks are handled by the corresponding rule in the *Snake
 
 Block Outputs
 -------------
-All output from blocks (data and figures) is stored in _`{output_path}/{profile}/{STAGE_NAME}/{block_name}/`_.
+All output from blocks (data and figures) is stored in *`{output_path}/{profile}/{STAGE_NAME}/{block_name}/`*.
 
 <!-- ## Reports
 [*currently disabled because it creates performance issues on clusters*]

@@ -2,6 +2,9 @@
 Getting Started
 ===============
 
+.. toctree::
+ :maxdepth: 2
+
 Modular Pipeline Approach
 =========================
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical calcium imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
@@ -19,14 +22,14 @@ Installation
 ============
 Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
 
-*Other install options and online execution via* |EBRAINS| *will follow.*
+*Other install options and online execution via* |EBRAINS|_ *will follow.*
 
 .. |EBRAINS| replace:: *EBRAINS*
 .. _EBRAINS: https://ebrains.eu/
 
 
 Getting The Repository
-======================
+----------------------
 You can either clone cobrawap directly to your local machine,
 
 .. code-block:: bash
@@ -50,7 +53,7 @@ However, idenpendently of whether you are working with the origin or a forked ve
     git submodule add git@github.com:<your-github-handle>/cobrawap.git
 
 Creating The Environment
-========================
+------------------------
 The required Python packages are defined in the ``environment.yaml`` file. 
 We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment management.
 
@@ -61,7 +64,7 @@ We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment
 
 
 Setting Up The Pipeline
-=======================
+-----------------------
 To set up the pipeline for use you first need to set your path information in ``cobrawap/settings_template.py`` and rename it to ``settings.py``.
 Then you need to set up the pipeline and stage configuration from the respective ``config_template.yaml`` files, by editing and renaming them to ``config.yaml``, either within the cobrawap folder or a config separate folder (``configs_dir`` in ``settings.py``). Details on the pipeline configuration can be found below.
 

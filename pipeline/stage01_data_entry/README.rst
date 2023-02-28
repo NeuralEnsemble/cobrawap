@@ -14,7 +14,9 @@ Furthermore it requires a (custom) loading script to load the dataset and bring 
 
 Output
 ======
-The input data and metadata represented in the `Neo <https://github.com/INM-6/python-neo>`_ format. Concretely, a ``neo.Block`` and ``Segment`` object containing an ``AnalogSignal`` object containing all signal channels (additional ``AnalogSignal`` objects are ignored) with at least
+The input data and metadata represented in the Neo_ format. Concretely, a ``neo.Block`` and ``Segment`` object containing an ``AnalogSignal`` object containing all signal channels (additional ``AnalogSignal`` objects are ignored) with at least
+
+.. _Neo: https://neo.readthedocs.io/
 
 * *array_annotations*: ``x_coords`` and ``y_coords`` specifying the integer position on the channel grid;
 * *annotations*: ``spatial_scale`` specifying the distance between electrodes/pixels as ``quantities.Quantity`` object.
@@ -53,7 +55,7 @@ Required Metadata
 Entering Datasets Into Cobrawap
 ===============================
 Datasets can be very different. Therefore, it usually requires a custom loading script to access the data and bring it into a standard representation that can be used by the pipeline.
-Having the data and metadata already in a standard format (e.g., `Neo <https://neo.readthedocs.io/>`_) as used within the pipeline) makes this step easier. Similar datasets which, for example, come from the same experiment may be able to use the same loading script.
+Having the data and metadata already in a standard format (e.g., Neo_) as used within the pipeline) makes this step easier. Similar datasets which, for example, come from the same experiment may be able to use the same loading script.
 
 1. Put the dataset somewhere accessible.
     It should be accessible from where the pipeline is intended to run (i.e. local machine, compute cluster, ...)

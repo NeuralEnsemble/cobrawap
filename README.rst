@@ -2,7 +2,7 @@
 Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
-.. image:: doc/images/cobrawap_logo.png
+.. image:: https://github.com/rgutzen/cobrawap/blob/master/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
    :align: left
@@ -14,7 +14,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 Concept
 =======
 
-.. image:: doc/images/cobrawap_pipeline_approach.png
+.. image:: https://github.com/rgutzen/cobrawap/blob/master/images/cobrawap_pipeline_approach.png
    :height: 300px
    :alt: Schematic Pipeline Approach
    :align: center
@@ -27,8 +27,8 @@ Making analysis scripts available alongside results and datasets is good. What i
 Here, we work to bring together existing analysis methods, tools, and data standards and interfacing them in the shape of a pipeline for the analysis and characterization of cortical wave-like activity and UP/DOWN state detection. This work should serve both as a template for building reusable analysis pipelines in general, as well as a space to gather the various data types exhibiting wave activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, such a pipeline promises to facilitate a rigorous comparison between datasets, model validation, and method benchmarking.
 
 
-The current prototype includes
-------------------------------
+**The current prototype includes**
+
 * a hierarchical and modular pipeline framework based on the Snakemake_ workflow management tool
 * reusable method implementations (blocks and stages) for standalone applications or integration into workflows
 * analysis methods for electrophysiological and optical data on the characterization of cortical wave activity and local oscillations

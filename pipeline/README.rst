@@ -15,9 +15,7 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical calcium imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
-.. _fig-pipeline_structure:
-
-.. figure:: ../doc/images/pipeline_illustration.png
+.. figure:: https://github.com/rgutzen/cobrawap/blob/master/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :name: fig-pipeline_structure
 
@@ -90,9 +88,7 @@ Organization
       - ``config_{profile}.yaml`` ... with different settings for different profiles
    - ``README`` describes the stage's functionality
 
-.. _fig-folder_structure:
-
-.. figure:: ../doc/images/folder_structure.png
+.. figure:: https://github.com/rgutzen/cobrawap/blob/master/images/folder_structure.png
     :alt: Folder Structure
     :name: fig-folder_structure
 
@@ -142,7 +138,7 @@ Generally, all parameters are specified in the corresponding stage config files.
 
 Execution
 =========
-Cobrawap relies on the functionality of Snakemake to execute the pipeline, and therefore supports its additional features and command line arguments (see its `documentation <https://snakemake.readthedocs.io/en/stable/executing/cli.html>`_.
+Cobrawap relies on the functionality of Snakemake to execute the pipeline, and therefore supports its additional features and command line arguments (see its `documentation <https://snakemake.readthedocs.io/en/stable/executing/cli.html>`_).
 
 Running The Full Pipeline
 -------------------------
@@ -183,8 +179,9 @@ Each block is represented by a snakemake rule. To run a specific rule you can ex
 Keep in mind that snakemake keeps track of the timestamps of scripts, input, and output files. So, a rule will only be run again if any of its inputs has changed, and if something in the creation of the input changed this might also trigger the re-execution of other blocks.
 
 
-Pipeline Interfaces
-===================
+Interfaces
+==========
+
 Pipeline Inputs
 ---------------
 The data input to the pipeline is the input to stage01_data_entry. The path to the data file is given in the config file of this first stage as key-value pair (``<data_name>: /path/to/file``) in ``DATA_SETS``, and loaded by the custom data entry scripts specified in ``CURATION_SCRIPT``. Additional metadata can be specified in the same config file. For details see the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.

@@ -16,9 +16,9 @@ an ``AnalogSignal`` object with all signal channels with
 
 an ``Event`` object named *'transitions'* with
 
-* times: time stamps where a potential wavefront, i.e., state transition, was detected,
-* labels: ``UP`` (``DOWN`` or other are ignored),
-* array_annotations: ``channels``, ``x_coords``, ``y_coords``
+* *times*: time stamps where a potential wavefront, i.e., state transition, was detected,
+* *labels*: ``UP`` (``DOWN`` or other are ignored),
+* *array_annotations*: ``channels``, ``x_coords``, ``y_coords``
 
 *should pass* |check_input|_
 

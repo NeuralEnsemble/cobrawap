@@ -33,8 +33,8 @@ release = '0.1'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'myst_parser',
-    # 'sphinxarg.ext',
+    'sphinxarg.ext',
+    # 'myst_parser',
 ]
 
 source_suffix = ['.rst', '.md']

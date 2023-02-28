@@ -10,7 +10,7 @@ The individual processing and analysis steps, **Blocks**, are organized in seque
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
 
-**Figure: Pipeline Structure.** *Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
+**Figure: Pipeline Structure.** *Each column represents a stage and each bullet represents a block. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 Installation
 ============
@@ -55,7 +55,7 @@ We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment
 
 Setting Up The Pipeline
 =======================
-To set up the pipeline for use you first need to set your path information in *`cobrawap/settings_template.py`* and rename it to *`settings.py`*.
+To set up the pipeline for use you first need to set your path information in :code: `cobrawap/settings_template.py` and rename it to *`settings.py`*.
 Then you need to set up the pipeline and stage configuration from the respective *`config_template.yaml`* files, by editing and renaming them to *`config.yaml`*, either within the cobrawap folder or a config separate folder (`configs_dir` in *`settings.py`*). Details on the pipeline configuration can be found below.
 
 In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.

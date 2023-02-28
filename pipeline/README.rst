@@ -65,7 +65,7 @@ Pipeline Organisation
 =====================
 - ``Snakefile`` defines how the stages are executed within the full pipeline
 - ``configs/`` contains global config files
-  - ``config.yaml`` defines the global parameter settings
+    - ``config.yaml`` defines the global parameter settings
 - ``settings.py`` defines the ``output_path`` and ``configs_dir``
 - ``scripts/`` contains general utility scripts
 - ``stageXY/`` each stage is a separate folder

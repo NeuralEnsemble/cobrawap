@@ -44,7 +44,7 @@ However, idenpendently of whether you are working with the origin or a forked ve
 
 Creating The Environment
 ========================
-The required Python packages are defined in the _`environment.yaml`_ file. 
+The required Python packages are defined in the *``environment.yaml``* file. 
 We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment management.
 
 .. code-block:: bash

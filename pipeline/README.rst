@@ -63,17 +63,17 @@ In particular, you need to configure entry of your dataset into pipeline, by edi
 
 Pipeline Organisation
 =====================
-* ``Snakefile`` defines how the stages are executed within the full pipeline
-* ``configs/``
-  * ``config.yaml`` defines the global parameter settings
-* ``settings.py`` defines the ``output_path`` and ``configs_dir``
-* ``scripts/`` contains general utility scripts
-* ``stageXY/`` each stage is a separate folder
-  * ``Snakefile`` defines the blocks (=rules) and organizes their interaction
-  * ``scripts/`` contains the analysis and plotting scripts (~1 script per block)
-  * ``configs/`` contains the parameter settings for this stage
-    * ``config_{profile}.yaml`` ... with different settings for different profiles
-  * ``README`` describes the stage's functionality
+- ``Snakefile`` defines how the stages are executed within the full pipeline
+- ``configs/`` contains global config files
+  - ``config.yaml`` defines the global parameter settings
+- ``settings.py`` defines the ``output_path`` and ``configs_dir``
+- ``scripts/`` contains general utility scripts
+- ``stageXY/`` each stage is a separate folder
+  - ``Snakefile`` defines the blocks (=rules) and organizes their interaction
+  - ``scripts/`` contains the analysis and plotting scripts (~1 script per block)
+  - ``configs/`` contains the parameter settings for this stage
+    - ``config_{profile}.yaml`` ... with different settings for different profiles
+  - ``README`` describes the stage's functionality
 
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure

@@ -65,7 +65,7 @@ Then you need to set up the pipeline and stage configuration from the respective
 In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
 
 
-Pipeline Organisation
+Pipeline Organization
 =====================
 - ``Snakefile`` defines how the stages are executed within the full pipeline
 - ``configs/`` contains global config files
@@ -82,7 +82,7 @@ Pipeline Organisation
 .. _fig folder_structure:
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
-    :name: fig:folder_structure
+    :name: fig folder_structure
 
 **Figure: Folder Structure.** *The pipeline structure is reflected in the organization of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierarchy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
@@ -181,7 +181,7 @@ Pipeline Outputs
 ----------------
 The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<fig folder_structure>`).
 
-:ref:`fig folder_structure`
+:ref:`Pipeline Organization`
 
 Stage Inputs
 ------------

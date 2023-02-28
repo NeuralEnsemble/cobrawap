@@ -3,7 +3,13 @@ Getting Started
 ===============
 
 .. toctree::
- :maxdepth: 2
+   :maxdepth: 2
+
+    Modular Pipeline Approach
+    Installation
+    Organization
+    Configuration
+    Execution
 
 Modular Pipeline Approach
 =========================
@@ -71,7 +77,7 @@ Then you need to set up the pipeline and stage configuration from the respective
 In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
 
 
-Pipeline Organization
+Organization
 =====================
 - ``Snakefile`` defines how the stages are executed within the full pipeline
 - ``configs/`` contains global config files
@@ -187,7 +193,7 @@ The data input to the pipeline is the input to stage01_data_entry. The path to t
 Pipeline Outputs
 ----------------
 The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. The file format of data and figures is determined by the parameters ``NEO_FORMAT`` and ``PLOT_FORMAT``.
-All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see `Figure Folder Structure <#pipeline-organization>`_).
+All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see `Figure Folder Structure <#organization>`_).
 
 Stage Inputs
 ------------

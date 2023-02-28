@@ -179,9 +179,9 @@ The data input to the pipeline is the input to stage01_data_entry. The path to t
 
 Pipeline Outputs
 ----------------
-The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<fig-folder_structure>`).
+The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<Pipeline Organization>`).
 
-`Pipeline Organization <./pipeline#pipeline-organization>`
+`Pipeline Organization <./pipeline#pipeline-organization>`_
 
 Stage Inputs
 ------------

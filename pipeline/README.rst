@@ -7,8 +7,10 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical calcium imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
+
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
+  :name: fig:pipeline_structure
 
 **Figure: Pipeline Structure.** *Each column represents a stage and each bullet represents a block. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
@@ -16,7 +18,9 @@ Installation
 ============
 Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
 
-*Other install options and online execution via* `EBRAINS <https://ebrains.eu/>`_ *will follow.*
+*Other install options and online execution via EBRAINS_ will follow.*
+
+.. _EBRAINS: https://ebrains.eu/
 
 Getting The Repository
 ======================
@@ -77,6 +81,8 @@ Pipeline Organisation
 
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
+    :name: fig:folder_structure
+
 
 **Figure: Folder Structure.** *The pipeline structure is reflected in the organization of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierarchy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
@@ -117,7 +123,7 @@ The selection order is the following:
 
 Config Priority
 ---------------
-[*stage config < pipeline config < command line config*]
+*stage config < pipeline config < command line config*
 
 Generally, all parameters are specified in the corresponding stage config files. However, any parameters can also be set in the top-level pipeline config. These then have priority and overwrite the values in all stages. This is useful, in particular, to specify the file formats (``NEO_FORMAT``, ``PLOT_FORMAT``) and plotting parameters (``PLOT_TSTART``, ``PLOT_TSTOP``, ``PLOT_CHANNELS``). Additionally, you can set parameters via the command line when executing the pipeline with the flag ``--config``. This is especially recommended for setting the profile (e.g. ``--config PROFILE="ecog_session1_trial7|highbeta"``).
 
@@ -169,9 +175,11 @@ Pipeline Interfaces
 ===================
 Pipeline Inputs
 ---------------
+The data input to the pipeline is the input to stage01_data_entry. The path to the data file is given in the config file of this first stage as key-value pair (``<data_name>: /path/to/file``) in ``DATA_SETS``, and loaded by the custom data entry scripts specified in ``CURATION_SCRIPT``. Additional metadata can be specified in the same config file. For details see the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
 
 Pipeline Outputs
 ----------------
+The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see `Figure: Folder Structure <fig:folder_structure>`_).
 
 Stage Inputs
 ------------
@@ -190,13 +198,3 @@ Block Outputs
 -------------
 All output from blocks (data and figures) is stored in ``{output_path}/{profile}/{STAGE_NAME}/{block_name}/``.
 
-<!-- ## Reports
-[*currently disabled because it creates performance issues on clusters*]
-
-Reports are summaries (html page) about the execution of a Snakefile containing the rule execution order, run-time statistics, parameter configurations, and all plotting outputs tagged with `report()` in the Snakefile.
-
-When the whole pipeline is executed, the reports for each stage are automatically created in *output_path/PROFILE/STAGE_NAME/report.html*.
-To create a report for an individual stage, you can use the `report` flag.
-`snakemake --configfile='configs/config_XY.yaml' --report /path/to/report.html`
-
-Note that when using the option of setting `PLOT_CHANNELS` to `None` to plot a random channel, the report function might request a different plot than was previously created and will thus fail. -->

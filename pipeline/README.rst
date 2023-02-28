@@ -2,14 +2,13 @@
 Getting Started
 ===============
 
-.. toctree::
-   :maxdepth: 2
+..    :maxdepth: 2
 
-    Modular Pipeline Approach
-    Installation
-    Organization
-    Configuration
-    Execution
+..     Modular Pipeline Approach
+..     Installation
+..     Organization
+..     Configuration
+..     Execution
 
 Modular Pipeline Approach
 =========================

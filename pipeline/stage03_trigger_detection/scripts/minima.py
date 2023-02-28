@@ -1,3 +1,10 @@
+"""
+Minima
+------
+Detect trigger times (i.e., state transition / local wavefronts onsets) 
+by finding local minima preceding a prominent peak in the channel signals.
+"""
+
 import neo
 import numpy as np
 import quantities as pq
@@ -26,11 +33,12 @@ def filter_minima_order(signal, mins, order=1):
 
 
 def moving_threshold(signal, window, fraction):
-    #compute a dynamic threshold function through a sliding window on the signal array
+    # compute a dynamic threshold function through a sliding window 
+    # on the signal array
     strides = np.lib.stride_tricks.sliding_window_view(signal, window)
     threshold_func = np.min(strides, axis=1) + fraction*np.ptp(strides, axis=1)
 
-    #add elements at the beginning
+    # add elements at the beginning
     threshold_func = np.append(np.ones(window//2)*threshold_func[0], threshold_func)
     threshold_func = np.append(threshold_func, np.ones(len(signal)-len(threshold_func))*threshold_func[-1])
     return threshold_func

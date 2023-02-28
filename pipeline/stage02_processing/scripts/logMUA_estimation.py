@@ -1,3 +1,10 @@
+"""
+logMUA Estimation
+-----------------
+Estimate the logarithmic multi-unit activity (MUA) by averaging the power
+in a given frequency range.
+"""
+
 import numpy as np
 from elephant.spectral import welch_psd
 from elephant.signal_processing import butter

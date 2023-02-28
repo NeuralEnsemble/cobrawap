@@ -1,6 +1,9 @@
 """
+Check whether the input data representation adheres to the stage's requirements.
 
+Additionally prints a short summary of the data attributes.
 """
+
 import numpy as np
 import argparse
 import quantities as pq

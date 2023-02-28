@@ -1,6 +1,9 @@
 """
-ToDo
+Detrending
+----------
+Detrend the signal in each channel by order 0 (constant) or 1 (linear).
 """
+
 import numpy as np
 import scipy
 import matplotlib.pyplot as plt

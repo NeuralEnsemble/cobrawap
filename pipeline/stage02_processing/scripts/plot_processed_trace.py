@@ -1,3 +1,9 @@
+"""
+Plot Processed Trace
+--------------------
+Plot an example signal trace before and after application of some processing steps.
+"""
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse

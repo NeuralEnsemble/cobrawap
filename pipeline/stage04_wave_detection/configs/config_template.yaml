@@ -7,7 +7,7 @@ STAGE_NAME: 'stage04_wave_detection'
 PROFILE: 'dataset_key'
 
 # Name of the output file
-STAGE_OUTPUT: "waves.nix"
+STAGE_OUTPUT: "waves"
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'

@@ -1,13 +1,15 @@
 """
-Subtract the background of a given dataset by subtracting the mean of each channel.
+Background Substraction
+-----------------------
+Subtract the background of the input data by subtracting the mean of each channel.
 """
+
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 import os
 from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
-from utils.neo_utils import analogsignal_to_imagesequence
 
 
 def shape_frame(value_array, xy_coords):

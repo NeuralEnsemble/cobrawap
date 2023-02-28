@@ -1,3 +1,9 @@
+"""
+Time Slice
+----------
+Cut data according to a start and stop time.
+"""
+
 import argparse
 import quantities as pq
 from utils.io import load_neo, write_neo

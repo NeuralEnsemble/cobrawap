@@ -1,3 +1,9 @@
+"""
+Plot Frequency Spectrum
+-----------------------
+Create a plot of the channel-wise and average power spectrum density.
+"""
+
 import numpy as np
 import quantities as pq
 import argparse

@@ -1,4 +1,7 @@
 """
+Inter-Wave Interval Local
+-------------------------
+Calculate the period between two consecutive waves for each wave and channel.
 """
 
 import argparse

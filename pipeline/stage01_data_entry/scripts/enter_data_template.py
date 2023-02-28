@@ -1,22 +1,25 @@
 """
 Enter Data Template
 -------------------
+Loads a dataset a brings it into the required data representation (using Neo).
 """
 
 import argparse
 import quantities as pq
+from pathlib import Path
 import neo
 from utils.parse import parse_string2dict, none_or_float, none_or_int, none_or_str
-from utils.neo_utils import imagesequence_to_analogsignal, flip_image, rotate_image, time_slice
+from utils.neo_utils import imagesequence_to_analogsignal, merge_analogsignals
+from utils.neo_utils import flip_image, rotate_image, time_slice
 from utils.io import load_neo, write_neo
 
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,
             formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
+    CLI.add_argument("--data", nargs='?', type=Path, required=True,
                      help="path to input data")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
+    CLI.add_argument("--output", nargs='?', type=Path, required=True,
                      help="path of output file")
     CLI.add_argument("--data_name", nargs='?', type=str, default='None',
                      help="chosen name of the dataset")
@@ -25,9 +28,9 @@ if __name__ == '__main__':
     CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
                      help="distance between electrodes or pixels in mm")
     CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
-                     help="start time, in s, delimits the interval of recordings to be analysed")
+                     help="start time, in s, delimits the interval of recordings to be analyzed")
     CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=None,
-                     help="stop time, in s, delimits the interval of recordings to be analysed")
+                     help="stop time, in s, delimits the interval of recordings to be analyzed")
     CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
                      help="upward orientation of the recorded cortical region")
     CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,

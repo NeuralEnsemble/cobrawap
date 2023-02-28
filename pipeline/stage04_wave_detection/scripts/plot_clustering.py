@@ -1,4 +1,10 @@
-import neo
+"""
+Plot Clustering
+---------------
+Visualize the wave detection by means of clustering the detected trigger
+in (time,x,y) space.
+"""
+
 import numpy as np
 import quantities as pq
 import argparse

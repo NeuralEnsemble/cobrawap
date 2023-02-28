@@ -7,7 +7,7 @@ STAGE_NAME: 'stage03_trigger_detection'
 PROFILE: 'dataset_key'
 
 # Name of the stage output file
-STAGE_OUTPUT: 'trigger_times.nix'
+STAGE_OUTPUT: 'trigger_times'
 
 # File format in which all intermediate neo objects are stored
 NEO_FORMAT: 'nix'

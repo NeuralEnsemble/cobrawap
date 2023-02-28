@@ -1,3 +1,10 @@
+"""
+Annotations
+-----------
+Extract the annotations of Neo objects and structure them in a DataFrame
+to complement a wave characterization.
+"""
+
 import argparse
 import numpy as np
 import pandas as pd

@@ -70,7 +70,7 @@ def merge_analogsignals(asigs):
 
 def flip_image(imgseq, axis=-1):
     # spatial axis 0 (~ 1) -> vertical
-    # spatial axis 1 (~ 2)-> horizontal
+    # spatial axis 1 (~ 2) -> horizontal
     if len(imgseq.shape)==3 and axis==0:
         warnings.warn("Can not flip along time axis!"
                       "Interpreting axis=0 as first spatial axis (i.e. axis=1).")
@@ -197,7 +197,7 @@ def imagesequence_to_analogsignal(imgseq):
             if not (x_coords == asig.array_annotations['x_coords']).all() \
             or not (y_coords == asig.array_annotations['y_coords']).all():
                 raise IndexError("Transformation of array_annotations for the " 
-                               + "analogsignal went wrong!")
+                               + "AnalogSignal went wrong!")
         except ValueError:
             warnings.warn("ImageSequence <-> AnalogSignal transformation "
                         + "changed the signal shape!")

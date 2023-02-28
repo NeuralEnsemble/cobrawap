@@ -1,3 +1,10 @@
+"""
+Horn Schunck
+------------
+Calculate the optical flow (vector field) signal 
+using the Horn Schunck algorithm.
+"""
+
 import argparse
 from scipy.ndimage import gaussian_filter
 from scipy.signal import hilbert

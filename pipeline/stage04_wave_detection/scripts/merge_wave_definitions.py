@@ -1,3 +1,10 @@
+"""
+Merge Wave Definitions
+----------------------
+Combine the AnalogSignal and Event objects from different wave analysis blocks
+into the same Neo Block.
+"""
+
 import argparse
 from pathlib import Path
 from utils.io import load_neo, write_neo

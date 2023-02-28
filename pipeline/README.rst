@@ -87,7 +87,7 @@ Config Files
 ------------
 There is one config file per stage, and one additional top-level config file that selects the stages and defines pipeline-wide parameters.
 All config files are given as templates. So, in order to get started you need to copy/rename ``config_template.yaml`` to ``config.yaml`` in the corresponding folders, and edit to your needs.
-See pipeline config template: ` ``configs/config_template.yaml`` <configs/config_template.yaml>`_
+See pipeline config template: ```configs/config_template.yaml`` <configs/config_template.yaml>`_
 
 Local Config Directory
 ----------------------

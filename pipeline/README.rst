@@ -78,7 +78,7 @@ Pipeline Organisation
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
 
-**Figure: Folder Structure.** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierachy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
+**Figure: Folder Structure.** *The pipeline structure is reflected in the organization of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierarchy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 Configuration
 =============
@@ -87,7 +87,11 @@ Config Files
 ------------
 There is one config file per stage, and one additional top-level config file that selects the stages and defines pipeline-wide parameters.
 All config files are given as templates. So, in order to get started you need to copy/rename ``config_template.yaml`` to ``config.yaml`` in the corresponding folders, and edit to your needs.
-See pipeline config template: ```configs/config_template.yaml`` <configs/config_template.yaml>`_
+See pipeline config template: |config template|_.
+
+.. |config template| replace:: ``configs/config_template.yaml``
+.. _config template: configs/config_template.yaml
+
 
 Local Config Directory
 ----------------------

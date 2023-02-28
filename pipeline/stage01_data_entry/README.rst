@@ -55,7 +55,8 @@ Entering Datasets Into Cobrawap
 Datasets can be very different. Therefore, it usually requires a custom loading script to access the data and bring it into a standard representation that can be used by the pipeline.
 Having the data and metadata already in a standard format (e.g., `Neo <https://neo.readthedocs.io/>`_) as used within the pipeline) makes this step easier. Similar datasets which, for example, come from the same experiment may be able to use the same loading script.
 
-1. Put the dataset somewhere accessible from where the pipeline is intended to run (i.e. local machine, compute cluster, ...)
+1. Put the dataset somewhere accessible.
+    It should be accessible from where the pipeline is intended to run (i.e. local machine, compute cluster, ...)
 
 2. Create the corresponding config file.
     * Rename the ``config_template.yaml`` in ``stage01_data_entry/configs/`` to ``config_<data-name>.yaml``. This can be either within the ``cobrawap/pipeline`` folder or your ``<configs_dir>/`` specified in ``settings.py``.

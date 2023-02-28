@@ -10,7 +10,7 @@ The individual processing and analysis steps, **Blocks**, are organized in seque
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
 
-**Figure: Pipeline Structure.** _Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset._
+**Figure: Pipeline Structure.** *Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset.*
 
 Installation
 ============
@@ -75,10 +75,10 @@ Pipeline Organisation
         * **`config_{profile}.yaml`** ... with different settings for different profiles
     * **`README`** describes the stage's funtionality
 
-.. image:: ../doc/images/folder_structure.png
+.. figure:: ../doc/images/folder_structure.png
+    :alt: Folder Structure
 
-![Folder Structure](../doc/images/folder_structure.png "Folder Structure")
-***Figure: Folder Structure.*** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierachy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
+**Figure: Folder Structure.** *The pipeline structure is reflected in the organisation of the folders, here showing an excerpt of two stages and example blocks. Stages and blocks are folders and subfolders in the pipeline directory (middle row); the output of individual stages and blocks is stored with the same hierachy of folders and subfolders (bottom row); the local configuration can act as an overlay to define config files and loading scripts (top row).*
 
 Configuration
 =============

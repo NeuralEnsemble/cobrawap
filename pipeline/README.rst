@@ -9,7 +9,8 @@ The individual processing and analysis steps, **Blocks**, are organized in seque
 
 .. figure:: ../doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
-  :caption: **Figure: Pipeline Structure.** _Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset._
+
+**Figure: Pipeline Structure.** _Each column represents a **stage** and each bullet represents a **block**. The green and blue markings indicate a exemplary block selections for a ECoG and a calcium imaging dataset._
 
 Installation
 ============

@@ -19,9 +19,11 @@ Installation
 ============
 Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
 
-*Other install options and online execution via EBRAINS_ will follow.*
+*Other install options and online execution via* |EBRAINS| *will follow.*
 
+.. |EBRAINS| replace:: *EBRAINS*
 .. _EBRAINS: https://ebrains.eu/
+
 
 Getting The Repository
 ======================
@@ -181,9 +183,8 @@ The data input to the pipeline is the input to stage01_data_entry. The path to t
 
 Pipeline Outputs
 ----------------
-The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see :ref:`Figure Folder Structure<fig-folder_structure>`).
-
-`Pipeline Organization <#pipeline-organization>`_
+The output of the pipeline is the output of all the selected stages. Thus,  final result is the output of the final stage, whereas other stage output can be regarded as intermediate results. The file format of data and figures is determined by the parameters ``NEO_FORMAT`` and ``PLOT_FORMAT``.
+All are stored in ``{output_path}/{profile}`` in a folder structure representing the corresponding structure of stages and block (see `Figure Folder Structure <#pipeline-organization>`_).
 
 Stage Inputs
 ------------

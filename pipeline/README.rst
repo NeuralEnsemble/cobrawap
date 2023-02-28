@@ -44,7 +44,7 @@ However, idenpendently of whether you are working with the origin or a forked ve
 
 Creating The Environment
 ========================
-The required Python packages are defined in the *``environment.yaml``* file. 
+The required Python packages are defined in the ``environment.yaml`` file. 
 We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment management.
 
 .. code-block:: bash
@@ -63,17 +63,17 @@ In particular, you need to configure entry of your dataset into pipeline, by edi
 
 Pipeline Organisation
 =====================
-* **`Snakefile`** defines how the stages are executed within the full pipeline
-* **`configs/`**
-    * **`config.yaml`** defines the global parameter settings
-* **`settings.py`** defines the `output_path` and `configs_dir`
-* **`scripts/`** contains general utility scripts
-* **`stageXY/`** each stage is a separate folder
-    * **`Snakefile`** defines the blocks (=rules) and organizes their interaction
-    * **`scripts/`** contains the analysis and plotting scripts (~1 script per block)
-    * **`configs/`** contains the parameter settings for this stage
-        * **`config_{profile}.yaml`** ... with different settings for different profiles
-    * **`README`** describes the stage's funtionality
+* ``Snakefile`` defines how the stages are executed within the full pipeline
+* ``configs/``
+    * ``config.yaml`` defines the global parameter settings
+* ``settings.py`` defines the `output_path` and `configs_dir`
+* ``scripts/`` contains general utility scripts
+* ``stageXY/`` each stage is a separate folder
+    * ``Snakefile`` defines the blocks (=rules) and organizes their interaction
+    * ``scripts/`` contains the analysis and plotting scripts (~1 script per block)
+    * ``configs/`` contains the parameter settings for this stage
+        * ``config_{profile}.yaml`` ... with different settings for different profiles
+    * ``README`` describes the stage's functionality
 
 .. figure:: ../doc/images/folder_structure.png
     :alt: Folder Structure
@@ -86,8 +86,10 @@ Configuration
 Config Files
 ------------
 There is one config file per stage, and one additional top-level config file that selects the stages and defines pipeline-wide parameters.
-All config files are given as templates. So, in order to get started you need to copy/rename _`config_template.yaml`_ to _`config.yaml`_ in the corresponding folders, and edit to your needs.
-See pipeline config template: [_`configs/config_template.yanml`_](configs/config_template.yaml)
+All config files are given as templates. So, in order to get started you need to copy/rename ``config_template.yaml`` to ``config.yaml`` in the corresponding folders, and edit to your needs.
+See pipeline config template: ``configs/config_template.yaml``_
+
+.. _``configs/config_template.yaml``: configs/config_template.yaml
 
 Local Config Directory
 ----------------------

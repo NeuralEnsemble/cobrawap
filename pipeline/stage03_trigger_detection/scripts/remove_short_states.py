@@ -1,6 +1,10 @@
 """
-
+Remove Short States
+-------------------
+Remove detected triggers (state transitions) when the corresponding Up and Down 
+states are shorter than a minimum duration.
 """
+
 import numpy as np
 import neo
 import argparse

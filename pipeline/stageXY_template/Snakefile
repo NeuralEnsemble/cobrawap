@@ -1,8 +1,24 @@
 """
-# Stage XY Doing Something
-<description of stage purpose>
-Input:
-Output:
+Blocks
+======
+
+*fixed* Blocks
+**************
+
+.. autosummary::
+    :toctree: _toctree/stageXY_template/
+
+    check_input
+
+Other Blocks
+************
+
+.. autosummary::
+    :toctree: _toctree/stageXY_template/
+
+    offset_signal
+    standard_rule
+    calssic_rule
 """
 
 from pathlib import Path
@@ -11,11 +27,17 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 
 #### Housekeeping ####
 
-def _final_rule_output(wildcards):
-    # you can use the wildcards and config
+def _final_rule_output(wildcards, default_output=config.STAGE_INPUT):
+    # you can use function of the wildcards and config
     # to select the output of a rule that
-    # yields the final output of the stage
-    return config.STAGE_INPUT
+    # yields the, for example, the final output of the stage
+    if hasattr(wildcards, 'measure'):
+        return OUTPUT_DIR / wildcards.measure \
+                          / f'{wildcards.measure}.{config.NEO_FORMAT}'
+    elif config.OFFSET is None:
+        return default_output
+    else:
+        return OUTPUT_DIR / 'offset_signal' / f'offset_signal.{config.NEO_FORMAT}'
 
 #### UTILITY BLOCKS ####
 
@@ -23,30 +45,43 @@ use rule template_all as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
         data = _final_rule_output,
-        img = OUTPUT_DIR / '<some_result_plot>'
+        # img = OUTPUT_DIR / '<some_result_plot>'
         # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 
-#### <OTHER> BLOCKS ####
+#### OTHER BLOCKS ####
 
-use rule template as standard_rule with: # (recommended)
+use rule template as standard_rule with: 
+    # use a standard template (recommended)
+    # see utils/Snakefile and utils/scripts/snakefile.py for details
     input:
         data = config.STAGE_INPUT,
         script = SCRIPTS / '{measure}.py'
     output:
         Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
-        img_dir = directory(OUTPUT_DIR / '{measure}')
     params:
-        params('plot_tstart', 'plot_tstop', 'plot_channels',
-                a=20, config=config,
-                img_name='result_channel0'+config.PLOT_FORMAT)
+        params(a=config.A) 
+        # equivalen to params('a', config=config)
 
+use rule template as offset_signal with: 
+    # example for a specific rule
+    input:
+        data = config.STAGE_INPUT,
+        script = SCRIPTS / 'script_template.py'
+    output:
+        Path('{dir}') / 'offset_signal' / f'offset_signal.{config.NEO_FORMAT}',
+        img_dir = directory(OUTPUT_DIR / 'offset_signal')
+    params:
+        params('offset', 'plot_tstart', 'plot_tstop', 'plot_channels',
+               config=config,
+               img_name='offset_channel0'+config.PLOT_FORMAT)
 
 rule classic_rule:
+    # legacy rule syntax without using a rule template
     input:
         data = config.STAGE_INPUT,
         script = SCRIPTS / '{measure}.py'
     params:
-        a = 20
+        a = config.A
     output:
         Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
         img = Path('{dir}') / '{measure}' / f'{{measure}}.{config.PLOT_FORMAT}'

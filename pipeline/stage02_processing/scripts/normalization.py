@@ -1,6 +1,9 @@
 """
-Divides all signals by their max/mean/median value.
+Normalization
+-------------
+Divide the signal in each channel by their max/mean/median value.
 """
+
 import numpy as np
 import argparse
 import neo

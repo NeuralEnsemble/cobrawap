@@ -1,7 +1,10 @@
-import neo
+"""
+Duration
+--------
+Calculate the time from the first to the last trigger in each wave.
+"""
+
 import numpy as np
-import quantities as pq
-import matplotlib.pyplot as plt
 import argparse
 import pandas as pd
 from utils.io import load_neo, save_plot

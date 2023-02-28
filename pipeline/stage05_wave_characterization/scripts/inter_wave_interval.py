@@ -1,3 +1,9 @@
+"""
+Inter-Wave Interval
+-------------------
+Calculate the period between two consecutive waves for each wave.
+"""
+
 import neo
 import numpy as np
 import quantities as pq

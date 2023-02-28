@@ -1,3 +1,9 @@
+"""
+Label Planar
+------------
+Calculate the planarity each waves.
+"""
+
 import argparse
 import os
 import numpy as np
@@ -100,7 +106,6 @@ if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
-    asig = block.segments[0].analogsignals[0]
 
     vec_asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
     optical_flow = analogsignal_to_imagesequence(vec_asig)
@@ -111,7 +116,7 @@ if __name__ == '__main__':
 
     planar_labels = label_planar(waves_event=wavefront_evt,
                                  vector_field=optical_flow,
-                                 times=asig.times,
+                                 times=vec_asig.times,
                                  threshold=args.alignment_threshold)
     planar_labels[f'{args.event_name}_id'] = np.unique(wavefront_evt.labels)
     planar_labels.to_csv(args.output)
@@ -123,7 +128,7 @@ if __name__ == '__main__':
         fig, ax = plt.subplots()
         plot_planarity(waves_event=wavefront_evt,
                        vector_field=optical_flow,
-                       times=asig.times,
+                       times=vec_asig.times,
                        skip_step=skip_step,
                        wave_id=i,
                        ax=ax)

@@ -1,3 +1,9 @@
+"""
+Subsampling
+-----------
+Subsample the input data to a target rate by selecting only every n-th sample point.
+"""
+
 import argparse
 import quantities as pq
 import numpy as np

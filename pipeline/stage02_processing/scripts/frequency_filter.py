@@ -1,7 +1,9 @@
 """
-Filters the given signals between a highpass and a lowpass frequency using
-a butterworth filter.
+Frequency Filter
+----------------
+Filter between a highpass and a lowpass frequency using a butterworth filter.
 """
+
 import argparse
 import quantities as pq
 import os

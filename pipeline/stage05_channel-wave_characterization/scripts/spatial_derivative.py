@@ -1,12 +1,16 @@
 """
-Docstring
+Spatial Derivative
+------------------
+Calculate the spatial derivative on the time-delays of the wave triggers 
+in each channel.
+
+The derivative is calculated using a kernel convolution.
 """
 
 import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import itertools
 from warnings import warn
 from scipy.interpolate import RBFInterpolator
 from utils.io import load_neo, save_plot

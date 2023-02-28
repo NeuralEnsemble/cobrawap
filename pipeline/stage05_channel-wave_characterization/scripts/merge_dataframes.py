@@ -1,3 +1,9 @@
+"""
+Merge Dataframes
+----------------
+Merge pandas DataFrames based on the values of selected columns.
+"""
+
 import argparse
 import pandas as pd
 from copy import deepcopy

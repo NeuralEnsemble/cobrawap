@@ -1,6 +1,4 @@
 """
-Wave Mode Clustering
---------------------
 Cluster similar waves into modes. 
 
 Adapted from [Ruiz-Mejias et al. (2011)](https://doi.org/10.1523/JNEUROSCI.2517-15.2016)

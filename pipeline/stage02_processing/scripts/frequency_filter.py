@@ -1,6 +1,4 @@
 """
-Frequency Filter
-----------------
 Filter between a highpass and a lowpass frequency using a butterworth filter.
 """
 

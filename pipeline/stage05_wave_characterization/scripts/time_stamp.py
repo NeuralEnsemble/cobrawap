@@ -1,6 +1,4 @@
 """
-Time Stamp
-----------
 Calculate the timing of each wave.
 """
 

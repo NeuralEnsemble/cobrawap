@@ -1,6 +1,4 @@
 """
-Calc Threshdold fitted
-----------------------
 Set the threshold between Up and Down states to a fixed value.
 """
 

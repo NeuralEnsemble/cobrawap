@@ -1,6 +1,4 @@
 """
-Horn Schunck
-------------
 Calculate the optical flow (vector field) signal 
 using the Horn Schunck algorithm.
 """

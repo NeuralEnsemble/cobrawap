@@ -56,7 +56,7 @@ use rule template_plus_plot_script as trigger_clustering with:
 use rule template as optical_flow with:
     input:
         data = config.STAGE_INPUT,
-        script = SCRIPTS / 'horn_schunck.py'
+        script = SCRIPTS / 'optical_flow.py'
     params:
         params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
                'derivative_filter', 'use_phases', config=config)

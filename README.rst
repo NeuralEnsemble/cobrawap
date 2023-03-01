@@ -2,7 +2,7 @@
 Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
-.. image:: https://github.com/rgutzen/cobrawap/blob/master/images/cobrawap_logo.png
+.. image:: https://github.com/rgutzen/cobrawap/blob/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
    :align: left
@@ -14,7 +14,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 Concept
 =======
 
-.. image:: https://github.com/rgutzen/cobrawap/blob/master/images/cobrawap_pipeline_approach.png
+.. image:: https://github.com/rgutzen/cobrawap/blob/master/doc/images/cobrawap_pipeline_approach.png
    :height: 300px
    :alt: Schematic Pipeline Approach
    :align: center

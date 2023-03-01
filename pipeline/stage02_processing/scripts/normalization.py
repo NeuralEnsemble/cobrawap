@@ -1,6 +1,4 @@
 """
-Normalization
--------------
 Divide the signal in each channel by their max/mean/median value.
 """
 

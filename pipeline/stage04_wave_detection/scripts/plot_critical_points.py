@@ -1,6 +1,4 @@
 """
-Plot Critical Points
---------------------
 Plot the critical points in the optical flow vector field.
 """
 

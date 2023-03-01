@@ -1,6 +1,4 @@
 """
-Spatial Derivative
-------------------
 Calculate the spatial derivative on the time-delays of the wave triggers 
 in each channel.
 

@@ -1,6 +1,4 @@
 """
-Duration
---------
 Calculate the time from the first to the last trigger in each wave.
 """
 

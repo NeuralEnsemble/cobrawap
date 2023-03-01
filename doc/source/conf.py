@@ -76,3 +76,9 @@ html_sidebars = {
    '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
    'using/windows': ['windowssidebar.html', 'searchbox.html'],
 }
+
+
+import sys
+from pathlib import Path
+sys.path.append(str((Path() / '../../pipeline').resolve()))
+print(sys.path)

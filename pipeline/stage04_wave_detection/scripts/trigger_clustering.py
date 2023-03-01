@@ -1,6 +1,4 @@
 """
-Trigger Clustering
-------------------
 Detect waves by clustering triggers that are close to each other in time and space.
 """
 

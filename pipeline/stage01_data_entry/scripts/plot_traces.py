@@ -1,6 +1,4 @@
 """
-Plot traces
------------
 Plots excerpts of the input data with its corresponding metadata.
 """
 

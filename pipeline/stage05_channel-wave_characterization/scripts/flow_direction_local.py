@@ -1,6 +1,4 @@
 """
-Direction Local
----------------
 Calculate the wave directions per wave and channel, 
 based on the optical flow at wave trigger times and locations.
 """

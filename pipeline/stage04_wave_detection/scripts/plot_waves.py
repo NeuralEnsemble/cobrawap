@@ -1,6 +1,4 @@
 """
-Plot Waves
-----------
 Plot snapshots of the input data showing the detected waves.
 """
 

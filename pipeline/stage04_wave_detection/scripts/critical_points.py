@@ -1,6 +1,4 @@
 """
-Critical Points
----------------
 Detect and characterize critical points in the optical flow vector field at each
 time point.
 """

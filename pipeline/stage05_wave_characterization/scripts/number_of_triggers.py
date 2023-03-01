@@ -1,6 +1,4 @@
 """
-Number of Triggers
-------------------
 Calculate the number of triggers involved in each wave.
 """
 

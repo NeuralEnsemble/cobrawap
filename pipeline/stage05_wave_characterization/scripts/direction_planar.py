@@ -1,6 +1,4 @@
 """
-Direction
----------
 Calculate the wave directions by either interpolating trigger times and 
 locations or by averaging the corresponding optical flow values.
 """

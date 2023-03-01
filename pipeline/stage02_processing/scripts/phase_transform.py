@@ -1,6 +1,4 @@
 """
-Phase Transform
----------------
 Replace the data signal value with their corresponding Hilbert phase.
 """
 

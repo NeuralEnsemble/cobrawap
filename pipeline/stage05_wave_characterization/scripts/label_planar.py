@@ -1,6 +1,4 @@
 """
-Label Planar
-------------
 Calculate the planarity each waves.
 """
 

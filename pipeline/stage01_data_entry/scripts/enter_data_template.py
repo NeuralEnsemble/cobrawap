@@ -1,6 +1,4 @@
 """
-Enter Data Template
--------------------
 Loads a dataset a brings it into the required data representation (using Neo).
 """
 

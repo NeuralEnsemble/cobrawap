@@ -1,6 +1,4 @@
 """
-Velocity
---------
 Calculate the wave propagation velocity for each wave.
 """
 

@@ -60,9 +60,9 @@ def plot_planarity(waves_event, vector_field, times, wave_id, skip_step=1, ax=No
         fig, ax = plt.subplots()
 
     area = copy.copy(np.real(vector_field[0]))
-    area[np.where(np.isfinite(area))] = 0
+    area[np.where(np.isfinite(area))] = -.7
     ax.imshow(area, interpolation='nearest', origin='lower',
-              vmin=-1, vmax=1, cmap='RdBu')
+              vmin=-1, vmax=1, cmap='Greys')
 
     for i, frame_t in enumerate(np.unique(t_idx)):
         frame_i = np.where(frame_t == t_idx)[0].astype(int)

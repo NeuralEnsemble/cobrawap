@@ -12,11 +12,11 @@ Utility Blocks (*fixed*)
 .. autosummary:: 
    :toctree: _toctree/stage05_wave_characterization/
 
-    check_input
-    merge_dataframes
+   check_input
+   merge_dataframes
 
 Measure Blocks (*choose any*)
-------------------------
+-----------------------------
 .. autosummary:: 
    :toctree: _toctree/stage05_wave_characterization/
 

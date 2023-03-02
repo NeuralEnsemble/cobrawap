@@ -8,12 +8,6 @@ import numpy as np
 from pathlib import Path
 from utils.io import load_neo, write_neo
 
-def create_parser():
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    return CLI
 
 if __name__ == '__main__':
     CLI = argparse.ArgumentParser(description=__doc__,

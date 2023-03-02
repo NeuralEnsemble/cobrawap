@@ -9,6 +9,7 @@
    stage04_wave_detection
    stage05_wave_characterization
    stage05_channel-wave_characterization
+   stageXY_template
 
 .. include:: ../../README.rst
 

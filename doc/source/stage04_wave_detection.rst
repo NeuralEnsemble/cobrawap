@@ -16,14 +16,14 @@ Utility Blocks (*fixed*)
     plot_clustering
 
 Detection Blocks (*choose one*)
-------------------------
+-------------------------------
 .. autosummary:: 
    :toctree: _toctree/stage04_wave_detection/
 
     trigger_clustering
 
 Additional Properties Blocks (*choose any*)
-------------------------
+-------------------------------------------
 .. autosummary:: 
    :toctree: _toctree/stage04_wave_detection/
 

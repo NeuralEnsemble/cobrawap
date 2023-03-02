@@ -15,7 +15,7 @@ Utility Blocks (*fixed*)
     plot_trigger_times
 
 Detection Blocks (*choose one*)
-------------------------
+-------------------------------
 .. autosummary:: 
    :toctree: _toctree/stage03_trigger_detection/
 
@@ -24,7 +24,7 @@ Detection Blocks (*choose one*)
     threshold
 
 Trigger Filter Blocks (*choose any*)
-------------------------
+------------------------------------
 .. autosummary:: 
    :toctree: _toctree/stage03_trigger_detection/
 

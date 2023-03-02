@@ -154,3 +154,5 @@ def determine_spatial_scale(coords):
     dists = np.diff(coords[:,0])
     dists = dists[np.nonzero(dists)]
     return np.min(dists)
+
+

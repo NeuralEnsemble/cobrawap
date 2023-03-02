@@ -1,6 +1,4 @@
 """
-Merge Wave Definitions
-----------------------
 Combine the AnalogSignal and Event objects from different wave analysis blocks
 into the same Neo Block.
 """

@@ -1,6 +1,4 @@
 """
-Remove Short States
--------------------
 Remove detected triggers (state transitions) when the corresponding Up and Down 
 states are shorter than a minimum duration.
 """

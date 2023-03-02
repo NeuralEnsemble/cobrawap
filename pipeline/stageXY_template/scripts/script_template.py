@@ -1,6 +1,4 @@
 """
-Offset Signal
--------------
 Offsets the signal in all channels by a fixed value.
 """
 

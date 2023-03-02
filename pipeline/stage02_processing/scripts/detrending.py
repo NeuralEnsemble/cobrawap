@@ -1,6 +1,4 @@
 """
-Detrending
-----------
 Detrend the signal in each channel by order 0 (constant) or 1 (linear).
 """
 

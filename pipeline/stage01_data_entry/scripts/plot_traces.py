@@ -1,6 +1,9 @@
 """
+<<<<<<< HEAD
+=======
 Plot traces
 -----------
+>>>>>>> 76e99afdb6087160ff043a434451942b31039b84
 Plots excerpts of the input data with its corresponding metadata.
 """
 

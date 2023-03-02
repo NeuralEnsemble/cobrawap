@@ -1,6 +1,4 @@
 """
-Background Substraction
------------------------
 Subtract the background of the input data by subtracting the mean of each channel.
 """
 

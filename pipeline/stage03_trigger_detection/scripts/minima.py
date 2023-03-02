@@ -1,6 +1,4 @@
 """
-Minima
-------
 Detect trigger times (i.e., state transition / local wavefronts onsets) 
 by finding local minima preceding a prominent peak in the channel signals.
 """

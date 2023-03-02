@@ -1,6 +1,4 @@
 """
-ROI Selection
--------------
 Select a region of interest (ROI) by thresholding the intensity signal.
 """
 

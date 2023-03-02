@@ -1,6 +1,4 @@
 """
-Plot Frequency Spectrum
------------------------
 Create a plot of the channel-wise and average power spectrum density.
 """
 

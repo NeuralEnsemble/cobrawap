@@ -1,4 +1,4 @@
-# Config file for Stage 5 - Channel-wise Wave Characterization
+# Config file for Stage XY - Template
 
 # Name of stage, must be identical with folder name
 STAGE_NAME: 'stageXY_template'
@@ -9,13 +9,13 @@ PROFILE: 'dataset_key'
 # Name of the output file
 STAGE_OUTPUT: 'some_output'
 
-
-
 # BLOCK - Offset Signal
 ####################
 # float value to add to the signal in each channel (None=0)
 OFFSET: 20
 
+# BLOCK - Other Block
+####################
 # Some parameter
 A: 'a'
 
@@ -24,7 +24,3 @@ PLOT_TSTART: 0  # in s
 PLOT_TSTOP: 10  # in s
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
-
-# Measures to compute
-#
-MEASURES: []

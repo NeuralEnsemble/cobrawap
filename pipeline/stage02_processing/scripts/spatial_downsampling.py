@@ -1,6 +1,4 @@
 """
-Spatial downsampling
---------------------
 Downsample the input data by combining and averaging neighboring channels.
 """
 

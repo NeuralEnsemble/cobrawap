@@ -1,8 +1,5 @@
 """
-Direction Local
----------------
-Calculate the wave directions per wave and channel, 
-based on the spatial gradient of wave trigger times.
+Calculate the wave propagation velocity for each wave and channel.
 """
 
 import argparse
@@ -28,15 +25,15 @@ if __name__ == '__main__':
 
     df = pd.read_csv(args.data)
 
-    direction_df = pd.DataFrame(df.channel_id, columns=['channel_id'])
-    direction_df['direction_local_x'] = df.dt_x
-    direction_df['direction_local_y'] = df.dt_y
-    direction_df[f'{args.event_name}_id'] = df[f'{args.event_name}_id']
+    velocity = df.spatial_scale * np.sqrt(1/(df.dt_x**2 + df.dt_y**2))
+    velocity[~np.isfinite(velocity)] = np.nan
 
-    direction_df.to_csv(args.output)
+    velocity_df = pd.DataFrame(velocity, columns=['velocity_local'])
+    velocity_df['channel_id'] = df.channel_id
+    velocity_df['velocity_local_unit'] = f'{df.spatial_scale_unit[0]}/{df.dt_unit[0]}'
+    velocity_df[f'{args.event_name}_id'] = df[f'{args.event_name}_id']
 
-    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    ax.hist(np.angle(df.dt_x + 1j*df.dt_y), bins=36, range=[-np.pi, np.pi])
+    velocity_df.to_csv(args.output)
 
     if args.output_img is not None:
         save_plot(args.output_img)

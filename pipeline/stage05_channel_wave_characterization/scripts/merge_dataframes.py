@@ -1,6 +1,4 @@
 """
-Merge Dataframes
-----------------
 Merge pandas DataFrames based on the values of selected columns.
 """
 

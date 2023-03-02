@@ -1,6 +1,4 @@
 """
-logMUA Estimation
------------------
 Estimate the logarithmic multi-unit activity (MUA) by averaging the power
 in a given frequency range.
 """

@@ -1,6 +1,4 @@
 """
-Inter-Wave Interval
--------------------
 Calculate the period between two consecutive waves for each wave.
 """
 

@@ -1,6 +1,4 @@
 """
-Plot Trigger Times
-------------------
 Plot an excerpt of the input data and corresponding trigger times.
 """
 

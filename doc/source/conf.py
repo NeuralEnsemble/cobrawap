@@ -40,7 +40,7 @@ extensions = [
 source_suffix = ['.rst', '.md']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ['_templates', '_templates/autosummary']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -76,3 +76,9 @@ html_sidebars = {
    '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
    'using/windows': ['windowssidebar.html', 'searchbox.html'],
 }
+
+
+import sys
+from pathlib import Path
+sys.path.append(str((Path() / '../../pipeline').resolve()))
+print(sys.path)

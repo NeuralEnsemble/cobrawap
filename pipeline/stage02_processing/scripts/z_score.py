@@ -1,7 +1,4 @@
 """
-Z-Score
--------
-
 Z-score the signal of each channel.
 """
 

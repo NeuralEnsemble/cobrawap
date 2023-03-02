@@ -1,6 +1,4 @@
 """
-Time Slice
-----------
 Cut data according to a start and stop time.
 """
 

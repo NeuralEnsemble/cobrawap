@@ -17,7 +17,7 @@ Utility Blocks (*fixed*)
 Processing Blocks (*choose any*)
 --------------------------------
 .. autosummary:: 
-   :toctree: w_toctree/stage02_processing/
+   :toctree: _toctree/stage02_processing/
 
     background_subtraction
     detrending

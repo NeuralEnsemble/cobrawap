@@ -1,9 +1,4 @@
 """
-<<<<<<< HEAD:pipeline/stage01_data_entry/scripts/enter_data_template.py
-=======
-Enter Data Template
--------------------
->>>>>>> 76e99afdb6087160ff043a434451942b31039b84:pipeline/stage01_data_entry/scripts/enter_data_template.py
 Loads a dataset a brings it into the required data representation (using Neo).
 """
 

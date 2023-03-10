@@ -2,19 +2,20 @@
 Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
-.. image:: https://github.com/rgutzen/cobrawap/blob/master/doc/images/cobrawap_logo.png
+.. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
    :align: left
 
- This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
+This repository aims at developing adaptable and reusable analysis pipelines for a multi-scale, multi-methodology analysis of cortical wave activity.
 
-`Link to pipeline README <./pipeline/README.md>`_ | `Link to introduction video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
+`Link to pipeline README <./pipeline/README.md>`_ | `Link to introductory video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Link to Ebrains Collaboratory <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
+
 
 Concept
 =======
 
-.. image:: https://github.com/rgutzen/cobrawap/blob/master/doc/images/cobrawap_pipeline_approach.png
+.. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_pipeline_approach.png
    :height: 300px
    :alt: Schematic Pipeline Approach
    :align: center
@@ -46,6 +47,7 @@ Citation
 Please cite our preprint if you use Cobrawap or its components in your work, and add the Research Resource Identifier: *RRID:SCR_022966*
 
 * Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2022). *Comparing apples to apples—Using a modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets* (arXiv:2211.08527). arXiv. `https://doi.org/10.48550/arXiv.2211.08527 <https://doi.org/10.48550/arXiv.2211.08527>`_
+
 
 License
 =======

@@ -12,9 +12,11 @@
 #
 import os
 import sys
+from pathlib import Path
 from datetime import date
 sys.path.insert(0, os.path.abspath('.'))
-
+sys.path.append(str((Path() / '../../pipeline').resolve()))
+print(sys.path)
 
 # -- Project information -----------------------------------------------------
 
@@ -101,9 +103,3 @@ html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 html_show_copyright = True
-
-
-import sys
-from pathlib import Path
-sys.path.append(str((Path() / '../../pipeline').resolve()))
-print(sys.path)

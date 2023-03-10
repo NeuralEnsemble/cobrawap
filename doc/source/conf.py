@@ -52,6 +52,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinxarg.ext',
+    'sphinxcontrib.autoprogram',
     # 'myst_parser',
 ]
 

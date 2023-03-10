@@ -11,6 +11,7 @@ Utility Blocks (*fixed*)
 ------------------------
 .. autosummary:: 
    :toctree: _toctree/stage05_wave_characterization/
+   :template: block
 
    check_input
    merge_dataframes
@@ -19,6 +20,7 @@ Measure Blocks (*choose any*)
 -----------------------------
 .. autosummary:: 
    :toctree: _toctree/stage05_wave_characterization/
+   :template: block
 
    annotations
    direction_planar

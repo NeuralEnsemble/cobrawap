@@ -10,19 +10,35 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+from datetime import date
+sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Collaborative Brain Wave Analaysis Pipeline (Cobrawap)'
-copyright = '2023, Robin Gutzen'
-author = 'Robin Gutzen'
 
-# The full version, including alpha/beta/rc tags
-release = '0.1'
+# The master toctree document.
+master_doc = 'index'
+
+
+# General information about the project.
+project = 'Collaborative Brain Wave Analysis Pipeline (Cobrawap)'
+authors = u'Cobrawap authors and contributors'
+copyright = u"2017-{this_year}, {authors}".format(this_year=date.today().year,
+                                                  authors=authors)
+
+# The version info for the project you're documenting, acts as replacement for
+# |version| and |release|, also used in various other places throughout the
+# built documents.
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+with open(os.path.join(root_dir, 'VERSION')) as version_file:
+    # The full version, including alpha/beta/rc tags.
+    release = version_file.read().strip()
+
+# The short X.Y version.
+version = '.'.join(release.split('.')[:-1])
 
 
 # -- General configuration ---------------------------------------------------
@@ -47,6 +63,13 @@ templates_path = ['_templates', '_templates/autosummary']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
+# Required to automatically create a summary page for each function listed in
+# the autosummary fields of each module.
+autosummary_generate = True
+
+# Set to False to not overwrite the custom _toctree/*.rst
+autosummary_generate_overwrite = True
+
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -62,7 +85,7 @@ html_theme_options = {
     'font_family': 'Arial',
     'page_width': '1200px',  # default is 940
     'sidebar_width': '280px',  # default is 220
-    'logo': 'cobrawap_logo.png', # add logo to sidebar
+    'logo': 'cobrawap_logo.png',  # add logo to sidebar
     'fixed_sidebar': 'true'
 }
 
@@ -71,11 +94,11 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static', '../images']
 
+# If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
+html_show_sphinx = False
 
-html_sidebars = {
-   '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
-   'using/windows': ['windowssidebar.html', 'searchbox.html'],
-}
+# If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
+html_show_copyright = True
 
 
 import sys

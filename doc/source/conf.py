@@ -14,8 +14,8 @@ import os
 import sys
 from pathlib import Path
 from datetime import date
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.append(str((Path() / '../../pipeline').resolve()))
+sys.path.insert(0, os.path.abspath('../../.'))
+sys.path.insert(0, os.path.abspath('../../pipeline'))
 print(sys.path)
 
 # -- Project information -----------------------------------------------------

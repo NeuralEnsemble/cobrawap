@@ -8,7 +8,7 @@ Stage XY - Template
 
 Input
 =====
-Describe type and format of the minmally required data and metadata.
+Describe type and format of the minimally required data and metadata.
 
 *should pass* |check_input|_
 

@@ -3,7 +3,7 @@ Stage 02 - Processing
 =====================
 **This stage prepares the data for analysis. The user can select the required processing steps depending on the data and analysis objectives.**
 
-`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage02_processing/configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage02_processing/configs/config_template.yaml>`_
 
 Input
 =====
@@ -17,7 +17,7 @@ A ``neo.Block`` and ``Segment`` object containing an ``AnalogSignal`` object con
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: scripts/check_input.py
+.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage02_processing/scripts/check_input.py
 
 Output
 ======

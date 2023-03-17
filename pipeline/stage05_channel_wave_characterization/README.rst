@@ -4,7 +4,7 @@ Stage 05 - Channel Wave Characterization
 
 **This stage evaluates the detected waves by deriving characteristic channel-wise measures.**
 
-`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage05_channel_wave_characterization/configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage05_channel_wave_characterization/configs/config_template.yaml>`_
 
 Input
 =====
@@ -20,7 +20,7 @@ Some blocks may require the additional ``AnalogSignal`` object called *'optical_
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: scripts/check_input.py
+.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage05_channel_wave_characterization/scripts/check_input.py
 
 Output
 ======

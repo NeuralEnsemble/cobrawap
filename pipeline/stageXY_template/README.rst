@@ -4,9 +4,7 @@ Stage XY - Template
 
 **Short statement of the stage's purpose**
 
-`config template`_ 
-
-.. _config template: configs/config_template.yaml
+`config template <https://github.com/INM-6/cobrawap/master/editing/pipeline/stageXY_template/configs/config_template.yaml>`_
 
 Input
 =====
@@ -15,7 +13,7 @@ Describe type and format of the minimally required data and metadata.
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: scripts/check_input.py
+.. _check_input: https://github.com/INM-6/cobrawap/master/editing/pipeline/stageXY_template/scripts/check_input.py
 
 Output
 ======

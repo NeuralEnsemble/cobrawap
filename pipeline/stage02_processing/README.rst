@@ -3,7 +3,7 @@ Stage 02 - Processing
 =====================
 **This stage prepares the data for analysis. The user can select the required processing steps depending on the data and analysis objectives.**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage02_processing/configs/config_template.yaml>`_
 
 Input
 =====

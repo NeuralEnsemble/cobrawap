@@ -4,7 +4,7 @@ Stage 05 - Wave Characterization
 
 **This stage evaluates the detected waves by deriving characteristic wave-wise measures.**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage05_wave_characterization/configs/config_template.yaml>`_
 
 Input
 =====

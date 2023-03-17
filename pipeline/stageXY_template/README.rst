@@ -4,7 +4,7 @@ Stage XY - Template
 
 **Short statement of the stage's purpose**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stageXY_template/configs/config_template.yaml>`_
 
 Input
 =====

@@ -4,7 +4,7 @@ Stage 01 - Data Entry
 
 **This stage handles the loading and representation of the input dataset and metadata into the standard format for the pipeline.**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage01_data_entry/configs/config_template.yaml>`_
 
 Input
 =====

@@ -4,7 +4,7 @@ Stage 03 - Trigger Detection
 
 **This stage detects the potential passing of wavefronts on each channel (for example, transitions between Down and Up states) as trigger times.**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/doc/editing/pipeline/stage03_trigger_detection/configs/config_template.yaml>`_
 
 Input
 =====

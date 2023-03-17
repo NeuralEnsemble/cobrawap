@@ -2,12 +2,19 @@
 Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
+.. image:: https://readthedocs.org/projects/cobrawap/badge/?version=latest
+    :target: https://cobrawap.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+   :align: left
+|
+|
+
 .. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
    :align: left
 
-Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, multi-methodology analysis of cortical wave activity. The pipeline ingests data from multiple measurements types of spatially organized neuronal activity, such as ECoG or calcium imaging recordings. The pipline returns statistical measures to quantify the dynamic wave-like activity patterns found in the data.
+Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, multi-methodology analysis of cortical wave activity. The pipeline ingests data from multiple measurements types of spatially organized neuronal activity, such as ECoG or calcium imaging recordings. The pipeline returns statistical measures to quantify the dynamic wave-like activity patterns found in the data.
 
 `Publication <https://doi.org/10.48550/arXiv.2211.08527>`_ | `Introductory video <https://www.youtube.com/watch?v=1Qf4zIzV9ow&list=PLvAS8zldX4Ci5uG9NsWv5Kl4Zx2UtWQPh&index=13>`_ | `Demo on the EBRAINS Collab <https://wiki.ebrains.eu/bin/view/Collabs/slow-wave-analysis-pipeline/>`_
 

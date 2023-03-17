@@ -28,6 +28,7 @@ Additional Properties Blocks (*choose any*)
 -------------------------------------------
 .. autosummary:: 
    :toctree: _toctree/stage04_wave_detection/
+   :template: block
 
     critical_points
     optical_flow

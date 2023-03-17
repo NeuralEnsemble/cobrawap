@@ -10,6 +10,13 @@ import os
 import sys
 from utils.io import write_neo, load_neo
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                    help="path of output file")
+CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
+                    help="division factor: 'max', 'mean', or 'median'")
 
 def normalize(asig, normalize_by):
     if normalize_by == 'median':
@@ -38,14 +45,6 @@ def normalize(asig, normalize_by):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
-                     help="division factor: 'max', 'mean', or 'median'")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

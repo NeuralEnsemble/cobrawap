@@ -16,7 +16,12 @@ from utils.io import load_neo, save_plot
 from utils.parse import none_or_float
 from utils.neo_utils import time_slice
 
-
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--output",    nargs='?', type=str)
+CLI.add_argument("--data",      nargs='?', type=str)
+CLI.add_argument("--time_slice", nargs='?', type=none_or_float, default=None,
+                    help="length of time_slice in seconds.")
+                    
 def plot_clustering(events, ax=None):
     if ax is None:
         fig = plt.figure()
@@ -43,11 +48,6 @@ def plot_clustering(events, ax=None):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--output",    nargs='?', type=str)
-    CLI.add_argument("--data",      nargs='?', type=str)
-    CLI.add_argument("--time_slice", nargs='?', type=none_or_float, default=None,
-                     help="length of time_slice in seconds.")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

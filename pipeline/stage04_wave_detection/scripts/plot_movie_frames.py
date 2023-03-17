@@ -11,6 +11,18 @@ from utils.io import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 from utils.parse import none_or_str, none_or_float
 
+
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",        nargs='?', type=str)
+CLI.add_argument("--frame_folder",nargs='?', type=str)
+CLI.add_argument("--frame_name",  nargs='?', type=str)
+CLI.add_argument("--frame_format",nargs='?', type=str)
+CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
+CLI.add_argument("--colormap",    nargs='?', type=str)
+CLI.add_argument("--plot_event",  nargs='?', type=none_or_str, default=None)
+CLI.add_argument("--marker_color",nargs='?', type=str, default='k')
+
+
 def get_events(events, frame_times, event_name='transitions'):
     trans_events = [ev for ev in events if ev.name == event_name]
     if len(trans_events):
@@ -95,16 +107,6 @@ def plot_vectorfield(frame, skip_step=3, ax=None):
     return ax
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data",        nargs='?', type=str)
-    CLI.add_argument("--frame_folder",nargs='?', type=str)
-    CLI.add_argument("--frame_name",  nargs='?', type=str)
-    CLI.add_argument("--frame_format",nargs='?', type=str)
-    CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
-    CLI.add_argument("--colormap",    nargs='?', type=str)
-    CLI.add_argument("--plot_event",  nargs='?', type=none_or_str, default=None)
-    CLI.add_argument("--marker_color",nargs='?', type=str, default='k')
-
     args, unknown = CLI.parse_known_args()
 
     blk = load_neo(args.data)

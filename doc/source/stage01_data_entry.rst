@@ -10,6 +10,7 @@ Utility Blocks (*fixed*)
 ------------------------
 .. autosummary:: 
    :toctree: _toctree/stage01_data_entry/
+   :template: block
 
     check_input
     enter_data_template

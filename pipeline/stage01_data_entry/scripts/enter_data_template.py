@@ -1,9 +1,4 @@
 """
-<<<<<<< HEAD:pipeline/stage01_data_entry/scripts/enter_data_template.py
-=======
-Enter Data Template
--------------------
->>>>>>> 76e99afdb6087160ff043a434451942b31039b84:pipeline/stage01_data_entry/scripts/enter_data_template.py
 Loads a dataset a brings it into the required data representation (using Neo).
 """
 
@@ -17,33 +12,33 @@ from utils.neo_utils import flip_image, rotate_image, time_slice
 from utils.io import load_neo, write_neo
 
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                    help="path to input data")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                    help="path of output file")
+CLI.add_argument("--data_name", nargs='?', type=str, default='None',
+                    help="chosen name of the dataset")
+CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float,
+                    default=None, help="sampling rate in Hz")
+CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
+                    help="distance between electrodes or pixels in mm")
+CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
+                    help="start time, in s, delimits the interval of recordings to be analyzed")
+CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=None,
+                    help="stop time, in s, delimits the interval of recordings to be analyzed")
+CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
+                    help="upward orientation of the recorded cortical region")
+CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
+                    help="right-facing orientation of the recorded cortical region")
+CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
+                    help="metadata of the dataset")
+CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
+                    default=None, help="channel-wise metadata")
+CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
+                    help="additional optional arguments")
+
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-            formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data")
-    CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                     help="path of output file")
-    CLI.add_argument("--data_name", nargs='?', type=str, default='None',
-                     help="chosen name of the dataset")
-    CLI.add_argument("--sampling_rate", nargs='?', type=none_or_float,
-                     default=None, help="sampling rate in Hz")
-    CLI.add_argument("--spatial_scale", nargs='?', type=float, required=True,
-                     help="distance between electrodes or pixels in mm")
-    CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=None,
-                     help="start time, in s, delimits the interval of recordings to be analyzed")
-    CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=None,
-                     help="stop time, in s, delimits the interval of recordings to be analyzed")
-    CLI.add_argument("--orientation_top", nargs='?', type=str, required=True,
-                     help="upward orientation of the recorded cortical region")
-    CLI.add_argument("--orientation_right", nargs='?', type=str, required=True,
-                     help="right-facing orientation of the recorded cortical region")
-    CLI.add_argument("--annotations", nargs='+', type=none_or_str, default=None,
-                     help="metadata of the dataset")
-    CLI.add_argument("--array_annotations", nargs='+', type=none_or_str,
-                     default=None, help="channel-wise metadata")
-    CLI.add_argument("--kwargs", nargs='+', type=none_or_str, default=None,
-                     help="additional optional arguments")
     args, unknown = CLI.parse_known_args()
 
     # Load data with Neo IO or custom loading routine

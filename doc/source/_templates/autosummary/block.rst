@@ -1,8 +1,10 @@
 {{ name | escape | underline}}
+**{{ module | escape }}**
 
-.. currentmodule:: {{ module }}
+.. automodule:: {{ fullname }}
 
 .. argparse::
    :module: {{ fullname }}
-   :func: create_parser
+   :func: CLI
    :prog: {{ name }}
+   :passparser:

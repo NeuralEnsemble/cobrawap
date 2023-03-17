@@ -17,6 +17,33 @@ from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_float, none_or_int
 from utils.neo_utils import time_slice
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                    help="path of output file")
+CLI.add_argument("--img_dir", nargs='?', type=Path,
+                    default=None, help="path of figure directory")
+CLI.add_argument("--img_name", nargs='?', type=str,
+                    default='minima_channel0.png',
+                    help='example image filename for channel 0')
+CLI.add_argument("--highpass_freq", nargs='?', type=float, default=200,
+                    help="lower bound of frequency band in Hz")
+CLI.add_argument("--lowpass_freq", nargs='?', type=float, default=1500,
+                    help="upper bound of frequency band in Hz")
+CLI.add_argument("--logMUA_rate", nargs='?', type=none_or_float, default=None,
+                    help="rate of the signal after transformation")
+CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
+                    help="overlap parameter for Welch's algorithm [0-1]")
+CLI.add_argument("--fft_slice", nargs='?', type=none_or_float, default=None,
+                    help="time window length used for power spectrum estimate, in s")
+CLI.add_argument("--plot_tstart", nargs='?', type=float, default=0,
+                    help="start time in seconds")
+CLI.add_argument("--plot_tstop",  nargs='?', type=float, default=10,
+                    help="stop time in seconds")
+CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
+                    help="list of channels to plot")
+
 
 def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
                       psd_overlap, fft_slice):
@@ -128,33 +155,6 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                     help="path of output file")
-    CLI.add_argument("--img_dir", nargs='?', type=Path,
-                     default=None, help="path of figure directory")
-    CLI.add_argument("--img_name", nargs='?', type=str,
-                     default='minima_channel0.png',
-                     help='example image filename for channel 0')
-    CLI.add_argument("--highpass_freq", nargs='?', type=float, default=200,
-                     help="lower bound of frequency band in Hz")
-    CLI.add_argument("--lowpass_freq", nargs='?', type=float, default=1500,
-                     help="upper bound of frequency band in Hz")
-    CLI.add_argument("--logMUA_rate", nargs='?', type=none_or_float, default=None,
-                     help="rate of the signal after transformation")
-    CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
-                     help="overlap parameter for Welch's algorithm [0-1]")
-    CLI.add_argument("--fft_slice", nargs='?', type=none_or_float, default=None,
-                     help="time window length used for power spectrum estimate, in s")
-    CLI.add_argument("--plot_tstart", nargs='?', type=float, default=0,
-                     help="start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=float, default=10,
-                     help="stop time in seconds")
-    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                     help="list of channels to plot")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

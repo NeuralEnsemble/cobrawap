@@ -1,0 +1,5 @@
+# Packages required to build docs
+numpydoc>=1.1.0
+sphinx>=3.3.0
+sphinx-tabs>=1.3.0
+sphinx-argparse>=0.3.2

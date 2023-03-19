@@ -3,8 +3,8 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
 =====================================================
 
 .. image:: https://readthedocs.org/projects/cobrawap/badge/?version=latest
-    :target: https://cobrawap.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
+   :target: https://cobrawap.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
    :align: left
 |
 |

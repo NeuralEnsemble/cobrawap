@@ -1,6 +1,4 @@
 """
-Plot Critical Points
---------------------
 Plot the critical points in the optical flow vector field.
 """
 
@@ -11,6 +9,15 @@ import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                    help="path of output file")
+CLI.add_argument("--skip_step", nargs='?', type=int, default=3,
+                    help="skipping every x vector for the plot")
+CLI.add_argument("--frame_id", nargs='?', type=int, default=0,
+                    help="number of the frame to plot")
 
 def plot_frame(frame, ax=None, skip_step=3):
     dim_y, dim_x = frame.shape
@@ -32,17 +39,6 @@ def plot_frame(frame, ax=None, skip_step=3):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--skip_step", nargs='?', type=int, default=3,
-                     help="skipping every x vector for the plot")
-    CLI.add_argument("--frame_id", nargs='?', type=int, default=0,
-                     help="number of the frame to plot")
-
     args, unknown = CLI.parse_known_args()
     block = load_neo(args.data)
 

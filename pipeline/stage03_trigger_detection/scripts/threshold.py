@@ -1,6 +1,4 @@
 """
-Threshold
----------
 Detect trigger times (i.e., state transition / local wavefronts onsets) 
 by applying a threshold to each channel signal.
 """
@@ -11,6 +9,13 @@ import argparse
 from utils.io import load_neo, write_neo
 from utils.neo_utils import remove_annotations
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                    help="path of output file")
+CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
+                    help="path of thresholds (numpy array)")
 
 def threshold(asig, threshold_array):
     dim_t, channel_num = asig.shape
@@ -59,14 +64,6 @@ def threshold(asig, threshold_array):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
-                     help="path of thresholds (numpy array)")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

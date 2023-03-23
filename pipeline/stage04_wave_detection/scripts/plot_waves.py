@@ -1,6 +1,4 @@
 """
-Plot Waves
-----------
 Plot snapshots of the input data showing the detected waves.
 """
 
@@ -12,6 +10,13 @@ import matplotlib.pyplot as plt
 from utils.io import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=str)
+CLI.add_argument("--output", nargs='?', type=str)
+CLI.add_argument("--img_name", nargs='?', type=str)
+CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
+                    help="size of the plotted window in seconds.")
+CLI.add_argument("--colormap", nargs='?', type=str, default='viridis')
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
               time_window=0.4*pq.s, cmap='virids'):
@@ -71,13 +76,6 @@ def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser()
-    CLI.add_argument("--data", nargs='?', type=str)
-    CLI.add_argument("--output", nargs='?', type=str)
-    CLI.add_argument("--img_name", nargs='?', type=str)
-    CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
-                     help="size of the plotted window in seconds.")
-    CLI.add_argument("--colormap", nargs='?', type=str, default='viridis')
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

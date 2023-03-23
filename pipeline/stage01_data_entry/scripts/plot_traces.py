@@ -1,6 +1,4 @@
 """
-Plot traces
------------
 Plots excerpts of the input data with its corresponding metadata.
 """
 
@@ -13,6 +11,17 @@ from utils.io import load_neo, save_plot
 from utils.neo_utils import time_slice
 from utils.parse import parse_plot_channels, none_or_int
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",    nargs='?', type=Path, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output",  nargs='?', type=Path, required=True,
+                    help="path of output figure")
+CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+                    help="start time in seconds")
+CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+                    help="stop time in seconds")
+CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
+                    help="list of channels to plot")
 
 def plot_traces(asig, channels):
     sns.set(style='ticks', palette="deep", context="notebook")
@@ -47,18 +56,6 @@ def plot_traces(asig, channels):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=Path, required=True,
-                     help="path of output figure")
-    CLI.add_argument("--t_start", nargs='?', type=float, default=0,
-                     help="start time in seconds")
-    CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
-                     help="stop time in seconds")
-    CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
-                     help="list of channels to plot")
     args, unknown = CLI.parse_known_args()
 
     asig = load_neo(args.data, 'analogsignal', lazy=True)

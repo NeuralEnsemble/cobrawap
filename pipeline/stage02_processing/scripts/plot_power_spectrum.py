@@ -1,6 +1,4 @@
 """
-Plot Frequency Spectrum
------------------------
 Create a plot of the channel-wise and average power spectrum density.
 """
 
@@ -13,6 +11,19 @@ from elephant.spectral import welch_psd
 from utils.io import load_neo, save_plot
 from utils.parse import none_or_float
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                    help="path of output figure")
+CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
+                    default='None', help="lower bound of frequency band in Hz")
+CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
+                    default='None', help="upper bound of frequency band in Hz")
+CLI.add_argument("--psd_freq_res", nargs='?', type=float, default=5,
+                    help="frequency resolution of the power spectrum in Hz")
+CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
+                    help="overlap parameter for Welch's algorithm [0-1]")
 
 def plot_psd(freqs, psd, highpass_freq, lowpass_freq):
     sns.set(style='ticks', palette="deep", context="notebook")
@@ -35,20 +46,6 @@ def plot_psd(freqs, psd, highpass_freq, lowpass_freq):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                     help="path of output figure")
-    CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
-                     default='None', help="lower bound of frequency band in Hz")
-    CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
-                     default='None', help="upper bound of frequency band in Hz")
-    CLI.add_argument("--psd_freq_res", nargs='?', type=float, default=5,
-                     help="frequency resolution of the power spectrum in Hz")
-    CLI.add_argument("--psd_overlap", nargs='?', type=float, default=0.5,
-                     help="overlap parameter for Welch's algorithm [0-1]")
     args, unknown = CLI.parse_known_args()
 
     asig = load_neo(args.data, 'analogsignal')

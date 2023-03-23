@@ -1,6 +1,4 @@
 """
-Frequency Filter
-----------------
 Filter between a highpass and a lowpass frequency using a butterworth filter.
 """
 
@@ -11,22 +9,21 @@ from elephant.signal_processing import butter
 from utils.io import load_neo, write_neo
 from utils.parse import none_or_float
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                help="path to input data in neo format")
+CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                help="path of output file")
+CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
+                default=None, help="lower bound of frequency band in Hz")
+CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
+                default=None, help="upper bound of frequency band in Hz")
+CLI.add_argument("--order", nargs='?', type=int, default=2,
+                help="order of the filter function")
+CLI.add_argument("--filter_function", nargs='?', type=str, default='filtfilt',
+                help="filterfunction used in the scipy backend")
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
-                     default=None, help="lower bound of frequency band in Hz")
-    CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
-                     default=None, help="upper bound of frequency band in Hz")
-    CLI.add_argument("--order", nargs='?', type=int, default=2,
-                     help="order of the filter function")
-    CLI.add_argument("--filter_function", nargs='?', type=str, default='filtfilt',
-                     help="filterfunction used in the scipy backend")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

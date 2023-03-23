@@ -1,6 +1,4 @@
 """
-ROI Selection
--------------
 Select a region of interest (ROI) by thresholding the intensity signal.
 """
 
@@ -15,6 +13,17 @@ from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data",    nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output",  nargs='?', type=str, required=True,
+                    help="path of output file")
+CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
+                    help="path of output image", default=None)
+CLI.add_argument("--intensity_threshold", nargs='?', type=float,
+                    help="threshold for mask [0,1]", default=0.5)
+CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
+                    help="discard frame outside of ROI", default=True)
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...
@@ -122,18 +131,6 @@ def plot_roi(img, contour):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
-                     help="path of output image", default=None)
-    CLI.add_argument("--intensity_threshold", nargs='?', type=float,
-                     help="threshold for mask [0,1]", default=0.5)
-    CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
-                     help="discard frame outside of ROI", default=True)
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

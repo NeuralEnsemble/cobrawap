@@ -1,6 +1,4 @@
 """
-Offset Signal
--------------
 Offsets the signal in all channels by a fixed value.
 """
 
@@ -11,6 +9,23 @@ from utils.io import load_neo, write_neo, save_plot
 from utils.parse import none_or_int, none_or_float, none_or_str
 from utils.neo_utils import time_slice
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                    help="path of output file")
+CLI.add_argument("--offset", nargs='?', type=none_or_float, default=None,
+                    help="offset the signal by some value")
+CLI.add_argument("--img_dir", nargs='?', type=none_or_str, default=None,
+                    help="path of figure directory")
+CLI.add_argument("--img_name", nargs='?', type=str, default='offset_channel0.png',
+                    help='example image filename for channel 0')
+CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
+                    help="list of channels to plot")
+CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
+                    help="plotting start time in seconds")
+CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
+                    help="plotting stop time in seconds")
 
 def offset_signal(asig, offset=None):
     if offset is None:
@@ -45,24 +60,6 @@ def plot_signal(asig, new_asig, channel=0, t_start=None, t_stop=None):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                     help="path of output file")
-    CLI.add_argument("--offset", nargs='?', type=none_or_float, default=None,
-                     help="offset the signal by some value")
-    CLI.add_argument("--img_dir", nargs='?', type=none_or_str, default=None,
-                     help="path of figure directory")
-    CLI.add_argument("--img_name", nargs='?', type=str, default='offset_channel0.png',
-                     help='example image filename for channel 0')
-    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                     help="list of channels to plot")
-    CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
-                     help="plotting start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
-                     help="plotting stop time in seconds")
     args, unknown = CLI.parse_known_args()
 
     # LOADING

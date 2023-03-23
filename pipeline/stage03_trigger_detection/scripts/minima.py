@@ -1,6 +1,4 @@
 """
-Minima
-------
 Detect trigger times (i.e., state transition / local wavefronts onsets) 
 by finding local minima preceding a prominent peak in the channel signals.
 """
@@ -15,9 +13,35 @@ from utils.neo_utils import remove_annotations, time_slice
 from utils.parse import none_or_int, none_or_float, none_or_str
 import seaborn as sns
 import matplotlib.pyplot as plt
-import os
 from pathlib import Path
 
+
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                    help="path of output file")
+CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=0,
+                    help="number of neighboring points to interpolate")
+CLI.add_argument("--minima_persistence", nargs='?', type=float, default=0.200,
+                    help="minimum time minima (s)")
+CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.5,
+                    help="amplitude fraction to set the threshold detecting local maxima")
+CLI.add_argument("--maxima_threshold_window", nargs='?', type=int, default=2,
+                    help="time window to use to set the threshold detecting local maxima [s]")
+CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
+                    help="minimum distance between peaks (s)")
+CLI.add_argument("--img_dir", nargs='?', type=Path,
+                    default=None, help="path of figure directory")
+CLI.add_argument("--img_name", nargs='?', type=str,
+                    default='minima_channel0.png',
+                    help='example image filename for channel 0')
+CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
+                    help="list of channels to plot")
+CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0.,
+                    help="start time in seconds")
+CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10.,
+                    help="stop time in seconds")
 
 def filter_minima_order(signal, mins, order=1):
     filtered_mins = np.array([], dtype=int)
@@ -160,33 +184,6 @@ def plot_minima(asig, event, channel, maxima_threshold_window,
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                     help="path of output file")
-    CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=0,
-                     help="number of neighboring points to interpolate")
-    CLI.add_argument("--minima_persistence", nargs='?', type=float, default=0.200,
-                     help="minimum time minima (s)")
-    CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.5,
-                     help="amplitude fraction to set the threshold detecting local maxima")
-    CLI.add_argument("--maxima_threshold_window", nargs='?', type=int, default=2,
-                     help="time window to use to set the threshold detecting local maxima [s]")
-    CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
-                     help="minimum distance between peaks (s)")
-    CLI.add_argument("--img_dir", nargs='?', type=Path,
-                     default=None, help="path of figure directory")
-    CLI.add_argument("--img_name", nargs='?', type=str,
-                     default='minima_channel0.png',
-                     help='example image filename for channel 0')
-    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                     help="list of channels to plot")
-    CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0.,
-                     help="start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10.,
-                     help="stop time in seconds")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

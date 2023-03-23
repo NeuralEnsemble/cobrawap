@@ -1,6 +1,4 @@
-"""
-Hilbert Phase
--------------
+"""w
 Detect trigger times (i.e., state transition / local wavefronts onsets) 
 by finding crossing of a set phase-value in the channel signals.
 """
@@ -18,6 +16,24 @@ from utils.neo_utils import time_slice, remove_annotations
 from utils.parse import none_or_int, none_or_float
 from pathlib import Path
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                    help="path of output file")
+CLI.add_argument("--img_dir", nargs='?', type=Path,
+                    default=None, help="path of figure directory")
+CLI.add_argument("--img_name", nargs='?', type=str,
+                    default='hilbert_phase_channel0.png',
+                    help='example image filename for channel 0')
+CLI.add_argument("--transition_phase", nargs='?', type=float, default=-1.570796,
+                    help="phase to use as threshold for the upward transition")
+CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
+                    help="list of channels to plot")
+CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
+                    help="start time in seconds")
+CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
+                    help="stop time in seconds")
 
 def detect_transitions(asig, transition_phase):
     # ToDo: replace with elephant function
@@ -111,25 +127,6 @@ def plot_hilbert_phase(asig, event, channel):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                     help="path of output file")
-    CLI.add_argument("--img_dir", nargs='?', type=Path,
-                     default=None, help="path of figure directory")
-    CLI.add_argument("--img_name", nargs='?', type=str,
-                     default='hilbert_phase_channel0.png',
-                     help='example image filename for channel 0')
-    CLI.add_argument("--transition_phase", nargs='?', type=float, default=-1.570796,
-                     help="phase to use as threshold for the upward transition")
-    CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                     help="list of channels to plot")
-    CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
-                     help="start time in seconds")
-    CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
-                     help="stop time in seconds")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

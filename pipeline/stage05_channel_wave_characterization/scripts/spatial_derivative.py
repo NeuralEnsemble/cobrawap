@@ -1,6 +1,4 @@
 """
-Spatial Derivative
-------------------
 Calculate the spatial derivative on the time-delays of the wave triggers 
 in each channel.
 
@@ -17,6 +15,21 @@ from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.convolve import nan_conv2d, get_kernel
 
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                    help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                    help="path of output file")
+CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+                    help="path of output image file")
+CLI.add_argument("--kernel", "--KERNEL", nargs='?', type=none_or_str, default=None,
+                    help="derivative kernel")
+CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
+                    help="name of neo.Event to analyze (must contain waves)")
+CLI.add_argument("--interpolate", "--INTERPOLATE", nargs='?', type=bool, default=False,
+                    help="whether to thin-plate-spline interpolate the wave patterns before derivation")
+CLI.add_argument("--smoothing", "--SMOOTHING", nargs='?', type=float, default=0,
+                    help="smoothing factor for the interpolation")
 
 def interpolate_grid(grid, smoothing):
     y, x = np.where(np.isfinite(grid))
@@ -99,22 +112,6 @@ def calc_spatial_derivative(evts, kernel_name, interpolate=False, smoothing=0):
 
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=str, required=True,
-                     help="path to input data in neo format")
-    CLI.add_argument("--output", nargs='?', type=str, required=True,
-                     help="path of output file")
-    CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                     help="path of output image file")
-    CLI.add_argument("--kernel", "--KERNEL", nargs='?', type=none_or_str, default=None,
-                     help="derivative kernel")
-    CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
-                     help="name of neo.Event to analyze (must contain waves)")
-    CLI.add_argument("--interpolate", "--INTERPOLATE", nargs='?', type=bool, default=False,
-                     help="whether to thin-plate-spline interpolate the wave patterns before derivation")
-    CLI.add_argument("--smoothing", "--SMOOTHING", nargs='?', type=float, default=0,
-                     help="smoothing factor for the interpolation")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

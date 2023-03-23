@@ -4,7 +4,7 @@ Stage 01 - Data Entry
 
 **This stage handles the loading and representation of the input dataset and metadata into the standard format for the pipeline.**
 
-`config template <configs/config_template.yaml>`_
+`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/configs/config_template.yaml>`_
 
 Input
 =====
@@ -26,7 +26,7 @@ Any additional metadata and neo objects in the ``neo.Block`` passed along throug
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: scripts/check_input.py
+.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/configs/scripts/check_input.py
 
 Required Data Capabilities
 ==========================

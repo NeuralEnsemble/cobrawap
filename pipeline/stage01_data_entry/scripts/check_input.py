@@ -10,18 +10,11 @@ from pathlib import Path
 from utils.io import load_neo
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
-def create_parser():
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
-    return CLI
+CLI = argparse.ArgumentParser()
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                 help="path to input data in neo format")
 
 if __name__ == '__main__':
-    CLI = argparse.ArgumentParser(description=__doc__,
-                   formatter_class=argparse.RawDescriptionHelpFormatter)
-    CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                     help="path to input data in neo format")
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)

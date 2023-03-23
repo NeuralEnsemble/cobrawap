@@ -5,7 +5,7 @@ STAGES:
     - 'stage03_trigger_detection'
     - 'stage04_wave_detection'
     - 'stage05_wave_characterization'
-    # - 'stage05_channel-wave_characterization'
+    # - 'stage05_channel_wave_characterization'
 
 # A profile collects the parameter configuration for a specific dataset. The stages are executed using the config_<PROFILE>.yaml file, and results are stored in output_path/<PROFILE>/
 PROFILE: 'IDIBAPS'

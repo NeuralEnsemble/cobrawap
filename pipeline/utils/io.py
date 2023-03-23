@@ -58,10 +58,10 @@ def save_plot(filename):
     if not os.path.exists(dirname):
         os.makedirs(dirname)
     try:
-        plt.savefig(fname=filename, bbox_inches='tight')
+        plt.savefig(fname=filename, dpi=300, bbox_inches='tight')
     except ValueError as ve:
         warnings.warn(str(ve))
         plt.subplots()
-        plt.savefig(fname=filename, bbox_inches='tight')
+        plt.savefig(fname=filename)
     plt.close()
     return None

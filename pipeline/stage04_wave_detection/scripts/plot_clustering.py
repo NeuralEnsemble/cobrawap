@@ -9,7 +9,6 @@ import numpy as np
 import quantities as pq
 import argparse
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.colors import ListedColormap
 import seaborn as sns
 import random

@@ -25,7 +25,7 @@ SCRIPTS = Path('scripts')
 if not '.' in config.NEO_FORMAT:
     config.NEO_FORMAT = f'.{config.NEO_FORMAT}'
 if not '.' in config.PLOT_FORMAT:
-    config.NEO_FORMAT = f'.{config.PLOT_FORMAT}'
+    config.PLOT_FORMAT = f'.{config.PLOT_FORMAT}'
 if not '.' in config.STAGE_OUTPUT:
         config.STAGE_OUTPUT += config.NEO_FORMAT
 

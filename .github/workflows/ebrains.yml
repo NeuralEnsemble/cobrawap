@@ -1,5 +1,6 @@
 name: Mirror to EBRAINS
 
+# Only pushes to master should cause a sync
 on:
   push:
     branches: [ master ]

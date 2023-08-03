@@ -44,6 +44,7 @@ def write_neo(filename, block, *args, **kwargs):
     # support array_annotations
     block.segments[0].imagesequences = []
     try:
+        # for neo > 0.12.0 filename can't contain '|'
         io = neo.io.get_io(str(filename), *args, **kwargs)
         io.write(block)
     except Exception as e:
@@ -53,12 +54,12 @@ def write_neo(filename, block, *args, **kwargs):
     return True
 
 
-def save_plot(filename):
+def save_plot(filename, dpi=300):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
     try:
-        plt.savefig(fname=filename, dpi=300, bbox_inches='tight')
+        plt.savefig(fname=filename, dpi=dpi, bbox_inches='tight')
     except ValueError as ve:
         warnings.warn(str(ve))
         plt.subplots()

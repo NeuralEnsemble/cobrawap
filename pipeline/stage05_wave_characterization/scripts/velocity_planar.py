@@ -2,6 +2,7 @@
 Calculate the wave propagation velocity for each wave.
 """
 
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
@@ -11,9 +12,9 @@ from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                     help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                     help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                     help="path of output image file")
@@ -83,15 +84,19 @@ def calc_planar_velocities(evts):
         cax.set_title('wave {}'.format(wave_i))
 
     # plot total velocities
-    ax[-1][-1].errorbar(wave_ids, velocities[:,0], yerr=velocities[:,1],
-                        linestyle='', marker='+')
-    ax[-1][-1].set_xlabel(f'{evts.name} id')
-    ax[-1][-1].set_title('velocities [{}]'.format(v_unit))
+    if ncols == 1:
+        cax = ax[-1]
+    else:
+        cax = ax[-1][-1]
+        for i in range(len(wave_ids), nrows*ncols-1):
+            row = int(i/ncols)
+            col = i % ncols
+            ax[row][col].set_axis_off()
 
-    for i in range(len(wave_ids), nrows*ncols-1):
-        row = int(i/ncols)
-        col = i % ncols
-        ax[row][col].set_axis_off()
+    cax.errorbar(wave_ids, velocities[:,0], yerr=velocities[:,1],
+                        linestyle='', marker='+')
+    cax.set_xlabel(f'{evts.name} id')
+    cax.set_title('velocities [{}]'.format(v_unit))
 
     # transform to DataFrame
     df = pd.DataFrame(velocities,

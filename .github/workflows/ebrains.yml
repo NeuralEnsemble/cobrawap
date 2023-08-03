@@ -1,0 +1,27 @@
+name: Mirror to EBRAINS
+
+# Only pushes to master should cause a sync
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  sync_to_ebrains:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'INM-6' }}
+    steps:
+      - name: syncmaster
+        uses: wei/git-sync@55c6b63b4f21607da0e9877ca9b4d11a29fc6d83
+        with:
+          source_repo: "INM-6/cobrawap"
+          source_branch: "master"
+          destination_repo: "https://ghpusher:${{ secrets.EBRAINS_GITLAB_ACCESS_TOKEN }}@gitlab.ebrains.eu/neuralensemble/cobrawap.git"
+          destination_branch: "master"
+
+      - name: synctags
+        uses: wei/git-sync@55c6b63b4f21607da0e9877ca9b4d11a29fc6d83
+        with:
+          source_repo: "INM-6/cobrawap"
+          source_branch: "refs/tags/*"
+          destination_repo: "https://ghpusher:${{ secrets.EBRAINS_GITLAB_ACCESS_TOKEN }}@gitlab.ebrains.eu/neuralensemble/cobrawap.git"
+          destination_branch: "refs/tags/*"

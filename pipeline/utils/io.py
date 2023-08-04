@@ -44,7 +44,7 @@ def write_neo(filename, block, *args, **kwargs):
     # support array_annotations
     block.segments[0].imagesequences = []
     try:
-        # for neo > 0.12.0 filename can't contain '|'
+        # for neo >= 0.12.0 filename can't contain '|'
         io = neo.io.get_io(str(filename), *args, **kwargs)
         io.write(block)
     except Exception as e:

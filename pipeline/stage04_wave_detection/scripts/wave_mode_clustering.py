@@ -198,12 +198,15 @@ def sample_wave_pattern(pattern_func, dim_x, dim_y, step):
                          indexing='ij')
     fcoords = np.stack((fy,fx), axis=-1)
     fdim_y, fdim_x, _ = fcoords.shape
-    wave_pattern = pattern_func(fcoords.reshape(-1,2))
+    fcoords = fcoords.reshape(-1,2)
+    fcoords = fcoords if fdim_x > 1 else fcoords[:,0][:,None]
+    wave_pattern = pattern_func(fcoords)
     return fx, fy, wave_pattern.reshape(fdim_y, fdim_x)
 
 def interpolate_grid(grid, smoothing=0):
     y, x = np.where(np.isfinite(grid))
-    rbf_func = RBFInterpolator(np.stack((y,x), axis=-1),
+    coords = np.stack((y,x), axis=-1) if len(np.unique(x)) > 1 else y[:,None]
+    rbf_func = RBFInterpolator(coords,
                                grid[y,x],
                                neighbors=None, smoothing=smoothing,
                                kernel='thin_plate_spline', epsilon=None,
@@ -248,9 +251,14 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
                         cmap=cmap, alpha=0.5,
                         vmin=-vminmax, vmax=vminmax)
 
+        dim_y, dim_x = mode_grid.shape
+        if dim_x == 1:
+            mode_grid = np.stack((np.squeeze(mode_grid), 
+                                  np.squeeze(mode_grid)), axis=1)
         y, x = np.where(mode_grid)
         fx = x.reshape(mode_grid.shape) * int_step_size
         fy = y.reshape(mode_grid.shape) * int_step_size
+
         ctr = ax.contour(fx, fy, mode_grid, levels=9,
                          cmap=cmap, linewidths=2, alpha=1,
                          vmin=-vminmax, vmax=vminmax)

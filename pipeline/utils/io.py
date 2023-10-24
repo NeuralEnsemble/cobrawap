@@ -53,15 +53,15 @@ def write_neo(filename, block, *args, **kwargs):
     return True
 
 
-def save_plot(filename):
+def save_plot(filename, **kwargs):
     dirname = os.path.dirname(filename)
     if not os.path.exists(dirname):
         os.makedirs(dirname)
     try:
-        plt.savefig(fname=filename, dpi=300, bbox_inches='tight')
+        plt.savefig(fname=filename, dpi=300, bbox_inches='tight', **kwargs)
     except ValueError as ve:
         warnings.warn(str(ve))
         plt.subplots()
-        plt.savefig(fname=filename)
+        plt.savefig(fname=filename, **kwargs)
     plt.close()
     return None

@@ -34,7 +34,7 @@ if config.STAGE_INPUT is not None:
 localrules: all, check_input
 
 wildcard_constraints:
-    data_name = '\w+',
+    data_name = '[\w\-]+',
     dir = '.*',
     rule_name = '\w+',
 

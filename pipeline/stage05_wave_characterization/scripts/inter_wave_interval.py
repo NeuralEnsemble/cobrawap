@@ -2,6 +2,7 @@
 Calculate the period between two consecutive waves for each wave.
 """
 
+from pathlib import Path
 import neo
 import numpy as np
 import quantities as pq
@@ -15,9 +16,9 @@ from utils.io import load_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                     help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                     help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                     help="path of output image file")
@@ -60,13 +61,13 @@ if __name__ == '__main__':
     df = pd.DataFrame(IWIs, columns=['inter_wave_interval', 'inter_wave_interval_std'])
     df['inter_wave_interval_unit'] = t_unit
     df[f'{args.event_name}_id'] = wave_ids
-
-    
-
     df.to_csv(args.output)
 
     # ToDo
     fig, ax = plt.subplots()
-    ax.hist(IWIs[:,0])
+
+    if np.isfinite(IWIs[:,0]).any():
+        ax.hist(IWIs[:,0])
+    
     ax.set_xlabel('inter-wave interval [s]')
     save_plot(args.output_img)

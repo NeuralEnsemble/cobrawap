@@ -1,7 +1,7 @@
 # Config file for Stage 5 - Channel-wise Wave Characterization
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage05_channel-wave_characterization'
+STAGE_NAME: 'stage05_channel_wave_characterization'
 
 # The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
 PROFILE: 'dataset_key'

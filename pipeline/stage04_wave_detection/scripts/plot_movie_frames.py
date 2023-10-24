@@ -158,6 +158,7 @@ if __name__ == '__main__':
 
         save_plot(os.path.join(args.frame_folder,
                                args.frame_name + '_{}.{}'.format(str(i).zfill(5),
-                               args.frame_format)))
+                               args.frame_format)),
+                  transparent=True)
         plt.close()
  

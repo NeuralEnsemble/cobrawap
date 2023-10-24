@@ -276,6 +276,9 @@ def add_empty_sites_to_analogsignal(asig):
     dim_t, dim_channels = asig_array.shape
     num_grid_channels = dim_x * dim_y
     num_nan_channels = num_grid_channels - dim_channels
+    
+    if num_nan_channels == 0:
+        return asig
 
     nan_signals = np.empty((dim_t, num_nan_channels)) * np.nan
     new_asig_array = np.append(asig_array, nan_signals, axis=1)

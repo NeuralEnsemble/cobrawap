@@ -5,13 +5,13 @@ from pathlib import Path
 import numpy as np
 sys.path.append(os.getcwd())
 from utils.snakefile import create_temp_configs, set_global_configs
-from utils.snakefile import set_stage_inputs, read_stage_output, read_setting
+from utils.snakefile import set_stage_inputs, read_stage_output, get_setting
 
 # the working directory is by default the directory of the Snakefile
 working_dir = Path()
 temp_config = 'working_config.yaml'
-config_path = Path(read_setting('config_path'))
-output_path = Path(read_setting('output_path'))
+config_path = Path(get_setting('config_path'))
+output_path = Path(get_setting('output_path'))
 
 configfile: config_path /'configs' / 'config.yaml'
 report: "report.rst"

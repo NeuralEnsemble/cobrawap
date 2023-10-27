@@ -63,7 +63,11 @@ def safe_open_w(path):
 
 def read_stage_output(stage, config_dir, config_name,
                       output_namespace="STAGE_OUTPUT"):
-    with open(os.path.join(config_dir, stage, config_name), 'r') as f:
+    config_path = Path(config_dir) / stage
+    if (config_path / 'configs').is_dir():
+        config_path = config_path / 'configs'
+
+    with open(config_path / config_name, 'r') as f:
         config_dict = yaml.load(f)
     if config_dict is None:
         logger.warning('config file '
@@ -71,7 +75,11 @@ def read_stage_output(stage, config_dir, config_name,
                        'can not be loaded! Skipping reading stage output.')
         return None
     elif output_namespace in config_dict.keys():
-        return config_dict[output_namespace]
+        stage_output = config_dict[output_namespace]
+        if not Path(stage_output).suffix:
+            neo_format = config_dict['NEO_FORMAT']
+            stage_output = f'{stage_output}.{neo_format}'
+        return stage_output
     else:
         logger.error(f"config file of stage {stage} "
                      f"does not define {output_namespace}!")
@@ -104,7 +112,7 @@ def get_parent_config_name(config_name):
     return parent + ext
 
 
-def get_config(config_dir, config_name):
+def get_config(config_dir, config_name, get_path_instead=False):
     """
     # search order:
     config_some_profile_name|variant.yaml
@@ -117,16 +125,17 @@ def get_config(config_dir, config_name):
     config.yaml
     """
     config_dict = {}
-    if os.path.isdir(os.path.join(config_dir, 'configs')):
-        config_dir = os.path.join(config_dir, 'configs')
+    config_dir = Path(config_dir)
+    if (config_dir / 'configs').is_dir():
+        config_dir = config_dir / 'configs'
 
     try_config_name = copy(config_name)
 
     keep_variant = True
     while not config_dict:
         try:
-            config_dict = load_config_file(os.path.join(config_dir,
-                                                        try_config_name))
+            config_path = config_dir / try_config_name
+            config_dict = load_config_file(config_path)
         except FileNotFoundError:
             prev_try_config_name = try_config_name
 
@@ -144,7 +153,11 @@ def get_config(config_dir, config_name):
 
             logger.info(f"'{prev_try_config_name}' not found, "
                         f"trying '{try_config_name}'.")
-    return config_dict
+            
+    if get_path_instead:
+        return config_path
+    else:
+        return config_dict
 
  
 def create_temp_configs(stages, configs_dir, config_name, output_dir,
@@ -180,7 +193,7 @@ def set_stage_inputs(stages, output_dir, config_file='temp_config.yaml',
                      input_namespace="STAGE_INPUT"):
     update_dict = {}
     update_configfile(config_path=os.path.join(output_dir, stages[0], config_file),
-                              update_dict={input_namespace:None})
+                      update_dict={input_namespace:None})
 
     for i, stage in enumerate(stages[:-1]):
         output_name = read_stage_output(stage,

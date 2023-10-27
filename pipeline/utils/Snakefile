@@ -3,10 +3,14 @@ import sys
 from types import SimpleNamespace
 utils_path = str((Path() / '..').resolve())
 sys.path.append(utils_path)
-from settings import output_path, configs_dir
+# from settings import output_path, configs_dir
 from snakemake.logging import logger
 from utils.parse import parse_plot_channels
 from utils.snakefile import dict_to_cla, params, locate_str_in_list
+from utils.snakefile import read_setting
+
+config_path = read_setting('config_path')
+output_path = read_setting('output_path')
 
 if 'STAGE_INPUT' not in config:
     logger.warning('No STAGE_INPUT defined for running the stage individually! '

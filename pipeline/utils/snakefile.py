@@ -1,8 +1,59 @@
 import os
-import yaml
+from pathlib import Path
+from ruamel.yaml import YAML
 from copy import copy
 from types import SimpleNamespace
 from snakemake.logging import logger
+yaml = YAML()
+yaml.indent(mapping=4, sequence=4, offset=4)
+# Todo: re-evaluate if this is the most elegant solution to hardcode
+#       the settings path here
+SETTINGS_PATH = Path('~/.cobrawap/config').expanduser()
+
+def get_setting(key: str):
+    with open(SETTINGS_PATH, 'r') as f:
+        try:
+            settings = yaml.load(f)
+            if not settings:
+                settings = {}
+        except Exception as e:
+            logger.warning(e)
+            raise FileNotFoundError("The settings file either doesn't exist "\
+                                    "or is not in proper JSON format! "\
+                                    "Try to run `cobrawap init` to set up the "\
+                                    "settings file.")
+    if key not in settings.keys():
+        raise ValueError(f"{key} not found in settings file!")
+    return settings[key]
+
+
+def set_setting(setting: dict) -> None:
+    if type(setting) != dict:
+        raise TypeError('Function expects a dictionary!')
+    
+    if SETTINGS_PATH.exists():
+        with open(SETTINGS_PATH, 'r') as f:
+            settings = yaml.load(f)
+        if not settings:
+            settings = {}
+    else:
+        logger.warning("Creating a new cobrawap settings file at "\
+                f"`{SETTINGS_PATH.resolve()}`.")
+        SETTINGS_PATH.touch(exist_ok=True)
+        settings = {}
+    
+    key_overlap = [k for k in setting.keys() if k in settings.keys()]
+    if key_overlap:
+        overwrite = (input(f"There are already settings for {key_overlap}! "\
+                            "Overwrite? [Y/n]").lower() == 'y'
+                    or True)
+        if not overwrite:
+            setting.pop[key_overlap, None]
+
+    settings.update(setting)
+    with open(SETTINGS_PATH, 'w') as f:
+         yaml.dump(settings, f)
+    return None
 
 
 def safe_open_w(path):
@@ -13,7 +64,7 @@ def safe_open_w(path):
 def read_stage_output(stage, config_dir, config_name,
                       output_namespace="STAGE_OUTPUT"):
     with open(os.path.join(config_dir, stage, config_name), 'r') as f:
-        config_dict = yaml.safe_load(f)
+        config_dict = yaml.load(f)
     if config_dict is None:
         logger.warning('config file '
                       f'{os.path.join(config_dir, stage, config_name)} '
@@ -28,7 +79,7 @@ def read_stage_output(stage, config_dir, config_name,
 
 def load_config_file(config_path):
     with open(config_path, 'r') as f:
-        config_dict = yaml.safe_load(f)
+        config_dict = yaml.load(f)
     if not config_dict:
         logger.error(f"config file is empty: {config_path}")
         raise FileNotFoundError
@@ -102,7 +153,7 @@ def create_temp_configs(stages, configs_dir, config_name, output_dir,
         config_dict = get_config(os.path.join(configs_dir, stage), config_name)
         new_config_path = os.path.join(output_dir, stage, temp_name)
         with safe_open_w(new_config_path) as f:
-            f.write(yaml.dump(config_dict, default_flow_style=False))
+            yaml.dump(config_dict, f)
     return None
 
 
@@ -111,7 +162,7 @@ def update_configfile(config_path, update_dict):
     # Comments in the file are lost.
     with open(config_path, 'r') as f:
         try:
-            config_dict = yaml.safe_load(f)
+            config_dict = yaml.load(f)
         except Exception as e:
             logger.info(e)
             config_dict = None
@@ -121,7 +172,7 @@ def update_configfile(config_path, update_dict):
         return None
     config_dict.update(**update_dict)
     with safe_open_w(config_path) as f:
-        f.write(yaml.dump(config_dict, default_flow_style=False))
+        yaml.dump(config_dict, f)
     return None
 
 

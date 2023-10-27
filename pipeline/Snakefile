@@ -1,30 +1,31 @@
 import os
 import sys
+import yaml
+from pathlib import Path
 import numpy as np
 sys.path.append(os.getcwd())
-from settings import output_path, configs_dir
 from utils.snakefile import create_temp_configs, set_global_configs
-from utils.snakefile import set_stage_inputs, read_stage_output
+from utils.snakefile import set_stage_inputs, read_stage_output, read_setting
 
 # the working directory is by default the directory of the Snakefile
-working_dir = ''
+working_dir = Path()
 temp_config = 'working_config.yaml'
-if configs_dir is None:
-    configs_dir = working_dir
+config_path = Path(read_setting('config_path'))
+output_path = Path(read_setting('output_path'))
 
-configfile: os.path.join(configs_dir, 'configs', 'config.yaml')
+configfile: config_path /'configs' / 'config.yaml'
 report: "report.rst"
 
 # Setting the profile
 config_profile = f'config_{config["PROFILE"]}.yaml'
-output_path = os.path.join(output_path, config["PROFILE"])
+output_path = output_path / config["PROFILE"]
 
-STAGES = config["STAGES"]
+STAGES = config['STAGES']
 
 # onstart:
 ## building the temp_config files
 create_temp_configs(STAGES,
-                    configs_dir=configs_dir,
+                    configs_dir=config_path,
                     config_name=config_profile,
                     output_dir=output_path,
                     temp_name=temp_config)
@@ -47,39 +48,39 @@ def get_stage(num):
 
 subworkflow stage01:
     workdir:
-        os.path.join(working_dir, get_stage(0))
+        working_dir / get_stage(0)
     configfile:
-        os.path.join(output_path, get_stage(0), temp_config)
+        output_path / get_stage(0) / temp_config
 
 subworkflow stage02:
     workdir:
-        os.path.join(working_dir, get_stage(1))
+        working_dir / get_stage(1)
     configfile:
-        os.path.join(output_path, get_stage(1), temp_config)
+        output_path / get_stage(1) / temp_config
 
 subworkflow stage03:
     workdir:
-        os.path.join(working_dir, get_stage(2))
+        working_dir / get_stage(2)
     configfile:
-        os.path.join(output_path, get_stage(2), temp_config)
+        output_path / get_stage(2) / temp_config
 
 subworkflow stage04:
     workdir:
-        os.path.join(working_dir, get_stage(3))
+        working_dir / get_stage(3)
     configfile:
-        os.path.join(output_path, get_stage(3), temp_config)
+        output_path / get_stage(3) / temp_config
 
 subworkflow stage05:
     workdir:
-        os.path.join(working_dir, get_stage(4))
+        working_dir / get_stage(4)
     configfile:
-        os.path.join(output_path, get_stage(4), temp_config)
+        output_path / get_stage(4) / temp_config
 
 def stage_input(wildcards):
         stage_num = [i for i, stage in enumerate(STAGES)
                                     if stage == wildcards.stage][0]
         if stage_num:
-            return os.path.join(output_path, f'{STAGES[stage_num-1]}.done')
+            return output_path / f'{STAGES[stage_num-1]}.done'
         else:
             return []
 
@@ -93,17 +94,18 @@ def stage_output(wildcards):
             output_name = read_stage_output(wildcards.stage,
                                             config_dir=output_path,
                                             config_name=temp_config)
-            output = os.path.join(output_path, wildcards.stage, output_name)
+            output_name = f"{str(Path(output_name).stem)}.{config['NEO_FORMAT']}"
+            output = output_path / wildcards.stage / output_name
             return subworkflow(output)
 
 rule all:
     input:
-        last_stage = os.path.join(output_path, f'{STAGES[-1]}.done'),
+        last_stage = output_path / f'{STAGES[-1]}.done',
         # reports = expand(os.path.join(output_path, '{subworkflow_name}',
         #                               'report.html'),
         #                  subworkflow_name=STAGES)
     output:
-        os.path.join(output_path, 'pipeline.done')
+        output_path / 'pipeline.done'
     shell:
         """
         touch "{output}"
@@ -113,9 +115,9 @@ rule execute_stage:
     input:
         stage_input = stage_input,
         stage_output = stage_output,
-        config = os.path.join(output_path, '{stage}', temp_config)
+        config = output_path / '{stage}' / temp_config
     output:
-        temp(os.path.join(output_path, '{stage}.done'))
+        temp(output_path / '{stage}.done')
     shell:
         """
         touch "{output}"
@@ -123,10 +125,10 @@ rule execute_stage:
 
 rule create_report:
     input:
-        os.path.join(output_path, '{subworkflow_name}', 'report.clear'),
-        configfile = os.path.join(output_path, '{subworkflow_name}', temp_config)
+        output_path / '{subworkflow_name}' / 'report.clear',
+        configfile = output_path / '{subworkflow_name}' / temp_config
     output:
-        report = os.path.join(output_path, '{subworkflow_name}', 'report.html')
+        report = output_path / '{subworkflow_name}' / 'report.html'
     shell:
         """
         cd {wildcards.subworkflow_name}
@@ -137,9 +139,9 @@ rule create_report:
 
 rule clear_report:
     output:
-        temp(os.path.join('{path}', 'report.clear'))
+        temp(Path('{path}') / 'report.clear')
     params:
-        report_path = os.path.join('{path}', 'report.html')
+        report_path = Path('{path}') / 'report.html'
     shell:
         """
         rm -f "{params.report_path}"

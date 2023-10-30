@@ -7,7 +7,7 @@ from pathlib import Path
 include: Path() / '..' / 'utils' / 'Snakefile'
 
 config.DATA_NAME = list(config.DATA_SETS.keys())[0]
-config.DATA_PATH = config.DATA_SETS[config.DATA_NAME]
+
 
 use rule template_all as all with:
     input:
@@ -17,7 +17,6 @@ use rule template_all as all with:
         data = OUTPUT_DIR / f'{config.DATA_NAME}' 
                           / f'{config.DATA_NAME}.{config.NEO_FORMAT}',
         # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
-
 
 use rule check_input as check_data_entry with:
     input:
@@ -40,16 +39,23 @@ use rule template as plot_traces with:
 
 
 def curation_script(w):
-    if configs_dir is None:
+    if CONFIG_PATH is None:
         prefix = Path()
     else:
-        prefix = Path(configs_dir) / config.STAGE_NAME
+        prefix = CONFIG_PATH / config.STAGE_NAME
     return prefix / 'scripts' / config.CURATION_SCRIPT
+
+
+def data_path(w):
+    data_path = Path(config.DATA_SETS[config.DATA_NAME]).resolve()
+    if not data_path.exists():
+        raise FileNotFoundError(f"Data file `{data_path}` not found!")
+    return data_path
 
 
 use rule template as enter_data with:
     input:
-        data = config.DATA_PATH,
+        data = data_path,
         script = curation_script,
     params:
         params('spatial_scale', 'sampling_rate', 't_start', 't_stop',

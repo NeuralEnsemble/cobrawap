@@ -77,6 +77,7 @@ def read_stage_output(stage, config_dir, config_name,
     elif output_namespace in config_dict.keys():
         stage_output = config_dict[output_namespace]
         if not Path(stage_output).suffix:
+            breakpoint()
             neo_format = config_dict['NEO_FORMAT']
             stage_output = f'{stage_output}.{neo_format}'
         return stage_output
@@ -154,6 +155,7 @@ def get_config(config_dir, config_name, get_path_instead=False):
             logger.info(f"'{prev_try_config_name}' not found, "
                         f"trying '{try_config_name}'.")
             
+    logger.info(f"Using '{try_config_name}.")
     if get_path_instead:
         return config_path
     else:

@@ -35,7 +35,7 @@ TRIGGER_FILTER: ['remove_short_states']
 
 # BLOCK - Threshold
 ###################
-# Thresholding method: 'fixed', 'fitted'
+# Threshold method: 'fixed', 'fitted'
 THRESHOLD_METHOD: 'fixed'
 
 # Fitting Parameters
@@ -77,7 +77,7 @@ MINIMA_PERSISTENCE: 0.16
 # the sum of UP and DOWN durations.
 MIN_UP_DURATION: 0.005
 MIN_DOWN_DURATION: 0.005
-# If true, short down states are removed first, merging the neighbouring up states.
+# If true, short down states are removed first, merging the neighboring up states.
 # Only then the remaining short up states are removed.
 # Applies only when down transitions are detected.
 REMOVE_DOWN_FIRST: True

@@ -31,7 +31,7 @@ PLOT_FORMAT: 'png'
 # 'zscore', 'subsampling'
 # Default: empty list [] -> it skips any processing blocks and returns the same
 # as input but, different from plot obtained from stage01, here the values on
-# the y-scale are correclty reported
+# the y-scale are correctly reported
 BLOCK_ORDER: []
 
 # To make sure that the processing blocks are always executed in the correct
@@ -50,7 +50,7 @@ MACRO_PIXEL_DIM: 2
 
 # BLOCK - normalization
 #######################
-# Normalize the data (devide channels-wise) by either:
+# Normalize the data (divide channels-wise) by either:
 # 'mean', 'median', 'max'
 NORMALIZE_BY: 'max'
 

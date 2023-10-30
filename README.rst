@@ -36,6 +36,7 @@ Cobrawap brings together existing analysis methods, tools, and data standards an
 
 **Cobrawap features...**
 
+* a user-friendly command line interface guiding the setup and usage
 * a hierarchical and modular pipeline framework based on the Snakemake_ workflow management tool
 * reusable method implementations (*stages* and *blocks*) for standalone applications or integration into workflows
 * analysis methods for electrophysiological and optical data on the characterization of cortical wave activity and local oscillations
@@ -85,11 +86,6 @@ Cobrawap was originally developed in the context the `Human Brain Project <https
 Further Context
 ===============
 
-The WaveScalES project
-----------------------
-Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances. The goal of the WaveScalES collaboration of the `Human Brain Project <https://www.humanbrainproject.eu>`_ is to unveil the underlying mechanisms of deep sleep, anesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.
-
-
 Software Ecosystem
 ------------------
 The functionality offered by Cobrawap builds on existing software tools and services.
@@ -103,3 +99,7 @@ The Neuroscience Information Exchange, NIX_, format is an API and data format to
 .. _Neo: http://neuralensemble.org/neo
 .. _Elephant: https://python-elephant.org
 .. _NIX: http://g-node.github.io/nix
+
+The WaveScalES project
+----------------------
+Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances. The goal of the WaveScalES collaboration of the `Human Brain Project <https://www.humanbrainproject.eu>`_ is to unveil the underlying mechanisms of deep sleep, anesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models and simulations of such states and of the transition to wakefulness.

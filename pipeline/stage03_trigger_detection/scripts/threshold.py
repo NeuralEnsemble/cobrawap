@@ -33,9 +33,10 @@ def threshold(asig, threshold_array):
                        * func(state_array))
         channels = trans[1]
         times = asig.times[trans[0]]
-
+        
         if not len(times):
-            raise ValueError("The choosen threshold lies not within the range "\
+            breakpoint()
+            raise ValueError("The chosen threshold lies not within the range "\
                            + "of the signal values!")
 
         all_channels = np.append(all_channels, channels)

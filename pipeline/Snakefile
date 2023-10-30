@@ -94,7 +94,6 @@ def stage_output(wildcards):
             output_name = read_stage_output(wildcards.stage,
                                             config_dir=output_path,
                                             config_name=temp_config)
-            output_name = f"{str(Path(output_name).stem)}.{config['NEO_FORMAT']}"
             output = output_path / wildcards.stage / output_name
             return subworkflow(output)
 

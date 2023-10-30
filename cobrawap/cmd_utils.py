@@ -16,7 +16,8 @@ logging.basicConfig(level=logging.INFO)
 
 def is_profile_name_valid(profile: str) -> bool:
     if type(profile) == str:
-        pattern = re.compile("[\w\|]+")
+        profile = profile.strip("'\"")
+        pattern = re.compile("[\w\d\|]+")
         return bool(pattern.fullmatch(profile))
     else:
         return False
@@ -60,7 +61,7 @@ def input_profile():
 
 def get_profile(profile=None, parent_profile=None):
     # set initial profile name
-    if profile is not is_profile_name_valid(profile) and profile is not None:
+    if not is_profile_name_valid(profile) and profile is not None:
         log.info(f"profile name {profile} is not valid!")
         profile = None
     if profile is None:

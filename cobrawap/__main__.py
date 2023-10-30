@@ -173,21 +173,31 @@ def initialize(output_path=None, config_path=None, **kwargs):
     stages = get_setting('stages')
 
     # populate config_path with template config files
-    for stage_number, stage in stages.items():
-        stage_config_path = config_path / stage / 'configs'
-        stage_config_path.mkdir(parents=True, exist_ok=True)
-        shutil.copy(pipeline_path / stage / 'configs' / 'config_template.yaml',
-                    stage_config_path / 'config.yaml')
-    
-    pipeline_config_path = config_path / 'configs'
-    pipeline_config_path.mkdir(parents=True, exist_ok=True)
-    shutil.copy(pipeline_path / 'configs' / 'config_template.yaml',
-                pipeline_config_path / 'config.yaml')
-    
-    stage01_script_path = config_path / stages['1'] / 'scripts'
-    stage01_script_path.mkdir(parents=True, exist_ok=True)
-    shutil.copy(pipeline_path / stages['1'] / 'scripts' / 'enter_data_template.py',
-                stage01_script_path / 'enter_data_template.py')
+    if any(config_path.iterdir()):
+        overwrite = (input(f"The config direcotry {config_path} already exists "\
+                            "and is not empty. Create template config files "\
+                            "anyway? [Y/n]").lower() == 'y'
+                     or True)
+    else:
+        overwrite = True
+    if overwrite:
+        for stage_number, stage in stages.items():
+            stage_config_path = config_path / stage / 'configs'
+            stage_config_path.mkdir(parents=True, exist_ok=True)
+            shutil.copy(pipeline_path / stage / 'configs' \
+                                              / 'config_template.yaml',
+                        stage_config_path / 'config.yaml')
+        
+        pipeline_config_path = config_path / 'configs'
+        pipeline_config_path.mkdir(parents=True, exist_ok=True)
+        shutil.copy(pipeline_path / 'configs' / 'config_template.yaml',
+                    pipeline_config_path / 'config.yaml')
+        
+        stage01_script_path = config_path / stages['1'] / 'scripts'
+        stage01_script_path.mkdir(parents=True, exist_ok=True)
+        shutil.copy(pipeline_path / stages['1'] / 'scripts' \
+                                                / 'enter_data_template.py',
+                    stage01_script_path / 'enter_data_template.py')
 
     return None
 
@@ -240,7 +250,7 @@ def add_profile(profile=None, parent_profile=None, data_path=None,
 
 def run(profile=None, stage=None, extra_args=None, **kwargs):
     # select profile
-    if profile is not is_profile_name_valid(profile) and profile is not None:
+    if not is_profile_name_valid(profile) and profile is not None:
         log.info(f"profile name {profile} is not valid!")
         profile = None
     if profile is None:
@@ -277,12 +287,13 @@ def run(profile=None, stage=None, extra_args=None, **kwargs):
         extra_args = [f'STAGE_INPUT={stage_input}'] \
                    + extra_args \
                    + ['--configfile', f'{prev_stage_config_path}']
+        
     # execute snakemake
     snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']
     log.info(f'Executing `{" ".join(snakemake_args+extra_args)}`')
 
     with working_directory(pipeline_path):
-        subprocess.run(snakemake_args + extra_args, shell=False)
+        subprocess.run(snakemake_args + extra_args)
 
     return None
 

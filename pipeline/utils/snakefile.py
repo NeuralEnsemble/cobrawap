@@ -77,7 +77,6 @@ def read_stage_output(stage, config_dir, config_name,
     elif output_namespace in config_dict.keys():
         stage_output = config_dict[output_namespace]
         if not Path(stage_output).suffix:
-            breakpoint()
             neo_format = config_dict['NEO_FORMAT']
             stage_output = f'{stage_output}.{neo_format}'
         return stage_output

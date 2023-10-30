@@ -6,8 +6,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
    :target: https://cobrawap.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
    :align: left
-|
-|
+
 
 .. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px

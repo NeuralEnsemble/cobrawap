@@ -13,8 +13,10 @@ import shutil
 import re
 from pprint import pformat
 from pathlib import Path
-sys.path.append(str(Path(__file__).parent))
-sys.path.append(str(Path(__file__).parents[1] / 'pipeline'))
+import inspect
+sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
+sys.path.append(str(Path(inspect.getfile(lambda: None)).parents[1] / 'cobrawap'))
+sys.path.append(str(Path(inspect.getfile(lambda: None)).parents[1] / 'pipeline'))
 from cmd_utils import get_setting, set_setting, get_initial_available_stages
 from cmd_utils import is_profile_name_valid, create_new_configfile 
 from cmd_utils import input_profile, get_profile, setup_entry_stage 
@@ -35,6 +37,9 @@ except Exception as e:
         STAGES = {}
 
 CLI = argparse.ArgumentParser(prog='cobrawap')
+
+def get_parser():
+    return CLI
 
 # Utility arguments
 CLI.add_argument("-v", "--verbose", action='store_true',
@@ -92,11 +97,17 @@ CLI_run = subparsers.add_parser('run',
                                  'input and with the specified configurations')
 CLI_run.set_defaults(command='run')
 CLI_run.add_argument("--profile", type=str, nargs='?', default=None,
-                     help="profile name of the dataset to be analyzed")
-CLI_run.add_argument("--stage", type=str, nargs='?', default=None,
-                     choices=list(STAGES.keys()),
-                     help="select individual stage to execute; "\
-                          "runs all if not specified [default: run all]")
+                     help="name of the config profile to be analyzed")
+
+# Stage
+CLI_stage = subparsers.add_parser('run_stage', 
+                                  help='execute an individual stage')
+CLI_stage.set_defaults(command='run_stage')
+CLI_stage.add_argument("--profile", type=str, nargs='?', default=None,
+                       help="name of the config profile to be analyzed")
+CLI_stage.add_argument("--stage", type=str, nargs='?', default=None,
+                       choices=list(STAGES.keys()),
+                       help="select individual stage to execute")
 
 # Block
 CLI_block = subparsers.add_parser('run_block', 
@@ -104,6 +115,9 @@ CLI_block = subparsers.add_parser('run_block',
 CLI_block.set_defaults(command='run_block')
 CLI_block.add_argument("block", type=str, nargs='?', default=None,
                        help="block specified as <stage_name>.<block_name>")
+CLI_block.add_argument("block_help", action='store_true',
+                       help="display the help text of the block script")
+
 
 def main():
     'Start main CLI entry point.'
@@ -131,9 +145,13 @@ def main():
         log.info("executing Cobrawap")
         run(**vars(args), extra_args=unknown)
 
+    elif args.command == 'run_stage':
+        log.info("executing Cobrawap stage")
+        run_stage(**vars(args), extra_args=unknown)
+
     elif args.command == 'run_block':
         log.info("executing Cobrawap block")
-        run_block(block=args.block, block_args=unknown)
+        run_block(**vars(args), block_args=unknown)
 
     else:
         log.info(f"{args.command} not known!")
@@ -219,8 +237,8 @@ def create(profile=None, parent_profile=None, data_path=None,
     return None
 
 
-def add_profile(profile=None, parent_profile=None, data_path=None, 
-                stages=None, loading_script_name=None, **kwargs):
+def add_profile(profile=None, parent_profile=None, stages=None, 
+                data_path=None, loading_script_name=None, **kwargs):
     profile, parent_profile = get_profile(profile=profile, 
                                           parent_profile=parent_profile)
     # get stage selection
@@ -248,7 +266,7 @@ def add_profile(profile=None, parent_profile=None, data_path=None,
     return None
 
 
-def run(profile=None, stage=None, extra_args=None, **kwargs):
+def run(profile=None, extra_args=None, **kwargs):
     # select profile
     if not is_profile_name_valid(profile) and profile is not None:
         log.info(f"profile name {profile} is not valid!")
@@ -258,36 +276,7 @@ def run(profile=None, stage=None, extra_args=None, **kwargs):
 
     # set runtime config
     pipeline_path = Path(get_setting('pipeline_path'))
-
-    # select stage
-    if stage:
-        stages = get_setting('stages')
-        stage = stages[stage]
-        config_path = Path(get_setting('config_path'))
-        output_path = Path(get_setting('output_path'))
-
-        # lookup stage input file
-        pipeline_config_path = config_path / 'configs' / 'config.yaml'
-        config_dict = load_config_file(pipeline_config_path)
-        stage_idx = locate_str_in_list(config_dict['STAGES'], stage)
-        prev_stage = config_dict['STAGES'][stage_idx-1]
-        prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
-                                            config_name=f'config_{profile}.yaml',
-                                            get_path_instead=True)
-        prev_config_name = Path(prev_stage_config_path).name
-        output_name = read_stage_output(stage=prev_stage, 
-                                        config_dir=config_path, 
-                                        config_name=prev_config_name)
-        stage_input = output_path / prev_stage / output_name
-
-        # descend into stage folder
-        pipeline_path = pipeline_path / stage
-
-        # append stage specific arguments
-        extra_args = [f'STAGE_INPUT={stage_input}'] \
-                   + extra_args \
-                   + ['--configfile', f'{prev_stage_config_path}']
-        
+       
     # execute snakemake
     snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']
     log.info(f'Executing `{" ".join(snakemake_args+extra_args)}`')
@@ -298,7 +287,64 @@ def run(profile=None, stage=None, extra_args=None, **kwargs):
     return None
 
 
-def run_block(block=None, block_args=None):
+def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
+    # select profile
+    if not is_profile_name_valid(profile) and profile is not None:
+        log.info(f"profile name {profile} is not valid!")
+        profile = None
+    if profile is None:
+        profile = input_profile()
+
+    # get settings
+    pipeline_path = Path(get_setting('pipeline_path'))
+    config_path = Path(get_setting('config_path'))
+    output_path = Path(get_setting('output_path'))
+    stages = get_setting('stages')
+
+    # select stage
+    while stage not in stages.keys():
+        stage = input("Which stage should be executed?\n"
+            +"\n    ".join(f"{k} {v}" for k,v in get_setting('stages').items())
+            +"\nSelect the stage index: ")
+    stage = stages[stage]
+
+    # lookup stage input file
+    pipeline_config_path = config_path / 'configs' / 'config.yaml'
+    config_dict = load_config_file(pipeline_config_path)
+    stage_idx = locate_str_in_list(config_dict['STAGES'], stage)
+    if stage_idx is None:
+        raise IndexError("Make sure that the selected stage is also specified "\
+                         "in your top-level config in the list `STAGES`!")
+    
+    prev_stage = config_dict['STAGES'][stage_idx-1]
+    prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
+                                        config_name=f'config_{profile}.yaml',
+                                        get_path_instead=True)
+    prev_config_name = Path(prev_stage_config_path).name
+    output_name = read_stage_output(stage=prev_stage, 
+                                    config_dir=config_path, 
+                                    config_name=prev_config_name)
+    stage_input = output_path / prev_stage / output_name
+
+    # descend into stage folder
+    pipeline_path = pipeline_path / stage
+
+    # append stage specific arguments
+    extra_args = [f'STAGE_INPUT={stage_input}'] \
+                + extra_args \
+                + ['--configfile', f'{prev_stage_config_path}']
+
+    # execute snakemake
+    snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']
+    log.info(f'Executing `{" ".join(snakemake_args+extra_args)}`')
+
+    with working_directory(pipeline_path):
+        subprocess.run(snakemake_args + extra_args)
+
+    return None
+
+
+def run_block(block=None, block_args=None, block_help=False, **kwargs):
     while not block:
         block = input("Specify a block to execute (<stage_name>.<block_name>):")
 
@@ -319,10 +365,12 @@ def run_block(block=None, block_args=None):
               f"Available blocks are: {', '.join(available_blocks)}.")
         block = input("Specify block:")
 
+    if block_help:
+        block_args += ['--help']
+
     # execute block
     myenv = os.environ.copy()
     myenv['PYTHONPATH'] = ':'.join(sys.path)
-    breakpoint()
     subprocess.run(['python', str(block_dir / f'{block}.py')] 
                     + block_args,
                     env=myenv)

@@ -23,59 +23,114 @@ The individual processing and analysis steps, **Blocks**, are organized in seque
 
 Installation
 ============
-Currently, the recommended way to use Cobrawap is to get it directly from the `Github repository <https://github.com/INM-6/cobrawap>`_, cloning, forking, or adding it as submodule to another project repository.
-
-*Other install options and online execution via* |EBRAINS|_ *will follow.*
+*Online execution via* |EBRAINS|_ *will follow.*
 
 .. |EBRAINS| replace:: *EBRAINS*
 .. _EBRAINS: https://ebrains.eu/
 
-
-Getting The Repository
+Installation with PyPi
 ----------------------
-You can either clone cobrawap directly to your local machine,
-
-.. code-block:: bash
-  
-    git clone git@github.com:INM-6/cobrawap.git
-
-
-or fork it to your own Github space, to be able to make version-controlled changes to the pipeline implementation.
 
 .. code-block:: bash
 
-    git clone git@github.com:<your-github-handle>/cobrawap.git
+    pip install cobrawap
 
 
-However, idenpendently of whether you are working with the origin or a forked version, we recommend to add the Cobrawap repository as a `submodule <https://github.blog/2016-02-01-working-with-submodules/>`_ to the project repository in which it the pipeline (or pipeline components) are employed and configured.
+Manual Installation For Developers
+----------------------------------
+For working on the source code, it is recommended to fork the Cobrawap repository from Github, and clone it or set it as a submodule to another project repository.
 
+`Create a fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ in your github domain of the upstream location `github.com/INM-6/cobrawap <https://github.com/INM-6/cobrawap>`_ and clone the repository to your local machine (:code:`git clone git@github.com:<your-github-handle>/cobrawap.git`).
+
+Then use pip to install the module from your local directory in an editable mode.
+.. code-block:: bash
+
+    pip install -e <path-to-cobrawap-directory>
+
+Pipeline Setup
+==============
+
+Initialization
+--------------
+See also `Command Line Interface > init <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#init>`_.
 
 .. code-block:: bash
 
-    cd <your-wave-analysis-project>
-    git submodule add git@github.com:<your-github-handle>/cobrawap.git
+    cobrawap init
 
-Creating The Environment
-------------------------
-The required Python packages are defined in the ``environment.yaml`` file. 
-We suggest using `conda <https://docs.conda.io/en/latest/>`_ for the environment management.
+This will prompt the setting of path information for an output directory of the pipeline results and for a config directory where the pipeline config files are stored. Optionally, these paths can be directly passed to the :code:`init` command with :code:`--output_path` and :code:`--config_path`. These settings will be stored in ``~/.cobrawap/config``.
+
+If the specified config directory is empty, this step will also create template config files for each stage and a template dataset loading script for the initial stage.
+
+
+Creating Set of Configurations for a Dataset
+--------------------------------------------
+See also `Command Line Interface > create <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#create>`_.
 
 .. code-block:: bash
 
-    conda env create --file environment.yaml
-    conda activate cobrawap
+    cobrawap create
+
+This will prompt the setting of a profile name and optionally a parent profile name from which to copy the parameter presets. The parent profile name will be prepended to the profile name (see :ref:`config_profiles`). Optionally, these names can be directly passed to the :code:`create` command with :code:`--profile` and :code:`--parent_profile`.
+The profile and parent name will be used to create correspondingly named config files for each stage: ``config_<parent>_<profile>.yaml`` for the first stage and ``config_<parent>.yaml`` for all other stages. 
+
+For specifying the data entry into the pipeline :code:`create` also asks for the path to the dataset and a name for the corresponding loading script. This information can also be passed to the :code:`create` command with :code:`--data_path` and :code:`--loading_script_name`.
+Both information are written into the corresponding config file of the first stage. Furthermore, a template loading script is created in ``<config_path>/stage01_data_entry/scripts/`` which has to be adapted to load the specific dataset.
+A detailed guide to set up the data entry can be found in the `stage01 README <https://cobrawap.readthedocs.io/en/latest/stage01_data_entry.html#entering-datasets-into-cobrawap>`_.
 
 
-Setting Up The Pipeline
------------------------
-To set up the pipeline for use you first need to set your path information in ``cobrawap/settings_template.py`` and rename it to ``settings.py``.
-Then you need to set up the pipeline and stage configuration from the respective ``config_template.yaml`` files, by editing and renaming them to ``config.yaml``, either within the cobrawap folder or a config separate folder (``configs_dir`` in ``settings.py``). Details on the pipeline configuration can be found below.
+Adding a Configuration Profile
+------------------------------
+See also `Command Line Interface > add_profile <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#add_profile>`_.
 
-In particular, you need to configure entry of your dataset into pipeline, by editing the stage01 config file and setting the path to the dataset, as well as providing a script to load the data and putting it into the required neo representation. There a template files for the config and loading script, and a detailed guide to set up the data entry can be found in the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
+.. code-block:: bash
+
+    cobrawap add_profile
+
+This will prompt the setting of a profile and parent profile name just as for :code:`cobrawap create`. Additionally, it requires to specify the stages for which to create new config files (can be directly passed with :code:`--stages`).
+Consequently, this will create new config files ``config_<parent>_<profile>.yaml`` for the selected stages, copying the parameter presents from ``config_<parent>.yaml``.
+
+If the stage selection includes the first stage, this will again prompt the additional setting of a :code:`--data_path` and :code:`--loading_script_name` as for :code:`cobrawap create`. 
+
+Running the Pipeline
+--------------------
+Running the Full Pipeline
+^^^^^^^^^^^^^^^^^^^^^^^^^
+See also `Command Line Interface > run <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#run>`_.
+
+.. code-block:: bash
+
+    cobrawap run
+
+This will prompt the setting of a profile to be executed (can be directly passed with :code:`--profile`).
+The command line arguments can be extended with the specification of config parameters (in the format :code:`PARAMETER=value`) that will overwrite the corresponding parameter values in the config files. Any further command line arguments will be passed to :code:`snakemake`, see the `snakemake documentation <https://snakemake.readthedocs.io/en/stable/executing/cli.html>`_ for available command line arguments.
+
+Running a Single Stage
+^^^^^^^^^^^^^^^^^^^^^^
+See also `Command Line Interface > run_stage <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#run_stage>`_.
+
+.. code-block:: bash
+
+    cobrawap run_stage
+
+The behavior is identical to :code:`cobrawap run`, except for the additional specification of a stage, either prompted or directly with :code:`--stage`.
+
+
+Running a Single Block
+^^^^^^^^^^^^^^^^^^^^^^
+See also `Command Line Interface > run_block <https://cobrawap.readthedocs.io/en/latest/command_line_interface.html#run_block>`_.
+
+.. code-block:: bash
+
+    cobrawap run_block
+
+This command allows to execute the python script of a specific block. The block should be specified as :code:`<stage_name>.<block_name>` and can be passed with :code:`--block`. Any additional command line arguments are passed to the script. 
+
+To display the help text of the block script add :code:`--block_help`.
 
 
 Organization
-=====================
+============
 - ``Snakefile`` defines how the stages are executed within the full pipeline
 - ``configs/`` contains global config files
    - ``config.yaml`` defines the global parameter settings
@@ -111,6 +166,8 @@ Local Config Directory
 ----------------------
 Similarly, you need to rename ``settings_template.py`` to ``settings.py`` and edit the containing ``output_path`` to fit your local system.
 In the setting file, you can also optionally set a ``configs_dir`` path to define an alternative directory containing the config files. This alternative config directory mirrors the stage folder structure of the pipeline and can be used to configure the pipeline for specific projects without touching the cobrawap folder itself.
+
+.. _config_profiles:
 
 Config Profiles
 ---------------
@@ -184,7 +241,7 @@ Interfaces
 
 Pipeline Inputs
 ---------------
-The data input to the pipeline is the input to stage01_data_entry. The path to the data file is given in the config file of this first stage as key-value pair (``<data_name>: /path/to/file``) in ``DATA_SETS``, and loaded by the custom data entry scripts specified in ``CURATION_SCRIPT``. Additional metadata can be specified in the same config file. For details see the `stage01 README <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/README.md>`_.
+The data input to the pipeline is the input to stage01_data_entry. The path to the data file is given in the config file of this first stage as key-value pair (``<data_name>: /path/to/file``) in ``DATA_SETS``, and loaded by the custom data entry scripts specified in ``CURATION_SCRIPT``. Additional metadata can be specified in the same config file. For details see the `stage01 README <https://cobrawap.readthedocs.io/en/latest/stage01_data_entry.html#entering-datasets-into-cobrawap>`_.
 
 Pipeline Outputs
 ----------------

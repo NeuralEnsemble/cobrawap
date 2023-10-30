@@ -94,7 +94,7 @@ def setup_entry_stage(profile, parent_profile=None,
     # set data path
     if data_path is None:
         data_path = (input("Path to dataset [optional, "\
-                        "can be set later in the stage01 config file]:")
+                           "can be set later in the stage01 config file]:")
                     or None)
     if data_path is not None:
         stage01_update_dict.update({'DATA_SETS': {profile: data_path}})

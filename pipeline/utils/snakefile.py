@@ -45,10 +45,10 @@ def set_setting(setting: dict) -> None:
     key_overlap = [k for k in setting.keys() if k in settings.keys()]
     if key_overlap:
         overwrite = (input(f"There are already settings for {key_overlap}! "\
-                            "Overwrite? [Y/n]").lower() == 'y'
-                    or True)
+                            "Overwrite? [y/N]").lower() == 'y'
+                    or False)
         if not overwrite:
-            setting.pop[key_overlap, None]
+            _ = [setting.pop(k, None) for k in key_overlap]
 
     settings.update(setting)
     with open(SETTINGS_PATH, 'w') as f:

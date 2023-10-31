@@ -34,13 +34,24 @@ def create_new_configfile(profile, stage=None, stage_number=None, parent=None):
     config_path = Path(get_setting('config_path'))
 
     parent = f'_{parent}' if parent else ''
-    template_config_path = config_path / stage / 'configs' \
-                                       / f'config{parent}.yaml'
-    new_config_path = config_path / stage / 'configs' \
-                                  / f'config_{profile}.yaml'
+    config_dir = config_path / stage / 'configs'
+    template_config_path = config_dir / f'config{parent}.yaml'
+    new_config_path = config_dir / f'config_{profile}.yaml'
+
     if new_config_path.exists():
         log.debug(f"config file `{new_config_path}` already exists. Skip.")
         return None
+    
+    if not template_config_path.exists():
+        log.debug(f"parent config file `{template_config_path}` doesn't exist.")
+        potential_parents = [f.name for f in config_dir.iterdir() \
+                                    if f.name.startswith(f'config{parent}')]
+        if potential_parents:
+            log.debug(f"Using `{potential_parents[0]}` instead.")
+            template_config_path = config_dir / potential_parents[0]
+        else:
+            raise FileNotFoundError("No parent config file fitting the name "
+                                   f"`{parent.strip('_')}` found!")
 
     shutil.copy(template_config_path, new_config_path)
     update_configfile(new_config_path, {'PROFILE':profile})
@@ -113,12 +124,12 @@ def setup_entry_stage(profile, parent_profile=None,
     
     stages = get_setting('stages')
     loading_script_path = config_path / stages['1'] / 'scripts' \
-                                        / f'{loading_script_name}'
+                                      / f'{loading_script_name}'
     if loading_script_path.exists():
         log.info(f"`{loading_script_name}` already exists. Skip.")
     else:
         shutil.copy(config_path / stages['1'] / 'scripts' \
-                                                / 'enter_data_template.py',
+                                              / 'enter_data_template.py',
                     loading_script_path)
 
     # update stage 01 config

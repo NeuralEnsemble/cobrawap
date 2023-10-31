@@ -192,10 +192,10 @@ def initialize(output_path=None, config_path=None, **kwargs):
 
     # populate config_path with template config files
     if any(config_path.iterdir()):
-        overwrite = (input(f"The config direcotry {config_path} already exists "\
+        overwrite = (input(f"The config directory {config_path} already exists "\
                             "and is not empty. Create template config files "\
-                            "anyway? [Y/n]").lower() == 'y'
-                     or True)
+                            "anyway? [y/N]").lower() == 'y'
+                     or False)
     else:
         overwrite = True
     if overwrite:
@@ -232,8 +232,10 @@ def create(profile=None, parent_profile=None, data_path=None,
                               profile=config_name,
                               parent=parent_profile)
         
-    setup_entry_stage(profile=profile, parent_profile=parent_profile,
-                  data_path=data_path, loading_script_name=loading_script_name)
+    setup_entry_stage(profile=profile, 
+                      parent_profile=parent_profile,
+                      data_path=data_path, 
+                      loading_script_name=loading_script_name)
     return None
 
 
@@ -303,7 +305,7 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
 
     # select stage
     while stage not in stages.keys():
-        stage = input("Which stage should be executed?\n"
+        stage = input("Which stage should be executed?\n    "
             +"\n    ".join(f"{k} {v}" for k,v in get_setting('stages').items())
             +"\nSelect the stage index: ")
     stage = stages[stage]

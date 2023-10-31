@@ -14,10 +14,8 @@ import os
 import sys
 from pathlib import Path
 from datetime import date
-sys.path.insert(0, os.path.abspath('../../.'))
-sys.path.insert(0, os.path.abspath('../../pipeline'))
-print(sys.path)
-
+sys.path.insert(0, str(Path(__file__).parents[2]))
+sys.path.insert(0, str(Path(__file__).parents[2] / 'cobrawap' / 'pipeline'))
 # -- Project information -----------------------------------------------------
 
 

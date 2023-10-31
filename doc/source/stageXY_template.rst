@@ -1,5 +1,5 @@
 
-.. include:: ../../pipeline/stageXY_template/README.rst
+.. include:: ../../cobrawap/pipeline/stageXY_template/README.rst
 
 
 Blocks

@@ -1,7 +1,7 @@
 [project]
 name = "cobrawap"
 description = "Collaborative Brain Wave Analysis Pipeline (Cobrawap)"
-version = "0.1.0"
+version = "0.1.1"
 readme = "README.rst"
 authors = [
     { name = "Cobrawap authors and contributors", email = "robin.gutzen@outlook.com" }
@@ -9,7 +9,7 @@ authors = [
 
 requires-python = ">=3.8"
 dependencies = [
-    "ruamel.yaml",
+    "ruamel.yaml >= 0.18.3",
     "jinja2 >= 2.10.3",
     "scipy >= 1.7.3",
     "pygments >= 2.4.2",

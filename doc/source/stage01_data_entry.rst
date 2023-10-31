@@ -1,5 +1,5 @@
 
-.. include:: ../../pipeline/stage01_data_entry/README.rst
+.. include:: ../../cobrawap/pipeline/stage01_data_entry/README.rst
 
 Blocks
 ======

@@ -1,5 +1,5 @@
 
-.. include:: ../../pipeline/stage03_trigger_detection/README.rst
+.. include:: ../../cobrawap/pipeline/stage03_trigger_detection/README.rst
 
 Blocks
 ======

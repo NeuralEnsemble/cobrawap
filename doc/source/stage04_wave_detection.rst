@@ -1,5 +1,5 @@
 
-.. include:: ../../pipeline/stage04_wave_detection/README.rst
+.. include:: ../../cobrawap/pipeline/stage04_wave_detection/README.rst
 
 Blocks
 ======

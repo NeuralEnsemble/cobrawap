@@ -33,7 +33,7 @@ Installation with PyPi
 
 .. code-block:: bash
 
-    pip install cobrawap
+    pip install -i https://test.pypi.org/simple/ cobrawap
 
 
 Manual Installation For Developers

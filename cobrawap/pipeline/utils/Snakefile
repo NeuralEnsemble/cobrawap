@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys
 from types import SimpleNamespace
-utils_path = str((Path() / '..').resolve())
+utils_path = str((Path(__file__).parent).resolve())
 sys.path.append(utils_path)
 # from settings import output_path, configs_dir
 from snakemake.logging import logger

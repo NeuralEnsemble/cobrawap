@@ -1,2 +1,2 @@
 
-.. include:: ../../pipeline/README.rst
+.. include:: ../../cobrawap/pipeline/README.rst

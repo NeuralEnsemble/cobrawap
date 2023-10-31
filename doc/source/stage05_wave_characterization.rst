@@ -1,5 +1,5 @@
 
-.. include:: ../../pipeline/stage05_wave_characterization/README.rst
+.. include:: ../../cobrawap/pipeline/stage05_wave_characterization/README.rst
 
 
 Blocks

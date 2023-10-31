@@ -15,8 +15,7 @@ from pprint import pformat
 from pathlib import Path
 import inspect
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
-sys.path.append(str(Path(inspect.getfile(lambda: None)).parents[1] / 'cobrawap'))
-sys.path.append(str(Path(inspect.getfile(lambda: None)).parents[1] / 'pipeline'))
+sys.path.append(str(Path(inspect.getfile(lambda: None)).parent / 'pipeline'))
 from cmd_utils import get_setting, set_setting, get_initial_available_stages
 from cmd_utils import is_profile_name_valid, create_new_configfile 
 from cmd_utils import input_profile, get_profile, setup_entry_stage 
@@ -183,7 +182,7 @@ def initialize(output_path=None, config_path=None, **kwargs):
     set_setting(dict(config_path=str(config_path.resolve())))
 
     # set pipeline path
-    pipeline_path = Path(__file__).parents[1] / 'pipeline'
+    pipeline_path = Path(__file__).parents[1] / 'cobrawap' / 'pipeline'
     set_setting(dict(pipeline_path=str(pipeline_path.resolve())))
 
     # set available stages

@@ -12,6 +12,7 @@ dependencies:
   - snakemake == 7.9.0
   - h5py
   - shapely
+  - ruamel.yaml
   - pip:
     - elephant >= 0.10.0
     - neo >= 0.10.2

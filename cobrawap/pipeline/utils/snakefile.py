@@ -40,7 +40,7 @@ def set_setting(setting: dict) -> None:
         logger.warning("Creating a new cobrawap settings file at "\
                       f"`{SETTINGS_PATH.resolve()}`.")
         if not SETTINGS_PATH.parent.exists():
-            SETTINGS_PATH.mkdir(parents=True)   
+            SETTINGS_PATH.parent.mkdir(parents=True)   
         SETTINGS_PATH.touch(exist_ok=True)
         settings = {}
     

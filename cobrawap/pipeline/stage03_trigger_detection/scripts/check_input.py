@@ -7,7 +7,7 @@ Additionally prints a short summary of the data attributes.
 import numpy as np
 import argparse
 import quantities as pq
-from utils.io import load_neo
+from utils.io_utils import load_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data",    nargs='?', type=str, required=True,

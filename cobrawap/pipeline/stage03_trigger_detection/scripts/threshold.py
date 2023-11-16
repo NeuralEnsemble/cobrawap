@@ -6,7 +6,7 @@ by applying a threshold to each channel signal.
 import neo
 import numpy as np
 import argparse
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()

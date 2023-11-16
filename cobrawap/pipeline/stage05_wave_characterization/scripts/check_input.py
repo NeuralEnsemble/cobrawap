@@ -8,7 +8,7 @@ import numpy as np
 import argparse
 import warnings
 import re
-from utils.io import load_neo
+from utils.io_utils import load_neo
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()

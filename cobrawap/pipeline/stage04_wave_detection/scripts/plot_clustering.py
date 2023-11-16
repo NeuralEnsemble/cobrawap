@@ -11,7 +11,7 @@ from matplotlib.colors import ListedColormap
 import seaborn as sns
 import random
 import warnings
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_float
 from utils.neo_utils import time_slice
 

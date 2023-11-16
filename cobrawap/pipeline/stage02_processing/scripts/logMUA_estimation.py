@@ -13,7 +13,7 @@ import seaborn as sns
 import argparse
 import os
 from pathlib import Path
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_float, none_or_int
 from utils.neo_utils import time_slice
 

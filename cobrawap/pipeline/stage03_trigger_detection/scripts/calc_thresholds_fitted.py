@@ -10,7 +10,7 @@ import scipy as sc
 import warnings
 from scipy.optimize import OptimizeWarning
 import matplotlib.pyplot as plt
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_int
 
 CLI = argparse.ArgumentParser()

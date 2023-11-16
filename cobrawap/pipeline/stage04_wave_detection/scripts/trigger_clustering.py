@@ -7,7 +7,7 @@ import numpy as np
 import quantities as pq
 import argparse
 from sklearn.cluster import DBSCAN
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()

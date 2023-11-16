@@ -5,7 +5,7 @@ Offsets the signal in all channels by a fixed value.
 import argparse
 from pathlib import Path
 import matplotlib.pyplot as plt
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_int, none_or_float, none_or_str
 from utils.neo_utils import time_slice
 

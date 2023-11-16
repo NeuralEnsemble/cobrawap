@@ -9,7 +9,7 @@ import shapely.geometry as geo
 import argparse
 import neo
 import os
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 

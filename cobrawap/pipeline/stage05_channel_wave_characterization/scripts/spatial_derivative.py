@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from warnings import warn
 from scipy.interpolate import RBFInterpolator
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.convolve import nan_conv2d, get_kernel
 

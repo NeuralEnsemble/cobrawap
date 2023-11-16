@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import argparse
 from pathlib import Path
 import os
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()

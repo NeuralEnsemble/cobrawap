@@ -4,7 +4,7 @@ Cut data according to a start and stop time.
 
 import argparse
 import quantities as pq
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()

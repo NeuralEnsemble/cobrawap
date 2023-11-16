@@ -4,7 +4,7 @@ Set the threshold between Up and Down states to a fixed value.
 
 import numpy as np
 import argparse
-from utils.io import load_neo
+from utils.io_utils import load_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,

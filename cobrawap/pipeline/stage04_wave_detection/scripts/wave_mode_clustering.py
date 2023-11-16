@@ -17,7 +17,7 @@ from scipy.interpolate import RBFInterpolator
 from scipy.spatial.distance import cdist
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str, none_or_int
 from utils.neo_utils import analogsignal_to_imagesequence, remove_annotations
 

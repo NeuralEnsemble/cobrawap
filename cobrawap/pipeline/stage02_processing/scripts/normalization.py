@@ -8,7 +8,7 @@ import neo
 import quantities as pq
 import os
 import sys
-from utils.io import write_neo, load_neo
+from utils.io_utils import write_neo, load_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data",    nargs='?', type=str, required=True,

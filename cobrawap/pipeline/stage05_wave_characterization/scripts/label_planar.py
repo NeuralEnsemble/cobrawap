@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import copy
 import seaborn as sns
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 from utils.parse import none_or_str
 

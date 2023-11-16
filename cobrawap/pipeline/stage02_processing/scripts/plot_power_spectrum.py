@@ -8,7 +8,7 @@ import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
 from elephant.spectral import welch_psd
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()

@@ -6,7 +6,7 @@ import argparse
 import quantities as pq
 import os
 from elephant.signal_processing import butter
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()

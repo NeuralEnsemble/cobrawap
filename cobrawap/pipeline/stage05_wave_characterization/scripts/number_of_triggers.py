@@ -5,7 +5,7 @@ Calculate the number of triggers involved in each wave.
 import numpy as np
 import argparse
 import pandas as pd
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()

@@ -6,7 +6,7 @@ import numpy as np
 from elephant.signal_processing import hilbert
 import argparse
 import os
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,

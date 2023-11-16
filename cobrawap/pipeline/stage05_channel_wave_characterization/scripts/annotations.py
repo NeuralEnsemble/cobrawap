@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import quantities as pq
 import re
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo_utils import remove_annotations
 

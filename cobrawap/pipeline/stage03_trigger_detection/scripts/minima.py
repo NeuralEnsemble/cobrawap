@@ -8,7 +8,7 @@ import numpy as np
 import quantities as pq
 from scipy.signal import find_peaks
 import argparse
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.neo_utils import remove_annotations, time_slice
 from utils.parse import none_or_int, none_or_float, none_or_str
 import seaborn as sns

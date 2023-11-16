@@ -6,7 +6,7 @@ import argparse
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()

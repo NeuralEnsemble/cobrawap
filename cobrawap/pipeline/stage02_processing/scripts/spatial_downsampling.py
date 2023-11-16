@@ -8,7 +8,7 @@ import argparse
 import os
 import neo
 from skimage import measure
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 

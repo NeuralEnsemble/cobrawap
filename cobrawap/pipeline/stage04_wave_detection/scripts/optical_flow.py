@@ -11,7 +11,7 @@ import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
 from distutils.util import strtobool
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
 from utils.convolve import phase_conv2d, get_kernel, conv, norm_angle

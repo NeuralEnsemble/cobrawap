@@ -7,9 +7,7 @@ from copy import copy
 import quantities as pq
 from pathlib import Path
 from snakemake.logging import logger
-utils_path = str((Path(__file__).parent / '..').resolve())
-sys.path.append(utils_path)
-from utils.parse import get_base_type, get_nan_value
+from .parse import get_base_type, get_nan_value
 
 
 def remove_annotations(objects, del_keys=['nix_name', 'neo_name']):

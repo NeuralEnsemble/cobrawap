@@ -3,9 +3,7 @@ import warnings
 import re
 from pathlib import Path
 import sys
-utils_path = str((Path(__file__).parent / '..').resolve())
-sys.path.append(utils_path)
-from utils.io import load_neo
+from .io_utils import load_neo
 
 
 def get_base_type(datatype):

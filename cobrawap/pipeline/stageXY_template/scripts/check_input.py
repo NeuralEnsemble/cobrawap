@@ -6,7 +6,7 @@ Additionally prints a short summary of the data attributes.
 
 import numpy as np
 import argparse
-from utils.io import load_neo
+from utils.io_utils import load_neo
 
 CLI = argparse.ArgumentParser(description=__doc__,
                 formatter_class=argparse.RawDescriptionHelpFormatter)

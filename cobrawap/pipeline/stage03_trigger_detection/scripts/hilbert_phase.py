@@ -11,7 +11,7 @@ from scipy.signal import hilbert
 from scipy.stats import zscore
 import matplotlib.pyplot as plt
 import seaborn as sns
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.neo_utils import time_slice, remove_annotations
 from utils.parse import none_or_int, none_or_float
 from pathlib import Path

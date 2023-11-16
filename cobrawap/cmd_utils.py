@@ -6,10 +6,10 @@ import re
 from string import ascii_lowercase
 import contextlib
 from pathlib import Path
-sys.path.append(str(Path(__file__).parent / 'pipeline' / 'utils'))
-from snakefile import update_configfile, get_setting, set_setting
-from snakefile import load_config_file, locate_str_in_list, get_config
-from snakefile import read_stage_output
+# sys.path.append(str(Path(__file__).parent / 'pipeline' / 'utils'))
+from .pipeline.utils.snakefile import  get_setting, set_setting, get_config
+from .pipeline.utils.snakefile import load_config_file, locate_str_in_list
+from .pipeline.utils.snakefile import read_stage_output, update_configfile
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 import os
-from utils.io import load_neo, save_plot
+from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()

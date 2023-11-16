@@ -5,7 +5,7 @@ Z-score the signal of each channel.
 import argparse
 from pathlib import Path
 from elephant.signal_processing import zscore
-from utils.io import load_neo, write_neo
+from utils.io_utils import load_neo, write_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,

@@ -8,7 +8,7 @@ import numpy as np
 import neo
 import matplotlib.pyplot as plt
 from shapely.geometry import LineString
-from utils.io import load_neo, write_neo, save_plot
+from utils.io_utils import load_neo, write_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()

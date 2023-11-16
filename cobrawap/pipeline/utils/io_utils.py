@@ -11,22 +11,22 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
         if filename.suffix == '.nix':
             kwargs.update(mode='ro')
 
-        io = neo.io.get_io(str(filename), *args, **kwargs)
+        nio = neo.io.get_io(str(filename), *args, **kwargs)
 
-        if lazy and io.support_lazy:
-            block = io.read_block(lazy=lazy)
+        if lazy and nio.support_lazy:
+            block = nio.read_block(lazy=lazy)
         # elif lazy and isinstance(io, neo.io.nixio.NixIO):
         #     with neo.NixIOFr(filename, *args, **kwargs) as nio:
         #         block = nio.read_block(lazy=lazy)
         else:
-            block = io.read_block()
+            block = nio.read_block()
 
     except Exception as e:
         # io.close()
         raise e
     finally:
-        if not lazy and hasattr(io, 'close'):
-            io.close()
+        if not lazy and hasattr(nio, 'close'):
+            nio.close()
 
     if block is None:
         raise IOError(f'{filename} does not exist!')
@@ -45,12 +45,12 @@ def write_neo(filename, block, *args, **kwargs):
     block.segments[0].imagesequences = []
     try:
         # for neo >= 0.12.0 filename can't contain '|'
-        io = neo.io.get_io(str(filename), *args, **kwargs)
-        io.write(block)
+        nio = neo.io.get_io(str(filename), *args, **kwargs)
+        nio.write(block)
     except Exception as e:
         warnings.warn(str(e))
     finally:
-        io.close()
+        nio.close()
     return True
 
 

@@ -60,7 +60,7 @@ CLI_init.add_argument("--config_path", type=Path, default=None,
 
 # Show Settings
 CLI_settings = subparsers.add_parser('settings', 
-                help='display the content of ~/.cobrawap/config')
+                        help='display the content of ~/.cobrawap/config')
 CLI_settings.set_defaults(command='settings')
 
 
@@ -138,7 +138,7 @@ def main():
         log.info("initializing Cobrawap")
         initialize(**vars(args))
 
-    if args.command == 'settings':
+    elif args.command == 'settings':
         log.info("display settings at ~/.cobrawap/config")
         print_settings(**vars(args))
         
@@ -173,23 +173,23 @@ def initialize(output_path=None, config_path=None, **kwargs):
     if output_path is None:
         output_path = Path(input("Output directory "\
                                  "[default: ~/cobrawap_output]:")
-                           or Path('~') / 'cobrawap_output').expanduser()
+                        or Path('~') / 'cobrawap_output').expanduser().resolve()
     output_path.mkdir(exist_ok=True)
     if not output_path.is_dir():
         raise ValueError(f"{output_path} is not a valid directory!")
 
-    set_setting(dict(output_path=str(output_path.resolve())))
+    set_setting(dict(output_path=str(output_path)))
 
     # set config_path
     if config_path is None:
         config_path = Path(input("Config directory "\
                                  "[default: ~/cobrawap_configs]: ") \
-                      or Path('~') / 'cobrawap_configs').expanduser()
+                      or Path('~') / 'cobrawap_configs').expanduser().resolve()
     config_path.mkdir(parents=True, exist_ok=True)
     if not config_path.is_dir():
         raise ValueError(f"{config_path} is not a valid directory!")
             
-    set_setting(dict(config_path=str(config_path.resolve())))
+    set_setting(dict(config_path=str(config_path)))
 
     # set pipeline path
     pipeline_path = Path(__file__).parents[1] / 'cobrawap' / 'pipeline'

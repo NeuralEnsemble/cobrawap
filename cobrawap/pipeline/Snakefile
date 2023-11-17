@@ -4,7 +4,6 @@ import yaml
 from pathlib import Path
 import numpy as np
 import inspect
-# sys.path.append(os.getcwd())
 sys.path.append(str(Path(inspect.getfile(lambda: None))))
 from utils.snakefile import create_temp_configs, set_global_configs
 from utils.snakefile import set_stage_inputs, read_stage_output, get_setting

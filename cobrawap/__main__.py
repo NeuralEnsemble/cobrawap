@@ -14,13 +14,13 @@ import re
 from pprint import pformat
 from pathlib import Path
 import inspect
-# sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
+sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent / 'pipeline'))
-from .cmd_utils import get_setting, set_setting, get_initial_available_stages
-from .cmd_utils import is_profile_name_valid, create_new_configfile 
-from .cmd_utils import input_profile, get_profile, setup_entry_stage 
-from .cmd_utils import working_directory, load_config_file, get_config
-from .cmd_utils import locate_str_in_list, read_stage_output
+from cmd_utils import get_setting, set_setting, get_initial_available_stages
+from cmd_utils import is_profile_name_valid, create_new_configfile 
+from cmd_utils import input_profile, get_profile, setup_entry_stage 
+from cmd_utils import working_directory, load_config_file, get_config
+from cmd_utils import locate_str_in_list, read_stage_output
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 

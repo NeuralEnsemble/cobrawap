@@ -57,7 +57,7 @@ use rule template as plot_power_spectrum with:
     output:
         Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}'
     params:
-        params('highpass_freq', 'lowpass_freq', 'psd_freq_res', 'psd_overlap',
+        params('highpass_frequency', 'lowpass_frequency', 'psd_frequency_resolution', 'psd_overlap',
                 config=config)
 
 #### PROCESSING BLOCKS (choose any)####
@@ -119,7 +119,7 @@ use rule template as frequency_filter with:
         img = Path('{dir}') / '{rule_name}' / f'power_spectrum.{config.PLOT_FORMAT}',
         script = SCRIPTS / 'frequency_filter.py'
     params:
-        params('highpass_freq', 'lowpass_freq', 'filter_function',
+        params('highpass_frequency', 'lowpass_frequency', 'filter_function',
                 order=config.FILTER_ORDER, config=config)
     output:
        Path('{dir}') / '{rule_name}' /  f'frequency_filter.{config.NEO_FORMAT}'
@@ -145,8 +145,8 @@ use rule template as logMUA_estimation with:
     params:
         params('fft_slice', 'psd_overlap', 'plot_tstart', 'plot_tstop',
                'plot_channels', config=config,
-               highpass_freq = config.MUA_HIGHPASS_FREQ,
-               lowpass_freq = config.MUA_LOWPASS_FREQ,
+               highpass_frequency = config.MUA_HIGHPASS_FREQUENCY,
+               lowpass_frequency = config.MUA_LOWPASS_FREQUENCY,
                logMUA_rate = config.logMUA_RATE,
                img_name = 'logMUA_trace_channel0.'+config.PLOT_FORMAT)
     output:

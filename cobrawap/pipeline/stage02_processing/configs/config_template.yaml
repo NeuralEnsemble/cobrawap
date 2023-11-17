@@ -58,14 +58,14 @@ NORMALIZE_BY: 'max'
 ##########################
 # parameters to be passed to the butterworth frequency filter
 # function by elephant
-HIGHPASS_FREQ: 0  # in Hz
-LOWPASS_FREQ: 150  # in Hz
+HIGHPASS_FREQUENCY: 0  # in Hz
+LOWPASS_FREQUENCY: 150  # in Hz
 FILTER_ORDER: 2
 # filter function used in scipy backend.
 # options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
 FILTER_FUNCTION: 'sosfiltfilt'
 # Plotting parameters for the power spectrum
-PSD_FREQ_RES: 5  # in Hz
+PSD_FREQUENCY_RESOLUTION: 5  # in Hz
 PSD_OVERLAP: 0.5
 
 # BLOCK - detrending
@@ -87,10 +87,10 @@ CROP_TO_SELECTION: True
 
 # BLOCK - logMUA_estimation
 ########################
-MUA_HIGHPASS_FREQ: 50  # in Hz
-MUA_LOWPASS_FREQ: 1200  # in Hz
+MUA_HIGHPASS_FREQUENCY: 50  # in Hz
+MUA_LOWPASS_FREQUENCY: 1200  # in Hz
 # Rate of the logMUA signal. Must be <= the original sampling rate
-# in Hz (default: 'None', takes highpass_freq)
+# in Hz (default: 'None', takes highpass_frequency)
 logMUA_RATE: 70
 # Length of time slice (in s) to estimate the local power spectrum
 # default 'None', takes minimum number of samples determined

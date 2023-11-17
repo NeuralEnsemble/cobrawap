@@ -1,9 +1,8 @@
 from pathlib import Path
 import sys
 from types import SimpleNamespace
-utils_path = str((Path(__file__).parent).resolve())
+utils_path = str(Path(inspect.getfile(lambda: None)).parents[1].resolve())
 sys.path.append(utils_path)
-# from settings import output_path, configs_dir
 from snakemake.logging import logger
 from utils.parse import parse_plot_channels
 from utils.snakefile import dict_to_cla, params, locate_str_in_list

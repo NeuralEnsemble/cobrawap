@@ -14,9 +14,9 @@ CLI.add_argument("--data",    nargs='?', type=str, required=True,
                 help="path to input data in neo format")
 CLI.add_argument("--output",  nargs='?', type=str, required=True,
                 help="path of output file")
-CLI.add_argument("--highpass_freq", nargs='?', type=none_or_float,
+CLI.add_argument("--highpass_frequency", nargs='?', type=none_or_float,
                 default=None, help="lower bound of frequency band in Hz")
-CLI.add_argument("--lowpass_freq", nargs='?', type=none_or_float,
+CLI.add_argument("--lowpass_frequency", nargs='?', type=none_or_float,
                 default=None, help="upper bound of frequency band in Hz")
 CLI.add_argument("--order", nargs='?', type=int, default=2,
                 help="order of the filter function")
@@ -29,20 +29,20 @@ if __name__ == '__main__':
     block = load_neo(args.data)
 
     asig = butter(block.segments[0].analogsignals[0],
-                  highpass_freq=args.highpass_freq*pq.Hz,
-                  lowpass_freq=args.lowpass_freq*pq.Hz,
+                  highpass_frequency=args.highpass_frequency*pq.Hz,
+                  lowpass_frequency=args.lowpass_frequency*pq.Hz,
                   order=args.order,
                   filter_function=args.filter_function)
 
     asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
-    asig.annotate(highpass_freq=args.highpass_freq*pq.Hz,
-                  lowpass_freq=args.lowpass_freq*pq.Hz,
+    asig.annotate(highpass_frequency=args.highpass_frequency*pq.Hz,
+                  lowpass_frequency=args.lowpass_frequency*pq.Hz,
                   filter_order=args.order)
 
     asig.name += ""
     asig.description += "Frequency filtered with [{}, {}]Hz order {} "\
-                        .format(args.highpass_freq,
-                                args.lowpass_freq,
+                        .format(args.highpass_frequency,
+                                args.lowpass_frequency,
                                 args.order)\
                       + " using {} scipy algorithm.({}). "\
                         .format(args.filter_function,

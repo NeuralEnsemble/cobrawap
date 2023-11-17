@@ -58,6 +58,12 @@ CLI_init.add_argument("--config_path", type=Path, default=None,
                       help="directory where the analysis config files are "
                            "stored [default: '~/cobrawap_config/']")
 
+# Show Settings
+CLI_settings = subparsers.add_parser('settings', 
+                help='display the content of ~/.cobrawap/config')
+CLI_settings.set_defaults(command='settings')
+
+
 # Configuration
 CLI_create = subparsers.add_parser('create', 
                         help='create configuration for a new dataset')
@@ -131,6 +137,10 @@ def main():
     if args.command == 'init':
         log.info("initializing Cobrawap")
         initialize(**vars(args))
+
+    if args.command == 'settings':
+        log.info("display settings at ~/.cobrawap/config")
+        print_settings(**vars(args))
         
     elif args.command == 'create':
         log.info("creating a set of config files")
@@ -216,6 +226,11 @@ def initialize(output_path=None, config_path=None, **kwargs):
                                                 / 'enter_data_template.py',
                     stage01_script_path / 'enter_data_template.py')
 
+    return None
+
+
+def print_settings(*args, **kwargs):
+    print(pformat(get_setting()))
     return None
 
 

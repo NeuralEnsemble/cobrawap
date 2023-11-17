@@ -1,13 +1,7 @@
 # workflow folder
-*/.snakemake
-pipeline/.snakemake
-pipeline/*/.snakemake
-pipeline/*/*/.snakemake
+.snakemake/
 temp*
-*/temp*
-pipeline/*/config.yaml
-pipeline/config.yaml
-pipeline/settings.py
+temp*/
 .idea/
 
 # Byte-compiled / optimized / DLL files

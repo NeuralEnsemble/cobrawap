@@ -27,9 +27,9 @@ CLI.add_argument("--img_dir", nargs='?', type=Path,
 CLI.add_argument("--img_name", nargs='?', type=str,
                     default='minima_channel0.png',
                     help='example image filename for channel 0')
-CLI.add_argument("--highpass_freq", nargs='?', type=float, default=200,
+CLI.add_argument("--highpass_frequency", nargs='?', type=float, default=200,
                     help="lower bound of frequency band in Hz")
-CLI.add_argument("--lowpass_freq", nargs='?', type=float, default=1500,
+CLI.add_argument("--lowpass_frequency", nargs='?', type=float, default=1500,
                     help="upper bound of frequency band in Hz")
 CLI.add_argument("--logMUA_rate", nargs='?', type=none_or_float, default=None,
                     help="rate of the signal after transformation")
@@ -45,19 +45,19 @@ CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                     help="list of channels to plot")
 
 
-def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
+def logMUA_estimation(asig, highpass_frequency, lowpass_frequency, logMUA_rate,
                       psd_overlap, fft_slice):
     time_steps, channel_num = asig.shape
     fs = asig.sampling_rate.rescale('Hz')
     if fft_slice is None:
-        fft_slice = (1/highpass_freq).rescale('s')
-    elif fft_slice < 1/highpass_freq:
+        fft_slice = (1/highpass_frequency).rescale('s')
+    elif fft_slice < 1/highpass_frequency:
         raise ValueError("Too few fft samples to estimate the frequency "\
                        + "content in the range [{} {}]."\
-                         . format(highpass_freq, lowpass_freq))
+                         . format(highpass_frequency, lowpass_frequency))
     # logMUA_rate can only be an int fraction of the orginal sampling_rate
     if logMUA_rate is None:
-        logMUA_rate = highpass_freq
+        logMUA_rate = highpass_frequency
     if logMUA_rate > fs:
         raise ValueError("The requested logMUA rate can not be larger than "\
                        + "the inital sampling rate!")
@@ -94,13 +94,13 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
         asig_slice = asig_channels.time_slice(t_start=t_start, t_stop=t_stop)
 
         freqs, psd = welch_psd(asig_slice,
-                               freq_res=highpass_freq,
+                               frequency_resolution=highpass_frequency,
                                overlap=psd_overlap,
                                window='hann',
                                detrend='linear',
                                nfft=None)
 
-        high_idx = (np.abs(freqs - lowpass_freq)).argmin()
+        high_idx = (np.abs(freqs - lowpass_frequency)).argmin()
         if not i:
             print("logMUA signal estimated in frequency range "\
                 + "{:.2f} - {:.2f}.".format(freqs[1], freqs[high_idx]))
@@ -117,19 +117,19 @@ def logMUA_estimation(asig, highpass_freq, lowpass_freq, logMUA_rate,
     logMUA_asig = asig.duplicate_with_new_data(new_signals)
     logMUA_asig.array_annotations = asig.array_annotations
     logMUA_asig.sampling_rate = eff_logMUA_rate
-    logMUA_asig.annotate(freq_band = [highpass_freq, lowpass_freq],
-                      psd_freq_res = highpass_freq,
-                      psd_overlap = psd_overlap,
-                      psd_fs = fs)
+    logMUA_asig.annotate(freq_band = [highpass_frequency, lowpass_frequency],
+                         psd_frequency_resolution = highpass_frequency,
+                         psd_overlap = psd_overlap,
+                         psd_fs = fs)
     return logMUA_asig
 
 
-def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
+def plot_logMUA_estimation(asig, logMUA_asig, highpass_frequency, lowpass_frequency,
                            t_start, t_stop, channel):
     asig = time_slice(asig, t_start, t_stop)
     logMUA_asig = time_slice(logMUA_asig, t_start, t_stop)
-    filt_asig = butter(asig, highpass_freq=highpass_freq,
-                               lowpass_freq=lowpass_freq)
+    filt_asig = butter(asig, highpass_frequency=highpass_frequency,
+                             lowpass_frequency=lowpass_frequency)
 
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()
@@ -140,7 +140,7 @@ def plot_logMUA_estimation(asig, logMUA_asig, highpass_freq, lowpass_freq,
 
     ax.plot(filt_asig.times,
             zscore(filt_asig.as_array()[:,channel]) + 10,
-            label=f'signal [{highpass_freq}-{lowpass_freq}]',
+            label=f'signal [{highpass_frequency}-{lowpass_frequency}]',
             alpha=0.5)
 
     ax.plot(logMUA_asig.times,
@@ -166,8 +166,8 @@ if __name__ == '__main__':
                 else args.fft_slice*pq.s
 
     asig = logMUA_estimation(block.segments[0].analogsignals[0],
-                             highpass_freq=args.highpass_freq*pq.Hz,
-                             lowpass_freq=args.lowpass_freq*pq.Hz,
+                             highpass_frequency=args.highpass_frequency*pq.Hz,
+                             lowpass_frequency=args.lowpass_frequency*pq.Hz,
                              logMUA_rate=logMUA_rate,
                              psd_overlap=args.psd_overlap,
                              fft_slice=fft_slice)
@@ -175,18 +175,19 @@ if __name__ == '__main__':
     if args.plot_channels is not None:
         for channel in args.plot_channels:
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
-                                   logMUA_asig=asig,
-                                   highpass_freq=args.highpass_freq*pq.Hz,
-                                   lowpass_freq=args.lowpass_freq*pq.Hz,
-                                   t_start=args.plot_tstart,
-                                   t_stop=args.plot_tstop,
-                                   channel=channel)
-            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
+                                logMUA_asig=asig,
+                                highpass_frequency=args.highpass_frequency*pq.Hz,
+                                lowpass_frequency=args.lowpass_frequency*pq.Hz,
+                                t_start=args.plot_tstart,
+                                t_stop=args.plot_tstop,
+                                channel=channel)
+            output_path = args.img_dir \
+                        / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)
 
     asig.name += ""
     asig.description += "Estimated logMUA signal [{}, {}] Hz ({}). "\
-                        .format(args.highpass_freq, args.lowpass_freq,
+                        .format(args.highpass_frequency, args.lowpass_frequency,
                                 os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig
 

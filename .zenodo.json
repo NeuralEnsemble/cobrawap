@@ -19,6 +19,24 @@
 
   "contributors": [
     {
+      "orcid": "0000-0001-7373-5962",
+      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany",
+      "name": "Gutzen, Robin",
+      "role": "Project Member"
+    },
+    {
+      "orcid": "0000-0001-7079-5724",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
+      "name": "De Bonis, Giulia",
+      "role": "Project Member"
+    },
+    {
+      "orcid": "0000-0003-3488-0088",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
+      "name": "De Luca, Chiara",
+      "role": "Project Member"
+    },
+    {
       "orcid": "0000-0003-0682-1232",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "Pastorelli, Elena",

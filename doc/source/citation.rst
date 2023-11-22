@@ -1,5 +1,5 @@
 ***************
-Citing Elephant
+Citing Cobrawap
 ***************
 To refer to the Cobrawap software package in publications, please use:
 

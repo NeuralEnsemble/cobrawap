@@ -10,6 +10,8 @@
    stage05_wave_characterization
    stage05_channel_wave_characterization
    stageXY_template
+   acknowledgments
+   authors
 
 .. include:: ../../README.rst
 

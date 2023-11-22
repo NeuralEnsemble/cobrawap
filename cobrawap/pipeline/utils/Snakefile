@@ -1,6 +1,7 @@
 from pathlib import Path
 import sys
 from types import SimpleNamespace
+import inspect
 utils_path = str(Path(inspect.getfile(lambda: None)).parents[1].resolve())
 sys.path.append(utils_path)
 from snakemake.logging import logger
@@ -25,10 +26,11 @@ ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 OUTPUT_DIR = OUTPUT_PATH / config.PROFILE / config.STAGE_NAME
 SCRIPTS = Path('scripts')
 
-config.NEO_FORMAT = config.NEO_FORMAT.strip('.')
 config.PLOT_FORMAT = config.PLOT_FORMAT.strip('.')
-if not '.' in config.STAGE_OUTPUT:
-    config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
+if hasattr(config, 'NEO_FORMAT'):
+    config.NEO_FORMAT = config.NEO_FORMAT.strip('.')
+    if not '.' in config.STAGE_OUTPUT:
+        config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
 
 if config.STAGE_INPUT is not None:
     config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 

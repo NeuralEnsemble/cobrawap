@@ -284,12 +284,8 @@ def add_profile(profile=None, parent_profile=None, stages=None,
 
 def run(profile=None, extra_args=None, **kwargs):
     # select profile
-    if not is_profile_name_valid(profile) and profile is not None:
-        log.info(f"profile name {profile} is not valid!")
-        profile = None
-    if profile is None:
-        profile = input_profile()
-
+    profile = input_profile(profile=profile)
+    
     # set runtime config
     pipeline_path = Path(get_setting('pipeline_path'))
        
@@ -305,11 +301,7 @@ def run(profile=None, extra_args=None, **kwargs):
 
 def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
     # select profile
-    if not is_profile_name_valid(profile) and profile is not None:
-        log.info(f"profile name {profile} is not valid!")
-        profile = None
-    if profile is None:
-        profile = input_profile()
+    profile = input_profile(profile=profile)
 
     # get settings
     pipeline_path = Path(get_setting('pipeline_path'))
@@ -332,6 +324,10 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
         raise IndexError("Make sure that the selected stage is also specified "\
                          "in your top-level config in the list `STAGES`!")
     
+    stage_config_path = get_config(config_dir=config_path / stage,
+                                   config_name=f'config_{profile}.yaml',
+                                   get_path_instead=True)
+    
     prev_stage = config_dict['STAGES'][stage_idx-1]
     prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
                                         config_name=f'config_{profile}.yaml',
@@ -340,7 +336,7 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
     output_name = read_stage_output(stage=prev_stage, 
                                     config_dir=config_path, 
                                     config_name=prev_config_name)
-    stage_input = output_path / prev_stage / output_name
+    stage_input = output_path / profile / prev_stage / output_name
 
     # descend into stage folder
     pipeline_path = pipeline_path / stage
@@ -348,7 +344,7 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
     # append stage specific arguments
     extra_args = [f'STAGE_INPUT={stage_input}'] \
                 + extra_args \
-                + ['--configfile', f'{prev_stage_config_path}']
+                + ['--configfile', f'{stage_config_path}']
 
     # execute snakemake
     snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']

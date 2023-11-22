@@ -15,15 +15,6 @@ log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 
 
-def is_profile_name_valid(profile: str) -> bool:
-    if type(profile) == str:
-        profile = profile.strip("'\"")
-        pattern = re.compile("[\w\d\|]+")
-        return bool(pattern.fullmatch(profile))
-    else:
-        return False
-
-
 def create_new_configfile(profile, stage=None, stage_number=None, parent=None):
     if stage is None:
         if stage_number is None:
@@ -59,9 +50,12 @@ def create_new_configfile(profile, stage=None, stage_number=None, parent=None):
     return None
 
 
-def input_profile():
-    profile = None
-    while not is_profile_name_valid(profile):
+def input_profile(profile=None):
+    if not is_profile_name_valid(profile) and profile is not None:
+        log.info(f"profile name {profile} is not valid!")
+        profile = None
+    if profile is None:
+        while not is_profile_name_valid(profile):
             profile = input("profile name: ")
             if not is_profile_name_valid(profile):
                 log.info(f"{profile} is not a valid profile name. "\
@@ -69,15 +63,20 @@ def input_profile():
                         "'_' (for sub-profile structuring), "\
                         "or '|' (for variant separation).")
     return profile
+    
+
+def is_profile_name_valid(profile: str) -> bool:
+    if type(profile) == str:
+        profile = profile.strip("'\"")
+        pattern = re.compile("[\w\d\|]+")
+        return bool(pattern.fullmatch(profile))
+    else:
+        return False
 
 
 def get_profile(profile=None, parent_profile=None):
     # set initial profile name
-    if not is_profile_name_valid(profile) and profile is not None:
-        log.info(f"profile name {profile} is not valid!")
-        profile = None
-    if profile is None:
-        profile = input_profile()
+    profile = input_profile(profile=profile)
     
     # set full profile name
     if parent_profile is None:

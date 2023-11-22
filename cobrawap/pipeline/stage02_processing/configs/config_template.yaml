@@ -1,0 +1,99 @@
+# Config file for Stage 2 - Processing
+
+# Name of stage, must be identical with folder name
+STAGE_NAME: 'stage02_processing'
+
+# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
+PROFILE: 'dataset_key'
+
+# Name of the output file
+STAGE_OUTPUT: "processed_data"
+
+# File format in which all intermediate neo objects are stored
+NEO_FORMAT: 'nix'
+
+# If True (default), the output file of a stage is created as symbolic link
+# to the last block output. If False, a duplicate is created (e.g. for cloud
+# application, where sym-links are not supported).
+USE_LINK_AS_STAGE_OUTPUT: True
+
+# Plotting parameters
+PLOT_TSTART: 0  # in s
+PLOT_TSTOP: 10  # in s
+PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
+PLOT_FORMAT: 'png'
+
+# The block order determines which processing steps (blocks) will be applied
+# and in which order. Execution order is from first to last entry.
+# The available blocks are:
+# 'background_subtraction', 'frequency_filter', 'normalization', 'detrending',
+# 'spatial_downsampling', 'roi_selection', 'logMUA_estimation', 'phase_transform',
+# 'zscore', 'subsampling'
+# Default: empty list [] -> it skips any processing blocks and returns the same
+# as input but, different from plot obtained from stage01, here the values on
+# the y-scale are correctly reported
+BLOCK_ORDER: []
+
+# To make sure that the processing blocks are always executed in the correct
+# order that results from previous runs don't confound the workflow, all blocks
+# are rerun upon each execution. To turn this off, e.g., because the block order
+# didn't change, set to False (do with care!).
+RERUN_MODE: True
+
+# BLOCK - background_subtraction
+#################################
+# No parameters needed
+
+# BLOCK - spatial_smoothig
+#################################
+MACRO_PIXEL_DIM: 2
+
+# BLOCK - normalization
+#######################
+# Normalize the data (divide channels-wise) by either:
+# 'mean', 'median', 'max'
+NORMALIZE_BY: 'max'
+
+# BLOCK - frequency_filter
+##########################
+# parameters to be passed to the butterworth frequency filter
+# function by elephant
+HIGHPASS_FREQUENCY: 0  # in Hz
+LOWPASS_FREQUENCY: 150  # in Hz
+FILTER_ORDER: 2
+# filter function used in scipy backend.
+# options: ‘filtfilt’, 'lfilter’, ‘sosfiltfilt’
+FILTER_FUNCTION: 'sosfiltfilt'
+# Plotting parameters for the power spectrum
+PSD_FREQUENCY_RESOLUTION: 5  # in Hz
+PSD_OVERLAP: 0.5
+
+# BLOCK - detrending
+####################
+# Detrending: 0 - mean detrending;
+#             1 - mean and slope detrending (linear): this should be the default.
+DETRENDING_ORDER: 1
+
+# BLOCK - subsampling
+#####################
+TARGET_RATE: 200  # in Hz
+
+# BLOCK - img_roi_selection
+###########################
+# Threshold below which the pixels are discarded (set to nan).
+# Given in percent of the range between minimum and maximum intensity.
+INTENSITY_THRESHOLD: 0.5
+CROP_TO_SELECTION: True
+
+# BLOCK - logMUA_estimation
+########################
+MUA_HIGHPASS_FREQUENCY: 50  # in Hz
+MUA_LOWPASS_FREQUENCY: 1200  # in Hz
+# Rate of the logMUA signal. Must be <= the original sampling rate
+# in Hz (default: 'None', takes highpass_frequency)
+logMUA_RATE: 70
+# Length of time slice (in s) to estimate the local power spectrum
+# default 'None', takes minimum number of samples determined
+# by the lower bound of the frequency band
+FFT_SLICE: 0.1
+# PSD_OVERLAP: determined by setting in block frequency_filter

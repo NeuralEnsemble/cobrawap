@@ -1,0 +1,149 @@
+import os
+import sys
+import yaml
+from pathlib import Path
+import numpy as np
+import inspect
+sys.path.append(str(Path(inspect.getfile(lambda: None))))
+from utils.snakefile import create_temp_configs, set_global_configs
+from utils.snakefile import set_stage_inputs, read_stage_output, get_setting
+
+# the working directory is by default the directory of the Snakefile
+working_dir = Path()
+temp_config = 'working_config.yaml'
+config_path = Path(get_setting('config_path'))
+output_path = Path(get_setting('output_path'))
+
+configfile: config_path /'configs' / 'config.yaml'
+report: "report.rst"
+
+# Setting the profile
+config_profile = f'config_{config["PROFILE"]}.yaml'
+output_path = output_path / config["PROFILE"]
+
+STAGES = config['STAGES']
+
+# onstart:
+## building the temp_config files
+create_temp_configs(STAGES,
+                    configs_dir=config_path,
+                    config_name=config_profile,
+                    output_dir=output_path,
+                    temp_name=temp_config)
+## overwrite stage configs with pipeline config parameters
+set_global_configs(STAGES,
+                   output_dir=output_path,
+                   config_dict=config,
+                   config_file=temp_config)
+## write STAGE_OUTPUT into config of the following stage as STAGE_INPUT
+set_stage_inputs(STAGES,
+                 output_dir=output_path,
+                 config_file=temp_config)
+
+def get_stage(num):
+    if num < len(STAGES):
+        return STAGES[num]
+    else:
+        # temporary solution
+        return ''
+
+subworkflow stage01:
+    workdir:
+        working_dir / get_stage(0)
+    configfile:
+        output_path / get_stage(0) / temp_config
+
+subworkflow stage02:
+    workdir:
+        working_dir / get_stage(1)
+    configfile:
+        output_path / get_stage(1) / temp_config
+
+subworkflow stage03:
+    workdir:
+        working_dir / get_stage(2)
+    configfile:
+        output_path / get_stage(2) / temp_config
+
+subworkflow stage04:
+    workdir:
+        working_dir / get_stage(3)
+    configfile:
+        output_path / get_stage(3) / temp_config
+
+subworkflow stage05:
+    workdir:
+        working_dir / get_stage(4)
+    configfile:
+        output_path / get_stage(4) / temp_config
+
+def stage_input(wildcards):
+        stage_num = [i for i, stage in enumerate(STAGES)
+                                    if stage == wildcards.stage][0]
+        if stage_num:
+            return output_path / f'{STAGES[stage_num-1]}.done'
+        else:
+            return []
+
+def stage_output(wildcards):
+    # setup for maximal 5 stages
+    subworkflows=[stage01, stage02, stage03, stage04, stage05]
+    if wildcards.stage not in STAGES:
+        raise InputError(f"Don't recognize stage {wildcards.stage}!")
+    for i, subworkflow in enumerate(subworkflows):
+        if wildcards.stage == get_stage(i):
+            output_name = read_stage_output(wildcards.stage,
+                                            config_dir=output_path,
+                                            config_name=temp_config)
+            output = output_path / wildcards.stage / output_name
+            return subworkflow(output)
+
+rule all:
+    input:
+        last_stage = output_path / f'{STAGES[-1]}.done',
+        # reports = expand(os.path.join(output_path, '{subworkflow_name}',
+        #                               'report.html'),
+        #                  subworkflow_name=STAGES)
+    output:
+        output_path / 'pipeline.done'
+    shell:
+        """
+        touch "{output}"
+        """
+
+rule execute_stage:
+    input:
+        stage_input = stage_input,
+        stage_output = stage_output,
+        config = output_path / '{stage}' / temp_config
+    output:
+        temp(output_path / '{stage}.done')
+    shell:
+        """
+        touch "{output}"
+        """
+
+rule create_report:
+    input:
+        output_path / '{subworkflow_name}' / 'report.clear',
+        configfile = output_path / '{subworkflow_name}' / temp_config
+    output:
+        report = output_path / '{subworkflow_name}' / 'report.html'
+    shell:
+        """
+        cd {wildcards.subworkflow_name}
+        snakemake --configfile {input.configfile} \
+                  --report "{output.report}" || \
+        echo "Creation of report for {wildcards.subworkflow_name} failed."
+        """
+
+rule clear_report:
+    output:
+        temp(Path('{path}') / 'report.clear')
+    params:
+        report_path = Path('{path}') / 'report.html'
+    shell:
+        """
+        rm -f "{params.report_path}"
+        touch "{output}"
+        """

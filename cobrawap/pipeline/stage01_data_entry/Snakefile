@@ -1,0 +1,65 @@
+"""
+# Stage 01 Data Entry
+"""
+
+from pathlib import Path
+# configfile: Path('configs') / 'config_template.yaml'
+include: Path() / '..' / 'utils' / 'Snakefile'
+
+config.DATA_NAME = list(config.DATA_SETS.keys())[0]
+
+
+use rule template_all as all with:
+    input:
+        check = OUTPUT_DIR / f'{config.DATA_NAME}.check',
+        img = OUTPUT_DIR / f'{config.DATA_NAME}' 
+                         / f'trace_{config.DATA_NAME}.{config.PLOT_FORMAT}',
+        data = OUTPUT_DIR / f'{config.DATA_NAME}' 
+                          / f'{config.DATA_NAME}.{config.NEO_FORMAT}',
+        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+
+use rule check_input as check_data_entry with:
+    input:
+        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = SCRIPTS / 'check_input.py'
+    output:
+        Path('{dir}') / '{data_name}.check'
+
+
+use rule template as plot_traces with:
+    input:
+        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        script = SCRIPTS / 'plot_traces.py'
+    params:
+        params(t_start = config.PLOT_TSTART,
+               t_stop = config.PLOT_TSTOP,
+               channels = config.PLOT_CHANNELS)
+    output:
+        img = Path('{dir}') / '{data_name}' / f'trace_{{data_name}}.{config.PLOT_FORMAT}'
+
+
+def curation_script(w):
+    if CONFIG_PATH is None:
+        prefix = Path()
+    else:
+        prefix = CONFIG_PATH / config.STAGE_NAME
+    return prefix / 'scripts' / config.CURATION_SCRIPT
+
+
+def data_path(w):
+    data_path = Path(config.DATA_SETS[config.DATA_NAME]).resolve()
+    if not data_path.exists():
+        raise FileNotFoundError(f"Data file `{data_path}` not found!")
+    return data_path
+
+
+use rule template as enter_data with:
+    input:
+        data = data_path,
+        script = curation_script,
+    params:
+        params('spatial_scale', 'sampling_rate', 't_start', 't_stop',
+               'orientation_top', 'orientation_right', 'annotations',
+               'array_annotations', 'kwargs', 'trial', config=config)
+    output:
+        Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}'

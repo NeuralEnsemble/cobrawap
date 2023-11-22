@@ -1,0 +1,153 @@
+from pathlib import Path
+import sys
+from types import SimpleNamespace
+import inspect
+utils_path = str(Path(inspect.getfile(lambda: None)).parents[1].resolve())
+sys.path.append(utils_path)
+from snakemake.logging import logger
+from utils.parse import parse_plot_channels
+from utils.snakefile import dict_to_cla, params, locate_str_in_list
+from utils.snakefile import get_setting
+
+CONFIG_PATH = Path(get_setting('config_path'))
+OUTPUT_PATH = Path(get_setting('output_path'))
+
+if 'STAGE_INPUT' not in config:
+    logger.warning('No STAGE_INPUT defined for running the stage individually! '
+                   'You can set it via the command line with '
+                   '`--config STAGE_INPUT=/path/to/file`.')
+    config['STAGE_INPUT'] = None
+
+if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
+    config['USE_LINK_AS_STAGE_OUTPUT'] = True
+
+config = SimpleNamespace(**config)
+ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+OUTPUT_DIR = OUTPUT_PATH / config.PROFILE / config.STAGE_NAME
+SCRIPTS = Path('scripts')
+
+config.PLOT_FORMAT = config.PLOT_FORMAT.strip('.')
+if hasattr(config, 'NEO_FORMAT'):
+    config.NEO_FORMAT = config.NEO_FORMAT.strip('.')
+    if not '.' in config.STAGE_OUTPUT:
+        config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
+
+if config.STAGE_INPUT is not None:
+    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 
+                                               config.STAGE_INPUT)
+
+localrules: all, check_input
+
+wildcard_constraints:
+    data_name = '[\w\-]+',
+    dir = '.*',
+    rule_name = '\w+',
+
+def prev_rule_output(wildcards, rule_list, 
+                     default_input=config.STAGE_INPUT):
+    output = lambda i: OUTPUT_DIR / rule_list[i-1] \
+                                  / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
+    if hasattr(wildcards, 'rule_name'):
+        idx = locate_str_in_list(rule_list, wildcards.rule_name)
+        if idx:
+            return output(idx)
+    elif len(rule_list):
+        return output(0)
+    return default_input
+
+
+rule template:
+    input:
+        data = 'input.data', # replace
+        script = SCRIPTS / '{rule_name}.py'
+    params:
+        params()
+    output:
+        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
+        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
+    message:
+        "RULE {rule}:\n"
+        "    input: {input}\n"
+        "    output: {output}\n"
+        "    jobid: {jobid}\n"
+        "    wildcards: {wildcards}\n"
+        "    threads: {threads}\n"
+        "    resources: {resources}\n"
+        "SHELL COMMAND: \n"
+        "python3 {input.script:q} --data {input.data:q}\n"
+        "                         --output {output[0]:q}\n"
+        "                         {params}\n"
+    shell:
+        """
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q} \
+                                 --output {output[0]:q} \
+                                 {params} 
+        """
+
+
+rule template_plus_plot_script:
+    input:
+        data = 'input.data', # replace
+        script = SCRIPTS / '{rule_name}.py',
+        plot_script = SCRIPTS / 'plot_{rule_name}.py'
+    params:
+        params()
+    output:
+        Path('{dir}') / '{rule_name}' / '{rule_name}.nix',  # replace ext with NEO_FORMAT
+        img = Path('{dir}') / '{rule_name}' / '{rule_name}.png'  # replace ext with PLOT_FORMAT
+    message:
+        "RULE {rule}:\n"
+        "    input: {input}\n"
+        "    output: {output}\n"
+        "    jobid: {jobid}\n"
+        "    wildcards: {wildcards}\n"
+        "    threads: {threads}\n"
+        "    resources: {resources}\n"
+        "SHELL COMMAND: \n"
+        "python3 {input.script:q} --data {input.data:q}\n"
+        "                         --output {output:q}\n"
+        "                         {params}\n"
+        "python3 {input.plot_script:q} --data {input.data:q}\n"
+        "                              --output {output.img:q}\n"
+        "                              {params}\n"
+    shell:
+        """
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q} \
+                                 --output {output:q} \
+                                 {params} 
+        python3 {input.plot_script:q} --data {output:q} \
+                                      --output {output.img:q} \
+                                      {params} 
+        """
+
+
+rule check_input:
+    priority: 10
+    input:
+        data = '' if config.STAGE_INPUT is None else config.STAGE_INPUT,
+        script = SCRIPTS / 'check_input.py'
+    output:
+        Path('{dir}') / 'input.check'
+    shell:
+        """
+        {ADD_UTILS}
+        python3 {input.script:q} --data {input.data:q}
+        touch {output:q}
+        """
+
+
+rule template_all:
+    input:
+        check = OUTPUT_DIR / 'input.check',
+        data = 'stage_output.data', # replace
+        img = OUTPUT_DIR / 'results_figure.plot' # replace
+    params:
+        command = 'ln -s' if config.USE_LINK_AS_STAGE_OUTPUT else 'cp'
+    output:
+        data = OUTPUT_DIR / config.STAGE_OUTPUT
+    shell:
+        """
+        {params.command} "{input.data}" "{output.data}"
+        """

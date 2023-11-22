@@ -5,6 +5,8 @@
    pipeline
    command_line_interface
    pipeline_stages
+   acknowledgments
+   authors
 
 .. include:: ../../README.rst
 

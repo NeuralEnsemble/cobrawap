@@ -3,12 +3,12 @@ Citing Elephant
 ***************
 To refer to the Cobrawap software package in publications, please use:
 
-Cobrawap (`doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_;
+Cobrawap (`doi:10.5281/zenodo.10198748 <https://doi.org/10.5281/zenodo.10198748>`_;
 `RRID:SCR_022966 <https://scicrunch.org/resolver/RRID:SCR_022966>`_)
 
 To cite a specific version of Cobrawap please see version-specific DOIs at:
 
- `doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_
+ `doi:10.5281/zenodo.10198748 <https://doi.org/10.5281/zenodo.10198748>`_
 
 To cite Cobrawap, please use:
 

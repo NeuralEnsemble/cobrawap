@@ -7,8 +7,12 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
    :alt: Documentation Status
    :align: left
 
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.10198748.svg
+  :target: https://doi.org/10.5281/zenodo.10198748
+  :alt: DOI Latest Release
+  :align: left
 
-.. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_logo.png
+.. image:: https://raw.githubusercontent.com/NeuralEnsemble/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
    :align: left
@@ -21,7 +25,7 @@ Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, mul
 Concept
 =======
 
-.. image:: https://raw.githubusercontent.com/INM-6/cobrawap/master/doc/images/cobrawap_pipeline_approach.png
+.. image:: https://raw.githubusercontent.com/NeuralEnsemble/cobrawap/master/doc/images/cobrawap_pipeline_approach.png
    :height: 300px
    :alt: Schematic Pipeline Approach
    :align: center
@@ -44,19 +48,19 @@ Cobrawap brings together existing analysis methods, tools, and data standards an
 
 .. _Snakemake: https://snakemake.readthedocs.io/en/stable/
 
-For further developments and feature requests refer to the `Github Issues <https://github.com/INM-6/cobrawap/issues>`_.
+For further developments and feature requests refer to the `Github Issues <https://github.com/NeuralEnsemble/cobrawap/issues>`_.
 
 
 Citation
 ========
 To refer to the Cobrawap software package in publications, please use:
 
-Cobrawap (`doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_;
+Cobrawap (`doi:10.5281/zenodo.10198748 <https://doi.org/10.5281/zenodo.10198748>`_;
 `RRID:SCR_022966 <https://scicrunch.org/resolver/RRID:SCR_022966>`_)
 
 To cite a specific version of Cobrawap please see version-specific DOIs at:
 
- `doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_
+ `doi:10.5281/zenodo.10198748 <https://doi.org/10.5281/zenodo.10198748>`_
 
 To cite Cobrawap, please use:
 
@@ -65,7 +69,7 @@ Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Masca
 
 License
 =======
-Cobrawap is open-source software and is licensed under the `GNU General Public License v3 <https://github.com/INM-6/cobrawap/blob/master/LICENSE>`_.
+Cobrawap is open-source software and is licensed under the `GNU General Public License v3 <https://github.com/NeuralEnsemble/cobrawap/blob/master/LICENSE>`_.
 
 
 Involved partners

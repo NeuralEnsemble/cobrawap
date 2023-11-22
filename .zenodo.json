@@ -3,24 +3,6 @@
     {
       "orcid": "0000-0001-7373-5962",
       "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
-      "name": "Gutzen, Robin"
-    },
-    {
-      "orcid": "0000-0001-7079-5724",
-      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
-      "name": "De Bonis, Giulia"
-    },
-    {
-      "orcid": "0000-0003-3488-0088",
-      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
-      "name": "De Luca, Chiara"
-    }
-  ],
-
-  "contributors": [
-    {
-      "orcid": "0000-0001-7373-5962",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
       "name": "Gutzen, Robin",
       "role": "Project member"
     },
@@ -35,7 +17,10 @@
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
       "name": "De Luca, Chiara",
       "role": "Project member"
-    },
+    }
+  ],
+
+  "contributors": [
     {
       "orcid": "0000-0003-0682-1232",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
@@ -61,12 +46,6 @@
       "role": "Project member"
     },
     {
-      "orcid": "0000-0002-9605-5852",
-      "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy",
-      "name": "Resta, Francesco",
-      "role": "Data collector"
-    },
-    {
       "orcid": "0000-0002-8306-0759",
       "affiliation": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain",
       "name": "Manasanch, Arnau",
@@ -74,7 +53,7 @@
     },
     {
       "orcid": "0000-0002-0675-3981",
-      "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy; National Institute of Optics, National research Council, Sesto Fiorentino, Italy",
+      "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy; National Institute of Optics, National Research Council, Sesto Fiorentino, Italy",
       "name": "Pavone, Francesco Saverio",
       "role": "Project member"
     },
@@ -115,7 +94,6 @@
   "keywords": [
     "neuroscience",
     "neurophysiology",
-    "electrophysiology",
     "statistics",
     "data-analysis"
   ],

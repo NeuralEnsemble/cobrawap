@@ -29,7 +29,7 @@ contribution, and may not be the current affiliation of a contributor.
 6. Neuroscience Institute, National Research Council, Pisa, Italy
 7. Department of Physics and Astronomy, University of Florence, Florence, Italy
 8. Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain
-9. National Institute of Optics, National research Council, Sesto Fiorentino, Italy
+9. National Institute of Optics, National Research Council, Sesto Fiorentino, Italy
 10. Institució Catalana de Recerca i Estudis Avançats (ICREA), Barcelona, Spain
 11. Natl. Center for Radiation Protection and Computational Physics, Istituto Superiore di Sanità (ISS), Rome, Italy
 

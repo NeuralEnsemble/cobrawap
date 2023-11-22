@@ -49,11 +49,16 @@ For further developments and feature requests refer to the `Github Issues <https
 
 Citation
 ========
-Please mention Cobrawap stating its Research Resource Identifier:
+To refer to the Cobrawap software package in publications, please use:
 
-**Cobrawap (RRID:SCR_022966)**
+Cobrawap (`doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_;
+`RRID:SCR_022966 <https://scicrunch.org/resolver/RRID:SCR_022966>`_)
 
-Also, please cite our preprint if you use Cobrawap or its components in your work:
+To cite a specific version of Cobrawap please see version-specific DOIs at:
+
+ `doi:10.5281/zenodo.10198749 <https://doi.org/10.5281/zenodo.10198749>`_
+
+To cite Cobrawap, please use:
 
 Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2022). *Comparing apples to apples—Using a modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets*. arXiv:2211.08527. `https://doi.org/10.48550/arXiv.2211.08527 <https://doi.org/10.48550/arXiv.2211.08527>`_
 

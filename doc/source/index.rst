@@ -7,6 +7,7 @@
    pipeline_stages
    acknowledgments
    authors
+   citation
 
 .. include:: ../../README.rst
 

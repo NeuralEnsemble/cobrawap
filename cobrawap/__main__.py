@@ -162,6 +162,10 @@ def main():
         log.info("executing Cobrawap block")
         run_block(**vars(args), block_args=unknown)
 
+    elif args.command is None:
+        CLI.print_help(sys.stderr)
+        CLI.parse_args()
+
     else:
         log.info(f"{args.command} not known!")
 

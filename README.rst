@@ -12,6 +12,11 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
   :alt: DOI Latest Release
   :align: left
 
+.. image:: https://img.shields.io/badge/slack-join-pink.svg
+   :target: https://join.slack.com/t/cobrawapworkinggroup/shared_invite/zt-1t8fjv447-64MrlHywww97LRC1ZtW0DA
+   :alt: Join our Slack Community
+   :align: left
+
 .. image:: https://raw.githubusercontent.com/NeuralEnsemble/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo

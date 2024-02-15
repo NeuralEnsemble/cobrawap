@@ -230,6 +230,7 @@ def is_phase_signal(signal, use_phases):
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
+
     block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]

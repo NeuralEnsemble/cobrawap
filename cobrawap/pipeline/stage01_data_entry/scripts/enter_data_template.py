@@ -1,5 +1,5 @@
 """
-Loads a dataset a brings it into the required data representation (using Neo).
+Loads a dataset and brings it into the required data representation (using Neo).
 """
 
 import argparse
@@ -44,25 +44,25 @@ if __name__ == '__main__':
     # Load data with Neo IO or custom loading routine
     block = load_neo(args.data)
     # If there is no Neo IO for the data type available,
-    # the data must be loaded conventioally and added to a newly constructed
+    # the data must be loaded conventionally and added to a newly constructed
     # Neo block. For building a Neo objects, have a look into the documentation
     # https://neo.readthedocs.io/
 
-    # In case the dataset is imagaging data and therefore stored as an
+    # In case the dataset is imaging data and therefore stored as an
     # ImageSequence object, it needs to be transformed into an AnalogSignal
-    # object. To do this use the function imagesequence_to_analogsignal in utils/neo.py
+    # object. To do this use the function imagesequence_to_analogsignal in utils/neo_utils.py
 
     asig = block.segments[0].analogsignals[0]
 
     asig = time_slice(asig, args.t_start, args.t_stop)
 
-    # Add metadata from ANNOTIATION dict
+    # Add metadata from ANNOTATION dict
     asig.annotations.update(parse_string2dict(args.annotations))
     asig.annotations.update(spatial_scale=args.spatial_scale*pq.mm)
     asig.annotations.update(orientation_top=args.orientation_top)
     asig.annotations.update(orientation_right=args.orientation_right)
 
-    # Add metadata from ARRAY_ANNOTIATION dict
+    # Add metadata from ARRAY_ANNOTATION dict
     asig.array_annotations.update(parse_string2dict(args.array_annotations))
 
     # Do custom metadata processing from KWARGS dict (optional)

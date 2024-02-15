@@ -11,8 +11,10 @@ from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str)
-CLI.add_argument("--output", nargs='?', type=str)
+CLI.add_argument("--data", nargs='?', type=str,
+                    help="path to input data in neo format")
+CLI.add_argument("--output_dir", nargs='?', type=str,
+                    help="path to output directory")
 CLI.add_argument("--img_name", nargs='?', type=str)
 CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
                     help="size of the plotted window in seconds.")
@@ -100,7 +102,7 @@ if __name__ == '__main__':
                            time_window=args.time_window*pq.s,
                            cmap=cmap)
 
-            output_path = os.path.join(args.output,
-                                args.img_name.replace('id0', f'id{wave_id}'))
+            output_path = os.path.join(args.output_dir,
+                                       args.img_name.replace('id0', f'id{wave_id}'))
             save_plot(output_path)
             plt.close()

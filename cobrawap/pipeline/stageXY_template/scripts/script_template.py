@@ -66,7 +66,7 @@ if __name__ == '__main__':
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
 
-    # PERFOMING METHOD
+    # PERFORMING METHOD
     new_asig = offset_signal(asig, offset=args.offset)
     block.segments[0].analogsignals[0] = new_asig
 

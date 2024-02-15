@@ -72,7 +72,7 @@ if __name__ == '__main__':
         for channel in args.plot_channels:
             plot_detrend(asig, detrend_asig, channel)
             output_path = os.path.join(args.img_dir,
-                                    args.img_name.replace('_channel0', f'_channel{channel}'))
+                                       args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)
 
     detrend_asig.name += ""

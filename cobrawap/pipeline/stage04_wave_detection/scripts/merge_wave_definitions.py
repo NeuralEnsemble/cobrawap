@@ -17,6 +17,7 @@ CLI.add_argument("--output", nargs='?', type=Path, required=True,
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
+
     waves_block = load_neo(args.data)
 
     asig_names = [asig.name for asig in waves_block.segments[0].analogsignals]

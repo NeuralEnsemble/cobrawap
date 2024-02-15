@@ -329,13 +329,13 @@ if __name__ == '__main__':
     mode_ids = kout.labels_
     if len(mode_ids) != len(timelag_df):
         raise IndexError('Some waves are not assigned to a kmeans cluster!'
-                    + f' {len(mode_ids)} != {len(timelag_df)}')
+                         + f' {len(mode_ids)} != {len(timelag_df)}')
 
     mode_labels, mode_counts = np.unique(mode_ids, return_counts=True)
 
     mode_dists = calc_cluster_distortions(timelag_matrix_transformed,
-                                        cluster_indices=mode_ids,
-                                        cluster_centers=kout.cluster_centers_)
+                                          cluster_indices=mode_ids,
+                                          cluster_centers=kout.cluster_centers_)
 
     # calculate the average timelags per mode
     mode_timelag_df = build_cluster_timelag_dataframe(timelag_df, mode_ids)
@@ -351,11 +351,10 @@ if __name__ == '__main__':
     for i, cluster_grid in enumerate(mode_grids):
         pattern_func = interpolate_grid(cluster_grid, args.interpolation_smoothing)
         fx, fy, pattern = sample_wave_pattern(pattern_func,
-                                            step=args.interpolation_step_size,
-                                            dim_x=dim_x, dim_y=dim_y)
-        interpolated_mode_grids = np.concatenate((interpolated_mode_grids,
-                                                    pattern[np.newaxis,:])) \
-                                        if i else pattern[np.newaxis,:]
+                                              step=args.interpolation_step_size,
+                                              dim_x=dim_x, dim_y=dim_y)
+        interpolated_mode_grids = np.concatenate((interpolated_mode_grids, pattern[np.newaxis,:])) \
+                                      if i else pattern[np.newaxis,:]
 
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \

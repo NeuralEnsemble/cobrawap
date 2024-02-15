@@ -175,14 +175,13 @@ if __name__ == '__main__':
     if args.plot_channels is not None:
         for channel in args.plot_channels:
             plot_logMUA_estimation(asig=block.segments[0].analogsignals[0],
-                                logMUA_asig=asig,
-                                highpass_frequency=args.highpass_frequency*pq.Hz,
-                                lowpass_frequency=args.lowpass_frequency*pq.Hz,
-                                t_start=args.plot_tstart,
-                                t_stop=args.plot_tstop,
-                                channel=channel)
-            output_path = args.img_dir \
-                        / args.img_name.replace('_channel0', f'_channel{channel}')
+                                   logMUA_asig=asig,
+                                   highpass_frequency=args.highpass_frequency*pq.Hz,
+                                   lowpass_frequency=args.lowpass_frequency*pq.Hz,
+                                   t_start=args.plot_tstart,
+                                   t_stop=args.plot_tstop,
+                                   channel=channel)
+            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)
 
     asig.name += ""

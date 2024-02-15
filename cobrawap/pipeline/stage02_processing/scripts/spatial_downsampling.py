@@ -13,13 +13,13 @@ from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=str, required=True,
                     help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=str, required=True,
                     help="path of output file")
-CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
+CLI.add_argument("--output_img", nargs='?', type=none_or_str,
                     help="path of output image", default=None)
-CLI.add_argument("--macro_pixel_dim",  nargs='?', type=int,
+CLI.add_argument("--macro_pixel_dim", nargs='?', type=int,
                     help="smoothing factor", default=2)
 
 def spatial_smoothing(imgseq, macro_pixel_dim):

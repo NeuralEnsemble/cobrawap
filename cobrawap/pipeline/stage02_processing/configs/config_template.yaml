@@ -44,7 +44,7 @@ RERUN_MODE: True
 #################################
 # No parameters needed
 
-# BLOCK - spatial_smoothig
+# BLOCK - spatial_smoothing
 #################################
 MACRO_PIXEL_DIM: 2
 

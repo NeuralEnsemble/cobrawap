@@ -10,7 +10,7 @@ import quantities as pq
 from utils.io_utils import load_neo
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=str, required=True,
                     help="path to input data in neo format")
 
 if __name__ == '__main__':

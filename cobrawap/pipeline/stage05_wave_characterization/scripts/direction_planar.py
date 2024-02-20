@@ -19,15 +19,15 @@ from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                    help="path of output image file")
+                 help="path of output image file")
 CLI.add_argument("--method", "--DIRECTION_METHOD", nargs='?', type=str, default='trigger_interpolation',
-                    help="'tigger_interpolation' or 'optical_flow'")
+                 help="'tigger_interpolation' or 'optical_flow'")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
-                    help="name of neo.Event to analyze (must contain waves)")
+                 help="name of neo.Event to analyze (must contain waves)")
                     
 def calc_displacement(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)

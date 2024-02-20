@@ -12,11 +12,11 @@ from utils.io_utils import write_neo, load_neo
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
-                    help="division factor: 'max', 'mean', or 'median'")
+                 help="division factor: 'max', 'mean', or 'median'")
 
 def normalize(asig, normalize_by):
     if normalize_by == 'median':

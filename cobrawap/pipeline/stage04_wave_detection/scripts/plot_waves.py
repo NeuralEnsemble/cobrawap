@@ -12,12 +12,12 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output_dir", nargs='?', type=str,
-                    help="path to output directory")
+                 help="path to output directory")
 CLI.add_argument("--img_name", nargs='?', type=str)
 CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
-                    help="size of the plotted window in seconds.")
+                 help="size of the plotted window in seconds.")
 CLI.add_argument("--colormap", nargs='?', type=str, default='viridis')
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,

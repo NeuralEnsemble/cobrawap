@@ -23,32 +23,32 @@ from utils.neo_utils import analogsignal_to_imagesequence, remove_annotations
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                    help="path of output image file")
+                 help="path of output image file")
 CLI.add_argument("--min_trigger_fraction", "--MIN_TRIGGER_FRACTION",
-                    nargs='?', type=float, default=.5,
-                    help="minimum fraction of channels to be involved in a wave")
+                 nargs='?', type=float, default=.5,
+                 help="minimum fraction of channels to be involved in a wave")
 CLI.add_argument("--num_wave_neighbours", "--NUM_WAVE_NEIGHBOURS",
-                    nargs='?', type=int, default=5,
-                    help="number of similar waves to extrapolate nans from")
+                 nargs='?', type=int, default=5,
+                 help="number of similar waves to extrapolate nans from")
 CLI.add_argument("--wave_outlier_quantile", "--WAVE_OUTLIER_QUANTILE",
-                    nargs='?', type=float, default=.95,
-                    help="percentage of similar waves to keep")
+                 nargs='?', type=float, default=.95,
+                 help="percentage of similar waves to keep")
 CLI.add_argument("--pca_dims", "--PCA_DIMS",
-                    nargs='?', type=none_or_int, default=None,
-                    help="reduce wave patterns to n dimensions before kmeans clustering")
+                 nargs='?', type=none_or_int, default=None,
+                 help="reduce wave patterns to n dimensions before kmeans clustering")
 CLI.add_argument("--num_kmeans_cluster", "--NUM_KMEANS_CLUSTER",
-                    nargs='?', type=int, default=5,
-                    help="number of wave modes to cluster with kmeans")
+                 nargs='?', type=int, default=5,
+                 help="number of wave modes to cluster with kmeans")
 CLI.add_argument("--interpolation_step_size", "--INTERPOLATION_STEP_SIZE",
-                    nargs='?', type=float, default=.2,
-                    help="grid spacing for interpolation [0,1]")
+                 nargs='?', type=float, default=.2,
+                 help="grid spacing for interpolation [0,1]")
 CLI.add_argument("--interpolation_smoothing", "--INTERPOLATION_SMOOTHING",
-                    nargs='?', type=float, default=0,
-                    help="0: no smoothing, >0: more smoothing")
+                 nargs='?', type=float, default=0,
+                 help="0: no smoothing, >0: more smoothing")
 
 def build_timelag_dataframe(waves_evt, normalize=True):
     wave_ids = np.unique(waves_evt.labels).astype(int)

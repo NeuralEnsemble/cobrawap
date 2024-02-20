@@ -14,11 +14,11 @@ from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=none_or_str, default=None,
-                    help="name of neo.Event to analyze (must contain waves)")
+                 help="name of neo.Event to analyze (must contain waves)")
 CLI.add_argument("--measures", "--MEASURES", nargs='+', type=none_or_str, default=None,
-                    help="list of measure names to apply")
+                 help="list of measure names to apply")
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()

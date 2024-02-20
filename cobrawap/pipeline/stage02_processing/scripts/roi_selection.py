@@ -15,15 +15,15 @@ from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_anal
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str,
-                    help="path of output image", default=None)
+                 help="path of output image", default=None)
 CLI.add_argument("--intensity_threshold", nargs='?', type=float,
-                    help="threshold for mask [0,1]", default=0.5)
+                 help="threshold for mask [0,1]", default=0.5)
 CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
-                    help="discard frame outside of ROI", default=True)
+                 help="discard frame outside of ROI", default=True)
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...

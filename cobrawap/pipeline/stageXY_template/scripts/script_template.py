@@ -11,21 +11,21 @@ from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--offset", nargs='?', type=none_or_float, default=None,
-                    help="offset the signal by some value")
+                 help="offset the signal by some value")
 CLI.add_argument("--img_dir", nargs='?', type=none_or_str, default=None,
-                    help="path of figure directory")
+                 help="path of figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str, default='offset_channel0.png',
-                    help='example image filename for channel 0')
+                 help='example image filename for channel 0')
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                    help="list of channels to plot")
+                 help="list of channels to plot")
 CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
-                    help="plotting start time in seconds")
+                 help="plotting start time in seconds")
 CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
-                    help="plotting stop time in seconds")
+                 help="plotting stop time in seconds")
 
 def offset_signal(asig, offset=None):
     if offset is None:

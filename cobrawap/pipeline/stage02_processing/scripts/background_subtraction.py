@@ -12,13 +12,13 @@ from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str,
-                    help="path of output image", default=None)
+                 help="path of output image", default=None)
 CLI.add_argument("--output_array", nargs='?', type=none_or_str,
-                    help="path of output numpy array", default=None)
+                 help="path of output numpy array", default=None)
 
 def shape_frame(value_array, xy_coords):
     dim_x = np.max(xy_coords[:,0]) + 1

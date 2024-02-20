@@ -353,8 +353,9 @@ if __name__ == '__main__':
         fx, fy, pattern = sample_wave_pattern(pattern_func,
                                               step=args.interpolation_step_size,
                                               dim_x=dim_x, dim_y=dim_y)
-        interpolated_mode_grids = np.concatenate((interpolated_mode_grids, pattern[np.newaxis,:])) \
-                                      if i else pattern[np.newaxis,:]
+        interpolated_mode_grids = np.concatenate((interpolated_mode_grids,
+                                                  pattern[np.newaxis,:])) \
+                                  if i else pattern[np.newaxis,:]
 
     # add cluster labels as annotation to the wavefronts event
     evt_id, waves = [(i, evt) for i, evt in enumerate(block.segments[0].events) \

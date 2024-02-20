@@ -181,7 +181,8 @@ if __name__ == '__main__':
                                    t_start=args.plot_tstart,
                                    t_stop=args.plot_tstop,
                                    channel=channel)
-            output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')
+            output_path = args.img_dir \
+                        / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)
 
     asig.name += ""

@@ -61,4 +61,4 @@ use rule compute_measure as spatial_derivative with:
         Path('{dir}') / 'spatial_derivative'
                       / f'{config.EVENT_NAME}_spatial_derivative.csv',
         output_img = Path('{dir}') / 'spatial_derivative'
-                         / f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'
+               / f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'

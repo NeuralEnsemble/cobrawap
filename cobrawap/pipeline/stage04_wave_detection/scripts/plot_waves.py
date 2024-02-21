@@ -15,10 +15,12 @@ CLI.add_argument("--data", nargs='?', type=str,
                  help="path to input data in neo format")
 CLI.add_argument("--output_dir", nargs='?', type=str,
                  help="path to output directory")
-CLI.add_argument("--img_name", nargs='?', type=str)
+CLI.add_argument("--img_name", nargs='?', type=str,
+                 help="")
 CLI.add_argument("--time_window", nargs='?', type=float, default=0.4,
                  help="size of the plotted window in seconds.")
-CLI.add_argument("--colormap", nargs='?', type=str, default='viridis')
+CLI.add_argument("--colormap", nargs='?', type=str, default='viridis',
+                 help="")
 
 def plot_wave(wave_id, waves_event, asig, frames, vec_frames,
               time_window=0.4*pq.s, cmap='virids'):

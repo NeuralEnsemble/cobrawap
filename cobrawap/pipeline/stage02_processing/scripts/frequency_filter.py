@@ -21,7 +21,7 @@ CLI.add_argument("--lowpass_frequency", nargs='?', type=none_or_float,
 CLI.add_argument("--order", nargs='?', type=int, default=2,
                  help="order of the filter function")
 CLI.add_argument("--filter_function", nargs='?', type=str, default='filtfilt',
-                 help="filterfunction used in the scipy backend")
+                 help="filter function used in the scipy backend")
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()

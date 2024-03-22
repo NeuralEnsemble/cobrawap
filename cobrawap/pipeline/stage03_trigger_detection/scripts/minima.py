@@ -8,12 +8,12 @@ import numpy as np
 import quantities as pq
 from scipy.signal import find_peaks
 import argparse
+from pathlib import Path
 from utils.io_utils import load_neo, write_neo, save_plot
 from utils.neo_utils import remove_annotations, time_slice
 from utils.parse import none_or_int, none_or_float, none_or_str
 import seaborn as sns
 import matplotlib.pyplot as plt
-from pathlib import Path
 
 
 CLI = argparse.ArgumentParser()
@@ -95,7 +95,7 @@ def detect_minima(asig, threshold_asig, interpolation_points,
 
     minima_order = int(np.max([minima_persistence*sampling_rate, 1]))
     min_distance = np.max([min_peak_distance*sampling_rate, 1])
-    
+
     for channel, channel_signal in enumerate(signal.T):
         if np.isnan(channel_signal).any(): continue
 
@@ -115,7 +115,7 @@ def detect_minima(asig, threshold_asig, interpolation_points,
 
         min_time_idx = np.append(min_time_idx, clean_mins)
         channel_idx = np.append(channel_idx, np.ones(len(clean_mins), dtype=int)*channel)
-        
+
     # compute local minima times.
     if interpolation_points:
         # parabolic fit on the right branch of local minima
@@ -140,12 +140,12 @@ def detect_minima(asig, threshold_asig, interpolation_points,
         minimum_times = min_pos/sampling_rate*pq.s
     else:
         minimum_times = asig.times[min_time_idx]
-    
+
     idx = np.where(minimum_times >= np.max(asig.times))[0]
     minimum_times[idx] = np.max(asig.times)
     ###################################
     sort_idx = np.argsort(minimum_times)
-    
+
     # save detected minima as transition
     evt = neo.Event(times=minimum_times[sort_idx],
                     labels=['UP'] * len(minimum_times),
@@ -160,7 +160,7 @@ def detect_minima(asig, threshold_asig, interpolation_points,
 
     remove_annotations(asig)
     evt.annotations.update(asig.annotations)
-   
+
     return evt
 
 
@@ -172,17 +172,17 @@ def plot_minima(asig, event, threshold_asig, channel, min_peak_distance):
 
     peaks, _ = find_peaks(signal, height=threshold,
                           distance=np.max([min_peak_distance*sampling_rate, 1]))  
-    
+
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()
-    
+
     ax.plot(times, signal, label='signal', color='k')
     ax.plot(times, threshold, label='moving threshold',
             linestyle=':', color='b')
 
     idx_ch = np.where(event.array_annotations['channels'] == channel)[0]
-    
+
     ax.plot(times[peaks], signal[peaks], 'x', color='r', label='detected maxima') 
     ax.plot(event.times[idx_ch],
             signal[((event.times[idx_ch]-asig.times[0])*sampling_rate).astype(int)],
@@ -191,7 +191,7 @@ def plot_minima(asig, event, threshold_asig, channel, min_peak_distance):
     ax.set_title(f'channel {channel}')
     ax.set_xlabel('time [s]')
     ax.legend()
-    
+
     return ax
 
 
@@ -207,7 +207,7 @@ if __name__ == '__main__':
                                      interpolation_points=args.num_interpolation_points,
                                      min_peak_distance=args.min_peak_distance,
                                      minima_persistence=args.minima_persistence)
-                                
+
     block.segments[0].events.append(transition_event)
 
     write_neo(args.output, block)

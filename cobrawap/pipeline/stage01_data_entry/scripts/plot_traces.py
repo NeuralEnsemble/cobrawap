@@ -12,13 +12,13 @@ from utils.neo_utils import time_slice
 from utils.parse import parse_plot_channels, none_or_int, none_or_float
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=Path, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=Path, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output figure")
 CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=0,
                  help="start time in seconds")
-CLI.add_argument("--t_stop",  nargs='?', type=none_or_float, default=10,
+CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
                  help="list of channels to plot")

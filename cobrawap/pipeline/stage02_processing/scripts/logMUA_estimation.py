@@ -39,7 +39,7 @@ CLI.add_argument("--fft_slice", nargs='?', type=none_or_float, default=None,
                  help="time window length used for power spectrum estimate, in s")
 CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0,
                  help="start time in seconds")
-CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10,
+CLI.add_argument("--plot_tstop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                  help="list of channels to plot")

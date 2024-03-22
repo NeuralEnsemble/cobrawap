@@ -18,30 +18,30 @@ from pathlib import Path
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--num_interpolation_points", nargs='?', type=int, default=0,
-                    help="number of neighboring points to interpolate")
+                 help="number of neighboring points to interpolate")
 CLI.add_argument("--minima_persistence", nargs='?', type=float, default=0.200,
-                    help="minimum time minima (s)")
+                 help="minimum time minima (s)")
 CLI.add_argument("--maxima_threshold_fraction", nargs='?', type=float, default=0.5,
-                    help="amplitude fraction to set the threshold detecting local maxima")
+                 help="amplitude fraction to set the threshold detecting local maxima")
 CLI.add_argument("--maxima_threshold_window", nargs='?', type=int, default=2,
-                    help="time window to use to set the threshold detecting local maxima [s]")
+                 help="time window to use to set the threshold detecting local maxima [s]")
 CLI.add_argument("--min_peak_distance", nargs='?', type=float, default=0.200,
-                    help="minimum distance between peaks (s)")
+                 help="minimum distance between peaks (s)")
 CLI.add_argument("--img_dir", nargs='?', type=Path,
-                    default=None, help="path of figure directory")
+                 default=None, help="path of figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str,
-                    default='minima_channel0.png',
-                    help='example image filename for channel 0')
+                 default='minima_channel0.png',
+                 help='example image filename for channel 0')
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                    help="list of channels to plot")
+                 help="list of channels to plot")
 CLI.add_argument("--plot_tstart", nargs='?', type=none_or_float, default=0.,
-                    help="start time in seconds")
+                 help="start time in seconds")
 CLI.add_argument("--plot_tstop",  nargs='?', type=none_or_float, default=10.,
-                    help="stop time in seconds")
+                 help="stop time in seconds")
 
 def filter_minima_order(signal, mins, order=1):
     filtered_mins = np.array([], dtype=int)

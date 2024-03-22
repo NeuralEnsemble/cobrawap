@@ -12,15 +12,15 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                    help="path of output image file")
+                 help="path of output image file")
 CLI.add_argument("--kernel", "--KERNEL", nargs='?', type=none_or_str, default=None,
-                    help="derivative kernel")
+                 help="derivative kernel")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
-                    help="name of neo.Event to analyze (must contain waves)")
+                 help="name of neo.Event to analyze (must contain waves)")
 
 def calc_local_wave_intervals(evts):
     wave_labels = evts.labels.astype(int)

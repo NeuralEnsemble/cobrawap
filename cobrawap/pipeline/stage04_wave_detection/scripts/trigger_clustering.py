@@ -12,17 +12,17 @@ from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--metric", nargs='?', type=str, default='euclidean',
-                    help="parameter for sklearn.cluster.DBSCAN")
+                 help="parameter for sklearn.cluster.DBSCAN")
 CLI.add_argument("--time_space_ratio", nargs='?', type=float, default=1,
-                    help="factor to apply to time values")
+                 help="factor to apply to time values")
 CLI.add_argument("--neighbour_distance", nargs='?', type=float, default=30,
-                    help="eps parameter in sklearn.cluster.DBSCAN")
+                 help="eps parameter in sklearn.cluster.DBSCAN")
 CLI.add_argument("--min_samples", nargs='?', type=int, default=10,
-                    help="minimum number of trigger times to form a wavefront")
+                 help="minimum number of trigger times to form a wavefront")
                     
 def cluster_triggers(event, metric, neighbour_distance, min_samples,
                      time_space_ratio, sampling_rate):

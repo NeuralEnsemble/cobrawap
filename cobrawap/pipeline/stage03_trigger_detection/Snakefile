@@ -1,4 +1,4 @@
-""" 
+"""
 # Stage 03 Trigger Detection
 """
 
@@ -13,7 +13,7 @@ def filtered_triggers(wildcards):
     return prev_rule_output(wildcards, rule_list=config.TRIGGER_FILTER,
                             default_input=default_input)
 
-#### UTILTY BLOCKS ####
+#### UTILITY BLOCKS ####
 
 use rule template_all as all with:
     input:
@@ -101,6 +101,7 @@ use rule template as minima with:
                'maxima_threshold_window', 'num_interpolation_points', 
                'plot_channels', 'plot_tstart', 'plot_tstop',
                 img_name='minima_channel0.'+config.PLOT_FORMAT, config=config)
+
 
 #### FILTER BLOCKS (choose any) ####
 

@@ -7,10 +7,14 @@ import pandas as pd
 from copy import deepcopy
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--output",    nargs='?', type=str)
-CLI.add_argument("--data",      nargs='+', type=str)
-CLI.add_argument("--output_img",nargs='?', type=str)
-# CLI.add_argument("--merge_key", nargs='?', type=str)
+CLI.add_argument("--data", nargs='+', type=str,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str,
+                 help="path of output file")
+CLI.add_argument("--output_img", nargs='?', type=str,
+                 help="")
+# CLI.add_argument("--merge_key", nargs='?', type=str,
+#                  help="")
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()

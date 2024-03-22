@@ -22,7 +22,7 @@ def load_neo(filename, object='block', lazy=False, *args, **kwargs):
             block = nio.read_block()
 
     except Exception as e:
-        # io.close()
+        # nio.close()
         raise e
     finally:
         if not lazy and hasattr(nio, 'close'):

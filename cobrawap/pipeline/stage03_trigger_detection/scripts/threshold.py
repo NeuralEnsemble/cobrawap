@@ -11,11 +11,11 @@ from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
-                    help="path of thresholds (numpy array)")
+                 help="path of thresholds (numpy array)")
 
 def threshold(asig, threshold_array):
     dim_t, channel_num = asig.shape

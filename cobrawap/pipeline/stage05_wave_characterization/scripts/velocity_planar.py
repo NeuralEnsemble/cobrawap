@@ -13,13 +13,13 @@ from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                    help="path of output image file")
+                 help="path of output image file")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
-                    help="name of neo.Event to analyze (must contain waves)")
+                 help="name of neo.Event to analyze (must contain waves)")
 
 def center_points(x, y):
     return x - np.mean(x), y - np.mean(y)

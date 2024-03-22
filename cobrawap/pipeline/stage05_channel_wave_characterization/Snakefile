@@ -25,7 +25,6 @@ def input(wildcards):
 
 ruleorder: spatial_derivative > compute_measure
 
-
 #### UTILITY BLOCKS ####
 
 use rule template as all with:

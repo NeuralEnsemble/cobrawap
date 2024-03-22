@@ -122,7 +122,7 @@ use rule template as frequency_filter with:
         params('highpass_frequency', 'lowpass_frequency', 'filter_function',
                 order=config.FILTER_ORDER, config=config)
     output:
-       Path('{dir}') / '{rule_name}' /  f'frequency_filter.{config.NEO_FORMAT}'
+        Path('{dir}') / '{rule_name}' /  f'frequency_filter.{config.NEO_FORMAT}'
 
 
 use rule template as roi_selection with:

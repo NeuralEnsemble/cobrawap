@@ -84,7 +84,7 @@ def flip_image(imgseq, axis=-1):
             flipped_imgseq.annotations['array_annotations'][key] \
                         = np.flip(value, axis=axis)
         flipped_imgseq.annotations['array_annotations']['y_coords'] \
-                        = imgseq.annotations['array_annotations']['y_coords']
+                    = imgseq.annotations['array_annotations']['y_coords']
 
     return flipped_imgseq
 
@@ -296,8 +296,8 @@ def add_empty_sites_to_analogsignal(asig):
         if type(values) == pq.Quantity:
             new_values = new_values.magnitude * values.units
         new_asig.array_annotations[key] = new_values
-    
 
     new_asig.array_annotate(x_coords=np.append(x_coords, x_nan_coords), 
                             y_coords=np.append(y_coords, y_nan_coords))
+
     return new_asig

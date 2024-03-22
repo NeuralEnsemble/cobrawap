@@ -40,7 +40,7 @@ rule merge_wave_definitions:
 use rule template_plus_plot_script as trigger_clustering with:
     input:
         data = config.STAGE_INPUT,
-        script = SCRIPTS  / 'trigger_clustering.py',
+        script = SCRIPTS / 'trigger_clustering.py',
         plot_script = SCRIPTS / 'plot_clustering.py'
     params:
         params('metric', 'time_space_ratio', 'neighbour_distance',
@@ -71,7 +71,7 @@ use rule template_plus_plot_script as critical_points with:
         script = SCRIPTS / 'critical_points.py',
         plot_script = SCRIPTS / 'plot_critical_points.py',
     params:
-        params(frame_id = 0, skip_step = 1)
+        params(frame_id=0, skip_step=1)
     output:
         Path('{dir}') / 'critical_points' / f'critical_points.{config.NEO_FORMAT}',
         img = Path('{dir}') / 'critical_points' / f'critical_points.{config.PLOT_FORMAT}'
@@ -112,7 +112,7 @@ use rule template as plot_waves with:
     params:
         params(time_window = 0.4,  # in s
                colormap='viridis',
-               img_name = 'wave_plot_id0.'+config.PLOT_FORMAT)
+               img_name='wave_plot_id0.'+config.PLOT_FORMAT)
     output:
         directory(Path('{dir}') / 'wave_plots')
 
@@ -135,9 +135,9 @@ use rule template as plot_movie_frames with:
         script = SCRIPTS / 'plot_movie_frames.py'
     params:
         params('colormap', 'frame_rate', 'marker_color', 'plot_event',
-                config=config, frame_name='frame', frame_format='png')
+               config=config, frame_name='frame', frame_format='png')
     output:
-        frame_folder = directory(Path('{dir}') / '{data_name}_frames'),
+        frame_folder = directory(Path('{dir}') / '{data_name}_frames')
 
 
 rule plot_movie:

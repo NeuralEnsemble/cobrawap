@@ -13,14 +13,22 @@ from utils.parse import none_or_str, none_or_float
 
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",        nargs='?', type=str)
-CLI.add_argument("--frame_folder",nargs='?', type=str)
-CLI.add_argument("--frame_name",  nargs='?', type=str)
-CLI.add_argument("--frame_format",nargs='?', type=str)
-CLI.add_argument("--frame_rate",  nargs='?', type=none_or_float)
-CLI.add_argument("--colormap",    nargs='?', type=str)
-CLI.add_argument("--plot_event",  nargs='?', type=none_or_str, default=None)
-CLI.add_argument("--marker_color",nargs='?', type=str, default='k')
+CLI.add_argument("--data", nargs='?', type=str,
+                 help="path to input data in neo format")
+CLI.add_argument("--frame_folder", nargs='?', type=str,
+                 help="")
+CLI.add_argument("--frame_name", nargs='?', type=str,
+                 help="")
+CLI.add_argument("--frame_format", nargs='?', type=str,
+                 help="")
+CLI.add_argument("--frame_rate", nargs='?', type=none_or_float,
+                 help="")
+CLI.add_argument("--colormap", nargs='?', type=str,
+                 help="")
+CLI.add_argument("--plot_event", nargs='?', type=none_or_str, default=None,
+                 help="")
+CLI.add_argument("--marker_color", nargs='?', type=str, default='k',
+                 help="")
 
 
 def get_events(events, frame_times, event_name='transitions'):

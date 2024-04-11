@@ -10,9 +10,8 @@ import neo
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
-from distutils.util import strtobool
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_str, str_to_bool
 from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
 from utils.convolve import phase_conv2d, get_kernel, conv, norm_angle
 
@@ -33,7 +32,7 @@ CLI.add_argument("--gaussian_sigma", nargs='+', type=float, default=[0,3,3],
                  help='sigma of gaussian filter in each dimension')
 CLI.add_argument("--derivative_filter", nargs='?', type=none_or_str, default=None,
                  help='Filter kernel to use for calculating spatial derivatives')
-CLI.add_argument("--use_phases", nargs='?', type=strtobool, default=False,
+CLI.add_argument("--use_phases", nargs='?', type=str_to_bool, default=False,
                  help='whether to use signal phase instead of amplitude')
 
 def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,

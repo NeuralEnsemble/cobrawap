@@ -185,7 +185,6 @@ if __name__ == '__main__':
                         / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)
 
-    asig.name += ""
     asig.description += "Estimated logMUA signal [{}, {}] Hz ({}). "\
                         .format(args.highpass_frequency, args.lowpass_frequency,
                                 os.path.basename(__file__))

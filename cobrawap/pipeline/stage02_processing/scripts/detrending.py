@@ -75,7 +75,6 @@ if __name__ == '__main__':
                                        args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)
 
-    detrend_asig.name += ""
     detrend_asig.description += "Detrended by order {} ({}). "\
                         .format(args.order, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = detrend_asig

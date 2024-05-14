@@ -163,7 +163,6 @@ if __name__ == '__main__':
     new_asig = imagesequence_to_analogsignal(tmp_imgseq)
 
     # save data and figure
-    new_asig.name += ""
     new_asig.description += "Border regions with mean intensity below "\
                          + "{args.intensity_threshold} were discarded. "\
                          + "({})".format(os.path.basename(__file__))

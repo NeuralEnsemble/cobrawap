@@ -51,7 +51,6 @@ if __name__ == '__main__':
 
     asig = normalize(block.segments[0].analogsignals[0], args.normalize_by)
 
-    asig.name += ""
     asig.description += "Normalized by {} ({})."\
                         .format(args.normalize_by, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig

@@ -41,7 +41,8 @@ def spatial_smoothing(imgseq, macro_pixel_dim):
 
     imgseq_reduced.annotations.update(imgseq.annotations)
 
-    imgseq_reduced.name = imgseq.name + " "
+    if imgseq.name:
+        imgseq_reduced.name = imgseq.name
     imgseq_reduced.annotations.update(macro_pixel_dim=macro_pixel_dim)
     imgseq_reduced.description = imgseq.description +  \
                 "spatially downsampled ({}).".format(os.path.basename(__file__))
@@ -56,7 +57,7 @@ def plot_downsampled_image(image, output_path):
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
-    
+
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
     imgseq = analogsignal_to_imagesequence(asig)

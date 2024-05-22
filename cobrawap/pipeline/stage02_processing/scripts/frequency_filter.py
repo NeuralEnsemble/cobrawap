@@ -39,7 +39,6 @@ if __name__ == '__main__':
                   lowpass_frequency=args.lowpass_frequency*pq.Hz,
                   filter_order=args.order)
 
-    asig.name += ""
     asig.description += "Frequency filtered with [{}, {}]Hz order {} "\
                         .format(args.highpass_frequency,
                                 args.lowpass_frequency,

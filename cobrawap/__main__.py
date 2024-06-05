@@ -294,7 +294,7 @@ def run(profile=None, extra_args=None, **kwargs):
     pipeline_path = Path(get_setting('pipeline_path'))
        
     # execute snakemake
-    snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']
+    snakemake_args = ['snakemake', '-c1', '--config', f'PROFILE={profile}']
     log.info(f'Executing `{" ".join(snakemake_args+extra_args)}`')
 
     with working_directory(pipeline_path):
@@ -323,8 +323,9 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
     # lookup stage input file
     pipeline_config_path = config_path / 'configs' / 'config.yaml'
     config_dict = load_config_file(pipeline_config_path)
-    stage_idx = locate_str_in_list(config_dict['STAGES'], stage)
-    if stage_idx is None:
+    stage_idx_local = locate_str_in_list(config_dict['STAGES'], stage)
+    stage_idx_global = locate_str_in_list([v for k,v in stages.items()], stage)
+    if stage_idx_local is None:
         raise IndexError("Make sure that the selected stage is also specified "\
                          "in your top-level config in the list `STAGES`!")
     
@@ -332,26 +333,26 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
                                    config_name=f'config_{profile}.yaml',
                                    get_path_instead=True)
     
-    prev_stage = config_dict['STAGES'][stage_idx-1]
-    prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
-                                        config_name=f'config_{profile}.yaml',
-                                        get_path_instead=True)
-    prev_config_name = Path(prev_stage_config_path).name
-    output_name = read_stage_output(stage=prev_stage, 
-                                    config_dir=config_path, 
-                                    config_name=prev_config_name)
-    stage_input = output_path / profile / prev_stage / output_name
+    if stage_idx_global>0:
+        prev_stage = [v for k,v in stages.items()][stage_idx_global-1]
+        prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
+                                            config_name=f'config_{profile}.yaml',
+                                            get_path_instead=True)
+        prev_config_name = Path(prev_stage_config_path).name
+        prev_output_name = read_stage_output(stage=prev_stage,
+                                        config_dir=config_path,
+                                        config_name=prev_config_name)
+        stage_input = output_path / profile / prev_stage / prev_output_name
+        extra_args = [f'STAGE_INPUT={stage_input}'] + extra_args
 
     # descend into stage folder
     pipeline_path = pipeline_path / stage
 
     # append stage specific arguments
-    extra_args = [f'STAGE_INPUT={stage_input}'] \
-                + extra_args \
-                + ['--configfile', f'{stage_config_path}']
+    extra_args = extra_args + ['--configfile', f'{stage_config_path}']
 
     # execute snakemake
-    snakemake_args = ['snakemake','-c1','--config',f'PROFILE={profile}']
+    snakemake_args = ['snakemake', '-c1', '--config', f'PROFILE={profile}']
     log.info(f'Executing `{" ".join(snakemake_args+extra_args)}`')
 
     with working_directory(pipeline_path):

@@ -13,9 +13,10 @@ CONFIG_PATH = Path(get_setting('config_path'))
 OUTPUT_PATH = Path(get_setting('output_path'))
 
 if 'STAGE_INPUT' not in config:
-    logger.warning('No STAGE_INPUT defined for running the stage individually! '
-                   'You can set it via the command line with '
-                   '`--config STAGE_INPUT=/path/to/file`.')
+    if config['STAGE_NAME']!=get_setting('stages')['1']:
+        logger.warning('No STAGE_INPUT defined for running stage \'{}\' individually! '.format(config['STAGE_NAME']) +
+                       'You can set it via the command line with ' +
+                       '`--config STAGE_INPUT=/path/to/file`.')
     config['STAGE_INPUT'] = None
 
 if 'USE_LINK_AS_STAGE_OUTPUT' not in config:

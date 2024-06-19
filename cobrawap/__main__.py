@@ -333,8 +333,8 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
                                    config_name=f'config_{profile}.yaml',
                                    get_path_instead=True)
     
-    if stage_idx_global>0:
-        prev_stage = [v for k,v in stages.items()][stage_idx_global-1]
+    if stage_idx_local>0:
+        prev_stage = [v for k,v in stages.items()][stage_idx_local-1]
         prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
                                             config_name=f'config_{profile}.yaml',
                                             get_path_instead=True)

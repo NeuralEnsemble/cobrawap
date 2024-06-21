@@ -59,7 +59,7 @@ use rule template as optical_flow with:
         script = SCRIPTS / 'optical_flow.py'
     params:
         params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
-               'derivative_filter', 'use_phases', config=config)
+               'derivative_filter', 'use_phases', 'n_jobs', 'max_padding_iterations', config=config)
     output:
         Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
         output_img = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.PLOT_FORMAT}'

@@ -11,6 +11,7 @@ import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
 from joblib import Parallel, delayed
+from tqdm import tqdm
 from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str, str_to_bool
 from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
@@ -122,8 +123,8 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
                      kernelX=kernelX,
                      kernelY=kernelY,
                      are_phases=are_phases)
-                    for i in range(len(frames[:-1])))
-
+                    for i in tqdm(range(len(frames[:-1])), ascii=True))
+    
     vector_frames = np.asarray(vector_frames, dtype=complex)
     vector_frames[:,nan_channels[0],nan_channels[1]] = np.nan + np.nan*1j
 
@@ -175,7 +176,7 @@ def interpolate_empty_sites(frames, are_phases=False, max_iters=1000, n_jobs=1):
              grid_x=grid_x,
              are_phases=are_phases,
              max_iters=max_iters)
-            for i in range(len(frames)))
+            for i in tqdm(range(len(frames)), ascii=True))
         frames = np.asarray(frames)
         return frames
 

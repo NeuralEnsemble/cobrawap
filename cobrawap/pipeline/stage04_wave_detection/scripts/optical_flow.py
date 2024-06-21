@@ -103,7 +103,7 @@ def horn_schunck(frames, alpha, max_Niter, convergence_limit,
     nan_channels = np.where(np.bitwise_not(np.isfinite(frames[0])))
     frames = interpolate_empty_sites(frames, are_phases)
 
-    vector_frames = np.zeros(frames.shape, dtype=complex)
+    vector_frames = np.zeros(frames[:-1,:,:].shape, dtype=complex)
 
     for i, frame in enumerate(frames[:-1]):
         next_frame = frames[i+1]

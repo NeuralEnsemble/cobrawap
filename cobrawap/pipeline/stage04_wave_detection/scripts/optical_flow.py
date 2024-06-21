@@ -35,6 +35,10 @@ CLI.add_argument("--derivative_filter", nargs='?', type=none_or_str, default=Non
                  help='Filter kernel to use for calculating spatial derivatives')
 CLI.add_argument("--use_phases", nargs='?', type=str_to_bool, default=False,
                  help='whether to use signal phase instead of amplitude')
+CLI.add_argument("--max_padding_iterations", nargs='?', type=int, default=1000,
+                 help='maximum number of padding interpolation iterations')
+CLI.add_argument("--n_jobs", nargs='?', type=int, default=1,
+                 help='number of parallel horn_schunck_step executions')
 
 def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
                       kernelHS, kernelT, kernelX, kernelY,
@@ -281,7 +285,10 @@ if __name__ == '__main__':
                                  kernelY=kernel.y,
                                  kernelT=kernelT,
                                  kernelHS=kernelHS,
-                                 are_phases=args.use_phases)
+                                 are_phases=args.use_phases,
+                                 n_jobs=args.n_jobs,
+                                 max_padding_iterations=args.max_padding_iterations)
+
 
     if np.sum(args.gaussian_sigma):
         vector_frames = smooth_frames(vector_frames, sigma=args.gaussian_sigma)

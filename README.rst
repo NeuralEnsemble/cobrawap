@@ -75,7 +75,7 @@ Cobrawap is open-source software and is licensed under the `GNU General Public L
 
 The Cobrawap Community
 =================
-Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on fundings and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst`_ file in the doc session.
+Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on fundings and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc session.
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
@@ -83,7 +83,7 @@ The **Cobrawap Core Team** is in charge of defining the scientific address of th
   
 - **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Cosimo Lupo, Federico Marmoreo, Pier Stanislao Paolucci
   
-- **New York University:** Robin Gutzen
+- **New York University, NY, USA:** Robin Gutzen
   
 The **Cobrawap Support Team** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools; currently, this function is provided by **Unité de Neurosciences, Neuroinformatics Group, CNRS, France** (Andrew Davison), **Athena Research Center, Greece** (Sofia Karvounari, Eleni Mathioulaki).
 

@@ -25,7 +25,6 @@ if __name__ == '__main__':
     asig = asig.duplicate_with_new_data(phase)
     asig.array_annotations = block.segments[0].analogsignals[0].array_annotations
 
-    asig.name += ""
     asig.description += "Phase signal ({}). "\
                         .format(os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig

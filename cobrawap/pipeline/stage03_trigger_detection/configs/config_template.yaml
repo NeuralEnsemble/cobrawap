@@ -64,7 +64,6 @@ NUM_INTERPOLATION_POINTS: 0
 # minimum distance between two peaks (s)
 MIN_PEAK_DISTANCE: 0.28
 # amplitude fraction to set the threshold detecting local maxima
-# range of allowed values is [0,1], default value is 0.5
 MAXIMA_THRESHOLD_FRACTION: 0.5
 # time window to use to set the threshold detecting local maxima (s)
 # default value 'None' is meant to set the time window equal to the entire signal length

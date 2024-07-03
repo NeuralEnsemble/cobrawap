@@ -100,6 +100,9 @@ The **Cobrawap Support Team** includes people and partners that offer technical 
 Other people involved (past and present):
 Anna Letizia Allegra Mascaro (LENS), Irene Bernava (INFN), Cristiano Capone (INFN), Alessandra Cardinale (INFN), Miguel Dasilva (IDIBAPS), Chiara De Luca (INFN), Gianluca Gaglioti (UniMi), Arnau Manasanch (IDIBAPS), Marcello Massimini (UniMi), Maurizio Mattia (ISS), Thierry Nieus (UniMi), Francesco S. Pavone (LENS), Andrea Pigorini (UniMi), Francesco Resta (LENS), Maria V. Sanchez-Vives (IDIBAPS). 
 
+**Cobrawap Partnering Projects**:
+
+Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterens found in the data. Developed at: https://github.com/cilantroxiao/SWAVE
 
 Further Context
 ===============

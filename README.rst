@@ -30,11 +30,6 @@ Concept
    :alt: Schematic Pipeline Approach
    :align: center
 
-
-For researchers to be able to effectively reproduce results and build on each other's progress, it is important to not only make results openly accessible and to facilitate data sharing, but also to build the analysis workflows in a shareable and reusable manner.
-
-Making analysis scripts available alongside results and datasets is good. What is even better is to design the analysis workflows for specific research questions in such a manner that they are general and flexible enough to be actively reused in further research. In this way, the rigor of the analysis workflow is increased, and the design of the analysis process is simplified for the researcher.
-
 Cobrawap brings together existing analysis methods, tools, and standards, and interfaces them for the analysis and characterization of cortical wave-like activity and UP/DOWN state detections. Cobrawap serves as a space to gather the various data types exhibiting wave-like activity and their various analysis approaches into the same pipeline. Besides generating easily reproducible and curated results, Cobrawap facilitates the rigorous comparison between datasets of different laboratories, studies and measurement modalities. Furthermore, Cobrawap can be used in the context of model validation and benchmarking of analysis methods. Cobrawap may also act as a template for implementing analysis pipelines in other contexts.
 
 **Cobrawap features...**

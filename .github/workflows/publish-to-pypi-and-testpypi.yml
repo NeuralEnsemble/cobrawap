@@ -40,6 +40,7 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/cobrawap
+
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
     steps:

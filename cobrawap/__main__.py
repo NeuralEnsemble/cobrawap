@@ -323,9 +323,9 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
     # lookup stage input file
     pipeline_config_path = config_path / 'configs' / 'config.yaml'
     config_dict = load_config_file(pipeline_config_path)
-    stage_idx_local = locate_str_in_list(config_dict['STAGES'], stage)
+    stage_idx = locate_str_in_list(config_dict['STAGES'], stage)
     # stage_idx_global = locate_str_in_list([v for k,v in stages.items()], stage)
-    if stage_idx_local is None:
+    if stage_idx is None:
         raise IndexError("Make sure that the selected stage is also specified "\
                          "in your top-level config in the list `STAGES`!")
 
@@ -333,8 +333,8 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
                                    config_name=f'config_{profile}.yaml',
                                    get_path_instead=True)
 
-    if stage_idx_local>0:
-        prev_stage = config_dict['STAGES'][stage_idx_local-1]
+    if stage_idx > 0:
+        prev_stage = config_dict['STAGES'][stage_idx-1]
         prev_stage_config_path = get_config(config_dir=config_path / prev_stage,
                                             config_name=f'config_{profile}.yaml',
                                             get_path_instead=True)

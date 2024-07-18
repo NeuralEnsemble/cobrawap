@@ -13,10 +13,10 @@ CONFIG_PATH = Path(get_setting('config_path'))
 OUTPUT_PATH = Path(get_setting('output_path'))
 
 is_first_stage = config['STAGE_NAME'] == get_setting('stages')['1']
-if 'STAGE_INPUT' not in config or ('STAGE_INPUT' in config and is_first_stage):
+if is_first_stage:
     config['STAGE_INPUT'] = None
-    if not is_first_stage:
-        logger.warning('No STAGE_INPUT defined for running stage \'{}\' individually! '.format(config['STAGE_NAME']) +
+if 'STAGE_INPUT' not in config:
+    logger.warning('No STAGE_INPUT defined for running stage \'{}\' individually! '.format(config['STAGE_NAME']) +
                        'You can set it via the command line with ' +
                        '`--config STAGE_INPUT=/path/to/file`.')
 

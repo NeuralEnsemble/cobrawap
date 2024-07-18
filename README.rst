@@ -12,6 +12,11 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
   :alt: DOI Latest Release
   :align: left
 
+.. image:: https://img.shields.io/badge/slack-join-pink.svg
+   :target: https://join.slack.com/t/cobrawapworkinggroup/shared_invite/zt-1t8fjv447-64MrlHywww97LRC1ZtW0DA
+   :alt: Join our Slack Community
+   :align: left
+
 .. image:: https://raw.githubusercontent.com/NeuralEnsemble/cobrawap/master/doc/images/cobrawap_logo.png
    :height: 150px
    :alt: Cobrawap Logo
@@ -59,8 +64,7 @@ To cite a specific version of Cobrawap please see version-specific DOIs at:
 
 To cite Cobrawap, please use:
 
-Robin Gutzen, Giulia De Bonis, Chiara De Luca, Elena Pastorelli, Cristiano Capone, Anna Letizia Allegra Mascaro, Francesco Resta, Arnau Manasanch, Francesco Saverio Pavone, Maria V. Sanchez-Vives, Maurizio Mattia, Sonja Grün, Pier Stanislao Paolucci, Michael Denker (2024), *A modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets*, Cell Reports Methods,
-Volume 4, Issue 1, `https://doi.org/10.1016/j.crmeth.2023.100681 <https://doi.org/10.1016/j.crmeth.2023.100681>`_
+Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2024). *Using a modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets*. Cell Reports Methods, 4(1), 100681. `https://doi.org/10.1016/j.crmeth.2023.100681 <https://doi.org/10.1016/j.crmeth.2023.100681>`_
 
 
 License

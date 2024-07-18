@@ -143,7 +143,7 @@ def phase_conv2d(frame, kernel, kernel_center=None):
         for di,dj in itertools.product(range(dx), range(dy)):
 
             # kernelsite != 0, framesite within borders and != nan
-            if k[di,dj] and i+di-ci < dimx and j+dj-cj < dimy \
+            if k[di,dj] and 0 <= i+di-ci < dimx and 0 <= j+dj-cj < dimy \
             and np.isfinite(frame[i+di-ci,j+dj-cj]):
                 sign = -1*np.sign(k[di,dj])
                 # pos = clockwise from phase to frame[..]

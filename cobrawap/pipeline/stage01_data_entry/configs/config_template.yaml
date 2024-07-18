@@ -69,7 +69,7 @@ KWARGS: 'None'
 # Plotting parameters
 # These parameters are used to create an example plot to get a first view
 # on the signals and ensure that the data was loaded and annotated correctly
-PLOT_TSTART: 0  # in s
-PLOT_TSTOP: 10  # in s
+PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
 PLOT_CHANNELS: 'None'  # int, or list of int, or 'None' -> randomly chosen channel
 PLOT_FORMAT: 'png'  # file extension for storing the plot

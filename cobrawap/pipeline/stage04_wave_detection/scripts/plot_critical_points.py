@@ -11,13 +11,13 @@ from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--skip_step", nargs='?', type=int, default=3,
-                    help="skipping every x vector for the plot")
+                 help="skipping every x vector for the plot")
 CLI.add_argument("--frame_id", nargs='?', type=int, default=0,
-                    help="number of the frame to plot")
+                 help="number of the frame to plot")
 
 def plot_frame(frame, ax=None, skip_step=3):
     dim_y, dim_x = frame.shape

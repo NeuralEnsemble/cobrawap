@@ -13,14 +13,14 @@ from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                    help="path of output file")
-CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
-                    help="path of output image", default=None)
-CLI.add_argument("--macro_pixel_dim",  nargs='?', type=int,
-                    help="smoothing factor", default=2)
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                 help="path of output file")
+CLI.add_argument("--output_img", nargs='?', type=none_or_str,
+                 help="path of output image", default=None)
+CLI.add_argument("--macro_pixel_dim", nargs='?', type=int,
+                 help="smoothing factor", default=2)
 
 def spatial_smoothing(imgseq, macro_pixel_dim):
     images_reduced = measure.block_reduce(imgseq.as_array(),
@@ -41,7 +41,8 @@ def spatial_smoothing(imgseq, macro_pixel_dim):
 
     imgseq_reduced.annotations.update(imgseq.annotations)
 
-    imgseq_reduced.name = imgseq.name + " "
+    if imgseq.name:
+        imgseq_reduced.name = imgseq.name
     imgseq_reduced.annotations.update(macro_pixel_dim=macro_pixel_dim)
     imgseq_reduced.description = imgseq.description +  \
                 "spatially downsampled ({}).".format(os.path.basename(__file__))
@@ -56,7 +57,7 @@ def plot_downsampled_image(image, output_path):
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
-    
+
     block = load_neo(args.data)
     asig = block.segments[0].analogsignals[0]
     imgseq = analogsignal_to_imagesequence(asig)

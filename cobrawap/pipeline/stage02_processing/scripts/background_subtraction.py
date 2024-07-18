@@ -11,14 +11,14 @@ from utils.io_utils import load_neo, write_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=Path, required=True,
-                    help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=Path, required=True,
-                    help="path of output file")
-CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
-                    help="path of output image", default=None)
-CLI.add_argument("--output_array",  nargs='?', type=none_or_str,
-                    help="path of output numpy array", default=None)
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
+                 help="path of output file")
+CLI.add_argument("--output_img", nargs='?', type=none_or_str,
+                 help="path of output image", default=None)
+CLI.add_argument("--output_array", nargs='?', type=none_or_str,
+                 help="path of output numpy array", default=None)
 
 def shape_frame(value_array, xy_coords):
     dim_x = np.max(xy_coords[:,0]) + 1
@@ -59,7 +59,6 @@ if __name__ == '__main__':
 
     new_asig = asig.duplicate_with_new_data(signal)
     new_asig.array_annotations = asig.array_annotations
-    new_asig.name += ""
     new_asig.description += "The mean of each channel was subtracted ({})."\
                         .format(os.path.basename(__file__))
     block.segments[0].analogsignals[0] = new_asig

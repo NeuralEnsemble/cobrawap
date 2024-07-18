@@ -7,20 +7,20 @@ import numpy as np
 import neo
 import argparse
 import quantities as pq
-from distutils.util import strtobool
 from utils.io_utils import load_neo, write_neo
+from utils.parse import str_to_bool
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path to output data in neo format")
+                 help="path to output data in neo format")
 CLI.add_argument("--min_up_duration", nargs='?', type=float, default=0.005,
-                    help="minimum duration of UP states in seconds")
+                 help="minimum duration of UP states in seconds")
 CLI.add_argument("--min_down_duration", nargs='?', type=float, default=0.005,
-                    help="minimum duration of DOWN states in seconds")
-CLI.add_argument("--remove_down_first", nargs='?', type=strtobool, default=True,
-                    help="If True, remove short down states first")
+                 help="minimum duration of DOWN states in seconds")
+CLI.add_argument("--remove_down_first", nargs='?', type=str_to_bool, default=True,
+                 help="If True, remove short down states first")
 
 
 def remove_short_states(evt, min_duration, start_label='UP', stop_label='DOWN'):

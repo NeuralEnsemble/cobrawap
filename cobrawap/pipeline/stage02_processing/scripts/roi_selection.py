@@ -10,20 +10,20 @@ import argparse
 import neo
 import os
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_str, str_to_bool
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                    help="path of output file")
-CLI.add_argument("--output_img",  nargs='?', type=none_or_str,
-                    help="path of output image", default=None)
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                 help="path of output file")
+CLI.add_argument("--output_img", nargs='?', type=none_or_str,
+                 help="path of output image", default=None)
 CLI.add_argument("--intensity_threshold", nargs='?', type=float,
-                    help="threshold for mask [0,1]", default=0.5)
-CLI.add_argument("--crop_to_selection", nargs='?', type=bool,
-                    help="discard frame outside of ROI", default=True)
+                 help="threshold for mask [0,1]", default=0.5)
+CLI.add_argument("--crop_to_selection", nargs='?', type=str_to_bool,
+                 help="discard frame outside of ROI", default=True)
 
 def calculate_contour(img, contour_limit):
     # Computing the contour lines...
@@ -125,7 +125,7 @@ def plot_roi(img, contour):
     ax.axis('image')
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.plot(contour[:, 0], contour[:, 1], linewidth=2)
+    ax.plot(contour[:,0], contour[:,1], linewidth=2)
     plt.draw()
     return ax
 
@@ -163,7 +163,6 @@ if __name__ == '__main__':
     new_asig = imagesequence_to_analogsignal(tmp_imgseq)
 
     # save data and figure
-    new_asig.name += ""
     new_asig.description += "Border regions with mean intensity below "\
                          + "{args.intensity_threshold} were discarded. "\
                          + "({})".format(os.path.basename(__file__))

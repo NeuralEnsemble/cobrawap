@@ -11,12 +11,12 @@ import sys
 from utils.io_utils import write_neo, load_neo
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                    help="path of output file")
+CLI.add_argument("--data", nargs='?', type=str, required=True,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str, required=True,
+                 help="path of output file")
 CLI.add_argument("--normalize_by", nargs='?', type=str, default='mean',
-                    help="division factor: 'max', 'mean', or 'median'")
+                 help="division factor: 'max', 'mean', or 'median'")
 
 def normalize(asig, normalize_by):
     if normalize_by == 'median':
@@ -51,7 +51,6 @@ if __name__ == '__main__':
 
     asig = normalize(block.segments[0].analogsignals[0], args.normalize_by)
 
-    asig.name += ""
     asig.description += "Normalized by {} ({})."\
                         .format(args.normalize_by, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = asig

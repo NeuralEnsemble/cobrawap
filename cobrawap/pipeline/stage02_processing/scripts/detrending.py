@@ -13,18 +13,18 @@ from utils.parse import none_or_int
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data",    nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output",  nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--order", nargs='?', type=int, default=1,
-                    help="detrending order")
+                 help="detrending order")
 CLI.add_argument("--img_dir",  nargs='?', type=str, required=True,
-                    help="path of output figure directory")
+                 help="path of output figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str,
-                    default='processed_trace_channel0.png',
-                    help='example filename for channel 0')
+                 default='processed_trace_channel0.png',
+                 help='example filename for channel 0')
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
-                    help="list of channels to plot")
+                 help="list of channels to plot")
 
 def detrend(asig, order):
     if (order != 0) and (order != 1):
@@ -72,10 +72,9 @@ if __name__ == '__main__':
         for channel in args.plot_channels:
             plot_detrend(asig, detrend_asig, channel)
             output_path = os.path.join(args.img_dir,
-                                    args.img_name.replace('_channel0', f'_channel{channel}'))
+                                       args.img_name.replace('_channel0', f'_channel{channel}'))
             save_plot(output_path)
 
-    detrend_asig.name += ""
     detrend_asig.description += "Detrended by order {} ({}). "\
                         .format(args.order, os.path.basename(__file__))
     block.segments[0].analogsignals[0] = detrend_asig

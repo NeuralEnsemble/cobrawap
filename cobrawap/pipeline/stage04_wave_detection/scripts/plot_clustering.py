@@ -16,11 +16,13 @@ from utils.parse import none_or_float
 from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--output",    nargs='?', type=str)
-CLI.add_argument("--data",      nargs='?', type=str)
+CLI.add_argument("--data", nargs='?', type=str,
+                 help="path to input data in neo format")
+CLI.add_argument("--output", nargs='?', type=str,
+                 help="path of output file")
 CLI.add_argument("--time_slice", nargs='?', type=none_or_float, default=None,
-                    help="length of time_slice in seconds.")
-                    
+                 help="length of time_slice in seconds.")
+
 def plot_clustering(events, ax=None):
     if ax is None:
         fig = plt.figure()

@@ -10,31 +10,30 @@ import neo
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
-from distutils.util import strtobool
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_str, str_to_bool
 from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
 from utils.convolve import phase_conv2d, get_kernel, conv, norm_angle
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=str, required=True,
-                    help="path to input data in neo format")
+                 help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=str, required=True,
-                    help="path of output file")
+                 help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
-                    help="path of output image file")
+                 help="path of output image file")
 CLI.add_argument("--alpha", nargs='?', type=float, default=0.001,
-                    help='regularization parameter')
+                 help='regularization parameter')
 CLI.add_argument("--max_Niter", nargs='?', type=int, default=50,
-                    help='maximum number of iterations')
+                 help='maximum number of iterations')
 CLI.add_argument("--convergence_limit", nargs='?', type=float, default=10e-3,
-                    help='absolute change at which consider optimization converged')
+                 help='absolute change at which consider optimization converged')
 CLI.add_argument("--gaussian_sigma", nargs='+', type=float, default=[0,3,3],
-                    help='sigma of gaussian filter in each dimension')
+                 help='sigma of gaussian filter in each dimension')
 CLI.add_argument("--derivative_filter", nargs='?', type=none_or_str, default=None,
-                    help='Filter kernel to use for calculating spatial derivatives')
-CLI.add_argument("--use_phases", nargs='?', type=strtobool, default=False,
-                    help='whether to use signal phase instead of amplitude')
+                 help='Filter kernel to use for calculating spatial derivatives')
+CLI.add_argument("--use_phases", nargs='?', type=str_to_bool, default=False,
+                 help='whether to use signal phase instead of amplitude')
 
 def horn_schunck_step(frame, next_frame, alpha, max_Niter, convergence_limit,
                       kernelHS, kernelT, kernelX, kernelY,
@@ -230,6 +229,7 @@ def is_phase_signal(signal, use_phases):
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
+
     block = load_neo(args.data)
 
     asig = block.segments[0].analogsignals[0]

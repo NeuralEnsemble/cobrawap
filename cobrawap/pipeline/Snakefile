@@ -14,7 +14,7 @@ temp_config = 'working_config.yaml'
 config_path = Path(get_setting('config_path'))
 output_path = Path(get_setting('output_path'))
 
-configfile: config_path /'configs' / 'config.yaml'
+configfile: config_path / 'configs' / 'config.yaml'
 report: "report.rst"
 
 # Setting the profile

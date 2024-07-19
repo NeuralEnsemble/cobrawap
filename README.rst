@@ -78,31 +78,21 @@ Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
-.. list-table::
-   :widths: 25 25 25
-   :header-rows: 0
-
-   * - .. image:: doc/images/institutions/nyu.png
-        :height: 100px
-        :width: 100px
-        :align: center
-
-     - .. image:: doc/images/institutions/fzj.svg
-        :height: 100px
-        :width: 100px
-        :align: center
-
-     - .. image:: doc/images/institutions/infn.svg
-        :height: 100px
-        :width: 100px
-        :align: center
-
-   * - Robin Gutzen
-     - Michael Denker
-     - Giulia De Bonis, \
-     Cosimo Lupo, \
-     Federico Marmoreo, \
-     Pier Stanislao Paolucci
++---------------------+------------------+---------------------------------+
+| .. image::          | .. image::       | .. image::                      |
+|    doc/images/      |    doc/images/   |    doc/images/                  |
+|    institutions/    |    institutions/ |    institutions/                |
+|    nyu.png          |    fzj.svg       |    infn.svg                     |
+|    :height: 100px   |    :height: 100px|    :height: 100px               |
+|    :width: 100px    |    :width: 100px |    :width: 100px                |
+|    :align: center   |    :align: center|    :align: center               |
+|                     |                  |                                 |
++---------------------+------------------+---------------------------------+
+| Robin Gutzen        | Michael Denker   | Giulia De Bonis,                |
+|                     |                  | Cosimo Lupo,                    |
+|                     |                  | Federico Marmoreo,              |
+|                     |                  | Pier Stanislao Paolucci         |
++---------------------+------------------+---------------------------------+
 
 .. - **Forschungszentrum Jülich, Germany:** Michael Denker
   

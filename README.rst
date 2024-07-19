@@ -78,11 +78,34 @@ Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
-- **Forschungszentrum Jülich, Germany:** Michael Denker
+.. list-table::
+   :widths: 25 25 25
+   :header-rows: 0
+
+   * - .. image:: doc/institutions/nyu.png
+        :height: 100px
+        :width: 100px
+        :align: center
+
+     - .. image:: doc/institutions/fzj.svg
+        :height: 100px
+        :width: 100px
+        :align: center
+
+     - .. image:: doc/institutions/infn.svg
+        :height: 100px
+        :width: 100px
+        :align: center
+
+   * - Robin Gutzen
+     - Michael Denker
+     - Giulia De Bonis, Cosimo Lupo, Federico Marmoreo, Pier Stanislao Paolucci
+
+.. - **Forschungszentrum Jülich, Germany:** Michael Denker
   
-- **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Cosimo Lupo, Federico Marmoreo, Pier Stanislao Paolucci
+.. - **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Cosimo Lupo, Federico Marmoreo, Pier Stanislao Paolucci
   
-- **New York University, NY, USA:** Robin Gutzen
+.. - **New York University, NY, USA:** Robin Gutzen
   
 The **Cobrawap Support Team** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools; currently, this function is provided by **Unité de Neurosciences, Neuroinformatics Group, CNRS, France** (Andrew Davison), **Athena Research Center, Greece** (Sofia Karvounari, Eleni Mathioulaki).
 

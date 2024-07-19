@@ -99,9 +99,9 @@ The **Cobrawap Core Team** is in charge of defining the scientific address of th
 
    * - Robin Gutzen
      - Michael Denker
-     - Giulia De Bonis, 
-     Cosimo Lupo, 
-     Federico Marmoreo, 
+     - Giulia De Bonis, \
+     Cosimo Lupo, \
+     Federico Marmoreo, \
      Pier Stanislao Paolucci
 
 .. - **Forschungszentrum Jülich, Germany:** Michael Denker

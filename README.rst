@@ -74,7 +74,7 @@ Cobrawap is open-source software and is licensed under the `GNU General Public L
 
 The Cobrawap Community
 ======================
-Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on fundings and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc folder.
+Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on funding and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc folder.
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
@@ -101,7 +101,7 @@ Anna Letizia Allegra Mascaro (LENS), Irene Bernava (INFN), Cristiano Capone (INF
 
 **Cobrawap Partnering Projects**:
 
-Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterens found in the data. Developed at: https://github.com/cilantroxiao/SWAVE
+Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at: https://github.com/cilantroxiao/SWAVE
 
 Further Context
 ===============
@@ -121,6 +121,6 @@ The Neuroscience Information Exchange, NIX_, format is an API and data format to
 .. _NIX: http://g-node.github.io/nix
 
 The Human Brain Project and WaveScalES
-----------------------
+--------------------------------------
 Cobrawap was originally developed in the context the `Human Brain Project <https://www.humanbrainproject.eu>`_, launched as a use-case initiated within the *WaveScalES* sub-project.
 Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is well known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances. The goal of the WaveScalES sub-project of the `Human Brain Project <https://www.humanbrainproject.eu>`_ was to unveil the underlying mechanisms of deep sleep, anesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models, and simulations of such states and of the transition to wakefulness.

@@ -79,7 +79,7 @@ Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
 .. list-table::
-   :widths: 30 30 30
+   :widths: 25 25 25
    :header-rows: 0
 
    * - .. image:: doc/images/institutions/nyu.png

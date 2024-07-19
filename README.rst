@@ -115,10 +115,10 @@ The **Cobrawap Support Team** includes people and partners that offer technical 
 |    :align: center |    :align: center      |    :align: center            |                   |
 |                   |                        |                              |                   |
 +-------------------+------------------------+------------------------------+-------------------+
-| Maurizio Mattia   | Arnau Manasanch,       | Anna Letizia Allegra Mascaro |                   |
-|                   | Maria V. Sanchez-Vives | Francesco Resta              |                   |
+| Maurizio Mattia   | Arnau Manasanch,       | Anna Letizia Allegra Mascaro,|                   |
+|                   | Maria V. Sanchez-Vives | Francesco Resta,             |                   |
 |                   |                        | Francesco S. Pavone          |                   |
-+-------------------+------------------------+------------------------------+--------------------+ 
++-------------------+------------------------+------------------------------+-------------------+ 
 
 ; currently, this function is provided by **Unité de Neurosciences, Neuroinformatics Group, CNRS, France** (Andrew Davison), **Athena Research Center, Greece** (Sofia Karvounari, Eleni Mathioulaki).
 

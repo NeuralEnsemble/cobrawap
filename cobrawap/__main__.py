@@ -17,11 +17,21 @@ from pprint import pformat
 
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent / "pipeline"))
-from cmd_utils import (create_new_configfile, get_config,
-                       get_initial_available_stages, get_profile, get_setting,
-                       input_profile, is_profile_name_valid, load_config_file,
-                       locate_str_in_list, read_stage_output, set_setting,
-                       setup_entry_stage, working_directory)
+from cmd_utils import (
+    create_new_configfile,
+    get_config,
+    get_initial_available_stages,
+    get_profile,
+    get_setting,
+    input_profile,
+    is_profile_name_valid,
+    load_config_file,
+    locate_str_in_list,
+    read_stage_output,
+    set_setting,
+    setup_entry_stage,
+    working_directory,
+)
 
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
@@ -531,7 +541,10 @@ def run_block(block=None, block_args=None, block_help=False, **kwargs):
     available_blocks = [
         str(script.stem)
         for script in block_dir.iterdir()
-        if os.path.isfile(script) and not str(script.stem).startswith("_") and script.suffix == ".py" and "template" not in script.stem
+        if os.path.isfile(script)
+        and not str(script.stem).startswith("_")
+        and script.suffix == ".py"
+        and "template" not in script.stem
     ]
 
     while block not in available_blocks:

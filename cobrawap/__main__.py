@@ -531,7 +531,7 @@ def run_block(block=None, block_args=None, block_help=False, **kwargs):
     available_blocks = [
         str(script.stem)
         for script in block_dir.iterdir()
-        if not str(script.stem).startswith("_") and script.suffix == ".py"
+        if os.path.isfile(script) and not str(script.stem).startswith("_") and script.suffix == ".py" and "template" not in script.stem
     ]
 
     while block not in available_blocks:

@@ -17,21 +17,11 @@ from pprint import pformat
 
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent / "pipeline"))
-from cmd_utils import (
-    create_new_configfile,
-    get_config,
-    get_initial_available_stages,
-    get_profile,
-    get_setting,
-    input_profile,
-    is_profile_name_valid,
-    load_config_file,
-    locate_str_in_list,
-    read_stage_output,
-    set_setting,
-    setup_entry_stage,
-    working_directory,
-)
+from cmd_utils import (create_new_configfile, get_config,
+                       get_initial_available_stages, get_profile, get_setting,
+                       input_profile, is_profile_name_valid, load_config_file,
+                       locate_str_in_list, read_stage_output, set_setting,
+                       setup_entry_stage, working_directory)
 
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
@@ -88,14 +78,16 @@ CLI_init.add_argument(
 
 # Show Settings
 CLI_settings = subparsers.add_parser(
-    "settings", help="display the content of ~/.cobrawap/config",
+    "settings",
+    help="display the content of ~/.cobrawap/config",
 )
 CLI_settings.set_defaults(command="settings")
 
 
 # Configuration
 CLI_create = subparsers.add_parser(
-    "create", help="create configuration for a new dataset".
+    "create",
+    help="create configuration for a new dataset",
 )
 CLI_create.set_defaults(command="create")
 CLI_create.add_argument(
@@ -132,7 +124,8 @@ CLI_create.add_argument(
 
 # Additional configurations
 CLI_profile = subparsers.add_parser(
-    "add_profile", help="create a new configuration for an existing dataset",
+    "add_profile",
+    help="create a new configuration for an existing dataset",
 )
 CLI_profile.set_defaults(command="add_profile")
 CLI_profile.add_argument(
@@ -183,13 +176,6 @@ CLI_stage = subparsers.add_parser(
 )
 CLI_stage.set_defaults(command="run_stage")
 CLI_stage.add_argument(
-    "--profile",
-    type=str,
-    nargs="?",
-    default=None,
-    help="name of the config profile to be analyzed",
-)
-CLI_stage.add_argument(
     "--stage",
     type=str,
     nargs="?",
@@ -197,10 +183,18 @@ CLI_stage.add_argument(
     choices=list(STAGES.keys()),
     help="select individual stage to execute",
 )
+CLI_stage.add_argument(
+    "--profile",
+    type=str,
+    nargs="?",
+    default=None,
+    help="name of the config profile to be analyzed",
+)
 
 # Block
 CLI_block = subparsers.add_parser(
-    "run_block", help="execute an individual block method on some input",
+    "run_block",
+    help="execute an individual block method on some input",
 )
 CLI_block.set_defaults(command="run_block")
 CLI_block.add_argument(
@@ -421,6 +415,9 @@ def add_profile(
 
 
 def run(profile=None, extra_args=None, **kwargs):
+    if profile is None and extra_args and extra_args[0][0] != "-":
+        profile = extra_args.pop(0)
+
     # select profile
     profile = input_profile(profile=profile)
 
@@ -437,7 +434,10 @@ def run(profile=None, extra_args=None, **kwargs):
     return None
 
 
-def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
+def run_stage(stage=None, profile=None, extra_args=None, **kwargs):
+    if stage is None and extra_args and extra_args[0][0] != "-":
+        stage = extra_args.pop(0)
+
     # select profile
     profile = input_profile(profile=profile)
 
@@ -507,6 +507,9 @@ def run_stage(profile=None, stage=None, extra_args=None, **kwargs):
 
 def run_block(block=None, block_args=None, block_help=False, **kwargs):
     stages = get_setting("stages")
+
+    if block is None and block_args and block_args[0][0] != "-":
+        block = block_args.pop(0)
 
     if block:
         try:

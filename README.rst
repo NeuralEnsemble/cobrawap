@@ -93,47 +93,34 @@ The **Cobrawap Core Team** is in charge of defining the scientific address of th
 |                   |                  | Pier Stanislao Paolucci |
 +-------------------+------------------+-------------------------+
   
-The **Cobrawap Support Team** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools
+The further **Cobrawap Community** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools, and offer scientific support for the development of the analysis methods and the tool's integration into broader research endeavors.
 
-+-------------------+------------------------+------------------------------+-------------------+
-| .. image::        | .. image::             |                              |                   |
-|    doc/images/    |    doc/images/         |                              |                   |
-|    institutions/  |    institutions/       |                              |                   |
-|    cnrs.svg       |    athena.png          |                              |                   |
-|    :height: 80px  |    :height: 80px       |                              |                   |
-|    :align: center |    :align: center      |                              |                   |
-|                   |                        |                              |                   |
-+-------------------+------------------------+------------------------------+-------------------+
-| Andrew Davison    | Sofia Karvounari,      |                              |                   |
-|                   | Eleni Mathioulaki      |                              |                   |
 +-------------------+------------------------+------------------------------+-------------------+
 | .. image::        | .. image::             | .. image::                   |                   |
 |    doc/images/    |    doc/images/         |    doc/images/               |                   |
 |    institutions/  |    institutions/       |    institutions/             |                   |
-|    iss.png        |    idibaps.png         |    lens.png                  |                   |
+|    cnrs.svg       |    athena.png          |    infn.svg                  |                   |
 |    :height: 80px  |    :height: 80px       |    :height: 80px             |                   |
 |    :align: center |    :align: center      |    :align: center            |                   |
 |                   |                        |                              |                   |
 +-------------------+------------------------+------------------------------+-------------------+
-| Maurizio Mattia   | Arnau Manasanch,       | Anna Letizia Allegra Mascaro,|                   |
-|                   | Maria V. Sanchez-Vives | Francesco Resta,             |                   |
-|                   |                        | Francesco S. Pavone          |                   |
+| Andrew Davison    | Sofia Karvounari,      | Chiara De Luca,              |                   |
+|                   | Eleni Mathioulaki      | Cristiano Capone,            |                   |
+|                   |                        | Irene Bernava                |                   |
+|                   |                        | Alessandra Cardinale         |                   |
++-------------------+------------------------+------------------------------+-------------------+
+| .. image::        | .. image::             | .. image::                   | .. image::        |
+|    doc/images/    |    doc/images/         |    doc/images/               |    doc/images/    |
+|    institutions/  |    institutions/       |    institutions/             |    institutions/  |
+|    iss.png        |    idibaps.png         |    lens.png                  |    unimi.png      |
+|    :height: 80px  |    :height: 80px       |    :height: 80px             |    :height: 80px  |
+|    :align: center |    :align: center      |    :align: center            |    :align: center |
+|                   |                        |                              |                   |
++-------------------+------------------------+------------------------------+-------------------+
+| Maurizio Mattia   | Arnau Manasanch,       | Anna Letizia Allegra Mascaro,| Andrea Pigorini   |
+|                   | Miguel Dasilva         | Francesco Resta,             | Thierry Nieus     |
+|                   | Maria V. Sanchez-Vives,| Francesco S. Pavone          | Marcello Massimini|
 +-------------------+------------------------+------------------------------+-------------------+ 
-
-; currently, this function is provided by **Unité de Neurosciences, Neuroinformatics Group, CNRS, France** (Andrew Davison), **Athena Research Center, Greece** (Sofia Karvounari, Eleni Mathioulaki).
-
-**Cobrawap Scientific Partners** (past and present) are:  
-
-- **Istituto Superiore di Sanità (ISS), Roma, Italy**
-  
-- **Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain**
-
-- **European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy**
-
-- **University of Milano (UniMi), Italy**
-  
-Other people involved (past and present):
-Anna Letizia Allegra Mascaro (LENS), Irene Bernava (INFN), Cristiano Capone (INFN), Alessandra Cardinale (INFN), Miguel Dasilva (IDIBAPS), Chiara De Luca (INFN), Gianluca Gaglioti (UniMi), Arnau Manasanch (IDIBAPS), Marcello Massimini (UniMi), Maurizio Mattia (ISS), Thierry Nieus (UniMi), Francesco S. Pavone (LENS), Andrea Pigorini (UniMi), Francesco Resta (LENS), Maria V. Sanchez-Vives (IDIBAPS). 
 
 **Cobrawap Partnering Projects**:
 

@@ -2,8 +2,20 @@
   "creators": [
     {
       "orcid": "0000-0001-7373-5962",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
+      "affiliation": "Department of Psychology and Center for Data Science, New York University, New York, USA",
       "name": "Gutzen, Robin",
+      "role": "Project member"
+    },
+    {
+      "orcid": "0000-0002-2651-1277",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
+      "name": "Lupo, Cosimo",
+      "role": "Project member"
+    },
+    {
+      "orcid": "XXX",
+      "affiliation": "XXX",
+      "name": "Marmoreo, F",
       "role": "Project member"
     },
     {
@@ -12,15 +24,15 @@
       "name": "De Bonis, Giulia",
       "role": "Project member"
     },
+  ],
+
+  "contributors": [
     {
       "orcid": "0000-0003-3488-0088",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
       "name": "De Luca, Chiara",
       "role": "Project member"
-    }
-  ],
-
-  "contributors": [
+    },
     {
       "orcid": "0000-0003-0682-1232",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
@@ -71,13 +83,13 @@
     },
     {
       "orcid": "0000-0003-2829-2220",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
+      "affiliation": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
       "name": "Grün, Sonja",
       "role": "Project member"
     },
     {
       "orcid": "0000-0003-1255-7300",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany",
+      "affiliation": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany",
       "name": "Denker, Michael",
       "role": "Project leader"
     },
@@ -89,7 +101,7 @@
     }
   ],
 
-  "title": "Cobrawap 0.1.0",
+  "title": "Cobrawap 0.2.0",
 
   "keywords": [
     "neuroscience",
@@ -108,12 +120,20 @@
       "identifier": "10.48550/arXiv.2211.08527",
       "relation": "isDocumentedBy",
       "resource_type": "publication-preprint"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.1016/j.crmeth.2023.100681",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-article"
     }
   ],
 
   "grants": [
     {"id": "785907"},
     {"id": "945539"},
+    {"id": "101147319"},
     {"id": "MUR CUP B51E22000150006"}
   ],
 

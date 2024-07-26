@@ -23,7 +23,7 @@
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "De Bonis, Giulia",
       "role": "Project member"
-    },
+    }
   ],
 
   "contributors": [
@@ -111,7 +111,7 @@
   ],
 
   "license": {
-    "id": "GNU General Public License v3.0 or later"
+    "id": "https://spdx.org/licenses/GPL-3.0-or-later"
   },
 
   "related_identifiers": [

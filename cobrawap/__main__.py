@@ -19,14 +19,18 @@ sys.path.append(str(Path(inspect.getfile(lambda: None)).parent))
 sys.path.append(str(Path(inspect.getfile(lambda: None)).parent / "pipeline"))
 from cmd_utils import (
     create_new_configfile,
+    get_available_blocks,
     get_config,
     get_initial_available_stages,
     get_profile,
     get_setting,
+    input_block,
     input_profile,
+    input_stage,
     is_profile_name_valid,
     load_config_file,
     locate_str_in_list,
+    print_settings,
     read_stage_output,
     set_setting,
     setup_entry_stage,
@@ -190,7 +194,7 @@ CLI_stage.add_argument(
     type=str,
     nargs="?",
     default=None,
-    choices=list(STAGES.keys()),
+    choices=[s for pair in zip(STAGES.keys(), STAGES.values()) for s in pair],
     help="select individual stage to execute",
 )
 CLI_stage.add_argument(
@@ -208,11 +212,19 @@ CLI_block = subparsers.add_parser(
 )
 CLI_block.set_defaults(command="run_block")
 CLI_block.add_argument(
+    "--stage",
+    type=str,
+    nargs="?",
+    default=None,
+    choices=[s for pair in zip(STAGES.keys(), STAGES.values()) for s in pair],
+    help="select individual stage to execute",
+)
+CLI_block.add_argument(
     "--block",
     type=str,
     nargs="?",
     default=None,
-    help="block specified as <stage_name>.<block_name>",
+    help="select individual block to execute",
 )
 CLI_block.add_argument(
     "--block_help",
@@ -349,11 +361,6 @@ def initialize(output_path=None, config_path=None, **kwargs):
     return None
 
 
-def print_settings(*args, **kwargs):
-    print(pformat(get_setting()))
-    return None
-
-
 def create(
     profile=None,
     parent_profile=None,
@@ -425,8 +432,9 @@ def add_profile(
 
 
 def run(profile=None, extra_args=None, **kwargs):
-    if profile is None and extra_args and extra_args[0][0] != "-":
-        profile = extra_args.pop(0)
+    # # allow for positional profile argument
+    # if profile is None and extra_args and extra_args[0][0] != "-":
+    #     profile = extra_args.pop(0)
 
     # select profile
     profile = input_profile(profile=profile)
@@ -445,26 +453,17 @@ def run(profile=None, extra_args=None, **kwargs):
 
 
 def run_stage(stage=None, profile=None, extra_args=None, **kwargs):
-    if stage is None and extra_args and extra_args[0][0] != "-":
-        stage = extra_args.pop(0)
+    # # allow for positional stage argument
+    # if stage is None and extra_args and extra_args[0][0] != "-":
+    #     stage = extra_args.pop(0)
 
-    # select profile
+    stage = input_stage(stage=stage)
     profile = input_profile(profile=profile)
 
     # get settings
     pipeline_path = Path(get_setting("pipeline_path"))
     config_path = Path(get_setting("config_path"))
     output_path = Path(get_setting("output_path"))
-    stages = get_setting("stages")
-
-    # select stage
-    while stage not in stages.keys():
-        stage = input(
-            "Which stage should be executed?\n    "
-            + "\n    ".join(f"{k} {v}" for k, v in get_setting("stages").items())
-            + "\nSelect the stage index: "
-        )
-    stage = stages[stage]
 
     # lookup stage input file
     pipeline_config_path = config_path / "configs" / "config.yaml"
@@ -515,44 +514,13 @@ def run_stage(stage=None, profile=None, extra_args=None, **kwargs):
     return None
 
 
-def run_block(block=None, block_args=None, block_help=False, **kwargs):
-    stages = get_setting("stages")
+def run_block(stage=None, block=None, block_args=None, block_help=False, **kwargs):
+    # # allow for positional block argument
+    # if block is None and block_args and block_args[0][0] != "-":
+    #     block = block_args.pop(0)
 
-    if block is None and block_args and block_args[0][0] != "-":
-        block = block_args.pop(0)
-
-    if block:
-        try:
-            stage, block = re.split("\.|/|\s", block)[:2]
-        except Exception as e:
-            print(e)
-            stage, block = "", ""
-    else:
-        stage, block = "", ""
-
-    while stage not in stages.values():
-        print(
-            f"Stage {stage} not found!\n"
-            f"Available stages are: {', '.join(list(stages.values()))}"
-        )
-        stage = input("Select stage: ")
-
-    block_dir = Path(get_setting("pipeline_path")) / stage / "scripts"
-    available_blocks = [
-        str(script.stem)
-        for script in block_dir.iterdir()
-        if os.path.isfile(script)
-        and not str(script.stem).startswith("_")
-        and script.suffix == ".py"
-        and "template" not in script.stem
-    ]
-
-    while block not in available_blocks:
-        print(
-            f"Block {block} is not found in {stage}!\n"
-            f"Available blocks are: {', '.join(available_blocks)}"
-        )
-        block = input("Select block: ")
+    stage = input_stage(stage=stage)
+    block = input_block(stage=None, block=block)
 
     if block_help:
         block_args += ["--help"]

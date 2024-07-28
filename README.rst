@@ -85,7 +85,7 @@ The **Cobrawap Core Team** is in charge of defining the scientific address of th
 |    fzj.svg                 |    infn.svg               |
 |    :height: 80px           |    :height: 80px          |
 |    :align: center          |    :align: center         |
-|                            |                           |
+|    :width: 400px           |                           |
 +----------------------------+---------------------------+
 | *Robin Gutzen* (now @ NYU),| *Giulia De Bonis*,        |
 | *Michael Denker*           | *Cosimo Lupo*,            |

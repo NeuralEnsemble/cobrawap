@@ -78,53 +78,52 @@ Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
 
-+-------------------+------------------+-------------------------+
-| .. image::        | .. image::       | .. image::              |
-|    doc/images/    |    doc/images/   |    doc/images/          |
-|    institutions/  |    institutions/ |    institutions/        |
-|    nyu.png        |    fzj.svg       |    infn.svg             |
-|    :height: 80px  |    :height: 80px |    :height: 80px        |
-|    :align: center |    :align: center|    :align: center       |
-|    :width: 294px  |                  |                         |
-+-------------------+------------------+-------------------------+
-| Robin Gutzen      | Michael Denker   | Giulia De Bonis,        |
-|                   |                  | Cosimo Lupo,            |
-|                   |                  | Federico Marmoreo,      |
-|                   |                  | Pier Stanislao Paolucci |
-+-------------------+------------------+-------------------------+
++----------------------------+---------------------------+
+| .. image::                 | .. image::                |
+|    doc/images/             |    doc/images/            |
+|    institutions/           |    institutions/          |
+|    fzj.svg                 |    infn.svg               |
+|    :height: 80px           |    :height: 80px          |
+|    :align: center          |    :align: center         |
+|                            |                           |
++----------------------------+---------------------------+
+| *Robin Gutzen* (now @ NYU),| *Giulia De Bonis*,        |
+| *Michael Denker*           | *Cosimo Lupo*,            |
+|                            | *Federico Marmoreo*,      |
+|                            | *Pier Stanislao Paolucci* |
++----------------------------+---------------------------+
   
 The further **Cobrawap Community** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools, and offer scientific support for the development of the analysis methods and the tool's integration into broader research endeavors.
 
-+-------------------+------------------------+------------------------------+-------------------+
-| .. image::        | .. image::             | .. image::                   |                   |
-|    doc/images/    |    doc/images/         |    doc/images/               |                   |
-|    institutions/  |    institutions/       |    institutions/             |                   |
-|    cnrs.svg       |    athena.png          |    infn.svg                  |                   |
-|    :height: 80px  |    :height: 80px       |    :height: 80px             |                   |
-|    :align: center |    :align: center      |    :align: center            |                   |
-|                   |                        |                              |                   |
-+-------------------+------------------------+------------------------------+-------------------+
-| Andrew Davison    | Sofia Karvounari,      | Chiara De Luca,              |                   |
-|                   | Eleni Mathioulaki      | Cristiano Capone,            |                   |
-|                   |                        | Irene Bernava                |                   |
-|                   |                        | Alessandra Cardinale         |                   |
-+-------------------+------------------------+------------------------------+-------------------+
-| .. image::        | .. image::             | .. image::                   | .. image::        |
-|    doc/images/    |    doc/images/         |    doc/images/               |    doc/images/    |
-|    institutions/  |    institutions/       |    institutions/             |    institutions/  |
-|    iss.png        |    idibaps.png         |    lens.png                  |    unimi.svg      |
-|    :height: 80px  |    :height: 80px       |    :height: 80px             |    :height: 80px  |
-|    :align: center |    :align: center      |    :align: center            |    :align: center |
-|                   |                        |                              |                   |
-+-------------------+------------------------+------------------------------+-------------------+
-| Maurizio Mattia   | Arnau Manasanch,       | Anna Letizia Allegra Mascaro,| Andrea Pigorini   |
-|                   | Miguel Dasilva         | Francesco Resta,             | Thierry Nieus     |
-|                   | Maria V. Sanchez-Vives,| Francesco S. Pavone          | Marcello Massimini|
-+-------------------+------------------------+------------------------------+-------------------+ 
+- Athena Research and Innovation Center, Greece
+   - *Sofia Karvounari*
+   - *Eleni Mathioulaki*
+- Unité de Neurosciences, Neuroinformatics Group, CNRS, France
+   - *Andrew Davison*
+- Istituto Nazionale di Fisica Nucleare (INFN), Italy
+   - *Chiara De Luca*
+   - *Cristiano Capone*
+   - *Irene Bernava*
+   - *Alessandra Cardinale*
+- Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain
+   - *Arnau Manasanch*
+   - *Miguel Dasilva*
+   - *Maria V. Sanchez-Vives*
+- European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy
+   - *Anna Letizia Allegra Mascaro*
+   - *Francesco Resta*
+   - *Francesco S. Pavone*
+- Istituto Superiore di Sanità (ISS), Roma, Italy
+   - *Maurizio Mattia*
+- University of Milano (UniMi), Italy
+   - *Andrea Pigorini*
+   - *Thierry Nieus*
+   - *Gianluca Gaglioti*
+   - *Marcello Massimini*
 
 **Cobrawap Partnering Projects**:
 
-Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at: https://github.com/cilantroxiao/SWAVE
+Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at Washington University in St. Louis, USA:https://github.com/cilantroxiao/SWAVE
 
 Further Context
 ===============

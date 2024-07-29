@@ -123,7 +123,7 @@ The further **Cobrawap Community** includes people and partners that offer techn
 
 **Cobrawap Partnering Projects**:
 
-Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at Washington University in St. Louis, USA:https://github.com/cilantroxiao/SWAVE
+Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at Washington University in St. Louis, USA: https://github.com/cilantroxiao/SWAVE
 
 Further Context
 ===============

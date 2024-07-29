@@ -76,7 +76,7 @@ The Cobrawap Community
 ======================
 Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on funding and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc folder.
 
-The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
+The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. This collaborative endeavor is jointly carried by *Forschungszentrum Jülich, Germany* and *Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy* and currently includes:
 
 +----------------------------+---------------------------+
 | .. image::                 | .. image::                |

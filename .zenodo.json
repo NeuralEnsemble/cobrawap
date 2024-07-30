@@ -117,6 +117,13 @@
   "related_identifiers": [
     {
       "scheme": "doi",
+      "identifier": "10.5281/zenodo.10198749",
+      "relation": "isNewerVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
       "identifier": "10.48550/arXiv.2211.08527",
       "relation": "isDocumentedBy",
       "resource_type": "publication-preprint"

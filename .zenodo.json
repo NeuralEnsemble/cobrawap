@@ -89,7 +89,7 @@
     }
   ],
 
-  "title": "Cobrawap 0.1.0",
+  "title": "Cobrawap 0.1.1",
 
   "keywords": [
     "neuroscience",
@@ -99,15 +99,29 @@
   ],
 
   "license": {
-    "id": "GNU General Public License v3.0 or later"
+    "id": "https://spdx.org/licenses/GPL-3.0-or-later"
   },
 
   "related_identifiers": [
     {
       "scheme": "doi",
+      "identifier": "10.5281/zenodo.10198749",
+      "relation": "isNewerVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
       "identifier": "10.48550/arXiv.2211.08527",
       "relation": "isDocumentedBy",
       "resource_type": "publication-preprint"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.1016/j.crmeth.2023.100681",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-article"
     }
   ],
 

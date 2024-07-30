@@ -74,34 +74,56 @@ Cobrawap is open-source software and is licensed under the `GNU General Public L
 
 The Cobrawap Community
 ======================
-Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on fundings and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc folder.
+Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap>`_ of the `EBRAINS <https://www.ebrains.eu>`_ infrastructure and included in the `EBRAINS-Italy <https://www.ebrains-italy.eu/>`_ initiative. Further details on funding and resources are in the `Acknowledgments <https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/source/acknowledgments.rst>`_ file in the doc folder.
 
-The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. It currently includes:
+The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. This collaborative endeavor is jointly carried by *Forschungszentrum Jülich, Germany* and *Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy* and currently includes:
 
-- **Forschungszentrum Jülich, Germany:** Michael Denker
++------------------------------+-----------------------------+
+| .. image::                   | .. image::                  |
+|    doc/images/               |    doc/images/              |
+|    institutions/             |    institutions/            |
+|    fzj.svg                   |    infn.svg                 |
+|    :height: 80px             |    :height: 80px            |
+|    :align: center            |    :align: center           |
+|    :width: 560px             |    :width: 560px            |
++------------------------------+-----------------------------+
+| - *Robin Gutzen* (now @ NYU) | - *Giulia De Bonis*         |
+| - *Michael Denker*           | - *Cosimo Lupo*             |
+|                              | - *Federico Marmoreo*       |
+|                              | - *Pier Stanislao Paolucci* |
++------------------------------+-----------------------------+
   
-- **Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy:** Giulia De Bonis, Cosimo Lupo, Federico Marmoreo, Pier Stanislao Paolucci
-  
-- **New York University, NY, USA:** Robin Gutzen
-  
-The **Cobrawap Support Team** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools; currently, this function is provided by **Unité de Neurosciences, Neuroinformatics Group, CNRS, France** (Andrew Davison), **Athena Research Center, Greece** (Sofia Karvounari, Eleni Mathioulaki).
+The further **Cobrawap Community** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools, and offer scientific support for the development of the analysis methods and the tool's integration into broader research endeavors.
 
-**Cobrawap Scientific Partners** (past and present) are:  
-
-- **Istituto Superiore di Sanità (ISS), Roma, Italy**
-  
-- **Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain**
-
-- **European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy**
-
-- **University of Milano (UniMi), Italy**
-  
-Other people involved (past and present):
-Anna Letizia Allegra Mascaro (LENS), Irene Bernava (INFN), Cristiano Capone (INFN), Alessandra Cardinale (INFN), Miguel Dasilva (IDIBAPS), Chiara De Luca (INFN), Gianluca Gaglioti (UniMi), Arnau Manasanch (IDIBAPS), Marcello Massimini (UniMi), Maurizio Mattia (ISS), Thierry Nieus (UniMi), Francesco S. Pavone (LENS), Andrea Pigorini (UniMi), Francesco Resta (LENS), Maria V. Sanchez-Vives (IDIBAPS). 
+- Athena Research and Innovation Center, Greece
+   - *Sofia Karvounari*
+   - *Eleni Mathioulaki*
+- Unité de Neurosciences, Neuroinformatics Group, CNRS, France
+   - *Andrew Davison*
+- Istituto Nazionale di Fisica Nucleare (INFN), Italy
+   - *Chiara De Luca*
+   - *Cristiano Capone*
+   - *Irene Bernava*
+   - *Alessandra Cardinale*
+- Institut d’Investigacions Biomediques August Pi i Sunyer (IDIBAPS), Barcelona, Spain
+   - *Arnau Manasanch*
+   - *Miguel Dasilva*
+   - *Maria V. Sanchez-Vives*
+- European Laboratory for Non-Linear Spectroscopy (LENS), Firenze, Italy
+   - *Anna Letizia Allegra Mascaro*
+   - *Francesco Resta*
+   - *Francesco S. Pavone*
+- Istituto Superiore di Sanità (ISS), Roma, Italy
+   - *Maurizio Mattia*
+- University of Milano (UniMi), Italy
+   - *Andrea Pigorini*
+   - *Thierry Nieus*
+   - *Gianluca Gaglioti*
+   - *Marcello Massimini*
 
 **Cobrawap Partnering Projects**:
 
-Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterens found in the data. Developed at: https://github.com/cilantroxiao/SWAVE
+Sleep Wave Analysis Visualization Engine (SWAVE): A data visualization tool that takes Cobrawap outputs and visualizes these to show dynamic wave-like activity patterns found in the data. Developed at Washington University in St. Louis, USA: https://github.com/cilantroxiao/SWAVE
 
 Further Context
 ===============
@@ -121,6 +143,6 @@ The Neuroscience Information Exchange, NIX_, format is an API and data format to
 .. _NIX: http://g-node.github.io/nix
 
 The Human Brain Project and WaveScalES
-----------------------
+--------------------------------------
 Cobrawap was originally developed in the context the `Human Brain Project <https://www.humanbrainproject.eu>`_, launched as a use-case initiated within the *WaveScalES* sub-project.
 Sleep is present in all animal species notwithstanding the risk associated with the disconnection from the environment (e.g. predation) and the reduction of time available for food search and reproduction. Indeed, it is well known that the human brains need healthy sleep, as chronic sleep deprivation reduces cognitive performances. The goal of the WaveScalES sub-project of the `Human Brain Project <https://www.humanbrainproject.eu>`_ was to unveil the underlying mechanisms of deep sleep, anesthesia and coma, the emergence toward wakefulness, and the link between sleep and learning, taking advantage of cortical slow wave activity (SWA) and investigating it with experimental data, analysis tools, modulation techniques, theoretical models, and simulations of such states and of the transition to wakefulness.

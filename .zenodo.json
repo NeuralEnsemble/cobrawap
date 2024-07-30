@@ -117,8 +117,15 @@
   "related_identifiers": [
     {
       "scheme": "doi",
-      "identifier": "10.5281/zenodo.10198749",
-      "relation": "isNewerVersionOf",
+      "identifier": "10.5281/zenodo.10198748",
+      "relation": "isVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.5281/zenodo.13134351",
+      "relation": "isNewVersionOf",
       "resource_type": "software"
     },
 

@@ -102,10 +102,11 @@ def input_block(stage=None, block=None):
     block_dir = Path(get_setting("pipeline_path")) / stage / "scripts"
     available_blocks = get_available_blocks(block_dir)
     while block not in available_blocks:
-        print(
-            f"Block {block} is not found in {stage}!\n"
-            f"Available blocks are: {', '.join(available_blocks)}"
-        )
+        if not block:
+            print("Which block should be executed?")
+        else:
+            print(f"Block \'{block}\' is not found in {stage}!")
+        print(f"Available blocks are: {', '.join(available_blocks)}")
         block = input("Select block: ")
     return block
 

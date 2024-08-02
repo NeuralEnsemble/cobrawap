@@ -5,6 +5,7 @@ Downsample the input data by combining and averaging neighboring channels.
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+from pathlib import Path
 import os
 import neo
 from skimage import measure
@@ -13,9 +14,9 @@ from utils.parse import none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence, imagesequence_to_analogsignal
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str,
                  help="path of output image", default=None)

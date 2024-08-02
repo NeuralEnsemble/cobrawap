@@ -4,6 +4,7 @@ to complement a wave characterization.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import quantities as pq
@@ -13,9 +14,9 @@ from utils.parse import none_or_str
 from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                  help="path of output image file")
@@ -77,4 +78,5 @@ if __name__ == '__main__':
     df.to_csv(args.output)
 
     # ToDo
-    save_plot(args.output_img)
+    if args.output_img is not None:
+        save_plot(args.output_img)

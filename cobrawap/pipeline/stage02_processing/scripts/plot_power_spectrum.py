@@ -5,6 +5,7 @@ Create a plot of the channel-wise and average power spectrum density.
 import numpy as np
 import quantities as pq
 import argparse
+from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 from elephant.spectral import welch_psd
@@ -12,9 +13,9 @@ from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output figure")
 CLI.add_argument("--highpass_frequency", nargs='?', type=none_or_float,
                  default='None', help="lower bound of frequency band in Hz")

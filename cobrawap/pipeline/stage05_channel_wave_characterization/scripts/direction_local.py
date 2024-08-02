@@ -4,6 +4,7 @@ based on the spatial gradient of wave trigger times.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,9 +12,9 @@ from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to spatial derivative dataframe")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
                  help="path of output image file")

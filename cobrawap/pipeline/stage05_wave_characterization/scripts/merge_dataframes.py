@@ -3,15 +3,16 @@ Merge pandas DataFrames based on the values of selected columns.
 """
 
 import argparse
+from pathlib import Path
 import pandas as pd
 from copy import deepcopy
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='+', type=str,
+CLI.add_argument("--data", nargs='+', type=Path,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str,
+CLI.add_argument("--output", nargs='?', type=Path,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=str,
+CLI.add_argument("--output_img", nargs='?', type=none_or_str,
                  help="")
 # CLI.add_argument("--merge_key", nargs='?', type=str,
 #                  help="")
@@ -29,6 +30,7 @@ if __name__ == '__main__':
             full_df = deepcopy(df)
         del df
 
-    full_df.to_html(args.output_img)
+    if args.output_img is not None:
+        full_df.to_html(args.output_img)
 
     full_df.to_csv(args.output)

@@ -3,6 +3,7 @@ Plot the critical points in the optical flow vector field.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
@@ -10,9 +11,9 @@ from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--skip_step", nargs='?', type=int, default=3,
                  help="skipping every x vector for the plot")

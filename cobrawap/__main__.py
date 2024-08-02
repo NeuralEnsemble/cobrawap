@@ -521,6 +521,7 @@ def run_block(stage=None, block=None, block_args=None, block_help=False, **kwarg
 
     stage = input_stage(stage=stage)
     block = input_block(stage=stage, block=block)
+block_dir = Path(get_setting('pipeline_path')) / stage / 'scripts'
 
     if block_help:
         block_args += ["--help"]

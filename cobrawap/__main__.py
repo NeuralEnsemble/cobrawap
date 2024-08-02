@@ -520,7 +520,7 @@ def run_block(stage=None, block=None, block_args=None, block_help=False, **kwarg
     #     block = block_args.pop(0)
 
     stage = input_stage(stage=stage)
-    block = input_block(stage=None, block=block)
+    block = input_block(stage=stage, block=block)
 
     if block_help:
         block_args += ["--help"]

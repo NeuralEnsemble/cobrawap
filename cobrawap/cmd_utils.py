@@ -87,7 +87,7 @@ def input_stage(stage=None):
     while stage not in stages.keys() and stage not in stages.values():
         stage = input(
             "Which stage should be executed?\n    "
-            + "\n    ".join(f"{k} {v}" for k, v in get_setting("stages").items())
+            + "\n    ".join(f"{k} {v}" for k, v in stages.items())
             + "\nSelect the stage index: "
         )
     if stage in stages.keys():

@@ -88,7 +88,7 @@ def input_stage(stage=None):
         stage = input(
             "Which stage should be executed?\n    "
             + "\n    ".join(f"{k} {v}" for k, v in stages.items())
-            + "\nSelect the stage index: "
+            + "\nSelect the stage index or the stage name: "
         )
     if stage in stages.keys():
         stage = stages[stage]

@@ -1,0 +1,186 @@
+{
+    "@context": "https://w3id.org/codemeta/3.0",
+    "type": "SoftwareSourceCode",
+    "applicationCategory": "data analysis",
+    "author": [
+        {
+            "id": "http://orcid.org/0000-0001-7373-5962",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Department of Psychology and Center for Data Science, New York University, New York, USA"
+            },
+            "familyName": "Gutzen",
+            "givenName": "Robin"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-2651-1277",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "Lupo",
+            "givenName": "Cosimo"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-5933-2873",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "Marmoreo",
+            "givenName": "Federico"
+        },
+        {
+            "id": "http://orcid.org/0000-0001-7079-5724",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "De Bonis",
+            "givenName": "Giulia"
+        }
+    ],
+    "codeRepository": "git+https://github.com/NeuralEnsemble/cobrawap/",
+    "contributor": [
+        {
+            "id": "http://orcid.org/0000-0003-3488-0088",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland"
+            },
+            "familyName": "De Luca",
+            "givenName": "Chiara"
+        },
+        {
+            "id": "http://orcid.org/0000-0003-0682-1232",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "Pastorelli",
+            "givenName": "Elena"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-9958-2551",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "Capone",
+            "givenName": "Cristiano"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-8489-0076",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Neuroscience Institute, National Research Council, Pisa, Italy"
+            },
+            "familyName": "Allegra Mascaro",
+            "givenName": "Anna Letizia"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-9605-5852",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy"
+            },
+            "familyName": "Resta",
+            "givenName": "Francesco"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-8306-0759",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain"
+            },
+            "familyName": "Manasanch",
+            "givenName": "Arnau"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-0675-3981",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy; National Institute of Optics, National Research Council, Sesto Fiorentino, Italy"
+            },
+            "familyName": "Pavone",
+            "givenName": "Francesco Saverio"
+        },
+        {
+            "id": "http://orcid.org/0000-0002-8437-9083",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain; Institució Catalana de Recerca i Estudis Avançats (ICREA), Barcelona, Spain"
+            },
+            "familyName": "Sanchez-Vives",
+            "givenName": "Maria V."
+        },
+        {
+            "id": "http://orcid.org/0000-0002-2356-4509",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Natl. Center for Radiation Protection and Computational Physics, Istituto Superiore di Sanità (ISS), Rome, Italy"
+            },
+            "familyName": "Mattia",
+            "givenName": "Maurizio"
+        },
+        {
+            "id": "http://orcid.org/0000-0003-2829-2220",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany"
+            },
+            "familyName": "Grün",
+            "givenName": "Sonja"
+        },
+        {
+            "id": "http://orcid.org/0000-0003-1255-7300",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany"
+            },
+            "familyName": "Denker",
+            "givenName": "Michael"
+        },
+        {
+            "id": "http://orcid.org/0000-0003-1937-6086",
+            "type": "Person",
+            "affiliation": {
+                "type": "Organization",
+                "name": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy"
+            },
+            "familyName": "Paolucci",
+            "givenName": "Pier Stanislao"
+        }
+    ],
+    "dateModified": "2024-07-24",
+    "datePublished": "2023-11-23",
+    "description": "Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, multi-methodology analysis of cortical wave activity. The pipeline ingests data from heterogeneous sources of spatially organized neuronal activity, such as ECoG or calcium imaging recordings, as well as the outcome of numerical simulations. The pipeline returns statistical measures to quantify the dynamic wave-like activity patterns found in the data.",
+    "downloadUrl": "https://pypi.org/project/cobrawap",
+    "identifier": "10.5281/zenodo.10198748; RRID:SCR_022966",
+    "keywords": "neuroscience; neurophysiology; statistics; data-analysis",
+    "license": "https://spdx.org/licenses/GPL-3.0-or-later",
+    "name": "Collaborative Brain Wave Analysis Pipeline (Cobrawap)",
+    "programmingLanguage": "Python",
+    "relatedLink": "https://cobrawap.readthedocs.io",
+    "releaseNotes": "https://cobrawap.readthedocs.io/en/latest/release_notes.html",
+    "version": "0.2.0",
+    "developmentStatus": "active",
+    "funding": "European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreements No. 945539 (Human Brain Project SGA3) and No. 785907 (Human Brain Project SGA2); the European Commission NextGeneration EU through grant MUR CUP B51E22000150006 (EBRAINS-Italy IR00011 PNRR); European Union’s Horizon Europe Programme under the Specific Grant Agreement No. 101147319 (EBRAINS 2.0 Project)",
+    "issueTracker": "https://github.com/NeuralEnsemble/cobrawap/issues",
+    "referencePublication": "https://doi.org/10.1016/j.crmeth.2023.100681"
+}

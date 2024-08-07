@@ -20,6 +20,8 @@ contribution, and may not be the current affiliation of a contributor.
 * Sonja Grün (orcid: 0000-0003-2829-2220) [1, 2]
 * Pier Stanislao Paolucci (orcid: 0000-0003-1937-6086) [3]
 * Michael Denker (orcid: 0000-0003-1255-7300) [1]
+* Cosimo Lupo (orcid: 0000-0002-2651-1277) [3]
+* Federico Marmoreo (orcid: 0000-0002-5933-2873) [3]
 
 1. Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany
 2. Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany

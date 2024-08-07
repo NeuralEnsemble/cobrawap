@@ -3,17 +3,20 @@
     {
       "orcid": "0000-0001-7373-5962",
       "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
-      "name": "Gutzen, Robin"
+      "name": "Gutzen, Robin",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0001-7079-5724",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
-      "name": "De Bonis, Giulia"
+      "name": "De Bonis, Giulia",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0003-3488-0088",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
-      "name": "De Luca, Chiara"
+      "name": "De Luca, Chiara",
+      "role": "ProjectMember"
     }
   ],
 
@@ -21,57 +24,68 @@
     {
       "orcid": "0000-0003-0682-1232",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
-      "name": "Pastorelli, Elena"
+      "name": "Pastorelli, Elena",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-9958-2551",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
-      "name": "Capone, Cristiano"
+      "name": "Capone, Cristiano",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8489-0076",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Neuroscience Institute, National Research Council, Pisa, Italy",
-      "name": "Allegra Mascaro, Anna Letizia"
+      "name": "Allegra Mascaro, Anna Letizia",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-9605-5852",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy",
-      "name": "Resta, Francesco"
+      "name": "Resta, Francesco",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8306-0759",
       "affiliation": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain",
-      "name": "Manasanch, Arnau"
+      "name": "Manasanch, Arnau",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-0675-3981",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy; National Institute of Optics, National Research Council, Sesto Fiorentino, Italy",
-      "name": "Pavone, Francesco Saverio"
+      "name": "Pavone, Francesco Saverio",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8437-9083",
       "affiliation": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain; Institució Catalana de Recerca i Estudis Avançats (ICREA), Barcelona, Spain",
-      "name": "Sanchez-Vives, Maria V."
+      "name": "Sanchez-Vives, Maria V.",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0002-2356-4509",
       "affiliation": "Natl. Center for Radiation Protection and Computational Physics, Istituto Superiore di Sanità (ISS), Rome, Italy",
-      "name": "Mattia, Maurizio"
+      "name": "Mattia, Maurizio",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0003-2829-2220",
       "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
-      "name": "Grün, Sonja"
+      "name": "Grün, Sonja",
+      "role": "ProjectMember"
     },
     {
       "orcid": "0000-0003-1255-7300",
       "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany",
-      "name": "Denker, Michael"
+      "name": "Denker, Michael",
+      "role": "ProjectLeader"
     },
     {
       "orcid": "0000-0003-1937-6086",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
-      "name": "Paolucci, Pier Stanislao"
+      "name": "Paolucci, Pier Stanislao",
+      "role": "ProjectLeader"
     }
   ],
 
@@ -90,7 +104,7 @@
 
   "grants": [
     {"id": "785907"},
-    {"id": "945539"}
+    {"id": "945539"},
   ],
 
   "upload_type": "software"

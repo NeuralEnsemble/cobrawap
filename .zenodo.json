@@ -106,7 +106,7 @@
     {
       "scheme": "doi",
       "identifier": "10.5281/zenodo.10198749",
-      "relation": "isNewerVersionOf",
+      "relation": "isNewVersionOf",
       "resource_type": "software"
     },
 

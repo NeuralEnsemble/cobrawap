@@ -99,12 +99,44 @@
   ],
 
   "license": {
-    "id": "BSD-3-Clause"
+    "id": "GPL-3.0-or-later"
   },
+
+  "related_identifiers": [
+    {
+      "scheme": "doi",
+      "identifier": "10.5281/zenodo.10198748",
+      "relation": "isVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.5281/zenodo.13134351",
+      "relation": "isNewVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.48550/arXiv.2211.08527",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-preprint"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.1016/j.crmeth.2023.100681",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-article"
+    }
+  ],
 
   "grants": [
     {"id": "785907"},
-    {"id": "945539"}
+    {"id": "945539"},
+    {"id": "101147319"},
+    {"id": "MUR CUP B51E22000150006"}
   ],
 
   "upload_type": "software"

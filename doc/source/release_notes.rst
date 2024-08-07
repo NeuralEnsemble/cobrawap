@@ -7,8 +7,9 @@ Release 0.2.0
 =============
 New functionality and features
 ------------------------------
-* Ability to plot complete signal ranges using TSTART/TSTOP=None (`#48 <https://github.com/NeuralEnsemble/cobrawap/pull/48>`_)
-* New default value 'None' for MAXIMA_THRESHOLD_WINDOW to indicate that the complete signal duration is considered (`#49 <https://github.com/NeuralEnsemble/cobrawap/pull/49>`_)
+* Ability to plot complete signal ranges using `TSTART` and `TSTOP` set to `None` (`#48 <https://github.com/NeuralEnsemble/cobrawap/pull/48>`_)
+* New default value `None` for MAXIMA_THRESHOLD_WINDOW to indicate that the complete signal duration is considered (`#49 <https://github.com/NeuralEnsemble/cobrawap/pull/49>`_)
+* Added additional keyword arguments to cobrawap `command` (`#76 <https://github.com/NeuralEnsemble/cobrawap/pull/76>`_)
 
 Bug fixes
 ---------
@@ -19,7 +20,7 @@ Bug fixes
 
 Documentation
 -------------
-* Updated README information (`#59 <https://github.com/NeuralEnsemble/cobrawap/pull/59>`_), (`#74 <https://github.com/NeuralEnsemble/cobrawap/pull/74>`_)
+* Updated `README` information (`#59 <https://github.com/NeuralEnsemble/cobrawap/pull/59>`_), (`#74 <https://github.com/NeuralEnsemble/cobrawap/pull/74>`_)
 
 Other changes
 -------------

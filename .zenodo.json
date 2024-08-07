@@ -136,7 +136,18 @@
     {"id": "785907"},
     {"id": "945539"},
     {"id": "101147319"},
-    {"id": "MUR CUP B51E22000150006"}
+    {
+      "award": {
+        "number": "MUR CUP B51E22000150006",
+        "title": {
+          "en": "EBRAINS-Italy IR00011 PNNR"
+        }
+      },
+      "funder": {
+        "id": "00k4n6c32",
+        "name": "European Commission"
+      }
+    }
   ],
 
   "upload_type": "software"

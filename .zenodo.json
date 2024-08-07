@@ -99,8 +99,7 @@
   ],
 
   "license": {
-    "url": "https://spdx.org/licenses/GPL-3.0-or-later",
-    "title": "GNU Lesser General Public License v3.0"
+    "id": "BSD-3-Clause"
   },
 
   "related_identifiers": [

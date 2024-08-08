@@ -20,7 +20,7 @@ Bug fixes
 
 Documentation
 -------------
-* Updated `README` information (`#59 <https://github.com/NeuralEnsemble/cobrawap/pull/59>`_), (`#74 <https://github.com/NeuralEnsemble/cobrawap/pull/74>`_)
+* Updated `README` information (`#59 <https://github.com/NeuralEnsemble/cobrawap/pull/59>`_), (`#74 <https://github.com/NeuralEnsemble/cobrawap/pull/74>`_), (`#77 <https://github.com/NeuralEnsemble/cobrawap/pull/77>`_)
 
 Other changes
 -------------

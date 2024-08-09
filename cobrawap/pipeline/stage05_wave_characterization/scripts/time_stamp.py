@@ -8,14 +8,14 @@ import argparse
 from pathlib import Path
 import pandas as pd
 from utils.io_utils import load_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_path
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image")
 CLI.add_argument("--time_point", "--TIME_STAMP_POINT", nargs='?', type=str, default='start',
                  help="when to register the time for a wave [start, middle, end]")

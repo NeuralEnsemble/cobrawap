@@ -12,7 +12,7 @@ import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str, str_to_bool
+from utils.parse import none_or_path, none_or_str, str_to_bool
 from utils.neo_utils import imagesequence_to_analogsignal, analogsignal_to_imagesequence
 from utils.convolve import phase_conv2d, get_kernel, conv, norm_angle
 
@@ -21,7 +21,7 @@ CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image file")
 CLI.add_argument("--alpha", nargs='?', type=float, default=0.001,
                  help='regularization parameter')

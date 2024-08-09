@@ -6,13 +6,14 @@ import argparse
 from pathlib import Path
 import pandas as pd
 from copy import deepcopy
+from utils.parse import none_or_path
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='+', type=Path,
+CLI.add_argument("--data", nargs='+', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=Path,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="")
 CLI.add_argument("--merge_key", nargs='+', type=str,
                  help="")

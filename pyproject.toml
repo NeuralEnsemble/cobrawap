@@ -4,12 +4,12 @@ description = "Collaborative Brain Wave Analysis Pipeline (Cobrawap)"
 version = "0.2.0"
 readme = "README.rst"
 authors = [
-    { name = "Cobrawap authors and contributors", email = "robin.gutzen@outlook.com" }
+    { name = "Cobrawap authors and contributors" }
 ]
 
 requires-python = ">=3.8"
 dependencies = [
-    "ruamel.yaml >= 0.18.3",
+    "ruamel.yaml == 0.17.32",
     "jinja2 >= 2.10.3",
     "scipy >= 1.7.3",
     "pygments >= 2.4.2",
@@ -17,10 +17,11 @@ dependencies = [
     "h5py",
     "shapely",
     "elephant >= 1.0.0",
-    "neo >= 0.10.2, < 0.12",
+    "neo >= 0.10.2",
     "nixio >= 1.5.3",
     "pillow >= 7.0.0",
     "pandas >= 1.2.0",
+    "pulp < 2.8",
     "scikit-learn >= 1.1.0",
     "scikit-image >= 0.20.0",
     "matplotlib >= 3.5.1",

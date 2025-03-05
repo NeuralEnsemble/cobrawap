@@ -78,20 +78,21 @@ Cobrawap is currently provided as a `tool <https://www.ebrains.eu/tools/cobrawap
 
 The **Cobrawap Core Team** is in charge of defining the scientific address of the project and taking care of the continuous maintenance and development of the software. This collaborative endeavor is jointly carried by *Forschungszentrum Jülich, Germany* and *Istituto Nazionale di Fisica Nucleare (INFN), Roma, Italy* and currently includes:
 
-+------------------------------+-----------------------------+
-| .. image::                   | .. image::                  |
-|    doc/images/               |    doc/images/              |
-|    institutions/             |    institutions/            |
-|    fzj.svg                   |    infn.svg                 |
-|    :height: 80px             |    :height: 80px            |
-|    :align: center            |    :align: center           |
-|    :width: 560px             |    :width: 560px            |
-+------------------------------+-----------------------------+
-| - *Robin Gutzen* (now @ NYU) | - *Giulia De Bonis*         |
-| - *Michael Denker*           | - *Cosimo Lupo*             |
-|                              | - *Federico Marmoreo*       |
-|                              | - *Pier Stanislao Paolucci* |
-+------------------------------+-----------------------------+
++---------------------------------------+------------------------------------------+
+| .. image::                            | .. image::                               |
+|    https://raw.githubusercontent.com/ |    https://raw.githubusercontent.com/    |
+|    NeuralEnsemble/cobrawap/master/    |    NeuralEnsemble/cobrawap/master/       |
+|    doc/images/institutions/           |    doc/images/institutions/              |
+|    fzj.svg                            |    infn.svg                              |
+|    :height: 80px                      |    :height: 80px                         |
+|    :align: center                     |    :align: center                        |
+|    :width: 560px                      |    :width: 560px                         |
++---------------------------------------+------------------------------------------+
+| - *Robin Gutzen* (now @ NYU)          | - *Giulia De Bonis*                      |
+| - *Michael Denker*                    | - *Cosimo Lupo*                          |
+|                                       | - *Federico Marmoreo*                    |
+|                                       | - *Pier Stanislao Paolucci*              |
++---------------------------------------+------------------------------------------+
   
 The further **Cobrawap Community** includes people and partners that offer technical support for the integration of the software in a larger framework of interoperable tools, and offer scientific support for the development of the analysis methods and the tool's integration into broader research endeavors.
 

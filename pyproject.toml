@@ -1,7 +1,7 @@
 [project]
 name = "cobrawap"
 description = "Collaborative Brain Wave Analysis Pipeline (Cobrawap)"
-version = "0.2.0"
+version = "0.2.1"
 readme = "README.rst"
 authors = [
     { name = "Cobrawap authors and contributors", email = "robin.gutzen@outlook.com" }

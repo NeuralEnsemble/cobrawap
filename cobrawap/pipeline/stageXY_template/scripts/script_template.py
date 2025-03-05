@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_int, none_or_float, none_or_str
+from utils.parse import none_or_int, none_or_float, none_or_path
 from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()
@@ -16,7 +16,7 @@ CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--offset", nargs='?', type=none_or_float, default=None,
                  help="offset the signal by some value")
-CLI.add_argument("--img_dir", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--img_dir", nargs='?', type=none_or_path, default=None,
                  help="path of figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str, default='offset_channel0.png',
                  help='example image filename for channel 0')
@@ -73,11 +73,11 @@ if __name__ == '__main__':
     # PLOTTING
     if args.plot_channels[0] is not None:
         if args.img_dir is None:
-            args.img_dir = str(args.output.parent)
+            args.img_dir = args.output.parent
         for channel in args.plot_channels:
             plot_signal(asig, new_asig, channel=channel,
                         t_start=args.plot_tstart, t_stop=args.plot_tstop)
-            output_path = Path(args.img_dir) \
+            output_path = args.img_dir \
                         / args.img_name.replace('_channel0', f'_channel{channel}')
             save_plot(output_path)
 

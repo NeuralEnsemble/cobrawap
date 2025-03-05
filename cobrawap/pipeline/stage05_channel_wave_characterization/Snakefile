@@ -58,7 +58,7 @@ use rule compute_measure as spatial_derivative with:
         data = config.STAGE_INPUT,
         script = SCRIPTS / 'spatial_derivative.py'
     output:
-        Path('{dir}') / 'spatial_derivative'
-                      / f'{config.EVENT_NAME}_spatial_derivative.csv',
-        output_img = Path('{dir}') / 'spatial_derivative'
-               / f'{config.EVENT_NAME}_spatial_derivative.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}'
+                      / f'{config.EVENT_NAME}_{rule_name}.csv',
+        output_img = Path('{dir}') / '{rule_name}'
+               / f'{config.EVENT_NAME}_{rule_name}.{config.PLOT_FORMAT}'

@@ -6,14 +6,15 @@ states are shorter than a minimum duration.
 import numpy as np
 import neo
 import argparse
+from pathlib import Path
 import quantities as pq
 from utils.io_utils import load_neo, write_neo
 from utils.parse import str_to_bool
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path to output data in neo format")
 CLI.add_argument("--min_up_duration", nargs='?', type=float, default=0.005,
                  help="minimum duration of UP states in seconds")

@@ -61,8 +61,8 @@ use rule template as optical_flow with:
         params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
                'derivative_filter', 'use_phases', config=config)
     output:
-        Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
-        output_img = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.PLOT_FORMAT}'
 
 
 use rule template_plus_plot_script as critical_points with:
@@ -100,8 +100,8 @@ use rule template as wave_mode_clustering with:
                'wave_outlier_quantile', 'num_kmeans_cluster', 
                'interpolation_step_size', 'interpolation_smoothing', config=config)
     output:
-        Path('{dir}') / 'wave_mode_clustering' / f'wave_mode_clustering.{config.NEO_FORMAT}',
-        output_img = Path('{dir}') / 'wave_mode_clustering' / f'wave_mode_clustering.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.NEO_FORMAT}',
+        output_img = Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.PLOT_FORMAT}'
 
 #### PLOTTING ####
 

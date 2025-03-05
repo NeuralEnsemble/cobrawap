@@ -156,6 +156,7 @@ def none_or_X(value, dtype):
 none_or_int = lambda v: none_or_X(v, int)
 none_or_float = lambda v: none_or_X(v, float)
 none_or_str = lambda v: none_or_X(v, str)
+none_or_path = lambda v: none_or_X(v, Path)
 str_list = lambda v: v.split(",")
 
 

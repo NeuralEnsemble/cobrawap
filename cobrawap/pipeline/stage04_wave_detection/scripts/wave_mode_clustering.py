@@ -5,6 +5,7 @@ Adapted from [Ruiz-Mejias et al. (2011)](https://doi.org/10.1523/JNEUROSCI.2517-
 """
 
 import argparse
+from pathlib import Path
 import neo
 import numpy as np
 import pandas as pd
@@ -18,15 +19,15 @@ from scipy.spatial.distance import cdist
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str, none_or_int
+from utils.parse import none_or_int, none_or_path
 from utils.neo_utils import analogsignal_to_imagesequence, remove_annotations
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image file")
 CLI.add_argument("--min_trigger_fraction", "--MIN_TRIGGER_FRACTION",
                  nargs='?', type=float, default=.5,

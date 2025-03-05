@@ -39,7 +39,7 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://cobrawap.readthedocs.io/"
-"Bug Tracker" = "https://github.com/INM-6/cobrawap/issues"
+"Bug Tracker" = "https://github.com/NeuralEnsemble/cobrawap/issues"
 
 [project.scripts]
 cobrawap = "cobrawap.__main__:main"

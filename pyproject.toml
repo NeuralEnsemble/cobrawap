@@ -1,7 +1,7 @@
 [project]
 name = "cobrawap"
 description = "Collaborative Brain Wave Analysis Pipeline (Cobrawap)"
-version = "0.2.0"
+version = "0.2.1"
 readme = "README.rst"
 authors = [
     { name = "Cobrawap authors and contributors", email = "contact@cobrawap.org"}
@@ -40,7 +40,7 @@ classifiers = [
 
 [project.urls]
 "Homepage" = "https://cobrawap.readthedocs.io/"
-"Bug Tracker" = "https://github.com/INM-6/cobrawap/issues"
+"Bug Tracker" = "https://github.com/NeuralEnsemble/cobrawap/issues"
 
 [project.scripts]
 cobrawap = "cobrawap.__main__:main"

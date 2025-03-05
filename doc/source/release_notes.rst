@@ -3,6 +3,14 @@ Release Notes
 *************
 
 
+Release 0.2.1
+=============
+Other changes
+-------------
+* Improved internal handling of pathnames (`#79 <https://github.com/NeuralEnsemble/cobrawap/pull/79>`_)
+* Maintenance fixes, including dependency adjustments (`#80 <https://github.com/NeuralEnsemble/cobrawap/pull/80>`_), (`#83 <https://github.com/NeuralEnsemble/cobrawap/pull/83>`_)
+
+
 Release 0.2.0
 =============
 New functionality and features

@@ -4,7 +4,7 @@ description = "Collaborative Brain Wave Analysis Pipeline (Cobrawap)"
 version = "0.2.0"
 readme = "README.rst"
 authors = [
-    { name = "Cobrawap authors and contributors" }
+    { name = "Cobrawap authors and contributors", email = "contact@cobrawap.org"}
 ]
 
 requires-python = ">=3.8"

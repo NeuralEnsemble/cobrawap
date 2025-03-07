@@ -50,6 +50,8 @@ Cobrawap brings together existing analysis methods, tools, and standards, and in
 
 For further developments and feature requests refer to the `Github Issues <https://github.com/NeuralEnsemble/cobrawap/issues>`_.
 
+You can reach out to the Cobrawap development team at contact♥cobrawap•org.
+
 
 Citation
 ========

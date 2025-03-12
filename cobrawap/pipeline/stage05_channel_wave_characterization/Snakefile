@@ -49,7 +49,7 @@ use rule template as compute_measure with:
         params(config.__dict__)
     output:
         Path('{dir}') / '{measure}' / f'{config.EVENT_NAME}_{{measure}}.csv',
-        output_img = Path('{dir}') / '{measure}' 
+        output_img = Path('{dir}') / '{measure}'
                       / f'{config.EVENT_NAME}_{{measure}}.{config.PLOT_FORMAT}'
 
 

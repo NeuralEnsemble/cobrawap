@@ -35,7 +35,7 @@ if hasattr(config, 'NEO_FORMAT'):
         config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
 
 if config.STAGE_INPUT is not None:
-    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 
+    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS,
                                                config.STAGE_INPUT)
 
 localrules: all, check_input
@@ -45,7 +45,7 @@ wildcard_constraints:
     dir = '.*',
     rule_name = '\w+',
 
-def prev_rule_output(wildcards, rule_list, 
+def prev_rule_output(wildcards, rule_list,
                      default_input=config.STAGE_INPUT):
     output = lambda i: OUTPUT_DIR / rule_list[i-1] \
                                   / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
@@ -84,7 +84,7 @@ rule template:
         {ADD_UTILS}
         python3 {input.script:q} --data {input.data:q} \
                                  --output {output[0]:q} \
-                                 {params} 
+                                 {params}
         """
 
 
@@ -118,10 +118,10 @@ rule template_plus_plot_script:
         {ADD_UTILS}
         python3 {input.script:q} --data {input.data:q} \
                                  --output {output:q} \
-                                 {params} 
+                                 {params}
         python3 {input.plot_script:q} --data {output:q} \
                                       --output {output.img:q} \
-                                      {params} 
+                                      {params}
         """
 
 

@@ -1,5 +1,5 @@
 """
-Calculate the optical flow (vector field) signal 
+Calculate the optical flow (vector field) signal
 using the Horn Schunck algorithm.
 """
 
@@ -274,7 +274,7 @@ if __name__ == '__main__':
                                    name='optical_flow',
                                    description='Horn-Schunck estimation of optical flow',
                                    file_origin=imgseq.file_origin)
-   
+
     vec_imgseq.annotations = copy(imgseq.annotations)
 
     if args.output_img is not None:

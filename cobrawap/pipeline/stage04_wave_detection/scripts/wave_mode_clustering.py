@@ -1,5 +1,5 @@
 """
-Cluster similar waves into modes. 
+Cluster similar waves into modes.
 
 Adapted from [Ruiz-Mejias et al. (2011)](https://doi.org/10.1523/JNEUROSCI.2517-15.2016)
 """
@@ -117,7 +117,7 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
     if np.isnan(neighbourhood_distance).any():
         warn('Unexpected nan value in wave triggers!')
         return timelag_df
-    
+
     if outlier_quantile < 1:
         q = np.quantile(neighbourhood_distance, outlier_quantile)
         keep_rows = np.where(neighbourhood_distance <= q)[0]
@@ -254,7 +254,7 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
 
         dim_y, dim_x = mode_grid.shape
         if dim_x == 1:
-            mode_grid = np.stack((np.squeeze(mode_grid), 
+            mode_grid = np.stack((np.squeeze(mode_grid),
                                   np.squeeze(mode_grid)), axis=1)
         y, x = np.where(mode_grid)
         fx = x.reshape(mode_grid.shape) * int_step_size
@@ -275,11 +275,11 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
                             rotation=90, va='center')
     return None
 
-def clean_timelag_dataframe(df, min_trigger_fraction=.5, 
+def clean_timelag_dataframe(df, min_trigger_fraction=.5,
                             num_wave_neighbours=5, wave_outlier_quantile=1):
     # remove nan channels
     df.dropna(axis='columns', how='all', inplace=True)
- 
+
     # remove small waves
     min_trigger_num = int(min_trigger_fraction * df.columns.size)
     df.dropna(axis='rows', thresh=min_trigger_num, inplace=True)

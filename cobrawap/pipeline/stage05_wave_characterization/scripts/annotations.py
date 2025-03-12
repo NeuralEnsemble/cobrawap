@@ -28,7 +28,7 @@ CLI.add_argument("--include_keys", "--INCLUDE_KEYS", nargs='*', type=str, defaul
                  help="neo object annotations keys to include in dataframe")
 CLI.add_argument("--profile", "--PROFILE", nargs='?', type=none_or_str, default=None,
                  help="profile name")
-                    
+
 def add_annotations_to_df(df, annotations, include_keys=[]):
     use_all_keys = not bool(len(include_keys))
 

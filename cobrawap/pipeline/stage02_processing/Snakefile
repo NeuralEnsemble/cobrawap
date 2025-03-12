@@ -36,7 +36,7 @@ rule clear:
         rm -rf {params.block_folder:q}
         touch {output:q}
         """
- 
+
 
 use rule template as plot_processed_traces with:
     input:
@@ -77,7 +77,7 @@ use rule template as background_subtraction with:
 
 use rule template as spatial_downsampling with:
     input:
-        is_clear = is_clear, 
+        is_clear = is_clear,
         data = input_file,
         script = SCRIPTS / 'spatial_downsampling.py'
     output:

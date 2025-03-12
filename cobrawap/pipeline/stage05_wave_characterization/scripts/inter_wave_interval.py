@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
     if np.isfinite(IWIs[:,0]).any():
         ax.hist(IWIs[:,0])
-    
+
     ax.set_xlabel('inter-wave interval [s]')
     if args.output_img is not None:
         save_plot(args.output_img)

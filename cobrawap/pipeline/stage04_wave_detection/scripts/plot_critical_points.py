@@ -50,7 +50,7 @@ if __name__ == '__main__':
     else:
         raise ValueError("Input does not contain a signal with name " \
                        + "'optical_flow'!")
-   
+
     imgseq = analogsignal_to_imagesequence(asig)
 
     crit_point_evt = [evt for evt in block.segments[0].events
@@ -62,9 +62,9 @@ if __name__ == '__main__':
                        + "'critical_points'!")
 
     fig, ax = plt.subplots()
-    
-    ax = plot_frame(imgseq.as_array()[args.frame_id], 
-                    skip_step=args.skip_step, 
+
+    ax = plot_frame(imgseq.as_array()[args.frame_id],
+                    skip_step=args.skip_step,
                     ax=ax)
 
     start_id = np.argmax(crit_point_evt.times >= asig.times[args.frame_id])

@@ -48,7 +48,7 @@ use rule template_plus_plot_script as trigger_clustering with:
                min_samples=config.MIN_SAMPLES_PER_WAVE)
     output:
         Path('{dir}') / 'trigger_clustering' / config.STAGE_OUTPUT,
-        img = Path('{dir}') / 'trigger_clustering' 
+        img = Path('{dir}') / 'trigger_clustering'
                             / f'wave_cluster.{config.PLOT_FORMAT}'
 
 #### ADDITIONAL PROPERTIES ####
@@ -97,7 +97,7 @@ use rule template as wave_mode_clustering with:
         script = SCRIPTS / 'wave_mode_clustering.py'
     params:
         params('min_trigger_fraction', 'num_wave_neighbours', 'pca_dims',
-               'wave_outlier_quantile', 'num_kmeans_cluster', 
+               'wave_outlier_quantile', 'num_kmeans_cluster',
                'interpolation_step_size', 'interpolation_smoothing', config=config)
     output:
         Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.NEO_FORMAT}',
@@ -127,7 +127,7 @@ use rule template as time_slice with:
         params()
     output:
         Path('{dir}') / f'{{data_name}}_{{t_start, [0-9]+}}-{{t_stop, [0-9]+}}s.{config.NEO_FORMAT}'
- 
+
 
 use rule template as plot_movie_frames with:
     input:

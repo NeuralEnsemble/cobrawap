@@ -84,7 +84,7 @@ use rule template as hilbert_phase with:
         Path('{dir}') / 'hilbert_phase' / config.STAGE_OUTPUT,
         img_dir = directory(Path('{dir}') / 'hilbert_phase' / 'hilbert_phase_plots')
     params:
-        params('transition_phase', 'plot_channels', 'plot_tstart', 
+        params('transition_phase', 'plot_channels', 'plot_tstart',
                'plot_tstop', config=config,
                 img_name='hilbert_phase_channel0.'+config.PLOT_FORMAT)
 
@@ -97,8 +97,8 @@ use rule template as minima with:
         Path('{dir}') / 'minima' / config.STAGE_OUTPUT,
         img_dir = directory(Path('{dir}') / 'minima' / 'minima_plots')
     params:
-        params('minima_persistence', 'min_peak_distance', 'maxima_threshold_fraction', 
-               'maxima_threshold_window', 'num_interpolation_points', 
+        params('minima_persistence', 'min_peak_distance', 'maxima_threshold_fraction',
+               'maxima_threshold_window', 'num_interpolation_points',
                'plot_channels', 'plot_tstart', 'plot_tstop',
                 img_name='minima_channel0.'+config.PLOT_FORMAT, config=config)
 
@@ -112,5 +112,5 @@ use rule template as remove_short_states with:
     output:
         Path('{dir}') / '{rule_name}' / f'remove_short_states.{config.NEO_FORMAT}'
     params:
-        params('min_up_duration', 'min_down_duration', 'remove_down_first', 
+        params('min_up_duration', 'min_down_duration', 'remove_down_first',
                 config=config)

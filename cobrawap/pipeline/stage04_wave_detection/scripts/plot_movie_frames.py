@@ -121,7 +121,7 @@ if __name__ == '__main__':
     blk = load_neo(args.data)
     asig = blk.segments[0].analogsignals[0]
     imgseq = analogsignal_to_imagesequence(asig)
-    
+
     optical_flow = get_opticalflow(blk)
 
     # get data
@@ -157,7 +157,7 @@ if __name__ == '__main__':
         ax = plot_frame(frames[frame_num], cmap=cmap, vmin=vmin, vmax=vmax)
 
         if optical_flow is not None:
-            plot_vectorfield(optical_flow[frame_num].as_array(), 
+            plot_vectorfield(optical_flow[frame_num].as_array(),
                              skip_step=skip_step)
         if args.plot_event is not None and up_coords is not None:
             plot_transitions(up_coords[frame_num], markersize=markersize,
@@ -170,4 +170,3 @@ if __name__ == '__main__':
                                args.frame_format)),
                   transparent=True)
         plt.close()
- 

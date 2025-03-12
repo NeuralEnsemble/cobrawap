@@ -34,7 +34,7 @@ from cmd_utils import (
     read_stage_output,
     set_setting,
     setup_entry_stage,
-    working_directory,
+    working_directory
 )
 
 log = logging.getLogger()

@@ -1,5 +1,5 @@
 """
-Calculate the wave directions per wave and channel, 
+Calculate the wave directions per wave and channel,
 based on the spatial gradient of wave trigger times.
 """
 

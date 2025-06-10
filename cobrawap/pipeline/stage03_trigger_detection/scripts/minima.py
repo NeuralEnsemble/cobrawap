@@ -171,7 +171,7 @@ def plot_minima(asig, event, threshold_asig, channel, min_peak_distance):
     threshold = threshold_asig.as_array().T[channel]
 
     peaks, _ = find_peaks(signal, height=threshold,
-                          distance=np.max([min_peak_distance*sampling_rate, 1])) 
+                          distance=np.max([min_peak_distance*sampling_rate, 1]))  
 
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")

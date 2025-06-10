@@ -65,7 +65,7 @@ CLI.add_argument(
     action="store_true",
     help="print additional logging information",
 )
-CLI.add_argument("-V", "--version", action="version", version="cobrawap 0.2.1")
+CLI.add_argument("-V", "--version", action="version")
 CLI.set_defaults(command=None)
 
 # Initialization

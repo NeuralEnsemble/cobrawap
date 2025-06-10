@@ -7,7 +7,7 @@ setup()     # everything configured via pyproject.toml
 
 
 #     author="Cobrawap authors and contributors",
-#     author_email="contact@cobrawap.org",
+#     author_email="robin.gutzen@outlook.com",
 #     description="Collaborative Brain Wave Analysis Pipeline (Cobrawap)",
 #
 #     entry_points={

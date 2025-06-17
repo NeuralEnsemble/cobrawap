@@ -50,7 +50,7 @@ def plot_signal(asig, new_asig, channel=0, t_start=None, t_stop=None):
             linewidth=1, label='original signal')
 
     new_asig = time_slice(new_asig, t_start=t_start, t_stop=t_stop)
-    ax.plot(new_asig.times, new_asig.as_array()[:,channel], color='g', 
+    ax.plot(new_asig.times, new_asig.as_array()[:,channel], color='g',
             linewidth=1, label='offset signal')
 
     ax.set_xlabel(f'time [{asig.times.dimensionality.string}]')

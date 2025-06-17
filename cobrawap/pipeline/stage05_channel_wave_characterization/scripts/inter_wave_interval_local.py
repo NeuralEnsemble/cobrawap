@@ -34,12 +34,12 @@ def calc_local_wave_intervals(evts):
 
     trigger_collection = np.empty((len(unique_labels), len(unique_channels)),
                                   dtype=float) * np.nan
-                          
+
     for (i, wave_id) in enumerate(unique_labels):
         wave_trigger_evts = evts[wave_labels == wave_id]
 
         channels = wave_trigger_evts.array_annotations['channels'].astype(int)
-        
+
         channel_idx = channel_idx_map[channels].astype(int)
         trigger_collection[i, channel_idx] = wave_trigger_evts.times
 
@@ -48,7 +48,7 @@ def calc_local_wave_intervals(evts):
 
     mask = np.isfinite(intervals)
     intervals = intervals[mask]
-    
+
     channel_ids = np.tile(unique_channels, len(unique_labels)-1)[mask]
     wave_ids = np.repeat(unique_labels[:-1], len(unique_channels))[mask]
 

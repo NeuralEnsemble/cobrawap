@@ -1,5 +1,5 @@
 """
-Calculate the spatial derivative on the time-delays of the wave triggers 
+Calculate the spatial derivative on the time-delays of the wave triggers
 in each channel.
 
 The derivative is calculated using a kernel convolution.

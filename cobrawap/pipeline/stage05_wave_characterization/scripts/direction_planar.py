@@ -1,5 +1,5 @@
 """
-Calculate the wave directions by either interpolating trigger times and 
+Calculate the wave directions by either interpolating trigger times and
 locations or by averaging the corresponding optical flow values.
 """
 
@@ -29,7 +29,7 @@ CLI.add_argument("--method", "--DIRECTION_METHOD", nargs='?', type=str, default=
                  help="'tigger_interpolation' or 'optical_flow'")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                  help="name of neo.Event to analyze (must contain waves)")
-                    
+
 def calc_displacement(times, locations):
     slope, offset, _, _, stderr = scipy.stats.linregress(times, locations)
     d0, d1 = offset + slope*times[0], offset + slope*times[-1]

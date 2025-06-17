@@ -170,7 +170,7 @@
     "dateModified": "2024-07-24",
     "datePublished": "2023-11-23",
     "description": "Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, multi-methodology analysis of cortical wave activity. The pipeline ingests data from heterogeneous sources of spatially organized neuronal activity, such as ECoG or calcium imaging recordings, as well as the outcome of numerical simulations. The pipeline returns statistical measures to quantify the dynamic wave-like activity patterns found in the data.",
-    "downloadUrl": "https://pypi.org/project/cobrawap",
+    "downloadUrl": "https://files.pythonhosted.org/packages/90/cc/17a59c59e9c8f0820d0435f1cd2930bced8d1f35a18f2dd527e813e98b8b/cobrawap-0.2.1.tar.gz",
     "identifier": "10.5281/zenodo.10198748; RRID:SCR_022966",
     "keywords": "neuroscience; neurophysiology; statistics; data-analysis",
     "license": "https://spdx.org/licenses/GPL-3.0-or-later",

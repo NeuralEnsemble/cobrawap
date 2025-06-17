@@ -26,7 +26,7 @@ CLI.add_argument("--alignment_threshold", nargs='?', type=float, default=.85,
                  help="threshold for alignment of velocity vectors at transitions")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                  help="name of neo.Event to analyze (must contain waves)")
-                    
+
 def label_planar(waves_event, vector_field, times, threshold):
     labels = np.unique(waves_event.labels)
     planarity = np.zeros(len(labels), dtype=float)
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 
     vec_asig = block.filter(name='optical_flow', objects="AnalogSignal")[0]
     optical_flow = analogsignal_to_imagesequence(vec_asig)
-    
+
     wavefront_evt = block.filter(name=args.event_name, objects="Event")[0]
     wavefront_evt = wavefront_evt[wavefront_evt.labels.astype('str') != '-1']
 

@@ -25,7 +25,7 @@ CLI.add_argument("--plot_tstop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                  help="list of channels to plot")
-                    
+
 def plot_trigger_times(asig, event, channel):
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()

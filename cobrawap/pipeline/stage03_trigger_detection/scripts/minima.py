@@ -1,5 +1,5 @@
 """
-Detect trigger times (i.e., state transition / local wavefronts onsets) 
+Detect trigger times (i.e., state transition / local wavefronts onsets)
 by finding local minima preceding a prominent peak in the channel signals.
 """
 
@@ -171,7 +171,7 @@ def plot_minima(asig, event, threshold_asig, channel, min_peak_distance):
     threshold = threshold_asig.as_array().T[channel]
 
     peaks, _ = find_peaks(signal, height=threshold,
-                          distance=np.max([min_peak_distance*sampling_rate, 1]))  
+                          distance=np.max([min_peak_distance*sampling_rate, 1]))
 
     # plot figure
     sns.set(style='ticks', palette="deep", context="notebook")
@@ -183,7 +183,7 @@ def plot_minima(asig, event, threshold_asig, channel, min_peak_distance):
 
     idx_ch = np.where(event.array_annotations['channels'] == channel)[0]
 
-    ax.plot(times[peaks], signal[peaks], 'x', color='r', label='detected maxima') 
+    ax.plot(times[peaks], signal[peaks], 'x', color='r', label='detected maxima')
     ax.plot(event.times[idx_ch],
             signal[((event.times[idx_ch]-asig.times[0])*sampling_rate).astype(int)],
             'x', color='g', label='selected minima')

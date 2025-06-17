@@ -40,6 +40,12 @@ from cmd_utils import (
 log = logging.getLogger()
 logging.basicConfig(level=logging.INFO)
 
+# Fetch version number
+try:
+    with open(Path(__file__).parents[1] / 'VERSION') as f:
+        VERSION = f.read().strip()
+except FileNotFoundError:
+    VERSION = "unknown"
 
 try:
     STAGES = get_setting("stages")
@@ -65,7 +71,12 @@ CLI.add_argument(
     action="store_true",
     help="print additional logging information",
 )
-CLI.add_argument("-V", "--version", action="version", version="cobrawap 0.2.1")
+CLI.add_argument(
+    "-V",
+    "--version",
+    action="version",
+    version=f"Cobrawap {VERSION}"
+)
 CLI.set_defaults(command=None)
 
 # Initialization

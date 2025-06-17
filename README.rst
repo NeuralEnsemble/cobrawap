@@ -13,7 +13,7 @@ Collaborative Brain Wave Analysis Pipeline (Cobrawap)
   :align: left
 
 .. image:: https://img.shields.io/badge/slack-join-pink.svg
-   :target: https://join.slack.com/t/cobrawapworkinggroup/shared_invite/zt-1t8fjv447-64MrlHywww97LRC1ZtW0DA
+   :target: https://join.slack.com/t/cobrawapworkinggroup/shared_invite/zt-35zdiigs3-gNA97vohr57WJ2zEOtCFug
    :alt: Join our Slack Community
    :align: left
 

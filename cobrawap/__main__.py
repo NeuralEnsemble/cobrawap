@@ -303,7 +303,7 @@ def initialize(output_path=None, config_path=None, **kwargs):
             .expanduser()
             .resolve()
         )
-    output_path.mkdir(exist_ok=True)
+    output_path.mkdir(parents=True, exist_ok=True)
     if not output_path.is_dir():
         raise ValueError(f"{output_path} is not a valid directory!")
 

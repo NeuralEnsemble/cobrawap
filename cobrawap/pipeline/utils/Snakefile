@@ -41,9 +41,9 @@ if config.STAGE_INPUT is not None:
 localrules: all, check_input
 
 wildcard_constraints:
-    data_name = '[\w\-]+',
-    dir = '.*',
-    rule_name = '\w+',
+    data_name = r'[\w\-]+',
+    dir = r'.*',
+    rule_name = r'\w+',
 
 def prev_rule_output(wildcards, rule_list,
                      default_input=config.STAGE_INPUT):

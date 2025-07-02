@@ -23,7 +23,7 @@ USE_LINK_AS_STAGE_OUTPUT: True
 DATA_SETS: # Note that only the first entry will be used for the pipeline!
     data_name: '/path/to/data/'
 
-# Name of script in scripts/ folder, handling the loadig and curation
+# Name of script in scripts/ folder, handling the loading and curation
 CURATION_SCRIPT: 'curate_dataset_key.py'
 
 # Distance between electrodes (or pixel size)

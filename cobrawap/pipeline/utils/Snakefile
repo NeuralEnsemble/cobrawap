@@ -26,7 +26,7 @@ if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
 config = SimpleNamespace(**config)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 OUTPUT_DIR = OUTPUT_PATH / config.PROFILE / config.STAGE_NAME
-SCRIPTS = Path('scripts')
+SCRIPTS = Path(inspect.getfile(lambda: None)).parents[1].resolve() / config.STAGE_NAME / 'scripts'
 
 config.PLOT_FORMAT = config.PLOT_FORMAT.strip('.')
 if hasattr(config, 'NEO_FORMAT'):

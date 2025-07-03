@@ -3,6 +3,21 @@ Release Notes
 *************
 
 
+Release 0.2.2
+=============
+Bug fixes
+---------
+* Fixed `--version` argument of `cobrawap` command (`#95 <https://github.com/NeuralEnsemble/cobawap/pull/95>`_)
+* Fixed path handling issues (`#92 <https://github.com/NeuralEnsemble/cobawap/pull/92>`_), (`#101 <https://github.com/NeuralEnsemble/cobrawap/pull/101>`_)
+
+
+Other changes
+-------------
+* Fixed path issue in automated documentation builds (`#102 <https://github.com/NeuralEnsemble/cobrawap/pull/102>`_)
+* Improved figure outputs (`#98 <https://github.com/NeuralEnsemble/cobrawap/pull/98>`_)
+* Various maintenance fixes (`#86 <https://github.com/NeuralEnsemble/cobrawap/pull/86>`_), (`#89 <https://github.com/NeuralEnsemble/cobrawap/pull/89>`_), (`#90 <https://github.com/NeuralEnsemble/cobrawap/pull/90>`_), (`#93 <https://github.com/NeuralEnsemble/cobrawap/pull/93>`_), (`#97 <https://github.com/NeuralEnsemble/cobrawap/pull/89>`_)
+
+
 Release 0.2.1
 =============
 Other changes

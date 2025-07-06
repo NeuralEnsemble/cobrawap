@@ -28,7 +28,6 @@ def plot_traces(asig, channels):
     fig, ax = plt.subplots()
 
     offset = np.max(np.abs(asig.as_array()[:,channels]))
-
     for i, signal in enumerate(asig.as_array()[:,channels].T):
         ax.plot(asig.times, signal + i*offset)
 
@@ -41,12 +40,17 @@ def plot_traces(asig, channels):
     y_coords = asig.array_annotations['y_coords']
     dim_x, dim_y = np.max(x_coords)+1, np.max(y_coords)+1
 
-    ax.text(ax.get_xlim()[1]*1.05, ax.get_ylim()[0],
-            f'ANNOTATIONS FOR CHANNEL(s) {channels} \n'\
-          +  '\n ANNOTATIONS:\n' + '\n'.join(annotations) \
-          +  '\n\n ARRAY ANNOTATIONS:\n' + '\n'.join(array_annotations) +'\n' \
-          + f' t_start: {asig.t_start}; t_stop: {asig.t_stop} \n' \
-          + f' dimensions(x,y): {dim_x}, {dim_y}')
+    ax.text(1.05, 0.5,
+            f'ANNOTATIONS FOR CHANNEL(s): {channels}' + '\n' \
+            + '\n' \
+            + 'ANNOTATIONS:' + '\n' \
+            + ' - ' + '\n - '.join(annotations) + '\n' \
+            + '\n' \
+            + 'ARRAY ANNOTATIONS:' + '\n' \
+            + ' - ' + '\n - '.join(array_annotations) + '\n' \
+            + f' - t_start: {asig.t_start}; t_stop: {asig.t_stop}' + '\n' \
+            + f' - dimensions(x,y): {dim_x}, {dim_y}',
+            ha='left', va='center', transform=ax.transAxes)
 
     ax.set_xlabel(f'time [{asig.times.units.dimensionality.string}]')
     ax.set_ylabel(f'channels [in {asig.units.dimensionality.string}]')

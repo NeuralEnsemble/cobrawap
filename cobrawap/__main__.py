@@ -42,7 +42,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Fetch version number
 try:
-    with open(Path(__file__).parents[1] / 'VERSION') as f:
+    with open(Path(inspect.getfile(lambda: None)).parents[1] / 'VERSION') as f:
         VERSION = f.read().strip()
 except FileNotFoundError:
     VERSION = "unknown"
@@ -303,7 +303,7 @@ def initialize(output_path=None, config_path=None, **kwargs):
             .expanduser()
             .resolve()
         )
-    output_path.mkdir(exist_ok=True)
+    output_path.mkdir(parents=True, exist_ok=True)
     if not output_path.is_dir():
         raise ValueError(f"{output_path} is not a valid directory!")
 
@@ -326,7 +326,7 @@ def initialize(output_path=None, config_path=None, **kwargs):
     set_setting(dict(config_path=str(config_path)))
 
     # set pipeline path
-    pipeline_path = Path(__file__).parents[1] / "cobrawap" / "pipeline"
+    pipeline_path = Path(inspect.getfile(lambda: None)).parent / "pipeline"
     set_setting(dict(pipeline_path=str(pipeline_path.resolve())))
 
     # set available stages

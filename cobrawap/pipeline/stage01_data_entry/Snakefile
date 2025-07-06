@@ -11,16 +11,17 @@ config.DATA_NAME = list(config.DATA_SETS.keys())[0]
 
 use rule template_all as all with:
     input:
-        check = OUTPUT_DIR / f'{config.DATA_NAME}.check',
-        img = OUTPUT_DIR / f'{config.DATA_NAME}'
-                         / f'trace_{config.DATA_NAME}.{config.PLOT_FORMAT}',
-        data = OUTPUT_DIR / f'{config.DATA_NAME}'
-                          / f'{config.DATA_NAME}.{config.NEO_FORMAT}',
+        check = OUTPUT_DIR / str(config.DATA_NAME + ".check"),
+        img = OUTPUT_DIR / config.DATA_NAME
+                         / str("trace_" + config.DATA_NAME + "." + config.PLOT_FORMAT),
+        data = OUTPUT_DIR / config.DATA_NAME
+                          / str(config.DATA_NAME + "." + config.NEO_FORMAT),
         # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+
 
 use rule check_input as check_data_entry with:
     input:
-        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        data = Path('{dir}') / '{data_name}' / str('{data_name}' + "." + config.NEO_FORMAT),
         script = SCRIPTS / 'check_input.py'
     output:
         Path('{dir}') / '{data_name}.check'
@@ -28,14 +29,14 @@ use rule check_input as check_data_entry with:
 
 use rule template as plot_traces with:
     input:
-        data = Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}',
+        data = Path('{dir}') / '{data_name}' / str('{data_name}' + "." + config.NEO_FORMAT),
         script = SCRIPTS / 'plot_traces.py'
     params:
         params(t_start = config.PLOT_TSTART,
                t_stop = config.PLOT_TSTOP,
                channels = config.PLOT_CHANNELS)
     output:
-        img = Path('{dir}') / '{data_name}' / f'trace_{{data_name}}.{config.PLOT_FORMAT}'
+        img = Path('{dir}') / '{data_name}' / str("trace_" + '{data_name}' + "." + config.PLOT_FORMAT)
 
 
 def curation_script(w):
@@ -49,7 +50,7 @@ def curation_script(w):
 def data_path(w):
     data_path = Path(config.DATA_SETS[config.DATA_NAME]).resolve()
     if not data_path.exists():
-        raise FileNotFoundError(f"Data file `{data_path}` not found!")
+        raise FileNotFoundError("Data file `" + data_path + "` not found!")
     return data_path
 
 
@@ -62,4 +63,4 @@ use rule template as enter_data with:
                'orientation_top', 'orientation_right', 'annotations',
                'array_annotations', 'kwargs', 'trial', config=config)
     output:
-        Path('{dir}') / '{data_name}' / f'{{data_name}}.{config.NEO_FORMAT}'
+        Path('{dir}') / '{data_name}' / str('{data_name}' + "." + config.NEO_FORMAT)

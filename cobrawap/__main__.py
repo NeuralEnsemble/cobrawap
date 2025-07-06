@@ -421,7 +421,7 @@ def add_profile(
         )
         try:
             stages = stages.replace("'", "")
-            stages = re.split(",|\s", stages)
+            stages = re.split(r",|\s+", stages)
             stages = [stage for stage in stages if stage]
         except Exception as e:
             log.info(e)

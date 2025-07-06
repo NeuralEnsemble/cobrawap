@@ -106,14 +106,14 @@ def parse_string2dict(kwargs_str, **kwargs):
 
     my_dict = {}
     # match all nested dicts
-    pattern = re.compile("[\w\s]+:{[^}]*},*")
+    pattern = re.compile(r"[\w\s]+:{[^}]*},*")
     for match in pattern.findall(kwargs):
         nested_dict_name, nested_dict = match.split(":{")
         nested_dict = nested_dict[:-1]
         my_dict[nested_dict_name] = str2dict(nested_dict)
         kwargs = kwargs.replace(match, "")
     # match entries with word value, list value, or tuple value
-    pattern = re.compile("[\w\s]+:(?:[\w\.\s\/\-\&\+]+|\[[^\]]+\]|\([^\)]+\))")
+    pattern = re.compile(r"[\w\s]+:(?:[\w\.\s\/\-\&\+]+|\[[^\]]+\]|\([^\)]+\))")
     for match in pattern.findall(kwargs):
         my_dict.update(str2dict(match))
     return my_dict

@@ -97,3 +97,11 @@ logMUA_RATE: 70
 # by the lower bound of the frequency band
 FFT_SLICE: 0.1
 # PSD_OVERLAP: determined by setting in block frequency_filter
+
+# BLOCK - convolve
+####################
+KERNEL_TYPE: 'gaussian'
+KERNEL_PARAMS:
+    duration_ms: 50
+    sampling_rate_Hz: 1000
+    std_dev_ms: 5

@@ -11,17 +11,18 @@ yaml.indent(mapping=4, sequence=4, offset=4)
 SETTINGS_PATH = Path('~/.cobrawap/config').expanduser()
 
 def get_setting(key: str = None):
-    with open(SETTINGS_PATH, 'r') as f:
-        try:
+    try:
+        with open(SETTINGS_PATH, 'r') as f:
             settings = yaml.load(f)
             if not settings:
                 settings = {}
-        except Exception as e:
-            logger.warning(e)
-            raise FileNotFoundError("The settings file either doesn't exist "\
-                                    "or is not in proper JSON format! "\
-                                    "Try to run `cobrawap init` to set up the "\
-                                    "settings file.")
+    except Exception as e:
+        logger.warning(e)
+        raise FileNotFoundError("The settings file `~/.cobrawap/config` "\
+                                "either does not exist "\
+                                "or is not in proper JSON format! "\
+                                "Try to run `cobrawap init` to set up the "\
+                                "settings file.") from e
     if key is None:
         return settings
     elif key not in settings.keys():

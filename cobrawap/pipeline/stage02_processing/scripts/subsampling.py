@@ -9,9 +9,9 @@ from pathlib import Path
 from utils.io_utils import load_neo, write_neo
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--target_rate", nargs='?', type=float, required=True,
                  help="rate to subsample to in Hz")

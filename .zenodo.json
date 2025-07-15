@@ -2,94 +2,106 @@
   "creators": [
     {
       "orcid": "0000-0001-7373-5962",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
+      "affiliation": "Department of Psychology and Center for Data Science, New York University, New York, USA",
       "name": "Gutzen, Robin",
-      "role": "Project member"
+      "type": "ProjectMember"
+    },
+    {
+      "orcid": "0000-0002-2651-1277",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
+      "name": "Lupo, Cosimo",
+      "type": "ProjectMember"
+    },
+    {
+      "orcid": "0000-0002-5933-2873",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
+      "name": "Marmoreo, Federico",
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0001-7079-5724",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "De Bonis, Giulia",
-      "role": "Project member"
-    },
-    {
-      "orcid": "0000-0003-3488-0088",
-      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
-      "name": "De Luca, Chiara",
-      "role": "Project member"
+      "type": "ProjectMember"
     }
   ],
 
   "contributors": [
     {
+      "orcid": "0000-0003-3488-0088",
+      "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy; Institute of Neuroinformatics, University of Zürich and ETH Zürich, Zürich, Switzerland",
+      "name": "De Luca, Chiara",
+      "type": "ProjectMember"
+    },
+    {
       "orcid": "0000-0003-0682-1232",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "Pastorelli, Elena",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-9958-2551",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "Capone, Cristiano",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8489-0076",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Neuroscience Institute, National Research Council, Pisa, Italy",
       "name": "Allegra Mascaro, Anna Letizia",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-9605-5852",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy",
       "name": "Resta, Francesco",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8306-0759",
       "affiliation": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain",
       "name": "Manasanch, Arnau",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-0675-3981",
       "affiliation": "European Laboratory for Non-linear Spectroscopy (LENS), University of Florence, Florence, Italy; Department of Physics and Astronomy, University of Florence, Florence, Italy; National Institute of Optics, National Research Council, Sesto Fiorentino, Italy",
       "name": "Pavone, Francesco Saverio",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-8437-9083",
       "affiliation": "Institut d’Investigacions Biomèdiques August Pi i Sunyer (IDIBAPS), Barcelona, Spain; Institució Catalana de Recerca i Estudis Avançats (ICREA), Barcelona, Spain",
       "name": "Sanchez-Vives, Maria V.",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0002-2356-4509",
       "affiliation": "Natl. Center for Radiation Protection and Computational Physics, Istituto Superiore di Sanità (ISS), Rome, Italy",
       "name": "Mattia, Maurizio",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0003-2829-2220",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
+      "affiliation": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany; Theoretical Systems Neurobiology, RWTH Aachen University, Aachen, Germany",
       "name": "Grün, Sonja",
-      "role": "Project member"
+      "type": "ProjectMember"
     },
     {
       "orcid": "0000-0003-1255-7300",
-      "affiliation": "Institute of Neuroscience and Medicine (INM-6) and Institute for Advanced Simulation (IAS-6) and JARA-Institute Brain Structure-Function Relationships (INM-10), Jülich Research Centre, Jülich, Germany",
+      "affiliation": "Institute for Advanced Simulation (IAS-6), Jülich Research Centre, Jülich, Germany",
       "name": "Denker, Michael",
-      "role": "Project leader"
+      "type": "ProjectLeader"
     },
     {
       "orcid": "0000-0003-1937-6086",
       "affiliation": "Istituto Nazionale di Fisica Nucleare (INFN), Sezione di Roma, Rome, Italy",
       "name": "Paolucci, Pier Stanislao",
-      "role": "Project leader"
+      "type": "ProjectLeader"
     }
   ],
 
-  "title": "Cobrawap 0.1.0",
+  "title": "Cobrawap 0.2.1",
 
   "keywords": [
     "neuroscience",
@@ -99,22 +111,43 @@
   ],
 
   "license": {
-    "id": "GNU General Public License v3.0 or later"
+    "id": "GPL-3.0-or-later"
   },
 
   "related_identifiers": [
     {
       "scheme": "doi",
+      "identifier": "10.5281/zenodo.10198748",
+      "relation": "isVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.5281/zenodo.13268635",
+      "relation": "isNewVersionOf",
+      "resource_type": "software"
+    },
+
+    {
+      "scheme": "doi",
       "identifier": "10.48550/arXiv.2211.08527",
       "relation": "isDocumentedBy",
       "resource_type": "publication-preprint"
+    },
+
+    {
+      "scheme": "doi",
+      "identifier": "10.1016/j.crmeth.2023.100681",
+      "relation": "isDocumentedBy",
+      "resource_type": "publication-article"
     }
   ],
 
   "grants": [
     {"id": "785907"},
     {"id": "945539"},
-    {"id": "MUR CUP B51E22000150006"}
+    {"id": "101147319"}
   ],
 
   "upload_type": "software"

@@ -50,7 +50,7 @@ use rule template_all as all with:
 
 #### OTHER BLOCKS ####
 
-use rule template as standard_rule with: 
+use rule template as standard_rule with:
     # use a standard template (recommended)
     # see utils/Snakefile and utils/scripts/snakefile.py for details
     input:
@@ -59,10 +59,10 @@ use rule template as standard_rule with:
     output:
         Path('{dir}') / '{measure}' / f'output_data.{config.NEO_FORMAT}',
     params:
-        params(a=config.A) 
+        params(a=config.A)
         # equivalen to params('a', config=config)
 
-use rule template as offset_signal with: 
+use rule template as offset_signal with:
     # example for a specific rule
     input:
         data = config.STAGE_INPUT,

@@ -3,19 +3,20 @@ Calculate the period between two consecutive waves for each wave and channel.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_path, none_or_str
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image file")
 CLI.add_argument("--kernel", "--KERNEL", nargs='?', type=none_or_str, default=None,
                  help="derivative kernel")
@@ -33,12 +34,12 @@ def calc_local_wave_intervals(evts):
 
     trigger_collection = np.empty((len(unique_labels), len(unique_channels)),
                                   dtype=float) * np.nan
-                          
+
     for (i, wave_id) in enumerate(unique_labels):
         wave_trigger_evts = evts[wave_labels == wave_id]
 
         channels = wave_trigger_evts.array_annotations['channels'].astype(int)
-        
+
         channel_idx = channel_idx_map[channels].astype(int)
         trigger_collection[i, channel_idx] = wave_trigger_evts.times
 
@@ -47,7 +48,7 @@ def calc_local_wave_intervals(evts):
 
     mask = np.isfinite(intervals)
     intervals = intervals[mask]
-    
+
     channel_ids = np.tile(unique_channels, len(unique_labels)-1)[mask]
     wave_ids = np.repeat(unique_labels[:-1], len(unique_channels))[mask]
 

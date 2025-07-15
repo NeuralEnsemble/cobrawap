@@ -4,6 +4,7 @@ time point.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 import neo
 import matplotlib.pyplot as plt
@@ -12,11 +13,11 @@ from utils.io_utils import load_neo, write_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-                    
+
 def detect_critical_points(imgseq, times):
     frames = imgseq.as_array()
     if frames.dtype != np.complex128:
@@ -62,9 +63,9 @@ def detect_critical_points(imgseq, times):
     evt = neo.Event(name='critical_points',
                     times=times[frame_ids],
                     labels=labels)
-    evt.array_annotations.update({'x':x, 'y':y, 
+    evt.array_annotations.update({'x':x, 'y':y,
                                   'trace':trace, 'det':det,
-                                  'extend':extend, 
+                                  'extend':extend,
                                   'winding_number':winding_number})
     return evt
 

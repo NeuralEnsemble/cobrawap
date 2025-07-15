@@ -6,12 +6,13 @@ Additionally prints a short summary of the data attributes.
 
 import numpy as np
 import argparse
+from pathlib import Path
 import quantities as pq
 from utils.io_utils import load_neo
 from snakemake.logging import logger
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
 
 if __name__ == '__main__':

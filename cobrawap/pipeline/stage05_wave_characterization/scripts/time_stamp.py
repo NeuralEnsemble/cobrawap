@@ -5,16 +5,17 @@ Calculate the timing of each wave.
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+from pathlib import Path
 import pandas as pd
 from utils.io_utils import load_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_path
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image")
 CLI.add_argument("--time_point", "--TIME_STAMP_POINT", nargs='?', type=str, default='start',
                  help="when to register the time for a wave [start, middle, end]")
@@ -58,7 +59,8 @@ if __name__ == '__main__':
     ax.set_ylim((0,2))
     ax.set_xlabel(f'time [{t_unit}]')
     ax.set_title('wave occurences')
-    save_plot(args.output_img)
+    if args.output_img is not None:
+        save_plot(args.output_img)
 
     # transform to DataFrame
     df = pd.DataFrame(time_stamps, columns=['time_stamp'])

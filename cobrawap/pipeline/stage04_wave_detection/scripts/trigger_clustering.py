@@ -6,14 +6,15 @@ import neo
 import numpy as np
 import quantities as pq
 import argparse
+from pathlib import Path
 from sklearn.cluster import DBSCAN
 from utils.io_utils import load_neo, write_neo
 from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--metric", nargs='?', type=str, default='euclidean',
                  help="parameter for sklearn.cluster.DBSCAN")
@@ -23,7 +24,7 @@ CLI.add_argument("--neighbour_distance", nargs='?', type=float, default=30,
                  help="eps parameter in sklearn.cluster.DBSCAN")
 CLI.add_argument("--min_samples", nargs='?', type=int, default=10,
                  help="minimum number of trigger times to form a wavefront")
-                    
+
 def cluster_triggers(event, metric, neighbour_distance, min_samples,
                      time_space_ratio, sampling_rate):
     up_idx = np.where(event.labels == 'UP')[0]
@@ -85,7 +86,7 @@ if __name__ == '__main__':
                                     sampling_rate=asig.sampling_rate)
 
     else:
-        wave_evt = neo.Event(name='wavefronts', 
+        wave_evt = neo.Event(name='wavefronts',
                              times=np.array([])*pq.s, labels=[])
 
     block.segments[0].events.append(wave_evt)

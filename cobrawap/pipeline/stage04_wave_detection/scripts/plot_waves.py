@@ -6,14 +6,15 @@ import os
 import numpy as np
 import quantities as pq
 import argparse
+from pathlib import Path
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str,
+CLI.add_argument("--data", nargs='?', type=Path,
                  help="path to input data in neo format")
-CLI.add_argument("--output_dir", nargs='?', type=str,
+CLI.add_argument("--output_dir", nargs='?', type=Path,
                  help="path to output directory")
 CLI.add_argument("--img_name", nargs='?', type=str,
                  help="")

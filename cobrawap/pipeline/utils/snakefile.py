@@ -234,8 +234,8 @@ def dict_to_cla(arg_dict):
 
 
 def in_quotes(object):
-    char = ['\s', '|']  # when these characters are in an argument str
-                        # they need to be put in quotes to be passed as cla
+    char = [r"\s", "|"]  # when these characters are in an argument str
+                         # they need to be put in quotes to be passed as cla
     return any([c in str(object) for c in char])
 
 

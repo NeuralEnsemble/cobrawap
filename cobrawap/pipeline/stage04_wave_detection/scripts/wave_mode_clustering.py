@@ -1,10 +1,11 @@
 """
-Cluster similar waves into modes. 
+Cluster similar waves into modes.
 
 Adapted from [Ruiz-Mejias et al. (2011)](https://doi.org/10.1523/JNEUROSCI.2517-15.2016)
 """
 
 import argparse
+from pathlib import Path
 import neo
 import numpy as np
 import pandas as pd
@@ -18,15 +19,15 @@ from scipy.spatial.distance import cdist
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, write_neo, save_plot
-from utils.parse import none_or_str, none_or_int
+from utils.parse import none_or_int, none_or_path
 from utils.neo_utils import analogsignal_to_imagesequence, remove_annotations
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image file")
 CLI.add_argument("--min_trigger_fraction", "--MIN_TRIGGER_FRACTION",
                  nargs='?', type=float, default=.5,
@@ -116,7 +117,7 @@ def fill_nan_sites_from_similar_waves(timelag_df, num_neighbours=5,
     if np.isnan(neighbourhood_distance).any():
         warn('Unexpected nan value in wave triggers!')
         return timelag_df
-    
+
     if outlier_quantile < 1:
         q = np.quantile(neighbourhood_distance, outlier_quantile)
         keep_rows = np.where(neighbourhood_distance <= q)[0]
@@ -253,7 +254,7 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
 
         dim_y, dim_x = mode_grid.shape
         if dim_x == 1:
-            mode_grid = np.stack((np.squeeze(mode_grid), 
+            mode_grid = np.stack((np.squeeze(mode_grid),
                                   np.squeeze(mode_grid)), axis=1)
         y, x = np.where(mode_grid)
         fx = x.reshape(mode_grid.shape) * int_step_size
@@ -274,11 +275,11 @@ def plot_wave_modes(wavefronts_evt, wavemodes_evt):
                             rotation=90, va='center')
     return None
 
-def clean_timelag_dataframe(df, min_trigger_fraction=.5, 
+def clean_timelag_dataframe(df, min_trigger_fraction=.5,
                             num_wave_neighbours=5, wave_outlier_quantile=1):
     # remove nan channels
     df.dropna(axis='columns', how='all', inplace=True)
- 
+
     # remove small waves
     min_trigger_num = int(min_trigger_fraction * df.columns.size)
     df.dropna(axis='rows', thresh=min_trigger_num, inplace=True)

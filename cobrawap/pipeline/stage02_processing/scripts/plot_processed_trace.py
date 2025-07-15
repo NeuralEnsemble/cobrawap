@@ -5,23 +5,25 @@ Plot an example signal trace before and after application of some processing ste
 import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
+from pathlib import Path
 import os
 from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import time_slice
+from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--original_data", nargs='?', type=str, required=True,
+CLI.add_argument("--original_data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--img_dir",  nargs='?', type=str, required=True,
+CLI.add_argument("--img_dir", nargs='?', type=Path, required=True,
                  help="path of output figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str,
                  default='processed_trace_channel0.png',
                  help='example filename for channel 0')
-CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=0,
                  help="start time in seconds")
-CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--channels", nargs='+', type=int, default=0,
                  help="channel to plot")

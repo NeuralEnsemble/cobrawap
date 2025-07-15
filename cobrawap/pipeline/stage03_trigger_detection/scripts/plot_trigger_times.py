@@ -5,15 +5,16 @@ Plot an excerpt of the input data and corresponding trigger times.
 import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
+from pathlib import Path
 import os
 from utils.io_utils import load_neo, save_plot
 from utils.parse import none_or_int, none_or_float
 from utils.neo_utils import time_slice
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str,
+CLI.add_argument("--output", nargs='?', type=Path,
                  required=True, help="path of output directory")
 CLI.add_argument("--filename", nargs='?', type=str,
                  default='trigger_times_channel0.png',
@@ -24,7 +25,7 @@ CLI.add_argument("--plot_tstop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--plot_channels", nargs='+', type=none_or_int, default=None,
                  help="list of channels to plot")
-                    
+
 def plot_trigger_times(asig, event, channel):
     sns.set(style='ticks', palette="deep", context="notebook")
     fig, ax = plt.subplots()

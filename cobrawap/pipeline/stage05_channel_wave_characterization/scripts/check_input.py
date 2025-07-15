@@ -6,6 +6,7 @@ Additionally prints a short summary of the data attributes.
 
 import numpy as np
 import argparse
+from pathlib import Path
 import quantities as pq
 import warnings
 import re
@@ -13,7 +14,7 @@ from utils.io_utils import load_neo
 from utils.parse import none_or_str
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=none_or_str, default=None,
                  help="name of neo.Event to analyze (must contain waves)")

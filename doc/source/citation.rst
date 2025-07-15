@@ -12,4 +12,5 @@ To cite a specific version of Cobrawap please see version-specific DOIs at:
 
 To cite Cobrawap, please use:
 
-Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2022). *Comparing apples to apples—Using a modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets*. arXiv:2211.08527. `https://doi.org/10.48550/arXiv.2211.08527 <https://doi.org/10.48550/arXiv.2211.08527>`_
+Gutzen, R., De Bonis, G., De Luca, C., Pastorelli, E., Capone, C., Allegra Mascaro, A. L., Resta, F., Manasanch, A., Pavone, F. S., Sanchez-Vives, M. V., Mattia, M., Grün, S., Paolucci, P. S., & Denker, M. (2022). *A modular and adaptable analysis pipeline to compare slow cerebral rhythms across heterogeneous datasets*. Cell Reports Methods 4, 100681. `https://doi.org/10.1016/j.crmeth.2023.100681 <https://doi.org/10.1016/j.crmeth.2023.100681>`_
+

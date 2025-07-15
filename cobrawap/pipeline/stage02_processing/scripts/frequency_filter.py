@@ -3,6 +3,7 @@ Filter between a highpass and a lowpass frequency using a butterworth filter.
 """
 
 import argparse
+from pathlib import Path
 import quantities as pq
 import os
 from elephant.signal_processing import butter
@@ -10,9 +11,9 @@ from utils.io_utils import load_neo, write_neo
 from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--highpass_frequency", nargs='?', type=none_or_float,
                  default=None, help="lower bound of frequency band in Hz")

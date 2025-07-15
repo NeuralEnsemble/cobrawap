@@ -3,6 +3,7 @@ Plot the critical points in the optical flow vector field.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 from copy import copy
 import matplotlib.pyplot as plt
@@ -10,9 +11,9 @@ from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--skip_step", nargs='?', type=int, default=3,
                  help="skipping every x vector for the plot")
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     else:
         raise ValueError("Input does not contain a signal with name " \
                        + "'optical_flow'!")
-   
+
     imgseq = analogsignal_to_imagesequence(asig)
 
     crit_point_evt = [evt for evt in block.segments[0].events
@@ -61,9 +62,9 @@ if __name__ == '__main__':
                        + "'critical_points'!")
 
     fig, ax = plt.subplots()
-    
-    ax = plot_frame(imgseq.as_array()[args.frame_id], 
-                    skip_step=args.skip_step, 
+
+    ax = plot_frame(imgseq.as_array()[args.frame_id],
+                    skip_step=args.skip_step,
                     ax=ax)
 
     start_id = np.argmax(crit_point_evt.times >= asig.times[args.frame_id])

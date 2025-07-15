@@ -15,7 +15,7 @@ Modular Pipeline Approach
 The design of the pipeline aims at interfacing a variety of general and specific analysis and processing steps in a flexible modular manner. Hence, the pipeline is able to adapt to diverse types of data (e.g., electrical ECoG, or optical calcium imaging recordings) and to different analysis questions. This makes the analyses a) more reproducible and b) comparable among each other since they rely on the same stack of algorithms and any differences in the processing are fully transparent.
 The individual processing and analysis steps, **Blocks**, are organized in sequential **Stages**. Following along the stages, the analysis becomes more specific but also allows to branch off at after any stage, as each stage yields useful intermediate results and is autonomous so that it can be reused and recombined. Within each stage, there is a collection of blocks from which the user can select and arrange the analysis via a config file. Thus, the pipeline can be thought of as a curated database of methods on which an analysis can be constructed by drawing a path along the blocks and stages.
 
-.. figure:: https://raw.githubusercontent.com/rgutzen/cobrawap/master/doc/images/pipeline_illustration.png
+.. figure:: https://raw.githubusercontent.com/NeuralEnsemble/cobrawap/refs/heads/master/doc/images/pipeline_illustration.png
   :alt: Pipeline Structure
   :name: fig-pipeline_structure
 
@@ -143,7 +143,7 @@ Organization
       - ``config_{profile}.yaml`` ... with different settings for different profiles
    - ``README`` describes the stage's functionality
 
-.. figure:: https://github.com/rgutzen/cobrawap/blob/master/doc/images/folder_structure.png
+.. figure:: https://github.com/NeuralEnsemble/cobrawap/blob/master/doc/images/folder_structure.png
     :alt: Folder Structure
     :name: fig-folder_structure
 

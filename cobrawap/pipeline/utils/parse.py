@@ -156,6 +156,7 @@ def none_or_X(value, dtype):
 none_or_int = lambda v: none_or_X(v, int)
 none_or_float = lambda v: none_or_X(v, float)
 none_or_str = lambda v: none_or_X(v, str)
+none_or_path = lambda v: none_or_X(v, Path)
 str_list = lambda v: v.split(",")
 
 
@@ -163,7 +164,7 @@ def parse_plot_channels(channels, input_file):
     channels = channels if isinstance(channels, list) else [channels]
     channels = [none_or_int(channel) for channel in channels]
     # ToDo:
-    #   * check is channel exists, even when there is no None
+    #   * check if channel exists, even when there is no None
     #   * use annotation channel ids instead of array indices
     if None in channels:
         dim_t, channel_num = load_neo(

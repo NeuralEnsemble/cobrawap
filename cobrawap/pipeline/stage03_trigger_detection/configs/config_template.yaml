@@ -18,8 +18,8 @@ NEO_FORMAT: 'nix'
 USE_LINK_AS_STAGE_OUTPUT: True
 
 # Plotting parameters
-PLOT_TSTART: 0  # in s
-PLOT_TSTOP: 10  # in s
+PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
 PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
 PLOT_FORMAT: 'png'
 
@@ -64,9 +64,10 @@ NUM_INTERPOLATION_POINTS: 0
 # minimum distance between two peaks (s)
 MIN_PEAK_DISTANCE: 0.28
 # amplitude fraction to set the threshold detecting local maxima
-MAXIMA_THRESHOLD_FRACTION: .5
+MAXIMA_THRESHOLD_FRACTION: 0.5
 # time window to use to set the threshold detecting local maxima (s)
-MAXIMA_THRESHOLD_WINDOW: 3
+# default value 'None' is meant to set the time window equal to the entire signal length
+MAXIMA_THRESHOLD_WINDOW: 'None'
 # minimum time the signal must be increasing after a minima candidate (s)
 MINIMA_PERSISTENCE: 0.16
 

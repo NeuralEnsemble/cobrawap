@@ -12,11 +12,13 @@ from utils.snakefile import get_setting
 CONFIG_PATH = Path(get_setting('config_path'))
 OUTPUT_PATH = Path(get_setting('output_path'))
 
-if 'STAGE_INPUT' not in config:
-    logger.warning('No STAGE_INPUT defined for running the stage individually! '
-                   'You can set it via the command line with '
-                   '`--config STAGE_INPUT=/path/to/file`.')
+is_first_stage = config['STAGE_NAME'] == get_setting('stages')['1']
+if is_first_stage:
     config['STAGE_INPUT'] = None
+if 'STAGE_INPUT' not in config:
+    logger.warning('No STAGE_INPUT defined for running stage \'{}\' individually! '.format(config['STAGE_NAME']) +
+                   'You can set it via the command line with ' +
+                   '`--config STAGE_INPUT=/path/to/file`.')
 
 if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
     config['USE_LINK_AS_STAGE_OUTPUT'] = True
@@ -24,7 +26,7 @@ if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
 config = SimpleNamespace(**config)
 ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
 OUTPUT_DIR = OUTPUT_PATH / config.PROFILE / config.STAGE_NAME
-SCRIPTS = Path('scripts')
+SCRIPTS = Path(inspect.getfile(lambda: None)).parents[1].resolve() / config.STAGE_NAME / 'scripts'
 
 config.PLOT_FORMAT = config.PLOT_FORMAT.strip('.')
 if hasattr(config, 'NEO_FORMAT'):
@@ -33,7 +35,7 @@ if hasattr(config, 'NEO_FORMAT'):
         config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
 
 if config.STAGE_INPUT is not None:
-    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS, 
+    config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS,
                                                config.STAGE_INPUT)
 
 localrules: all, check_input
@@ -43,7 +45,7 @@ wildcard_constraints:
     dir = '.*',
     rule_name = '\w+',
 
-def prev_rule_output(wildcards, rule_list, 
+def prev_rule_output(wildcards, rule_list,
                      default_input=config.STAGE_INPUT):
     output = lambda i: OUTPUT_DIR / rule_list[i-1] \
                                   / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
@@ -82,7 +84,7 @@ rule template:
         {ADD_UTILS}
         python3 {input.script:q} --data {input.data:q} \
                                  --output {output[0]:q} \
-                                 {params} 
+                                 {params}
         """
 
 
@@ -116,10 +118,10 @@ rule template_plus_plot_script:
         {ADD_UTILS}
         python3 {input.script:q} --data {input.data:q} \
                                  --output {output:q} \
-                                 {params} 
+                                 {params}
         python3 {input.plot_script:q} --data {output:q} \
                                       --output {output.img:q} \
-                                      {params} 
+                                      {params}
         """
 
 

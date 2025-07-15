@@ -5,13 +5,14 @@ Replace the data signal value with their corresponding Hilbert phase.
 import numpy as np
 from elephant.signal_processing import hilbert
 import argparse
+from pathlib import Path
 import os
 from utils.io_utils import load_neo, write_neo
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 
 if __name__ == '__main__':

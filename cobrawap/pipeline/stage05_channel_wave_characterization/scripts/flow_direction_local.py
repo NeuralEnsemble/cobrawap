@@ -4,18 +4,19 @@ based on the optical flow at wave trigger times and locations.
 """
 
 import argparse
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from utils.io_utils import load_neo, save_plot
-from utils.parse import none_or_str
+from utils.parse import none_or_path
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to neo object")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
-CLI.add_argument("--output_img", nargs='?', type=none_or_str, default=None,
+CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
                  help="path of output image file")
 CLI.add_argument("--event_name", "--EVENT_NAME", nargs='?', type=str, default='wavefronts',
                  help="name of neo.Event to analyze (must contain waves)")
@@ -46,7 +47,7 @@ if __name__ == '__main__':
     df.to_csv(args.output)
 
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    ax.hist(np.angle(df.flow_direction_local_x + 1j*df.flow_direction_local_y), 
+    ax.hist(np.angle(df.flow_direction_local_x + 1j*df.flow_direction_local_y),
             bins=36, range=[-np.pi, np.pi])
 
     if args.output_img is not None:

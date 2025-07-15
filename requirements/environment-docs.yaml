@@ -9,18 +9,19 @@ dependencies:
   - jinja2 >= 2.10.3
   - pygments >= 2.4.2
   - pygraphviz >= 1.5
-  - snakemake == 7.9.0
+  - snakemake >= 7.10.0 , < 8.0.0
   - h5py
   - shapely
-  - ruamel.yaml >= 0.18.3
+  - ruamel.yaml == 0.17.32
   - pip:
-    - elephant >= 0.10.0
+    - elephant >= 1.0.0
     - neo >= 0.10.2
     - nixio >= 1.5.3
     - pillow >= 7.0.0
     - pandas >= 1.2.0
-    - scikit-learn >= 0.22.1
-    - scikit-image >= 0.19.1
+    - pulp < 2.8
+    - scikit-learn >= 1.1.0
+    - scikit-image >= 0.20.0
     - scipy >= 1.7.3
     - matplotlib >= 3.5.1
     - seaborn

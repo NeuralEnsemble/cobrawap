@@ -1,18 +1,19 @@
 """
-Detect trigger times (i.e., state transition / local wavefronts onsets) 
+Detect trigger times (i.e., state transition / local wavefronts onsets)
 by applying a threshold to each channel signal.
 """
 
 import neo
 import numpy as np
 import argparse
+from pathlib import Path
 from utils.io_utils import load_neo, write_neo
 from utils.neo_utils import remove_annotations
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output", nargs='?', type=str, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--thresholds", nargs='?', type=str, required=True,
                  help="path of thresholds (numpy array)")
@@ -33,7 +34,7 @@ def threshold(asig, threshold_array):
                        * func(state_array))
         channels = trans[1]
         times = asig.times[trans[0]]
-        
+
         if not len(times):
             raise ValueError("The chosen threshold lies not within the range "\
                            + "of the signal values!")

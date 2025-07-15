@@ -5,6 +5,7 @@ Create frames showing the input data on the spatial grid for each time step.
 import os
 import sys
 import argparse
+from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from utils.io_utils import load_neo, save_plot
@@ -13,9 +14,9 @@ from utils.parse import none_or_str, none_or_float
 
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=str,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--frame_folder", nargs='?', type=str,
+CLI.add_argument("--frame_folder", nargs='?', type=Path,
                  help="")
 CLI.add_argument("--frame_name", nargs='?', type=str,
                  help="")
@@ -120,7 +121,7 @@ if __name__ == '__main__':
     blk = load_neo(args.data)
     asig = blk.segments[0].analogsignals[0]
     imgseq = analogsignal_to_imagesequence(asig)
-    
+
     optical_flow = get_opticalflow(blk)
 
     # get data
@@ -156,7 +157,7 @@ if __name__ == '__main__':
         ax = plot_frame(frames[frame_num], cmap=cmap, vmin=vmin, vmax=vmax)
 
         if optical_flow is not None:
-            plot_vectorfield(optical_flow[frame_num].as_array(), 
+            plot_vectorfield(optical_flow[frame_num].as_array(),
                              skip_step=skip_step)
         if args.plot_event is not None and up_coords is not None:
             plot_transitions(up_coords[frame_num], markersize=markersize,
@@ -164,9 +165,8 @@ if __name__ == '__main__':
         ax.set_ylabel('pixel size: {:.2f} mm'.format(imgseq.spatial_scale.rescale('mm').magnitude))
         ax.set_xlabel('{:.3f} s'.format(times[frame_num].rescale('s').magnitude))
 
-        save_plot(os.path.join(args.frame_folder,
+        save_plot(os.path.join(str(args.frame_folder),
                                args.frame_name + '_{}.{}'.format(str(i).zfill(5),
                                args.frame_format)),
                   transparent=True)
         plt.close()
- 

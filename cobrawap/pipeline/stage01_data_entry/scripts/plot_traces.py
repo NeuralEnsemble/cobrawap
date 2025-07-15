@@ -9,16 +9,16 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import time_slice
-from utils.parse import parse_plot_channels, none_or_int
+from utils.parse import parse_plot_channels, none_or_int, none_or_float
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data",    nargs='?', type=Path, required=True,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output",  nargs='?', type=Path, required=True,
+CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output figure")
-CLI.add_argument("--t_start", nargs='?', type=float, default=0,
+CLI.add_argument("--t_start", nargs='?', type=none_or_float, default=0,
                  help="start time in seconds")
-CLI.add_argument("--t_stop",  nargs='?', type=float, default=10,
+CLI.add_argument("--t_stop", nargs='?', type=none_or_float, default=10,
                  help="stop time in seconds")
 CLI.add_argument("--channels", nargs='+', type=none_or_int, default=0,
                  help="list of channels to plot")
@@ -28,7 +28,6 @@ def plot_traces(asig, channels):
     fig, ax = plt.subplots()
 
     offset = np.max(np.abs(asig.as_array()[:,channels]))
-
     for i, signal in enumerate(asig.as_array()[:,channels].T):
         ax.plot(asig.times, signal + i*offset)
 
@@ -41,12 +40,17 @@ def plot_traces(asig, channels):
     y_coords = asig.array_annotations['y_coords']
     dim_x, dim_y = np.max(x_coords)+1, np.max(y_coords)+1
 
-    ax.text(ax.get_xlim()[1]*1.05, ax.get_ylim()[0],
-            f'ANNOTATIONS FOR CHANNEL(s) {channels} \n'\
-          +  '\n ANNOTATIONS:\n' + '\n'.join(annotations) \
-          +  '\n\n ARRAY ANNOTATIONS:\n' + '\n'.join(array_annotations) +'\n' \
-          + f' t_start: {asig.t_start}; t_stop: {asig.t_stop} \n' \
-          + f' dimensions(x,y): {dim_x}, {dim_y}')
+    ax.text(1.05, 0.5,
+            f'ANNOTATIONS FOR CHANNEL(s): {channels}' + '\n' \
+            + '\n' \
+            + 'ANNOTATIONS:' + '\n' \
+            + ' - ' + '\n - '.join(annotations) + '\n' \
+            + '\n' \
+            + 'ARRAY ANNOTATIONS:' + '\n' \
+            + ' - ' + '\n - '.join(array_annotations) + '\n' \
+            + f' - t_start: {asig.t_start}; t_stop: {asig.t_stop}' + '\n' \
+            + f' - dimensions(x,y): {dim_x}, {dim_y}',
+            ha='left', va='center', transform=ax.transAxes)
 
     ax.set_xlabel(f'time [{asig.times.units.dimensionality.string}]')
     ax.set_ylabel(f'channels [in {asig.units.dimensionality.string}]')

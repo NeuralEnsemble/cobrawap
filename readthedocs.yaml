@@ -7,3 +7,6 @@ build:
 
 conda:
   environment: requirements/environment-docs.yaml
+
+sphinx:
+  configuration: doc/source/conf.py

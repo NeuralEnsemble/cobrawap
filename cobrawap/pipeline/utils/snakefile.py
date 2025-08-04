@@ -30,7 +30,7 @@ def get_setting(key: str = None):
         return settings[key]
 
 
-def set_setting(setting: dict) -> None:
+def set_setting(setting: dict, force_overwrite=False) -> None:
     if type(setting) != dict:
         raise TypeError('Function expects a dictionary!')
 
@@ -48,7 +48,7 @@ def set_setting(setting: dict) -> None:
         settings = {}
 
     key_overlap = [k for k in setting.keys() if k in settings.keys()]
-    if key_overlap:
+    if key_overlap and not force_overwrite:
         overwrite = (input(f"There are already settings for {key_overlap}! "\
                             "Overwrite? [y/N]").lower() == 'y'
                     or False)

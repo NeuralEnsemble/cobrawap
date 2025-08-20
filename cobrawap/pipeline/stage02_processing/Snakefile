@@ -13,7 +13,7 @@ def input_file(wildcards):
 
 def is_clear(wildcards):
     if config.RERUN_MODE:
-        return Path(str('{wildcards.dir}')) / "clear.done"
+        return Path(wildcards.dir) / "clear.done"
     else:
         return []
 
@@ -30,7 +30,7 @@ rule clear:
     output:
         temp(Path('{path}') / 'clear.done')
     params:
-        block_folder = [Path('{path}') / str('{block}') for block in config.BLOCK_ORDER]
+        block_folder = [Path('{path}') / block for block in config.BLOCK_ORDER]
     shell:
         """
         rm -rf {params.block_folder:q}

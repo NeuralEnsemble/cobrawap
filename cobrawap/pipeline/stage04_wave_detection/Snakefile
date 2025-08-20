@@ -188,9 +188,9 @@ rule mp4_to_webm:
 
 rule mp4_to_gif:
     input:
-        Path(str('{path}' + ".mp4"))
+        Path('{path}.mp4')
     output:
-        Path(str('{path}' + "_" + '{scale}' + "px.gif"))
+        Path('{path}' + "_" + '{scale}' + "px.gif")
     shell:
         """
         ffmpeg -i {input:q} \

@@ -9,8 +9,8 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [OUTPUT_DIR / m / str(config.EVENT_NAME + "_" + m + ".csv")
-            for m in config.MEASURES]
+    return [OUTPUT_DIR / measure / str(config.EVENT_NAME + "_" + measure + ".csv")
+            for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
     config.MEASURES = [m for m in config.MEASURES if m not in

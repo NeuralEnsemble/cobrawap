@@ -126,7 +126,7 @@ use rule template as time_slice with:
     params:
         params()
     output:
-        Path('{dir}') / str('{data_name}' + ("_%s-%ss." % (config.SLICE_TSTART, config.SLICE_TSTOP)) + config.NEO_FORMAT)
+        Path('{dir}') / str('{data_name}_{t_start}-{t_stop}s.' + config.NEO_FORMAT)
 
 
 use rule template as plot_movie_frames with:

@@ -17,7 +17,6 @@ def get_setting(key: str = None):
             if not settings:
                 settings = {}
     except Exception as e:
-        logger.warning(e)
         raise FileNotFoundError("The settings file `~/.cobrawap/config` "\
                                 "either does not exist "\
                                 "or is not in proper JSON format! "\

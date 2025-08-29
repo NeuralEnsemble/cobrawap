@@ -44,6 +44,8 @@ wildcard_constraints:
     data_name = r"[\w\-]+",
     dir = r".*",
     rule_name = r"\w+",
+    t_start = f"[0-9]+",
+    t_stop = f"[0-9]+",
 
 def prev_rule_output(wildcards, rule_list,
                      default_input=config.STAGE_INPUT):

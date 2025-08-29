@@ -48,7 +48,7 @@ use rule template as plot_processed_traces with:
                original_data=config.STAGE_INPUT)
     output:
         img_dir = directory(OUTPUT_DIR /
-                            str("processed_traces_%s-%ss" % (config.PLOT_TSTART,config.PLOT_TSTOP)))
+                            str("processed_traces_{t_start}-{t_stop}s")
 
 
 use rule template as plot_power_spectrum with:

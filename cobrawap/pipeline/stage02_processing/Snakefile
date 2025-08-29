@@ -173,7 +173,7 @@ use rule template as z_score with:
     params:
         params()
     output:
-        Path('{dir}') / '{rule_name}' / f'zscore.{config.NEO_FORMAT}'
+        Path('{dir}') / '{rule_name}' / f'z_score.{config.NEO_FORMAT}'
 
 
 use rule template as subsampling with:

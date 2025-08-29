@@ -43,8 +43,7 @@ use rule template as plot_processed_traces with:
         data = input_file,
         script = SCRIPTS / 'plot_processed_trace.py'
     params:
-        params(t_start=config.PLOT_TSTART, t_stop=config.PLOT_TSTOP,
-               channels=config.PLOT_CHANNELS,
+        params(channels=config.PLOT_CHANNELS,
                img_name="processed_trace_channel0." + config.PLOT_FORMAT,
                original_data=config.STAGE_INPUT)
     output:

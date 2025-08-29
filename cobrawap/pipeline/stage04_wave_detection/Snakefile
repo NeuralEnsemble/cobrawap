@@ -124,7 +124,7 @@ use rule template as time_slice with:
         data = Path('{dir}') / str('{data_name}' + "." + config.NEO_FORMAT),
         script = SCRIPTS / 'time_slice.py'
     params:
-        params(t_start=config.SLICE_TSTART,t_stop=config.SLICE_TSTOP)
+        params()
     output:
         Path('{dir}') / str('{data_name}' + ("_%s-%ss." % (config.SLICE_TSTART, config.SLICE_TSTOP)) + config.NEO_FORMAT)
 

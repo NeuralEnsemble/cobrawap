@@ -166,11 +166,11 @@ use rule template as phase_transform with:
         Path('{dir}') / '{rule_name}' /  str("phase_transform." + config.NEO_FORMAT)
 
 
-use rule template as z_score with:
+use rule template as zscore with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = SCRIPTS / 'z_score.py'
+        script = SCRIPTS / 'zscore.py'
     params:
         params()
     output:

@@ -165,15 +165,15 @@ use rule template as phase_transform with:
         Path('{dir}') / '{rule_name}' /  f'phase_transform.{config.NEO_FORMAT}'
 
 
-use rule template as z_score with:
+use rule template as zscore with:
     input:
         is_clear = is_clear,
         data = input_file,
-        script = SCRIPTS / 'z_score.py'
+        script = SCRIPTS / 'zscore.py'
     params:
         params()
     output:
-        Path('{dir}') / '{rule_name}' / str("z_score." + config.NEO_FORMAT)
+        Path('{dir}') / '{rule_name}' / str("zscore." + config.NEO_FORMAT)
 
 
 use rule template as subsampling with:

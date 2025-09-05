@@ -193,6 +193,6 @@ use rule template as convolution with:
         data = input_file,
         script = SCRIPTS / 'convolution.py'
     params:
-        params()
+        params('kernel_type', 'kernel_params', config=config)
     output:
         Path('{dir}') / '{rule_name}' / str("convolution." + config.NEO_FORMAT)

@@ -100,8 +100,11 @@ FFT_SLICE: 0.1
 
 # BLOCK - convolution
 ####################
+# Allowed types of kernels: ['gaussian','biexponential']
 KERNEL_TYPE: 'gaussian'
 KERNEL_PARAMS:
-    duration_ms: 50
     sampling_rate_Hz: 1000
+    #tau_rise: 5
+    #tau_decay: 20
     std_dev_ms: 5
+    #duration_ms: 50

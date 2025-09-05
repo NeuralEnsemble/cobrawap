@@ -63,7 +63,7 @@ def biexponential_kernel(sampling_rate_Hz, tau_rise_ms, tau_decay_ms, duration_m
     - tau_decay_ms:      Time constant for the decaying phase in ms.
     - duration_ms:       [Optional] The duration over which the kernel is non-zero;
                          default value is 8 times the sum of the provided values
-                         for tau_rise_ms and tau_decay_ms
+                         for tau_rise_ms and tau_decay_ms.
 
     Returns:
     - Biexponential kernel array.
@@ -106,7 +106,7 @@ def smooth_signal(asig, kernel_type, kernel_params):
         sampling_rate_Hz = kernel_params['sampling_rate_Hz']
         std_dev_ms = kernel_params['std_dev_ms']
         kernel = gaussian_kernel(sampling_rate_Hz, std_dev_ms, duration_ms)
-    if kernel_type=='biexponential':
+    elif kernel_type=='biexponential':
         sampling_rate_Hz = kernel_params['sampling_rate_Hz']
         tau_rise_ms = kernel_params['tau_rise_ms']
         tau_decay_ms = kernel_params['tau_decay_ms']

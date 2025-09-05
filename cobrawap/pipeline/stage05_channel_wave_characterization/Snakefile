@@ -9,7 +9,7 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [OUTPUT_DIR / measure / f'{config.EVENT_NAME}_{measure}.csv'
+    return [OUTPUT_DIR / measure / str(config.EVENT_NAME + "_" + measure + ".csv")
             for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
@@ -34,7 +34,7 @@ use rule template as all with:
         script = SCRIPTS / 'merge_dataframes.py',
         # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
     params:
-        params(merge_key = ['channel_id', f'{config.EVENT_NAME}_id'])
+        params(merge_key = ['channel_id', str(config.EVENT_NAME + "_id")])
     output:
         OUTPUT_DIR / config.STAGE_OUTPUT,
         output_img = OUTPUT_DIR / 'overview_measures.html'
@@ -44,13 +44,13 @@ use rule template as all with:
 use rule template as compute_measure with:
     input:
         data = input,
-        script = SCRIPTS / '{measure}.py'
+        script = SCRIPTS / str('{measure}' + ".py")
     params:
         params(config.__dict__)
     output:
-        Path('{dir}') / '{measure}' / f'{config.EVENT_NAME}_{{measure}}.csv',
+        Path('{dir}') / '{measure}' / str(config.EVENT_NAME + "_" + '{measure}' + ".csv"),
         output_img = Path('{dir}') / '{measure}'
-                      / f'{config.EVENT_NAME}_{{measure}}.{config.PLOT_FORMAT}'
+                      / str(config.EVENT_NAME + "_" + '{measure}' + "." + config.PLOT_FORMAT)
 
 
 use rule compute_measure as spatial_derivative with:
@@ -59,6 +59,6 @@ use rule compute_measure as spatial_derivative with:
         script = SCRIPTS / 'spatial_derivative.py'
     output:
         Path('{dir}') / '{rule_name}'
-                      / f'{config.EVENT_NAME}_{rule_name}.csv',
+                      / str(config.EVENT_NAME + "_spatial_derivative.csv"),
         output_img = Path('{dir}') / '{rule_name}'
-               / f'{config.EVENT_NAME}_{rule_name}.{config.PLOT_FORMAT}'
+               / str(config.EVENT_NAME + "_spatial_derivative." + config.PLOT_FORMAT)

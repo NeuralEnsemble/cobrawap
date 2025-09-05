@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'NeuralEnsemble' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +35,8 @@ jobs:
 
   publish-to-pypi:
     name: Publish Python 🐍 distribution 📦 to PyPI
-    if: startsWith(github.ref, 'refs/tags/v')  # only publish to PyPI on tag pushes
+    # only publish to PyPI on tag pushes
+    if: ${{ github.repository_owner == 'NeuralEnsemble' && startsWith(github.ref, 'refs/tags/v') }}
     needs:
       - build
     runs-on: ubuntu-latest
@@ -63,6 +65,7 @@ jobs:
     needs:
      - publish-to-pypi
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'NeuralEnsemble' }}
 
     permissions:
       contents: write  # IMPORTANT: mandatory for making GitHub Releases
@@ -104,6 +107,7 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'NeuralEnsemble' }}
 
     environment:
       name: testpypi

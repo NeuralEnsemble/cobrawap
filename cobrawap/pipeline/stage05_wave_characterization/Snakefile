@@ -9,7 +9,7 @@ include: Path() / '..' / 'utils' / 'Snakefile'
 #### Housekeeping ####
 
 def measures_output(wildcards):
-    return [OUTPUT_DIR / measure / f'{config.EVENT_NAME}_{measure}.csv'
+    return [OUTPUT_DIR / measure / str(config.EVENT_NAME + "_" + measure + ".csv")
             for measure in config.MEASURES]
 
 if config.EVENT_NAME == 'wavemodes':
@@ -35,10 +35,10 @@ use rule template as all with:
 use rule template as compute_measure with:
     input:
         data = config.STAGE_INPUT,
-        script = SCRIPTS / '{measure}.py'
+        script = SCRIPTS / str('{measure}' + ".py")
     params:
         params(config.__dict__)
     output:
-        Path('{dir}') / '{measure}' / f'{config.EVENT_NAME}_{{measure}}.csv',
+        Path('{dir}') / '{measure}' / str(config.EVENT_NAME + "_" + '{measure}' + ".csv"),
         output_img = Path('{dir}') / '{measure}'
-                      / f'{config.EVENT_NAME}_{{measure}}.{config.PLOT_FORMAT}'
+                      / str(config.EVENT_NAME + "_" + '{measure}' + "." + config.PLOT_FORMAT)

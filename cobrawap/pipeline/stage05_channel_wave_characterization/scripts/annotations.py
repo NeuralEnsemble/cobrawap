@@ -45,8 +45,8 @@ def add_annotations_to_df(df, annotations, include_keys=[]):
 
 if __name__ == '__main__':
     args, unknown = CLI.parse_known_args()
-    args.ignore_keys = [re.sub('[\[\],\s]', '', key) for key in args.ignore_keys]
-    args.include_keys = [re.sub('[\[\],\s]', '', key) for key in args.include_keys]
+    args.ignore_keys = [re.sub(r"[\[\],\s]", "", key) for key in args.ignore_keys]
+    args.include_keys = [re.sub(r"[\[\],\s]", "", key) for key in args.include_keys]
     if len(args.include_keys):
         args.ignore_keys = []
 

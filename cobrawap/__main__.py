@@ -91,14 +91,21 @@ CLI_init.add_argument(
     type=Path,
     default=None,
     help="directory where the analysis output is stored "
-    "[default: '~/cobrawap_output/']",
+         "[default: '~/cobrawap_output/']",
 )
 CLI_init.add_argument(
     "--config_path",
     type=Path,
     default=None,
     help="directory where the analysis config files are "
-    "stored [default: '~/cobrawap_config/']",
+         "stored [default: '~/cobrawap_config/']",
+)
+CLI_init.add_argument(
+    "-F",
+    "--force_overwrite",
+    action="store_true",
+    help="force the initialization, overwriting previous settings"
+         "when already present",
 )
 
 # Show Settings
@@ -128,7 +135,7 @@ CLI_create.add_argument(
     type=Path,
     default=None,
     help="name of the data specific loading script "
-    "(in <config_path>/stage01_data_entry/scripts/)",
+         "(in <config_path>/stage01_data_entry/scripts/)",
 )
 CLI_create.add_argument(
     "--profile",
@@ -136,7 +143,7 @@ CLI_create.add_argument(
     nargs="?",
     default=None,
     help="profile name of this dataset/application "
-    "(see profile name conventions in documentation)",
+         "(see profile name conventions in documentation)",
 )
 CLI_create.add_argument(
     "--parent_profile",
@@ -144,7 +151,7 @@ CLI_create.add_argument(
     nargs="?",
     default=None,
     help="optional parent profile name "
-    "(see profile name conventions in documentation)",
+         "(see profile name conventions in documentation)",
 )
 
 # Additional configurations
@@ -159,7 +166,7 @@ CLI_profile.add_argument(
     nargs="?",
     default=None,
     help="profile name of this dataset/application "
-    "(see profile name conventions in documentation)",
+         "(see profile name conventions in documentation)",
 )
 CLI_profile.add_argument(
     "--stages",
@@ -175,15 +182,15 @@ CLI_profile.add_argument(
     nargs="?",
     default=None,
     help="optional parent profile name from which to "
-    "initialize the new config "
-    "[default: basic template]",
+         "initialize the new config "
+         "[default: basic template]",
 )
 
 # Run
 CLI_run = subparsers.add_parser(
     "run",
     help="run the analysis pipeline on the selected "
-    "input and with the specified configurations",
+         "input and with the specified configurations",
 )
 CLI_run.set_defaults(command="run")
 CLI_run.add_argument(
@@ -292,7 +299,7 @@ def main():
     return None
 
 
-def initialize(output_path=None, config_path=None, **kwargs):
+def initialize(output_path=None, config_path=None, force_overwrite=False, **kwargs):
     # set output_path
     if output_path is None:
         output_path = (
@@ -307,7 +314,8 @@ def initialize(output_path=None, config_path=None, **kwargs):
     if not output_path.is_dir():
         raise ValueError(f"{output_path} is not a valid directory!")
 
-    set_setting(dict(output_path=str(output_path)))
+    set_setting(dict(output_path=str(output_path)),
+                force_overwrite=force_overwrite)
 
     # set config_path
     if config_path is None:
@@ -323,18 +331,21 @@ def initialize(output_path=None, config_path=None, **kwargs):
     if not config_path.is_dir():
         raise ValueError(f"{config_path} is not a valid directory!")
 
-    set_setting(dict(config_path=str(config_path)))
+    set_setting(dict(config_path=str(config_path)),
+                force_overwrite=force_overwrite)
 
     # set pipeline path
     pipeline_path = Path(inspect.getfile(lambda: None)).parent / "pipeline"
-    set_setting(dict(pipeline_path=str(pipeline_path.resolve())))
+    set_setting(dict(pipeline_path=str(pipeline_path.resolve())),
+                force_overwrite=force_overwrite)
 
     # set available stages
-    set_setting(dict(stages=get_initial_available_stages()))
+    set_setting(dict(stages=get_initial_available_stages()),
+                force_overwrite=force_overwrite)
     stages = get_setting("stages")
 
     # populate config_path with template config files
-    if any(config_path.iterdir()):
+    if any(config_path.iterdir()) and not force_overwrite:
         overwrite = (
             input(
                 f"The config directory {config_path} already exists "
@@ -421,7 +432,7 @@ def add_profile(
         )
         try:
             stages = stages.replace("'", "")
-            stages = re.split(",|\s", stages)
+            stages = re.split(r",|\s+", stages)
             stages = [stage for stage in stages if stage]
         except Exception as e:
             log.info(e)

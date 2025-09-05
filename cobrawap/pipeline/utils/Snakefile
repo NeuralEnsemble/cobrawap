@@ -24,7 +24,7 @@ if 'USE_LINK_AS_STAGE_OUTPUT' not in config:
     config['USE_LINK_AS_STAGE_OUTPUT'] = True
 
 config = SimpleNamespace(**config)
-ADD_UTILS = f"export PYTHONPATH='$PYTHONPATH:{utils_path}'"
+ADD_UTILS = str("export PYTHONPATH='$PYTHONPATH:%s'" % utils_path)
 OUTPUT_DIR = OUTPUT_PATH / config.PROFILE / config.STAGE_NAME
 SCRIPTS = Path(inspect.getfile(lambda: None)).parents[1].resolve() / config.STAGE_NAME / 'scripts'
 
@@ -32,7 +32,7 @@ config.PLOT_FORMAT = config.PLOT_FORMAT.strip('.')
 if hasattr(config, 'NEO_FORMAT'):
     config.NEO_FORMAT = config.NEO_FORMAT.strip('.')
     if not '.' in config.STAGE_OUTPUT:
-        config.STAGE_OUTPUT += f'.{config.NEO_FORMAT}'
+        config.STAGE_OUTPUT += "." + config.NEO_FORMAT
 
 if config.STAGE_INPUT is not None:
     config.PLOT_CHANNELS = parse_plot_channels(config.PLOT_CHANNELS,
@@ -41,14 +41,16 @@ if config.STAGE_INPUT is not None:
 localrules: all, check_input
 
 wildcard_constraints:
-    data_name = '[\w\-]+',
-    dir = '.*',
-    rule_name = '\w+',
+    data_name = r"[\w\-]+",
+    dir = r".*",
+    rule_name = r"\w+",
+    t_start = f"[0-9]+",
+    t_stop = f"[0-9]+",
 
 def prev_rule_output(wildcards, rule_list,
                      default_input=config.STAGE_INPUT):
     output = lambda i: OUTPUT_DIR / rule_list[i-1] \
-                                  / f'{rule_list[i-1]}.{config.NEO_FORMAT}'
+                                  / str(rule_list[i-1] + "." + config.NEO_FORMAT)
     if hasattr(wildcards, 'rule_name'):
         idx = locate_str_in_list(rule_list, wildcards.rule_name)
         if idx:

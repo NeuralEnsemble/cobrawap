@@ -32,7 +32,8 @@ def gaussian_kernel(sampling_rate_Hz, std_dev_ms, duration_ms=None):
     - duration_ms:       [Optional] The duration over which the kernel is non-zero;
                          default value is 8 times the provided std_dev_ms,
                          suitably rounded to the closest multiple integer
-                         of the sampling time step
+                         of the sampling time step.
+
     Returns:
     - Gaussian kernel array.
     """
@@ -70,7 +71,7 @@ def biexponential_kernel(sampling_rate_Hz, tau_rise_ms, tau_decay_ms, duration_m
     """
 
     sampling_dt_s = 1 / sampling_rate_Hz
-    sampling_dt_ms = sampling_dt_s * 1000.0
+    sampling_dt_ms = sampling_dt_s * 1000
     if duration_ms:
         half_width = 0.5*duration_ms
     else:

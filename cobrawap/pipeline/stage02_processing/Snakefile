@@ -23,8 +23,7 @@ use rule template_all as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
         data = input_file,
-        img = OUTPUT_DIR / str("processed_traces_%s-%ss" % (config.PLOT_TSTART,config.PLOT_TSTOP)),
-        # configfile = Path('configs') / f'config_{PROFILE}.yaml'
+        img = OUTPUT_DIR / str("processed_traces_%s-%ss" % (config.PLOT_TSTART,config.PLOT_TSTOP))
 
 rule clear:
     output:

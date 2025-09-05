@@ -8,7 +8,7 @@ Blocks
 
 Utility Blocks (*fixed*)
 ------------------------
-.. autosummary:: 
+.. autosummary::
    :toctree: _toctree/stage02_processing/
    :template: block
 
@@ -17,7 +17,7 @@ Utility Blocks (*fixed*)
 
 Processing Blocks (*choose any*)
 --------------------------------
-.. autosummary:: 
+.. autosummary::
    :toctree: _toctree/stage02_processing/
    :template: block
 
@@ -29,6 +29,5 @@ Processing Blocks (*choose any*)
     phase_transform
     roi_selection
     spatial_downsampling
-    subsampling 
+    subsampling
     zscore
-

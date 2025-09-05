@@ -14,7 +14,7 @@ CLI.add_argument("--data", nargs='+', type=Path, required=True,
 CLI.add_argument("--output", nargs='?', type=Path, required=True,
                  help="path of output file")
 CLI.add_argument("--output_img", nargs='?', type=none_or_path, default=None,
-                 help="")
+                 help="path of output image file")
 CLI.add_argument("--merge_key", nargs='+', type=str,
                  help="")
 

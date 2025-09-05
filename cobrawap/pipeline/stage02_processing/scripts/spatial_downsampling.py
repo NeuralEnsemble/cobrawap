@@ -68,10 +68,6 @@ if __name__ == '__main__':
     if args.output_img is not None:
         plot_downsampled_image(imgseq_reduced.as_array()[0], args.output_img)
 
-    new_block = neo.Block()
-    new_segment = neo.Segment()
-    new_block.segments.append(new_segment)
-    new_block.segments[0].imagesequences.append(imgseq_reduced)
     new_asig = imagesequence_to_analogsignal(imgseq_reduced)
 
     block.segments[0].analogsignals[0] = new_asig

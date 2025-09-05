@@ -43,7 +43,8 @@ METRIC: 'euclidean'
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
 # Factor from time dimension to space dimension in sampling_rate*spatial_scale
-TIME_SPACE_RATIO: 1 # i.e. distance between 2 frames corresponds to X pixel
+# i.e. distance between 2 frames corresponds to X pixel
+TIME_SPACE_RATIO: 1
 
 # Optical Flow (Horn-Schunck algorithm)
 ##############

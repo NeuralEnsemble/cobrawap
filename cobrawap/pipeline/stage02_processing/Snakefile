@@ -186,3 +186,13 @@ use rule template as subsampling with:
         params(target_rate = config.TARGET_RATE)
     output:
         Path('{dir}') / '{rule_name}' / str("subsampling." + config.NEO_FORMAT)
+
+use rule template as convolution with:
+    input:
+        is_clear = is_clear,
+        data = input_file,
+        script = SCRIPTS / 'convolution.py'
+    params:
+        params()
+    output:
+        Path('{dir}') / '{rule_name}' / str("convolution." + config.NEO_FORMAT)

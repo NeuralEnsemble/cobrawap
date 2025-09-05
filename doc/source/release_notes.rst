@@ -3,6 +3,22 @@ Release Notes
 *************
 
 
+Release 0.2.2
+=============
+Bug fixes
+---------
+* Fixed `--version` argument of `cobrawap` command (`#95 <https://github.com/NeuralEnsemble/cobawap/pull/95>`_)
+* Fixed path handling issues (`#92 <https://github.com/NeuralEnsemble/cobawap/pull/92>`_), (`#101 <https://github.com/NeuralEnsemble/cobrawap/pull/101>`_)
+
+Other changes
+-------------
+* Fixed path issue in automated documentation builds (`#102 <https://github.com/NeuralEnsemble/cobrawap/pull/102>`_)
+* Fixed Python 3.12 compatibility (`#105 <https://github.com/NeuralEnsemble/cobrawap/pull/105>`_)
+* Improved figure outputs (`#98 <https://github.com/NeuralEnsemble/cobrawap/pull/98>`_)
+* Added `--force-overwrite` flag (`#110 <https://github.com/NeuralEnsemble/cobrawap/pull/110>`_)
+* Various maintenance fixes (`#86 <https://github.com/NeuralEnsemble/cobrawap/pull/86>`_), (`#89 <https://github.com/NeuralEnsemble/cobrawap/pull/89>`_), (`#90 <https://github.com/NeuralEnsemble/cobrawap/pull/90>`_), (`#93 <https://github.com/NeuralEnsemble/cobrawap/pull/93>`_), (`#97 <https://github.com/NeuralEnsemble/cobrawap/pull/97>`_), (`#102 <https://github.com/NeuralEnsemble/cobrawap/pull/102>`_), (`#107 <https://github.com/NeuralEnsemble/cobrawap/pull/107>`_), (`#108 <https://github.com/NeuralEnsemble/cobrawap/pull/108>`_)
+
+
 Release 0.2.1
 =============
 Other changes

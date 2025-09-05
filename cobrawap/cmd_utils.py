@@ -137,7 +137,7 @@ def get_available_blocks(block_dir):
 def is_profile_name_valid(profile: str) -> bool:
     if isinstance(profile, str):
         profile = profile.strip("'\"")
-        pattern = re.compile("[\w\d\|]+")
+        pattern = re.compile(r"[\w\d\|]+")
         return bool(pattern.fullmatch(profile))
     else:
         return False

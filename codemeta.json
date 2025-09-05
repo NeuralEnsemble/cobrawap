@@ -167,7 +167,7 @@
             "givenName": "Pier Stanislao"
         }
     ],
-    "dateModified": "2024-07-24",
+    "dateModified": "2025-09-03",
     "datePublished": "2023-11-23",
     "description": "Cobrawap is an adaptable and reusable analysis pipeline for the multi-scale, multi-methodology analysis of cortical wave activity. The pipeline ingests data from heterogeneous sources of spatially organized neuronal activity, such as ECoG or calcium imaging recordings, as well as the outcome of numerical simulations. The pipeline returns statistical measures to quantify the dynamic wave-like activity patterns found in the data.",
     "downloadUrl": "https://files.pythonhosted.org/packages/90/cc/17a59c59e9c8f0820d0435f1cd2930bced8d1f35a18f2dd527e813e98b8b/cobrawap-0.2.1.tar.gz",
@@ -178,7 +178,7 @@
     "programmingLanguage": "Python",
     "relatedLink": "https://cobrawap.readthedocs.io",
     "releaseNotes": "https://cobrawap.readthedocs.io/en/latest/release_notes.html",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "developmentStatus": "active",
     "funding": "European Union’s Horizon 2020 Framework Programme for Research and Innovation under the Specific Grant Agreements No. 945539 (Human Brain Project SGA3) and No. 785907 (Human Brain Project SGA2); the European Commission NextGeneration EU through grant MUR CUP B51E22000150006 (EBRAINS-Italy IR00011 PNRR); European Union’s Horizon Europe Programme under the Specific Grant Agreement No. 101147319 (EBRAINS 2.0 Project)",
     "issueTracker": "https://github.com/NeuralEnsemble/cobrawap/issues",

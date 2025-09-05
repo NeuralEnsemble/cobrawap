@@ -26,7 +26,7 @@ if __name__ == '__main__':
     if args.measures is not None and args.event_name == 'wavemodes':
         mode_invalid = ['label_planar', 'inter_wave_interval',
                         'number_of_triggers', 'time_stamp']
-        args.measures = [re.sub('[\[\],\s]', '', measure) for measure in args.measures]
+        args.measures = [re.sub(r"[\[\],\s]", "", measure) for measure in args.measures]
         invalid_measures = [measure for measure in args.measures \
                                                 if measure in mode_invalid]
         if len(invalid_measures):

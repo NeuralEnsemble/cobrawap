@@ -11,17 +11,17 @@ yaml.indent(mapping=4, sequence=4, offset=4)
 SETTINGS_PATH = Path('~/.cobrawap/config').expanduser()
 
 def get_setting(key: str = None):
-    with open(SETTINGS_PATH, 'r') as f:
-        try:
+    try:
+        with open(SETTINGS_PATH, 'r') as f:
             settings = yaml.load(f)
             if not settings:
                 settings = {}
-        except Exception as e:
-            logger.warning(e)
-            raise FileNotFoundError("The settings file either doesn't exist "\
-                                    "or is not in proper JSON format! "\
-                                    "Try to run `cobrawap init` to set up the "\
-                                    "settings file.")
+    except Exception as e:
+        raise FileNotFoundError("The settings file `~/.cobrawap/config` "\
+                                "either does not exist "\
+                                "or is not in proper JSON format! "\
+                                "Try to run `cobrawap init` to set up the "\
+                                "settings file.") from e
     if key is None:
         return settings
     elif key not in settings.keys():
@@ -30,7 +30,7 @@ def get_setting(key: str = None):
         return settings[key]
 
 
-def set_setting(setting: dict) -> None:
+def set_setting(setting: dict, force_overwrite=False) -> None:
     if type(setting) != dict:
         raise TypeError('Function expects a dictionary!')
 
@@ -48,7 +48,7 @@ def set_setting(setting: dict) -> None:
         settings = {}
 
     key_overlap = [k for k in setting.keys() if k in settings.keys()]
-    if key_overlap:
+    if key_overlap and not force_overwrite:
         overwrite = (input(f"There are already settings for {key_overlap}! "\
                             "Overwrite? [y/N]").lower() == 'y'
                     or False)
@@ -234,8 +234,8 @@ def dict_to_cla(arg_dict):
 
 
 def in_quotes(object):
-    char = ['\s', '|']  # when these characters are in an argument str
-                        # they need to be put in quotes to be passed as cla
+    char = [r"\s", "|"]  # when these characters are in an argument str
+                         # they need to be put in quotes to be passed as cla
     return any([c in str(object) for c in char])
 
 

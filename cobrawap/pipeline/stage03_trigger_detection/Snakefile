@@ -39,7 +39,7 @@ use rule template as plot_trigger_times with:
 rule threshold:
     input:
         data = config.STAGE_INPUT,
-        thresholds = Path('{dir}') / 'threshold' / f'{config.THRESHOLD_METHOD}_thresholds.npy',
+        thresholds = Path('{dir}') / 'threshold' / str(config.THRESHOLD_METHOD + "_thresholds.npy"),
         script = SCRIPTS / 'threshold.py'
     output:
         data = Path('{dir}') / 'threshold' / config.STAGE_OUTPUT
@@ -73,7 +73,7 @@ use rule template as calc_threshold_fitted with:
         img_dir = directory(Path('{dir}') / 'threshold' / 'fitted_thresholds')
     params:
         params('sigma_factor', 'fit_function', 'bin_num', 'plot_channels',
-               img_name='amplitudes_channel0.'+config.PLOT_FORMAT, config=config)
+               img_name="amplitudes_channel0." + config.PLOT_FORMAT, config=config)
 
 
 use rule template as hilbert_phase with:
@@ -86,7 +86,7 @@ use rule template as hilbert_phase with:
     params:
         params('transition_phase', 'plot_channels', 'plot_tstart',
                'plot_tstop', config=config,
-                img_name='hilbert_phase_channel0.'+config.PLOT_FORMAT)
+                img_name="hilbert_phase_channel0." + config.PLOT_FORMAT)
 
 
 use rule template as minima with:
@@ -100,7 +100,7 @@ use rule template as minima with:
         params('minima_persistence', 'min_peak_distance', 'maxima_threshold_fraction',
                'maxima_threshold_window', 'num_interpolation_points',
                'plot_channels', 'plot_tstart', 'plot_tstop',
-                img_name='minima_channel0.'+config.PLOT_FORMAT, config=config)
+                img_name="minima_channel0." + config.PLOT_FORMAT, config=config)
 
 
 #### FILTER BLOCKS (choose any) ####
@@ -110,7 +110,7 @@ use rule template as remove_short_states with:
         data = filtered_triggers,
         script = SCRIPTS / 'remove_short_states.py'
     output:
-        Path('{dir}') / '{rule_name}' / f'remove_short_states.{config.NEO_FORMAT}'
+        Path('{dir}') / '{rule_name}' / str("remove_short_states." + config.NEO_FORMAT)
     params:
         params('min_up_duration', 'min_down_duration', 'remove_down_first',
                 config=config)

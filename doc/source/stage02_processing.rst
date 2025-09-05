@@ -30,5 +30,5 @@ Processing Blocks (*choose any*)
     roi_selection
     spatial_downsampling
     subsampling 
-    z_score
+    zscore
 

@@ -17,7 +17,7 @@ use rule template_all as all with:
 
 
 def additional_properties(wildcards):
-    return [Path(wildcards.dir) / prop / f'{prop}.{config.NEO_FORMAT}'
+    return [Path(wildcards.dir) / prop / str(prop + "." + config.NEO_FORMAT)
             for prop in config.ADDITIONAL_PROPERTIES]
 
 rule merge_wave_definitions:
@@ -49,7 +49,7 @@ use rule template_plus_plot_script as trigger_clustering with:
     output:
         Path('{dir}') / 'trigger_clustering' / config.STAGE_OUTPUT,
         img = Path('{dir}') / 'trigger_clustering'
-                            / f'wave_cluster.{config.PLOT_FORMAT}'
+                            / str("wave_cluster." + config.PLOT_FORMAT)
 
 #### ADDITIONAL PROPERTIES ####
 
@@ -61,20 +61,20 @@ use rule template as optical_flow with:
         params('alpha', 'max_Niter', 'convergence_limit', 'gaussian_sigma',
                'derivative_filter', 'use_phases', config=config)
     output:
-        Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.NEO_FORMAT}',
-        output_img = Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}' / str("optical_flow." + config.NEO_FORMAT),
+        output_img = Path('{dir}') / '{rule_name}' / str("optical_flow." + config.PLOT_FORMAT)
 
 
 use rule template_plus_plot_script as critical_points with:
     input:
-        data = Path('{dir}') / 'optical_flow' / f'optical_flow.{config.NEO_FORMAT}',
+        data = Path('{dir}') / 'optical_flow' / str("optical_flow." + config.NEO_FORMAT),
         script = SCRIPTS / 'critical_points.py',
         plot_script = SCRIPTS / 'plot_critical_points.py',
     params:
         params(frame_id=0, skip_step=1)
     output:
-        Path('{dir}') / 'critical_points' / f'critical_points.{config.NEO_FORMAT}',
-        img = Path('{dir}') / 'critical_points' / f'critical_points.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}' / str("critical_points." + config.NEO_FORMAT),
+        img = Path('{dir}') / '{rule_name}' / str("critical_points." + config.PLOT_FORMAT)
 
 
 # use rule template as critical_points_clustering with:
@@ -100,8 +100,8 @@ use rule template as wave_mode_clustering with:
                'wave_outlier_quantile', 'num_kmeans_cluster',
                'interpolation_step_size', 'interpolation_smoothing', config=config)
     output:
-        Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.NEO_FORMAT}',
-        output_img = Path('{dir}') / '{rule_name}' / f'{rule_name}.{config.PLOT_FORMAT}'
+        Path('{dir}') / '{rule_name}' / str("wave_mode_clustering." + config.NEO_FORMAT),
+        output_img = Path('{dir}') / '{rule_name}' / str("wave_mode_clustering." + config.PLOT_FORMAT)
 
 #### PLOTTING ####
 
@@ -111,8 +111,8 @@ use rule template as plot_waves with:
         script = SCRIPTS / 'plot_waves.py'
     params:
         params(time_window = 0.4,  # in s
-               colormap='viridis',
-               img_name='wave_plot_id0.'+config.PLOT_FORMAT)
+               colormap="viridis",
+               img_name="wave_plot_id0." + config.PLOT_FORMAT)
     output:
         directory(Path('{dir}') / 'wave_plots')
 
@@ -121,30 +121,30 @@ use rule template as plot_waves with:
 
 use rule template as time_slice with:
     input:
-        data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
+        data = Path('{dir}') / str('{data_name}' + "." + config.NEO_FORMAT),
         script = SCRIPTS / 'time_slice.py'
     params:
         params()
     output:
-        Path('{dir}') / f'{{data_name}}_{{t_start, [0-9]+}}-{{t_stop, [0-9]+}}s.{config.NEO_FORMAT}'
+        Path('{dir}') / str('{data_name}_{t_start}-{t_stop}s.' + config.NEO_FORMAT)
 
 
 use rule template as plot_movie_frames with:
     input:
-        data = Path('{dir}') / f'{{data_name}}.{config.NEO_FORMAT}',
+        data = Path('{dir}') / str('{data_name}' + "." + config.NEO_FORMAT),
         script = SCRIPTS / 'plot_movie_frames.py'
     params:
         params('colormap', 'frame_rate', 'marker_color', 'plot_event',
                config=config, frame_name='frame', frame_format='png')
     output:
-        frame_folder = directory(Path('{dir}') / '{data_name}_frames')
+        frame_folder = directory(Path('{dir}') / str('{data_name}' + "_frames"))
 
 
 rule plot_movie:
     input:
-        Path('{dir}') / '{data_name}_frames'
+        Path('{dir}') / str('{data_name}' + "_frames")
     output:
-        Path('{dir}') / '{data_name}.mp4'
+        Path('{dir}') / str('{data_name}' + ".mp4")
     params:
         frame_path = lambda wildcards, input: Path(input[0],
                                                 'frame_%05d.{}'\
@@ -190,7 +190,7 @@ rule mp4_to_gif:
     input:
         Path('{path}.mp4')
     output:
-        Path('{path}_{scale}px.gif')
+        Path('{path}' + "_" + '{scale}' + "px.gif")
     shell:
         """
         ffmpeg -i {input:q} \

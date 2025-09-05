@@ -13,9 +13,9 @@ from utils.parse import none_or_float
 
 CLI = argparse.ArgumentParser()
 CLI.add_argument("--original_data", nargs='?', type=Path, required=True,
-                 help="path to input data in neo format")
+                 help="path to original input data in neo format")
 CLI.add_argument("--data", nargs='?', type=Path, required=True,
-                 help="path to input data in neo format")
+                 help="path to processed input data in neo format")
 CLI.add_argument("--img_dir", nargs='?', type=Path, required=True,
                  help="path of output figure directory")
 CLI.add_argument("--img_name", nargs='?', type=str,

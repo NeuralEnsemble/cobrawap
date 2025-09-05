@@ -168,6 +168,8 @@ if __name__ == '__main__':
                          + "{args.intensity_threshold} were discarded. "\
                          + "({})".format(os.path.basename(__file__))
     block.segments[0].analogsignals = [new_asig]
+    # TODO: What about other analogsignals, e.g. hemodynamics_subtraction data?
+    #       Do they need to be cropped as well?
 
     plot_roi(avg_img, contour)
     if args.output_img is not None:

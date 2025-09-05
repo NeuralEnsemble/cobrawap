@@ -12,9 +12,9 @@ from utils.io_utils import load_neo, save_plot
 from utils.neo_utils import analogsignal_to_imagesequence
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=Path,
+CLI.add_argument("--data", nargs='?', type=Path, required=True,
                  help="path to input data in neo format")
-CLI.add_argument("--output_dir", nargs='?', type=Path,
+CLI.add_argument("--output_dir", nargs='?', type=Path, required=True,
                  help="path to output directory")
 CLI.add_argument("--img_name", nargs='?', type=str,
                  help="")

@@ -18,7 +18,7 @@ setup()     # everything configured via pyproject.toml
 #
 #     license="GPL-3.0-or-later",
 #
-#     url='https://github.com/INM-6/cobrawap',
+#     url='https://github.com/NeuralEnsemble/cobrawap',
 #     # https://pypi.org/pypi?:action=list_classifiers
 #     classifiers=[
 #         'Development Status :: 2 - Pre-Alpha',

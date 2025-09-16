@@ -4,7 +4,7 @@ Stage 01 - Data Entry
 
 **This stage handles the loading and representation of the input dataset and metadata into the standard format for the pipeline.**
 
-`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/configs/config_template.yaml>`_
+`config template <https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage01_data_entry/configs/config_template.yaml>`_
 
 Input
 =====
@@ -26,7 +26,7 @@ Any additional metadata and neo objects in the ``neo.Block`` passed along throug
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage01_data_entry/configs/scripts/check_input.py
+.. _check_input: https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage01_data_entry/configs/scripts/check_input.py
 
 Required Data Capabilities
 ==========================
@@ -67,7 +67,7 @@ Having the data and metadata already in a standard format (e.g., Neo_) as used w
     * Set the additional metadata for the config parameter as required (*can be revisited when writing the loading script*)
 
 3. Create the corresponding loading script.
-    * Copy the ``enter_data_template.py`` in ``cobrawap/pipeline/stage01_data_entry/scripts/`` and and name it as specified in the just created config file. 
+    * Copy the ``enter_data_template.py`` in ``cobrawap/pipeline/stage01_data_entry/scripts/`` and and name it as specified in the just created config file.
     * Put the script either in the same folder or in ``<configs_dir>/stage01_data_entry/scripts/`` if defined.
 
 4. Edit the loading script.

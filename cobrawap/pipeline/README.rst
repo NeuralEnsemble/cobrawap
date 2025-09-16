@@ -40,7 +40,7 @@ Manual Installation For Developers
 ----------------------------------
 For working on the source code, it is recommended to fork the Cobrawap repository from Github, and clone it or set it as a submodule to another project repository.
 
-`Create a fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ in your github domain of the upstream location `github.com/INM-6/cobrawap <https://github.com/INM-6/cobrawap>`_ and clone the repository to your local machine (:code:`git clone git@github.com:<your-github-handle>/cobrawap.git`).
+`Create a fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ in your github domain of the upstream location `github.com/NeuralEnsemble/cobrawap <https://github.com/NeuralEnsemble/cobrawap>`_ and clone the repository to your local machine (:code:`git clone git@github.com:<your-github-handle>/cobrawap.git`).
 
 Then use pip to install the module from your local directory in an editable mode.
 .. code-block:: bash
@@ -72,7 +72,7 @@ See also `Command Line Interface > create <https://cobrawap.readthedocs.io/en/la
     cobrawap create
 
 This will prompt the setting of a profile name and optionally a parent profile name from which to copy the parameter presets. The parent profile name will be prepended to the profile name (see :ref:`config_profiles`). Optionally, these names can be directly passed to the :code:`create` command with :code:`--profile` and :code:`--parent_profile`.
-The profile and parent name will be used to create correspondingly named config files for each stage: ``config_<parent>_<profile>.yaml`` for the first stage and ``config_<parent>.yaml`` for all other stages. 
+The profile and parent name will be used to create correspondingly named config files for each stage: ``config_<parent>_<profile>.yaml`` for the first stage and ``config_<parent>.yaml`` for all other stages.
 
 For specifying the data entry into the pipeline :code:`create` also asks for the path to the dataset and a name for the corresponding loading script. This information can also be passed to the :code:`create` command with :code:`--data_path` and :code:`--loading_script_name`.
 Both information are written into the corresponding config file of the first stage. Furthermore, a template loading script is created in ``<config_path>/stage01_data_entry/scripts/`` which has to be adapted to load the specific dataset.
@@ -90,7 +90,7 @@ See also `Command Line Interface > add_profile <https://cobrawap.readthedocs.io/
 This will prompt the setting of a profile and parent profile name just as for :code:`cobrawap create`. Additionally, it requires to specify the stages for which to create new config files (can be directly passed with :code:`--stages`).
 Consequently, this will create new config files ``config_<parent>_<profile>.yaml`` for the selected stages, copying the parameter presents from ``config_<parent>.yaml``.
 
-If the stage selection includes the first stage, this will again prompt the additional setting of a :code:`--data_path` and :code:`--loading_script_name` as for :code:`cobrawap create`. 
+If the stage selection includes the first stage, this will again prompt the additional setting of a :code:`--data_path` and :code:`--loading_script_name` as for :code:`cobrawap create`.
 
 Running the Pipeline
 --------------------
@@ -124,7 +124,7 @@ See also `Command Line Interface > run_block <https://cobrawap.readthedocs.io/en
 
     cobrawap run_block
 
-This command allows to execute the python script of a specific block. The block should be specified as :code:`<stage_name>.<block_name>` and can be passed with :code:`--block`. Any additional command line arguments are passed to the script. 
+This command allows to execute the python script of a specific block. The block should be specified as :code:`<stage_name>.<block_name>` and can be passed with :code:`--block`. Any additional command line arguments are passed to the script.
 
 To display the help text of the block script add :code:`--block_help`.
 
@@ -171,7 +171,7 @@ In the setting file, you can also optionally set a ``configs_dir`` path to defin
 
 Config Profiles
 ---------------
-Config profiles make it possible to group specific parameter configurations for different datasets or applications across stages, and easily switch between them. You can set the ``PROFILE`` parameter in the top-level config file (or via the command line when running the pipeline). The corresponding pipeline output will be stored in ``{output_path}/{profile}/``, and for each stage the specific config file ``{stage}/configs/config_{profile}.yaml`` is used. 
+Config profiles make it possible to group specific parameter configurations for different datasets or applications across stages, and easily switch between them. You can set the ``PROFILE`` parameter in the top-level config file (or via the command line when running the pipeline). The corresponding pipeline output will be stored in ``{output_path}/{profile}/``, and for each stage the specific config file ``{stage}/configs/config_{profile}.yaml`` is used.
 
 To reduce redundancy and the number of config files, profiles use a hierachical naming convention where each subgroup is seperated with an underscore ``_``, for example, ``config_ecog_session1_trial7.yaml``. When a stage does not contain this exact file name, it falls back onto the parent group (``config_ecog_session1.yaml``) and when it also doesn't exist onto its parent group (``config_ecog.yaml``) and so on. Thus, config specialization is only applied in the stages where it is needed. Furthermore, you can add variants to the profile name with a ``|`` delimiter to additionally switch analysis types, for example, ``config_caimg_session1|subsampled.yaml``.
 The selection order is the following:
@@ -264,4 +264,3 @@ Input dependencies to blocks are handled by the corresponding rule in the *Snake
 Block Outputs
 -------------
 All output from blocks (data and figures) is stored in ``{output_path}/{profile}/{STAGE_NAME}/{block_name}/``.
-

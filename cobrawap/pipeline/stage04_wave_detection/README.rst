@@ -4,11 +4,11 @@ Stage 04 - Wave Detection
 
 **This stage detects individual propagating waves based on the local transition times and optionally complements the wave description with additionally derived properties.**
 
-`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage04_wave_detection/configs/config_template.yaml>`_
+`config template <https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage04_wave_detection/configs/config_template.yaml>`_
 
 Input
 =====
-A ``neo.Block`` and ``Segment`` object containing 
+A ``neo.Block`` and ``Segment`` object containing
 
 an ``AnalogSignal`` object with all signal channels with
 
@@ -23,7 +23,7 @@ an ``Event`` object named *'transitions'* with
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage04_wave_detection/scripts/check_input.py
+.. _check_input: https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage04_wave_detection/scripts/check_input.py
 
 Output
 ======

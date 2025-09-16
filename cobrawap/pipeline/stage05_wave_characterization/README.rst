@@ -4,7 +4,7 @@ Stage 05 - Wave Characterization
 
 **This stage evaluates the detected waves by deriving characteristic wave-wise measures.**
 
-`config template <https://github.com/INM-6/cobrawap/blob/master/pipeline/stage05_wave_characterization/configs/config_template.yaml>`_
+`config template <https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage05_wave_characterization/configs/config_template.yaml>`_
 
 Input
 =====
@@ -20,7 +20,7 @@ a ``neo.Event`` object named _'wavefronts'_, containing
 *should pass* |check_input|_
 
 .. |check_input| replace:: *check_input.py*
-.. _check_input: https://github.com/INM-6/cobrawap/blob/master/pipeline/stage05_wave_characterization/scripts/check_input.py
+.. _check_input: https://github.com/NeuralEnsemble/cobrawap/blob/master/pipeline/stage05_wave_characterization/scripts/check_input.py
 
 Output
 ======
@@ -31,5 +31,5 @@ A table (``pandas.DataFrame``), containing
 
 Usage
 =====
-In this stage, any number of blocks can be selected via the ``MEASURES`` parameter and are applied on the stage input (*choose any*). 
-To include specific metadata in the output table, select the corresponding annotation keys with ``INCLUDE_KEYS``, or to include all available metadata execept some specifiy only the corresponding annotations keys in ``IGNORE_KEYS``. 
+In this stage, any number of blocks can be selected via the ``MEASURES`` parameter and are applied on the stage input (*choose any*).
+To include specific metadata in the output table, select the corresponding annotation keys with ``INCLUDE_KEYS``, or to include all available metadata execept some specifiy only the corresponding annotations keys in ``IGNORE_KEYS``.

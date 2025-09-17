@@ -33,7 +33,7 @@ copyright = u"2017-{this_year}, {authors}".format(this_year=date.today().year,
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-with open(os.path.join(root_dir, 'VERSION')) as version_file:
+with open(os.path.join(root_dir, 'cobrawap' 'VERSION')) as version_file:
     # The full version, including alpha/beta/rc tags.
     release = version_file.read().strip()
 

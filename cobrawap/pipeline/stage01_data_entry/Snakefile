@@ -15,8 +15,7 @@ use rule template_all as all with:
         img = OUTPUT_DIR / config.DATA_NAME
                          / str("trace_" + config.DATA_NAME + "." + config.PLOT_FORMAT),
         data = OUTPUT_DIR / config.DATA_NAME
-                          / str(config.DATA_NAME + "." + config.NEO_FORMAT),
-        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+                          / str(config.DATA_NAME + "." + config.NEO_FORMAT)
 
 
 use rule check_input as check_data_entry with:

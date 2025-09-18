@@ -18,7 +18,6 @@ def filtered_triggers(wildcards):
 use rule template_all as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
-        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
         data = filtered_triggers,
         img = OUTPUT_DIR / 'plot_trigger_times'
 

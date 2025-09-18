@@ -22,8 +22,7 @@ use rule template as all with:
     input:
         check = OUTPUT_DIR / 'input.check',
         data = measures_output,
-        script = SCRIPTS / 'merge_dataframes.py',
-        # configfile = Path('configs') / f'config_{config.PROFILE}.yaml'
+        script = SCRIPTS / 'merge_dataframes.py'
     params:
         params()
     output:

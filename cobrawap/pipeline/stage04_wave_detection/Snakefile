@@ -13,7 +13,6 @@ use rule template_all as all with:
         check = OUTPUT_DIR / 'input.check',
         data = OUTPUT_DIR / 'merge_wave_definitions' / config.STAGE_OUTPUT,
         # img = OUTPUT_DIR / 'wave_plots'
-        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 
 
 def additional_properties(wildcards):

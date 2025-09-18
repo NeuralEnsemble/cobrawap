@@ -46,7 +46,6 @@ use rule template_all as all with:
         check = OUTPUT_DIR / 'input.check',
         data = _final_rule_output,
         # img = OUTPUT_DIR / '<some_result_plot>'
-        # configfile = Path('configs') / f'config_{PROFILE}.yaml',
 
 #### OTHER BLOCKS ####
 

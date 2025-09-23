@@ -8,10 +8,11 @@ Release 0.2.3
 Bug fixes
 ---------
 * Fixed bug in `--version` handling of installed versions (`#113 <https://github.com/NeuralEnsemble/cobrawap/pull/113>`_)
+* Fixed breaking syntax error in stage 2 (`#115 <https://github.com/NeuralEnsemble/cobrawap/pull/115>`_)
 
 Other changes
 -------------
-* Housekeeping (`#114 <https://github.com/NeuralEnsemble/cobrawap/pull/114>`_), (`#115 <https://github.com/NeuralEnsemble/cobrawap/pull/115>`_)
+* Housekeeping (`#114 <https://github.com/NeuralEnsemble/cobrawap/pull/114>`_)
 
 
 Release 0.2.2

@@ -101,7 +101,7 @@
     }
   ],
 
-  "title": "Cobrawap 0.2.2",
+  "title": "Cobrawap 0.2.3",
 
   "keywords": [
     "neuroscience",
@@ -124,7 +124,7 @@
 
     {
       "scheme": "doi",
-      "identifier": "10.5281/zenodo.15005123",
+      "identifier": "10.5281/zenodo.17048329",
       "relation": "isNewVersionOf",
       "resource_type": "software"
     },

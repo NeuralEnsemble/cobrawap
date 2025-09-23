@@ -3,6 +3,17 @@ Release Notes
 *************
 
 
+Release 0.2.3
+=============
+Bug fixes
+---------
+* Fixed bug in `--version` handling of installed versions (`#113 <https://github.com/NeuralEnsemble/cobrawap/pull/113>`_)
+
+Other changes
+-------------
+* Housekeeping (`#114 <https://github.com/NeuralEnsemble/cobrawap/pull/114>`_), (`#115 <https://github.com/NeuralEnsemble/cobrawap/pull/115>`_)
+
+
 Release 0.2.2
 =============
 Bug fixes

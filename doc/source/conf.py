@@ -10,7 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
+import inspect
 import sys
 from pathlib import Path
 from datetime import date
@@ -32,8 +32,8 @@ copyright = u"2017-{this_year}, {authors}".format(this_year=date.today().year,
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-root_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-with open(os.path.join(root_dir, 'VERSION')) as version_file:
+root_dir = Path(inspect.getfile(lambda: None)).parents[2]
+with open(root_dir / 'cobrawap' / 'VERSION') as version_file:
     # The full version, including alpha/beta/rc tags.
     release = version_file.read().strip()
 

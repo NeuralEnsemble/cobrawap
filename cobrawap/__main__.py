@@ -42,7 +42,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Fetch version number
 try:
-    with open(Path(inspect.getfile(lambda: None)).parents[1] / 'VERSION') as f:
+    with open(Path(inspect.getfile(lambda: None)).parents[0] / 'VERSION') as f:
         VERSION = f.read().strip()
 except FileNotFoundError:
     VERSION = "unknown"

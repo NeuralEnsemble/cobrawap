@@ -42,6 +42,7 @@ def detect_transitions(asig, transition_phase):
 
     hilbert_signal = hilbert(signal, axis=0)
     hilbert_phase = np.angle(hilbert_signal)
+    phase_asig = asig.duplicate_with_new_data(hilbert_phase, units='dimensionless')
 
     def _detect_phase_crossings(phase):
         # detect phase crossings from below phase to above phase
@@ -59,7 +60,7 @@ def detect_transitions(asig, transition_phase):
                           for channel in range(channel_num)]
         return crossings_list
 
-    # UP transitions: A change of the hilbert phase from < transtion_phase
+    # UP transitions: A change of the hilbert phase from < transition_phase
     #                 to > transition_phase, followed by a peak (phase = 0).
 
     peaks = _detect_phase_crossings(0)
@@ -83,7 +84,7 @@ def detect_transitions(asig, transition_phase):
         channels = np.append(channels,
                              np.ones_like(channel_up_transitions, dtype=int)*channel_id)
 
-    # save transitions as Event labels:'UP', array_annotations: channels
+    # save transitions as Event labels: 'UP', array_annotations: channels
     sort_idx = np.argsort(up_transitions)
 
     evt = neo.Event(times=up_transitions[sort_idx]*asig.times.units,
@@ -101,29 +102,32 @@ def detect_transitions(asig, transition_phase):
 
     remove_annotations(asig, del_keys=['nix_name', 'neo_name'])
     evt.annotations.update(asig.annotations)
-    return evt
+
+    return phase_asig, evt
 
 
-def plot_hilbert_phase(asig, event, channel):
+def plot_hilbert_phase(asig, phase_asig, event, channel):
     signal = asig.as_array()[:,channel]
-
-    hilbert_signal = hilbert(signal, axis=0)
-    hilbert_phase = np.angle(hilbert_signal)
+    phase = phase_asig.as_array()[:,channel]
 
     sns.set(style='ticks', palette="deep", context="notebook")
-    fig, ax = plt.subplots()
+    palette = sns.color_palette()
+    fig, ax1 = plt.subplots()
 
-    ax.plot(asig.times.rescale('s'), zscore(signal), label='signal')
-    ax.plot(asig.times.rescale('s'), hilbert_phase, label='hilbert phase')
-
+    ax1.plot(asig.times.rescale('s'), signal, color=palette[0])
+    ax1.set_ylabel('signal', color=palette[0])
     for t, c in zip(event.times, event.array_annotations['channels']):
         if c == channel:
-            ax.axvline(t.rescale('s'), color='k')
+            ax1.axvline(t.rescale('s'), color='k', ls='--')
 
-    ax.set_title('Channel {}'.format(channel))
-    ax.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
-    ax.legend()
-    return ax
+    ax2 = ax1.twinx()
+    ax2.plot(asig.times.rescale('s'), phase, color=palette[1])
+    ax2.set_ylabel('hilbert phase', color=palette[1])
+
+    ax1.set_title('Channel {}'.format(channel))
+    ax1.set_xlabel('time [{}]'.format(asig.times.units.dimensionality.string))
+
+    return ax1, ax2
 
 
 if __name__ == '__main__':
@@ -136,7 +140,7 @@ if __name__ == '__main__':
     args.plot_tstart = asig.t_start if args.plot_tstart is None else args.plot_tstart
     args.plot_tstop = asig.t_stop if args.plot_tstop is None else args.plot_tstop
 
-    transition_event = detect_transitions(asig, args.transition_phase)
+    hilbert_phase, transition_event = detect_transitions(asig, args.transition_phase)
 
     block.segments[0].events.append(transition_event)
 
@@ -145,6 +149,7 @@ if __name__ == '__main__':
     if args.plot_channels[0] is not None:
         for channel in args.plot_channels:
             plot_hilbert_phase(asig=time_slice(asig, args.plot_tstart, args.plot_tstop),
+                               phase_asig=time_slice(hilbert_phase, args.plot_tstart, args.plot_tstop),
                                event=time_slice(transition_event, args.plot_tstart, args.plot_tstop),
                                channel=int(channel))
             output_path = args.img_dir / args.img_name.replace('_channel0', f'_channel{channel}')

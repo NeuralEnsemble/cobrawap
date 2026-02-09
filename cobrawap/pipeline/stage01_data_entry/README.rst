@@ -67,7 +67,7 @@ Having the data and metadata already in a standard format (e.g., Neo_) as used w
     * Set the additional metadata for the config parameter as required (*can be revisited when writing the loading script*)
 
 3. Create the corresponding loading script.
-    * Copy the ``enter_data_template.py`` in ``cobrawap/pipeline/stage01_data_entry/scripts/`` and and name it as specified in the just created config file.
+    * Copy the ``enter_data_template.py`` in ``cobrawap/pipeline/stage01_data_entry/scripts/`` and name it as specified in the just created config file.
     * Put the script either in the same folder or in ``<configs_dir>/stage01_data_entry/scripts/`` if defined.
 
 4. Edit the loading script.

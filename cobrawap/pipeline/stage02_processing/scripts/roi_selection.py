@@ -27,7 +27,7 @@ CLI.add_argument("--crop_to_selection", nargs='?', type=str_to_bool,
                  help="discard frame outside of ROI", default=True)
 
 def calculate_contour(img, contour_limit):
-    # Computing the contour lines...
+    # Compute the contour lines
     vmax = np.max(img)
     vmin = np.min(img)
     limit = vmin + contour_limit * (vmax-vmin)
@@ -52,8 +52,10 @@ def calculate_contour(img, contour_limit):
             intercept_right = True
         if not np.all(contour[:,1]-len(img[1])+1):
             intercept_top = True
-        return {'left': intercept_left, 'right': intercept_right,
-                'top': intercept_top, 'bottom' : intercept_bot}
+        return {"left": intercept_left,
+                "right": intercept_right,
+                "top": intercept_top,
+                "bottom": intercept_bot}
 
     contour_intercepts = border_intercepts(contour)
     if sum(contour_intercepts.values()) > 1:
@@ -70,20 +72,20 @@ def calculate_contour(img, contour_limit):
         # or include corner
         if not connected:
             snd_contour = []
-            if contour_intercepts['left'] and contour_intercepts['bottom']:
+            if contour_intercepts["left"] and contour_intercepts["bottom"]:
                 snd_contour += [0,0]
-            elif contour_intercepts['bottom'] and contour_intercepts['right']:
+            elif contour_intercepts["bottom"] and contour_intercepts["right"]:
                 snd_contour += [len(img[0])-1,0]
-            elif contour_intercepts['left'] and contour_intercepts['bottom']:
+            elif contour_intercepts["left"] and contour_intercepts["bottom"]:
                 snd_contour += [0,len(img[1]-1)]
-            elif contour_intercepts['top'] and contour_intercepts['right']:
+            elif contour_intercepts["top"] and contour_intercepts["right"]:
                 snd_contour += [len(img[0])-1,len(img[1])-1]
             else:
-                raise ValueError('The contour is to large, and can not be determined unambigously!')
+                raise ValueError("The contour is too large, and can not be determined unambiguously!")
     else:
         includes_corner = False
 
-    print('Contour includes corner = ', includes_corner)
+    print("Contour includes corner: %s" % str(includes_corner))
     return contour
 
 
@@ -122,8 +124,8 @@ def crop_to_selection(frames):
 
 def plot_roi(img, contour):
     fig, ax = plt.subplots()
-    ax.imshow(img, interpolation='nearest', cmap=plt.cm.gray, origin='lower')
-    ax.axis('image')
+    ax.imshow(img, interpolation="nearest", cmap=plt.cm.gray, origin="lower")
+    ax.axis("image")
     ax.set_xticks([])
     ax.set_yticks([])
     ax.plot(contour[:,0], contour[:,1], linewidth=2)
@@ -131,7 +133,7 @@ def plot_roi(img, contour):
     return ax
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
@@ -156,7 +158,7 @@ if __name__ == '__main__':
     if args.crop_to_selection:
         imgseq_array = crop_to_selection(imgseq_array)
 
-    # replace analogsingal
+    # replace analogsignal
     tmp_blk = neo.Block()
     tmp_seg = neo.Segment()
     tmp_blk.segments.append(tmp_seg)

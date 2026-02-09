@@ -1,16 +1,17 @@
 # Config file for Stage 4 - Wave Detection
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage04_wave_detection'
+STAGE_NAME: "stage04_wave_detection"
 
-# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'dataset_key'
+# The profile name is the key for this parameter configuration.
+# Results are stored in output_path/<PROFILE>/ (`output_path` defined in ~/.cobrawap/config).
+PROFILE: "dataset_key"
 
 # Name of the output file
 STAGE_OUTPUT: "waves"
 
 # File format in which all intermediate neo objects are stored
-NEO_FORMAT: 'nix'
+NEO_FORMAT: "nix"
 
 # If True (default), the output file of a stage is created as symbolic link
 # to the last block output. If False, a duplicate is created (e.g. for cloud
@@ -18,27 +19,27 @@ NEO_FORMAT: 'nix'
 USE_LINK_AS_STAGE_OUTPUT: True
 
 # Plotting parameters
-PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
-PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
-PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
-PLOT_FORMAT: 'png'
+PLOT_TSTART: 0  # float (in s) or "None" -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or "None" -> stopping time of the input signal is used
+PLOT_CHANNELS: "None"  # int or "None" -> randomly selected (default, automatic creation of reports will fail)
+PLOT_FORMAT: "png"
 
 
 # DETECTION BLOCK
 ##################
-# Available Blocks: 'trigger_clustering'
-DETECTION_BLOCK: 'trigger_clustering'
+# Available Blocks: "trigger_clustering"
+DETECTION_BLOCK: "trigger_clustering"
 
 # ADDITIONAL PROPERTIES
 #######################
-# Available Blocks: 'optical_flow', 'critical_points', 'wave_mode_clustering'
+# Available Blocks: "optical_flow", "critical_points", "wave_mode_clustering"
 # use empty list [] for selecting none
-ADDITIONAL_PROPERTIES: ['wave_mode_clustering', 'optical_flow']
+ADDITIONAL_PROPERTIES: ["wave_mode_clustering", "optical_flow"]
 
 # Trigger Clustering
-######################
+####################
 # Using sklearn.cluster.DBSCAN
-METRIC: 'euclidean'
+METRIC: "euclidean"
 # eps, maximum distance between points to be neighbours
 NEIGHBOUR_DISTANCE: 15
 MIN_SAMPLES_PER_WAVE: 30
@@ -47,7 +48,7 @@ MIN_SAMPLES_PER_WAVE: 30
 TIME_SPACE_RATIO: 1
 
 # Optical Flow (Horn-Schunck algorithm)
-##############
+#######################################
 USE_PHASES: True
 # weight of the smoothness constraint over the brightness constancy constraint
 ALPHA: 0.1
@@ -61,7 +62,7 @@ CONVERGENCE_LIMIT: 0.0001
 GAUSSIAN_SIGMA: [0,3,3]
 # Kernel filter to use to calculate the spatial derivatives.
 # simple_3x3, prewitt_3x3, scharr_3x3, sobel_3x3, sobel_5x5, sobel_7x7
-DERIVATIVE_FILTER: 'scharr_3x3'
+DERIVATIVE_FILTER: "scharr_3x3"
 
 # Critical Point Clustering
 ###########################
@@ -94,7 +95,7 @@ BITRATE: 20M
 # displayed sampling rate, the data will be stretched or compressed to.
 # If None, the inherent sampling rate is used.
 FRAME_RATE: None
-# 'gray', 'viridis' (sequential), 'coolwarm' (diverging), 'twilight' (cyclic)
-COLORMAP: 'twilight'
-PLOT_EVENT: 'wavefronts' # name of neo event to plot, default is None
-MARKER_COLOR: 'r'
+# "gray", "viridis" (sequential), "coolwarm" (diverging), "twilight" (cyclic)
+COLORMAP: "twilight"
+PLOT_EVENT: "wavefronts" # name of neo event to plot, default is None
+MARKER_COLOR: "r"

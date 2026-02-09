@@ -1,13 +1,14 @@
 # Config file for Stage 5 - Wave Characterization
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage05_wave_characterization'
+STAGE_NAME: "stage05_wave_characterization"
 
-# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'dataset_key'
+# The profile name is the key for this parameter configuration.
+# Results are stored in output_path/<PROFILE>/ (`output_path` defined in ~/.cobrawap/config).
+PROFILE: "dataset_key"
 
 # Name of the output file
-STAGE_OUTPUT: 'wave-wise_measures.csv'
+STAGE_OUTPUT: "wave-wise_measures.csv"
 
 # If True (default), the output file of a stage is created as symbolic link
 # to the last block output. If False, a duplicate is created (e.g. for cloud
@@ -15,19 +16,19 @@ STAGE_OUTPUT: 'wave-wise_measures.csv'
 USE_LINK_AS_STAGE_OUTPUT: True
 
 # Plotting parameters
-PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
-PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
-PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
-PLOT_FORMAT: 'png'
+PLOT_TSTART: 0  # float (in s) or "None" -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or "None" -> stopping time of the input signal is used
+PLOT_CHANNELS: "None"  # int or "None" -> randomly selected (default, automatic creation of reports will fail)
+PLOT_FORMAT: "png"
 
 # Wave event name
-# 'wavefronts', 'wavemodes'
-EVENT_NAME: 'wavefronts'
+# "wavefronts", "wavemodes"
+EVENT_NAME: "wavefronts"
 
 # Measures to compute
-# 'label_planar', 'velocity_planar', 'direction_planar', 'inter_wave_interval',
-# 'time_stamp', 'duration', 'number_of_triggers', 'annotations'
-MEASURES: ['annotations', 'inter_wave_interval', 'label_planar', 'velocity_planar', 'direction_planar']
+# "label_planar", "velocity_planar", "direction_planar", "inter_wave_interval",
+# "time_stamp", "duration", "number_of_triggers", "annotations"
+MEASURES: ["annotations", "inter_wave_interval", "label_planar", "velocity_planar", "direction_planar"]
 
 # Label Planar
 ##############
@@ -36,12 +37,12 @@ ALIGNMENT_THRESHOLD: 0.9
 # Direction Planar
 ##################
 # tigger_interolation, optical_flow
-DIRECTION_METHOD: 'optical_flow'
+DIRECTION_METHOD: "optical_flow"
 
 # Time Stamp
 ############
 # start, middle, end
-TIME_STAMP_POINT: 'start'
+TIME_STAMP_POINT: "start"
 
 # Annotations
 #############

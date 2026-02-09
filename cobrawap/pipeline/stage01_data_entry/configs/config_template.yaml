@@ -1,16 +1,17 @@
 # Config file for Stage 1 - Data Entry
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stage01_data_entry'
+STAGE_NAME: "stage01_data_entry"
 
-# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'dataset_key'
+# The profile name is the key for this parameter configuration.
+# Results are stored in output_path/<PROFILE>/ (`output_path` defined in ~/.cobrawap/config).
+PROFILE: "dataset_key"
 
 # Name of stage output file.
-STAGE_OUTPUT: 'data'
+STAGE_OUTPUT: "data"
 
 # File format in which all intermediate neo objects are stored
-NEO_FORMAT: 'nix'
+NEO_FORMAT: "nix"
 
 # If True (default), the output file of a stage is created as symbolic link
 # to the last block output. If False, a duplicate is created (e.g. for cloud
@@ -18,19 +19,20 @@ NEO_FORMAT: 'nix'
 USE_LINK_AS_STAGE_OUTPUT: True
 
 # Datasets which should be processed with identical settings.
-# To set as key-value pairs
-# Name_of_dataset: /path/to/data/files/
-DATA_SETS: # Note that only the first entry will be used for the pipeline!
-    data_name: '/path/to/data/'
+# To set as key-value pairs, e.g.:
+#     name_of_dataset: /path/to/data/files/
+# Note that only the first entry will be used for the pipeline!
+DATA_SETS:
+    data_name: "/path/to/data/"
 
 # Name of script in scripts/ folder, handling the loading and curation
-CURATION_SCRIPT: 'curate_dataset_key.py'
+CURATION_SCRIPT: "curate_dataset_key.py"
 
 # Distance between electrodes (or pixel size)
 SPATIAL_SCALE: 0.05  # mm
 
 # Rate of acquisition of data points
-# Can be 'None' if information is provided in the data file
+# Can be "None" if information is provided in the data file
 SAMPLING_RATE: 25  # Hz
 
 # Time slice in s
@@ -40,36 +42,36 @@ T_STOP: None
 
 # Orientation of the recorded cortical region
 # recommend top: ventral
-ORIENTATION_TOP: 'ventral'
-# recommended right: 'lateral' for right hemisphere, 'medial' for left hemisphere
-ORIENTATION_RIGHT: 'lateral'
+ORIENTATION_TOP: "ventral"
+# recommended right: "lateral" for right hemisphere, "medial" for left hemisphere
+ORIENTATION_RIGHT: "lateral"
 
 TRIAL: None
 
 # Metadata - general information (non-specific to individual channels)
-# This must include an entry 'grid_size' with an int tuple
+# This must include an entry "grid_size" with an int tuple
 # (x-dim, y-dim). The size of this rectangual grid would thus be
 # (x-dim*SPATIAL_SCALE, y-dim*SPATIAL_SCALE).
 ANNOTATIONS:
-    experimental_lab: 'Santa Corp, Antarctica'
+    experimental_lab: "Santa Corp, Antarctica"
     grid_size: [2, 2]
-    anesthetic: 'Isoflurane'
+    anesthetic: "Isoflurane"
 #
-# # Metadata - channel-wise information (e.g. coordinates, SNR, ...), can be 'None'
-# # Here, the entries must be lists of the same length as the number of channels
+# Metadata - channel-wise information (e.g. coordinates, SNR, ...), can be "None"
+# Here, the entries must be lists of the same length as the number of channels
 ARRAY_ANNOTATIONS:
     x_coords: [0, 0, 1, 1]
     y_coords: [0, 1, 0, 1]
 
 # Script parameters
 # Here, additional parameters can be passed to the script,
-# to be used to determine additional annotations or array_annotations. Can be 'None' or empty.
-KWARGS: 'None'
+# to be used to determine additional annotations or array_annotations. Can be "None" or empty.
+KWARGS: "None"
 
 # Plotting parameters
 # These parameters are used to create an example plot to get a first view
 # on the signals and ensure that the data was loaded and annotated correctly
-PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
-PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
-PLOT_CHANNELS: 'None'  # int, or list of int, or 'None' -> randomly chosen channel
-PLOT_FORMAT: 'png'  # file extension for storing the plot
+PLOT_TSTART: 0  # float (in s) or "None" -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or "None" -> stopping time of the input signal is used
+PLOT_CHANNELS: "None"  # int or "None" -> randomly selected (default, automatic creation of reports will fail)
+PLOT_FORMAT: "png"  # file extension for storing the plot

@@ -1,26 +1,27 @@
 # Config file for Stage XY - Template
 
 # Name of stage, must be identical with folder name
-STAGE_NAME: 'stageXY_template'
+STAGE_NAME: "stageXY_template"
 
-# The profile name is the key for this parameter configuration. Results are stored in output_path/<PROFILE>/ (output_path is defined in settings.py)
-PROFILE: 'dataset_key'
+# The profile name is the key for this parameter configuration.
+# Results are stored in output_path/<PROFILE>/ (`output_path` defined in ~/.cobrawap/config).
+PROFILE: "dataset_key"
 
 # Name of the output file
-STAGE_OUTPUT: 'some_output'
+STAGE_OUTPUT: "some_output"
 
-# BLOCK - Offset Signal
-####################
-# float value to add to the signal in each channel (None=0)
-OFFSET: 20
+# BLOCK - offset_signal
+#######################
+# float value to be added to the signal in each channel
+OFFSET: 20  # float or "None" -> no offset is added (default)
 
-# BLOCK - Other Block
-####################
+# BLOCK - other_block
+#####################
 # Some parameter
-A: 'a'
+A: "a"
 
 # Plotting parameters
-PLOT_TSTART: 0  # float (in s) or 'None' -> starting time of the input signal is used
-PLOT_TSTOP: 10  # float (in s) or 'None' -> stopping time of the input signal is used
-PLOT_CHANNELS: 'None'  # int or None. default 'None' -> randomly selected
-PLOT_FORMAT: 'png'
+PLOT_TSTART: 0  # float (in s) or "None" -> starting time of the input signal is used
+PLOT_TSTOP: 10  # float (in s) or "None" -> stopping time of the input signal is used
+PLOT_CHANNELS: "None"  # int or "None" -> randomly selected (default, automatic creation of reports will fail)
+PLOT_FORMAT: "png"

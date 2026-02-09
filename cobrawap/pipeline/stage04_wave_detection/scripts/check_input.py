@@ -1,6 +1,5 @@
 """
-Check whether the input data representation adheres to the stage's requirements.
-
+Check whether the input data representation adheres to the stage requirements.
 Additionally prints a short summary of the data attributes.
 """
 
@@ -8,14 +7,16 @@ import numpy as np
 import argparse
 from pathlib import Path
 import quantities as pq
-from utils.io_utils import load_neo
+from utils.io_utils import load_neo, write_check
 from snakemake.logging import logger
 
 CLI = argparse.ArgumentParser()
-CLI.add_argument("--data", nargs='?', type=Path, required=True,
+CLI.add_argument("--data", nargs="?", type=Path, required=True,
                  help="path to input data in neo format")
+CLI.add_argument("--output", nargs="?", type=Path, required=True,
+                 help="path of output check file")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args, unknown = CLI.parse_known_args()
 
     block = load_neo(args.data)
@@ -29,23 +30,25 @@ if __name__ == '__main__':
 
     asig = block.segments[0].analogsignals[0]
 
-    # print('Recording Time:\t\t', asig.t_stop - asig.t_start)
-    # print('Sampling Rate:\t\t', asig.sampling_rate)
-    # print('Spatial Scale:\t\t', asig.annotations['spatial_scale'])
+    # print("Recording Time:\t\t", asig.t_stop - asig.t_start)
+    # print("Sampling Rate:\t\t", asig.sampling_rate)
+    # print("Spatial Scale:\t\t", asig.annotations["spatial_scale"])
 
-    evts = block.filter(name='transitions', objects="Event")
+    evts = block.filter(name="transitions", objects="Event")
 
     if not len(evts):
-        raise ValueError("No 'transitions' events found!")
+        raise ValueError("No `transitions` events found!")
     evt = evts[0]
 
-    if not 'UP' in evt.labels:
-        logger.warning("No transitions labeled 'UP' found!")
-        # raise KeyError("No transitions labeled 'UP' found!")
+    if not "UP" in evt.labels:
+        logger.warning("No transitions labeled `UP` found!")
+        # raise KeyError("No transitions labeled `UP` found!")
 
-    up_channels = np.unique(evt.array_annotations['channels'])
+    up_channels = np.unique(evt.array_annotations["channels"])
     num_channels = np.count_nonzero(~np.isnan(np.sum(asig, axis=0)))
     print(f'{len(up_channels)} of {num_channels} channels show UP transitions.')
 
-    evt.array_annotations['x_coords']
-    evt.array_annotations['y_coords']
+    evt.array_annotations["x_coords"]
+    evt.array_annotations["y_coords"]
+
+    write_check(args.output)

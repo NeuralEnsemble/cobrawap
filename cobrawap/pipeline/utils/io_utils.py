@@ -1,9 +1,10 @@
-import os
-import neo
 import matplotlib.pyplot as plt
+import neo
+import os
 import warnings
-from snakemake.logging import logger
 from pathlib import Path
+from snakemake.logging import logger
+
 
 def load_neo(filename, object='block', lazy=False, *args, **kwargs):
     try:
@@ -51,6 +52,15 @@ def write_neo(filename, block, *args, **kwargs):
         warnings.warn(str(e))
     finally:
         nio.close()
+    return True
+
+
+def write_check(filename="input.check"):
+    # creates an empty file, typically named `input.check`
+    try:
+        Path(filename).touch(exist_ok=True)
+    except Exception as e:
+        warnings.warn(str(e))
     return True
 
 

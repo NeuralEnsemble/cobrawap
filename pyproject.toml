@@ -54,7 +54,7 @@ dev = [
     "pre-commit",
     "pydocstyle",
     "pylint",
-    "pytest",
+    "pytest>=8.3.5",
     "pytest-black",
     "pytest-cov",
     "pytest-flake8",
@@ -62,6 +62,7 @@ dev = [
     "pytest-pydocstyle",
     "pytest-pylint",
     "pytest-xdist",
+    "pytest-pycodestyle"
 ]
 doc = [
     "sphinx>=3.3.0",

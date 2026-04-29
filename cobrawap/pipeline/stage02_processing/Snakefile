@@ -43,11 +43,13 @@ use rule template as plot_processed_traces with:
         script = SCRIPTS / 'plot_processed_trace.py'
     params:
         params(channels=config.PLOT_CHANNELS,
+               t_start=config.PLOT_TSTART,
+               t_stop=config.PLOT_TSTOP,
                img_name="processed_trace_channel0." + config.PLOT_FORMAT,
                original_data=config.STAGE_INPUT)
     output:
         img_dir = directory(OUTPUT_DIR /
-                            str("processed_traces_{t_start}-{t_stop}s"))
+                            str("processed_traces_%s-%ss" % (config.PLOT_TSTART,config.PLOT_TSTOP)))
 
 
 use rule template as plot_power_spectrum with:
